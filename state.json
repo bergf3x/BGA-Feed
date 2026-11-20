@@ -87,7 +87,7 @@
    "teaser": "Traunstein – Es ist wieder so weit: Der Christkindlmarkt in Traunstein lockt zum Bummeln und Genießen, zum Schauen und Ratschen.",
    "category": "\"Oberbürgermeister Dr. Christian Hümmer und das Christkindl gaben am Freitag den Startschuss für den Budenzauber\"",
    "plus": false,
-   "topic": "Kultur",
+   "topic": "Region/Landkreis Traunstein",
    "first_seen": "2026-11-20T17:32:48+00:00"
   },
   "1027757": {
@@ -127,7 +127,7 @@
    "teaser": "",
    "category": "",
    "plus": false,
-   "topic": "Sport/Fußball",
+   "topic": "Nachrichten/Boulevard",
    "first_seen": "2026-11-20T17:32:48+00:00"
   },
   "1027728": {
@@ -137,7 +137,7 @@
    "teaser": "",
    "category": "",
    "plus": false,
-   "topic": "Sport/Fußball",
+   "topic": "Nachrichten/Boulevard",
    "first_seen": "2026-11-20T17:32:48+00:00"
   },
   "1027727": {
@@ -157,7 +157,7 @@
    "teaser": "",
    "category": "",
    "plus": false,
-   "topic": "Kultur",
+   "topic": "Region/Landkreis Traunstein",
    "first_seen": "2026-11-20T17:32:48+00:00"
   },
   "1027725": {
@@ -167,7 +167,7 @@
    "teaser": "",
    "category": "",
    "plus": false,
-   "topic": "Sport/Fußball",
+   "topic": "Nachrichten/Boulevard",
    "first_seen": "2026-11-20T17:32:48+00:00"
   },
   "1027724": {
@@ -187,7 +187,7 @@
    "teaser": "",
    "category": "",
    "plus": false,
-   "topic": "Kultur",
+   "topic": "Region/Landkreis Traunstein",
    "first_seen": "2026-11-20T17:32:48+00:00"
   },
   "1027716": {
@@ -198,7 +198,7 @@
    "plus": false,
    "first_seen": "2026-11-20T16:52:20+00:00",
    "sid": 1027716,
-   "topic": "Sport/Fußball"
+   "topic": "Region/Berchtesgadener Land"
   },
   "1027707": {
    "url": "https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land_artikel,-advent-feierlich-eroeffnet-_arid,1027707.html",
@@ -208,7 +208,7 @@
    "plus": false,
    "first_seen": "2026-11-20T16:52:20+00:00",
    "sid": 1027707,
-   "topic": "Sport/Fußball"
+   "topic": "Region/Berchtesgadener Land"
   },
   "1027699": {
    "sid": 1027699,
@@ -237,7 +237,7 @@
    "teaser": "",
    "category": "",
    "plus": false,
-   "topic": "Sport/Fußball",
+   "topic": "Nachrichten/Boulevard",
    "first_seen": "2026-11-20T17:45:57+00:00"
   },
   "1027693": {
@@ -248,7 +248,7 @@
    "plus": false,
    "first_seen": "2026-11-20T16:52:20+00:00",
    "sid": 1027693,
-   "topic": "Nachrichten/Digital"
+   "topic": "Region/Berchtesgadener Land"
   },
   "1027690": {
    "sid": 1027690,
@@ -277,7 +277,7 @@
    "teaser": "",
    "category": "",
    "plus": false,
-   "topic": "Sport/Fußball",
+   "topic": "Nachrichten/Boulevard",
    "first_seen": "2026-11-20T17:32:48+00:00"
   },
   "1027679": {
@@ -287,7 +287,7 @@
    "teaser": "",
    "category": "",
    "plus": false,
-   "topic": "Sport/Fußball",
+   "topic": "Nachrichten/Boulevard",
    "first_seen": "2026-11-20T17:45:57+00:00"
   },
   "1027676": {
@@ -707,7 +707,7 @@
    "teaser": "",
    "category": "",
    "plus": false,
-   "topic": "Sport/Fußball",
+   "topic": "Nachrichten/Boulevard",
    "first_seen": "2026-11-20T17:45:57+00:00"
   },
   "1027559": {
@@ -728,7 +728,7 @@
    "plus": false,
    "first_seen": "2026-11-20T16:52:20+00:00",
    "sid": 1027556,
-   "topic": "Sport/Fußball"
+   "topic": "Region/Berchtesgadener Land"
   },
   "1027555": {
    "url": "https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land/berchtesgaden_artikel,-abschied-von-der-schokolade-bestsellerautorin-lisa-graf-schliesst-ihre-lindtspruenglisaga-ab-_arid,1027555.html",
@@ -748,7 +748,7 @@
    "plus": true,
    "first_seen": "2026-11-20T16:52:20+00:00",
    "sid": 1027553,
-   "topic": "Sport/Fußball"
+   "topic": "Region/Berchtesgadener Land"
   },
   "1027552": {
    "sid": 1027552,
@@ -768,7 +768,7 @@
    "plus": false,
    "first_seen": "2026-11-20T16:52:20+00:00",
    "sid": 1027551,
-   "topic": "Sport/Fußball"
+   "topic": "Region/Berchtesgadener Land"
   },
   "1027550": {
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-weihnachtszauber-in-historischer-altstadtkulisse-salzburger-christkindlmarkt-hat-noch-bis-1-januar-g-_arid,1027550.html",
@@ -817,7 +817,7 @@
    "teaser": "",
    "category": "",
    "plus": false,
-   "topic": "Kultur",
+   "topic": "Region/Landkreis Traunstein",
    "first_seen": "2026-11-20T17:32:48+00:00"
   },
   "1027540": {
@@ -1547,7 +1547,7 @@
    "teaser": "",
    "category": "",
    "plus": true,
-   "topic": "Sport/Fußball",
+   "topic": "Region/Berchtesgadener Land",
    "first_seen": "2026-11-20T17:45:57+00:00"
   },
   "1027338": {
@@ -2040,6 +2040,16 @@
    "topic": "Sport/Fußball",
    "first_seen": "2026-11-20T17:45:57+00:00"
   },
+  "1027096": {
+   "sid": 1027096,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-job-im-nationalteam-argentiniens-trainer-laedt-messi-ein-_arid,1027096.html",
+   "title": "Job im Nationalteam? Argentiniens Trainer lädt Messi ein",
+   "teaser": "Córdoba (dpa) - Noch spielt Lionel Messi weiter für Inter Miami. Aber was ist, wenn er seine Karriere auch dort mal beendet? Argentiniens Nationalcoach macht auf Nachfrage einen ...",
+   "category": "Fußball",
+   "plus": false,
+   "topic": "Sport/Fußball",
+   "first_seen": "2026-11-20T23:02:55+00:00"
+  },
   "1027087": {
    "sid": 1027087,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-biathletin-grotian-fehlt-beim-weltcupauftakt-_arid,1027087.html",
@@ -2119,6 +2129,16 @@
    "plus": false,
    "topic": "Nachrichten/Digital",
    "first_seen": "2026-11-20T17:50:08+00:00"
+  },
+  "1026975": {
+   "sid": 1026975,
+   "url": "https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land/freilassing_artikel,-wie-kommt-die-kirche-zu-den-menschen-der-dekanatsrat-tagt-kirche-vor-ort-als-herausforderung-fuer-di-_arid,1026975.html",
+   "title": "Wie kommt die Kirche zu den Menschen? – Der Dekanatsrat tagt: »Kirche vor Ort« als Herausforderung für die Zukunft",
+   "teaser": "",
+   "category": "",
+   "plus": false,
+   "topic": "Sport/Fußball",
+   "first_seen": "2026-11-20T23:02:55+00:00"
   },
   "1026972": {
    "sid": 1026972,
@@ -2999,6 +3019,16 @@
    "plus": false,
    "topic": "Region/Bergsteiger & Naturfreunde",
    "first_seen": "2026-11-20T17:50:08+00:00"
+  },
+  "958134": {
+   "sid": 958134,
+   "url": "https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land/berchtesgaden_artikel,-unvergessliche-bilder-und-tolle-gemeinschaft-so-war-die-letzte-24stundentrophy-_arid,958134.html",
+   "title": "Unvergessliche Bilder und tolle Gemeinschaft: So war die letzte 24-Stunden-Trophy",
+   "teaser": "",
+   "category": "",
+   "plus": false,
+   "topic": "Sport/Fußball",
+   "first_seen": "2026-11-20T23:02:55+00:00"
   },
   "939408": {
    "sid": 939408,
