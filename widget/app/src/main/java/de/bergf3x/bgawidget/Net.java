@@ -13,9 +13,7 @@ final class Net {
         HttpURLConnection c = (HttpURLConnection) new URL(url).openConnection();
         c.setConnectTimeout(10000);
         c.setReadTimeout(15000);
-        c.setRequestProperty("User-Agent",
-                "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 (KHTML, like Gecko) "
-                        + "Chrome/120.0 Mobile Safari/537.36 BGAWidget/2.2");
+        c.setRequestProperty("User-Agent", "BGAWidget/2.3 (privates Nachrichten-Widget, Android)");
         c.setRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
         c.setRequestProperty("Accept-Language", "de-DE,de;q=0.9");
         try {
