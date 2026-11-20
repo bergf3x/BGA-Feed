@@ -16,7 +16,9 @@ import java.util.Set;
 public class WidgetProvider extends AppWidgetProvider {
     static final String ACTION_REFRESH = "de.bergf3x.bgawidget.REFRESH";
     static final String ACTION_SET_TOPIC = "de.bergf3x.bgawidget.SET_TOPIC";
-    private static final int[] CHIPS = {R.id.chip0, R.id.chip1, R.id.chip2, R.id.chip3, R.id.chip4};
+    private static final int[] CHIPS = {R.id.chip0, R.id.chip1, R.id.chip2, R.id.chip3};
+    private static final int[] CHIP_ON = {R.id.chip0_on, R.id.chip1_on, R.id.chip2_on, R.id.chip3_on};
+    private static final int[] CHIP_T = {R.id.chip0_t, R.id.chip1_t, R.id.chip2_t, R.id.chip3_t};
 
     @Override
     public void onUpdate(Context ctx, AppWidgetManager mgr, int[] ids) {
@@ -91,9 +93,9 @@ public class WidgetProvider extends AppWidgetProvider {
             }
             boolean on = value.equals(curParent);
             rv.setViewVisibility(cid, android.view.View.VISIBLE);
-            rv.setTextViewText(cid, i == 0 ? "Alle" : value);
-            rv.setInt(cid, "setBackgroundResource", on ? R.drawable.chip_on : R.drawable.chip_bg);
-            rv.setTextColor(cid, on ? dark : fg);
+            rv.setTextViewText(CHIP_T[i], i == 0 ? "Alle" : value);
+            rv.setViewVisibility(CHIP_ON[i], on ? android.view.View.VISIBLE : android.view.View.GONE);
+            rv.setTextColor(CHIP_T[i], on ? dark : fg);
             Intent ci = new Intent(ctx, WidgetProvider.class).setAction(ACTION_SET_TOPIC);
             ci.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id);
             ci.putExtra("topic", value);
@@ -102,9 +104,9 @@ public class WidgetProvider extends AppWidgetProvider {
                     PendingIntent.getBroadcast(ctx, id * 10 + i, ci, PendingIntent.FLAG_UPDATE_CURRENT | immutable));
         }
         boolean hasSub = topic.indexOf('/') >= 0;
-        rv.setTextViewText(R.id.chip5, (hasSub ? topic.substring(topic.indexOf('/') + 1) : "Mehr") + " ▾");
-        rv.setInt(R.id.chip5, "setBackgroundResource", hasSub ? R.drawable.chip_on : R.drawable.chip_bg);
-        rv.setTextColor(R.id.chip5, hasSub ? dark : fg);
+        rv.setTextViewText(R.id.chip5_t, (hasSub ? topic.substring(topic.indexOf('/') + 1) + " " : "") + "▾");
+        rv.setViewVisibility(R.id.chip5_on, hasSub ? android.view.View.VISIBLE : android.view.View.GONE);
+        rv.setTextColor(R.id.chip5_t, hasSub ? dark : fg);
         rv.setViewVisibility(R.id.chip5, topics.isEmpty() ? android.view.View.GONE : android.view.View.VISIBLE);
         rv.setInt(R.id.btn_refresh, "setColorFilter", solid);
         rv.setInt(R.id.btn_settings, "setColorFilter", solid);
