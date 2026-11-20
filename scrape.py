@@ -24,7 +24,7 @@ from xml.sax.saxutils import escape
 HERE = Path(__file__).parent
 UA = "bga-feed/1.1 (privater Feed-Generator, 1 Abruf alle 30 Min.)"
 RAW = "https://raw.githubusercontent.com/bergf3x/BGA-Feed/main/"
-MAX_ITEMS = 60
+MAX_ITEMS = 200
 
 BGA_ARID = re.compile(r"_arid,(\d+)\.html")
 ALP_ID = re.compile(r"/(\d{4,9})/(?:artikel|galerie|produkttest|tour)_")
@@ -75,9 +75,11 @@ def parse_bga(html, base):
 
 
 def bga_topic(item, source_topic):
-    # "Regionalsport BGD" u. ae. -> eigenes Thema, egal auf welcher Seite es auftaucht
-    if "sport" in item["category"].lower():
-        return "Regionalsport"
+    # Teaser mit Kicker "Regionalsport BGD/TS" gehoeren immer zu "Sport aus der Region"
+    if source_topic.startswith("Sport/"):
+        return source_topic
+    if item["category"].lower().startswith("regionalsport"):
+        return "Sport/Sport aus der Region"
     return source_topic
 
 
@@ -154,13 +156,30 @@ SITES = [
         feed="feed.xml",
         state="state.json",
         # Reihenfolge: spaeter genannte Seiten ueberschreiben das Thema frueherer
+        # Reihenfolge: allgemein -> speziell; spaeter genannte Seiten ueberschreiben das Thema
         sources=[
-            ("/region-und-lokal/lokales-berchtesgadener-land.html", "Region"),
-            ("/nachrichten.html", "Nachrichten"),
+            ("/region-und-lokal/lokales-berchtesgadener-land.html", "Region/Berchtesgadener Land"),
+            ("/region-und-lokal/lokalnachrichten-landkreis-traunstein.html", "Region/Landkreis Traunstein"),
+            ("/region-und-lokal/bergsteiger-und-naturfreunde.html", "Region/Bergsteiger & Naturfreunde"),
+            ("/nachrichten.html", "Nachrichten/Deutschland & Welt"),
+            ("/nachrichten/wirtschaft.html", "Nachrichten/Wirtschaft"),
+            ("/nachrichten/wissenschaft.html", "Nachrichten/Wissenschaft"),
+            ("/nachrichten/computer.html", "Nachrichten/Digital"),
+            ("/nachrichten/boulevard.html", "Nachrichten/Boulevard"),
             ("/kultur.html", "Kultur"),
             ("/sport.html", "Sport"),
+            ("/sport/fussball.html", "Sport/Fußball"),
+            ("/sport/wintersport.html", "Sport/Wintersport"),
+            ("/sport/sport-aus-der-region.html", "Sport/Sport aus der Region"),
         ],
-        topics=["Region", "Nachrichten", "Regionalsport", "Sport", "Kultur"],
+        topics=[
+            "Region", "Region/Berchtesgadener Land", "Region/Landkreis Traunstein",
+            "Region/Bergsteiger & Naturfreunde",
+            "Nachrichten", "Nachrichten/Deutschland & Welt", "Nachrichten/Wirtschaft",
+            "Nachrichten/Wissenschaft", "Nachrichten/Digital", "Nachrichten/Boulevard",
+            "Sport", "Sport/Sport aus der Region", "Sport/Fußball", "Sport/Wintersport",
+            "Kultur",
+        ],
         parse=parse_bga,
         retopic=bga_topic,
         order="id",
@@ -250,7 +269,10 @@ def build(site, items, state, now):
         + "\n  </channel>\n</rss>\n"
     )
     present = {it.get("topic") or "Region" for it in ordered}
-    topics = [t for t in site["topics"] if t in present]
+    topics = [
+        t for t in site["topics"]
+        if t in present or any(p.startswith(t + "/") for p in present)
+    ]
     return xml, topics
 
 
@@ -270,6 +292,8 @@ def run_site(site, now, html_file=None, out=None, state_file=None):
     state = json.loads(sp.read_text(encoding="utf-8")) if sp.exists() else {}
     # alte Statedateien (vor Version 1.1) hatten "arid" statt "sid"
     for v in state.get("items", {}).values():
+        if v.get("topic") == "Regionalsport":
+            v["topic"] = "Sport/Sport aus der Region"
         if "sid" not in v and "arid" in v:
             v["sid"] = v.pop("arid")
     xml, topics = build(site, items, state, now)

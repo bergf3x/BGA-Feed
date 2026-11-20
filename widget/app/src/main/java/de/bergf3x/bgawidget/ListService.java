@@ -57,26 +57,54 @@ public class ListService extends RemoteViewsService {
                             // Seite sperrt Server: direkt auf dem Handy lesen und selbst parsen
                             List<FeedItem> page = AlpinParser.parse(Net.download(f.direct), f.name);
                             for (FeedItem it : page) it.time = Prefs.firstSeen(ctx, it.link);
-                            xml = page.isEmpty() ? null : AlpinParser.toXml(page);
+                            if (page.isEmpty()) {
+                                Prefs.setStatus(ctx, f.id, "Seite geladen, aber keine Artikel erkannt");
+                            } else {
+                                xml = AlpinParser.toXml(page);
+                                Prefs.setStatus(ctx, f.id, "");
+                            }
                         } else {
                             xml = Net.download(Net.fresh(f.url));
-                            if (FeedItem.parse(xml, f.name).isEmpty()) xml = null;
+                            if (FeedItem.parse(xml, f.name).isEmpty()) {
+                                xml = null;
+                                Prefs.setStatus(ctx, f.id, "Feed ist leer");
+                            } else {
+                                Prefs.setStatus(ctx, f.id, "");
+                            }
                         }
                         if (xml != null) Prefs.setFeedCache(ctx, f.id, xml);
-                    } catch (Exception ignored) {
+                    } catch (Exception e) {
                         xml = null;
+                        Prefs.setStatus(ctx, f.id, String.valueOf(e.getMessage() != null ? e.getMessage() : e));
                     }
                 }
                 if (xml == null) xml = Prefs.feedCache(ctx, f.id);
                 for (FeedItem it : FeedItem.parse(xml, f.name)) {
                     String t = it.topic.isEmpty() ? "Region" : it.topic;
-                    if (topic.isEmpty() || topic.equals(t)) merged.add(it);
+                    if (topic.isEmpty() || t.equals(topic) || t.startsWith(topic + "/")) merged.add(it);
                 }
             }
             multi = used > 1;
+            if (online && merged.isEmpty()) showEmptyReason(all, selected, topic);
             // Gleiche Zeit (z. B. erster Lauf): Reihenfolge innerhalb des Feeds bleibt erhalten
             Collections.sort(merged, (a, b) -> Long.compare(b.time, a.time));
             return merged;
+        }
+
+        private void showEmptyReason(List<Catalog.Feed> all, Set<String> selected, String topic) {
+            StringBuilder sb = new StringBuilder();
+            for (Catalog.Feed f : all) {
+                if (!selected.contains(f.id)) continue;
+                String st = Prefs.status(ctx, f.id);
+                if (!st.isEmpty()) sb.append(f.name).append(": ").append(st).append("\n");
+            }
+            if (sb.length() == 0) {
+                sb.append(topic.isEmpty() ? "Keine Artikel gefunden"
+                        : "Keine Artikel im Thema „" + topic.substring(topic.indexOf('/') + 1) + "“");
+            }
+            RemoteViews rv = new RemoteViews(ctx.getPackageName(), R.layout.widget);
+            rv.setTextViewText(R.id.empty, sb.toString().trim());
+            android.appwidget.AppWidgetManager.getInstance(ctx).partiallyUpdateAppWidget(widgetId, rv);
         }
 
         @Override

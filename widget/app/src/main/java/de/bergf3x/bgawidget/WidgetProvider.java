@@ -62,10 +62,10 @@ public class WidgetProvider extends AppWidgetProvider {
         RemoteViews rv = new RemoteViews(ctx.getPackageName(), R.layout.widget);
         rv.setInt(R.id.bg_fill, "setImageAlpha", Prefs.alpha(bg));
         rv.setInt(R.id.bg_border, "setImageAlpha", Math.round(Prefs.alpha(Math.max(bg, 20)) * 0.45f));
-        rv.setTextViewText(R.id.title, topic.isEmpty() ? title : title + " · " + topic);
+        rv.setTextViewText(R.id.title, title);
         rv.setTextColor(R.id.title, Prefs.argb(rgb, tx, 1f));
         rv.setTextColor(R.id.empty, Prefs.argb(rgb, tx, 1f));
-        rv.setTextViewText(R.id.btn_topic, (topic.isEmpty() ? "Alle" : topic) + " ▾");
+        rv.setTextViewText(R.id.btn_topic, (topic.isEmpty() ? "Alle" : topic.substring(topic.indexOf('/') + 1)) + " ▾");
         rv.setTextColor(R.id.btn_topic, Prefs.argb(rgb, tx, 1f));
         rv.setViewVisibility(R.id.btn_topic, topics.isEmpty() ? android.view.View.GONE : android.view.View.VISIBLE);
         rv.setInt(R.id.btn_refresh, "setColorFilter", solid);

@@ -72,6 +72,14 @@ final class Prefs {
         sp(c).edit().putString("cache_" + feedId, xml).apply();
     }
 
+    static String status(Context c, String feedId) {
+        return sp(c).getString("status_" + feedId, "");
+    }
+
+    static void setStatus(Context c, String feedId, String s) {
+        sp(c).edit().putString("status_" + feedId, s).apply();
+    }
+
     static String catalogCache(Context c) {
         return sp(c).getString("catalog", null);
     }

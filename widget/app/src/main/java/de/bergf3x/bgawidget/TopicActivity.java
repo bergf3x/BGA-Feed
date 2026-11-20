@@ -25,7 +25,7 @@ public class TopicActivity extends Activity {
         topics.add("");
         topics.addAll(Catalog.topicsFor(Catalog.load(this), Prefs.feeds(this, id)));
         List<String> labels = new ArrayList<>();
-        for (String t : topics) labels.add(t.isEmpty() ? "Alle Themen" : t);
+        for (String t : topics) labels.add(label(t, topics));
 
         ListView lv = new ListView(this);
         lv.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_single_choice, labels));
@@ -38,5 +38,14 @@ public class TopicActivity extends Activity {
             finish();
         });
         setContentView(lv);
+    }
+
+    /** Oberthemen mit Unterthemen heissen "X – alle", Unterthemen sind eingerueckt. */
+    private static String label(String t, List<String> all) {
+        if (t.isEmpty()) return "Alle Themen";
+        int slash = t.indexOf('/');
+        if (slash >= 0) return "\u2003\u2003" + t.substring(slash + 1);
+        for (String o : all) if (o.startsWith(t + "/")) return t + " – alle";
+        return t;
     }
 }

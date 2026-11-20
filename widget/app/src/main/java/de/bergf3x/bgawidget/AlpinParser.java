@@ -10,10 +10,9 @@ import java.util.regex.Pattern;
 
 /** Liest die Startseite von alpin.de (kein RSS vorhanden) direkt auf dem Handy aus. */
 final class AlpinParser {
-    private static final Pattern ARTICLE =
-            Pattern.compile("<article\\b.*?</article>", Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
-    private static final Pattern HREF = Pattern.compile(
-            "href=\"([^\"]*/(\\d{4,9})/(?:artikel|galerie|produkttest|tour)_[^\"]*)\"");
+    private static final Pattern ANCHOR = Pattern.compile(
+            "<a\\b[^>]*?href=[\"']([^\"']*/(\\d{4,9})/(?:artikel|galerie|produkttest|tour)_[^\"']*)[\"'][^>]*>(.*?)</a>",
+            Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
     private static final Pattern H1 =
             Pattern.compile("<h1[^>]*>(.*?)</h1>", Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
     private static final Pattern H2 =
@@ -40,21 +39,18 @@ final class AlpinParser {
     static List<FeedItem> parse(String html, String feedName) {
         List<FeedItem> out = new ArrayList<>();
         List<String> seen = new ArrayList<>();
-        Matcher am = ARTICLE.matcher(html);
+        Matcher am = ANCHOR.matcher(html);
         while (am.find() && out.size() < 40) {
-            String art = am.group();
-            Matcher hm = HREF.matcher(art);
-            if (!hm.find()) continue; // Anzeigen, Taboola, Platzhalter
-            String href = hm.group(1);
-            String id = hm.group(2);
+            String href = am.group(1);
+            String id = am.group(2);
+            String inner = am.group(3);
             if (seen.contains(id)) continue;
-            seen.add(id);
 
             String title;
             String category = "";
             String teaser = "";
-            Matcher m1 = H1.matcher(art);
-            Matcher m2 = H2.matcher(art);
+            Matcher m1 = H1.matcher(inner);
+            Matcher m2 = H2.matcher(inner);
             boolean has1 = m1.find();
             boolean has2 = m2.find();
             if (has1) {
@@ -62,16 +58,17 @@ final class AlpinParser {
                 if (has2) category = text(m2.group(1));
             } else if (has2) {
                 title = text(m2.group(1));
-                List<String> parts = parts(art);
+                List<String> parts = parts(inner);
                 int idx = parts.indexOf(title);
                 if (idx >= 0) {
                     if (idx > 0) category = parts.get(idx - 1);
                     if (idx + 1 < parts.size()) teaser = parts.get(idx + 1);
                 }
             } else {
-                continue;
+                continue; // reiner Bild-Link ohne Titel; der Textlink kommt evtl. spaeter
             }
             if (title.isEmpty()) continue;
+            seen.add(id);
 
             String path = href.startsWith(BASE) ? href.substring(BASE.length()) : href;
             FeedItem it = new FeedItem();
