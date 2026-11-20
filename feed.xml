@@ -5,7 +5,7 @@
     <link>https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land.html</link>
     <description>Neueste Meldungen, automatisch erzeugt. Nur Titel und Anrisstext.</description>
     <language>de-de</language>
-    <lastBuildDate>Fri, 20 Nov 2026 17:32:48 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 20 Nov 2026 17:45:57 +0000</lastBuildDate>
     <item>
       <title>50. Christkindlmarkt in Traunstein öffnete seine Pforten</title>
       <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-50-christkindlmarkt-in-traunstein-oeffnete-seine-pforten-_arid,1027759.html</link>
@@ -20,35 +20,53 @@
       <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-gericht-verbietet-nachhaltigkeitsangabe-auf-pfanniklossteig-_arid,1027757.html</link>
       <guid isPermaLink="false">bga-1027757</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
-      <category>"Verbraucher"</category>
-      <topic>Nachrichten</topic>
+      <category>Wirtschaft</category>
+      <topic>Nachrichten/Wirtschaft</topic>
       <description>Hamburg (dpa) - Klage erhoben hat die Deutsche Umwelthilfe. Unilever kündigt an, die Entscheidung des Hamburger Landgerichts zu akzeptieren.</description>
+    </item>
+    <item>
+      <title>Anthropic-Aktie fällt am zweiten Handelstag deutlich</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-anthropicaktie-faellt-am-zweiten-handelstag-deutlich-_arid,1027748.html</link>
+      <guid isPermaLink="false">bga-1027748</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Digitales</category>
+      <topic>Nachrichten/Digital</topic>
+      <description>New York (dpa) - Die KI-Firma Anthropic startete an der Börse mit einem Kurssprung von 34 Prozent und einer Bewertung von zwei Billionen Dollar. Doch die Euphorie währte nur kurz.</description>
+    </item>
+    <item>
+      <title>England: Geburtstagsgruß am Morgen, Entlassung am Nachmittag</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-england-geburtstagsgruss-am-morgen-entlassung-am-nachmittag-_arid,1027735.html</link>
+      <guid isPermaLink="false">bga-1027735</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Fußball</category>
+      <topic>Sport/Fußball</topic>
+      <description>Blackpool (dpa) - Am Morgen wünschte der Club Blackpool-Trainer Ian Evatt noch alles Gute zum Geburtstag, am Nachmittag folgte die Trennung. Was hinter dem überraschenden Aus nach nur ...</description>
     </item>
     <item>
       <title>Polen wirft Russland Provokation nahe Militärmanöver vor</title>
       <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-polen-wirft-russland-provokation-nahe-militaermanoever-vor-_arid,1027730.html</link>
       <guid isPermaLink="false">bga-1027730</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
-      <category>Brennpunkt</category>
-      <topic>Nachrichten</topic>
-      <description>Warschau (dpa) - Drei Flugobjekte stürzen während russischer Angriffe auf die Ukraine im Südosten von Polen ab. In der Region trainieren gerade westliche Soldaten. Warschau spricht von ...</description>
+      <category></category>
+      <topic>Sport/Fußball</topic>
+      <description></description>
     </item>
     <item>
       <title>Perso auf dem Smartphone - was die »d-you«-App bringen soll</title>
       <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-perso-auf-dem-smartphone-was-die-dyouapp-bringen-soll-_arid,1027728.html</link>
       <guid isPermaLink="false">bga-1027728</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
-      <category>Brennpunkt</category>
-      <topic>Nachrichten</topic>
-      <description>Berlin (dpa) - Ab Januar können Personalausweis und andere Identitätsnachweise auch auf dem Smartphone hinterlegt werden. Die Nutzungsmöglichkeiten sind zunächst begrenzt, sollen aber ...</description>
+      <category></category>
+      <topic>Sport/Fußball</topic>
+      <description></description>
     </item>
     <item>
       <title>Winzige Meeresbewohner - Neue Bärtierchenarten entdeckt</title>
       <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-winzige-meeresbewohner-neue-baertierchenarten-entdeckt-_arid,1027727.html</link>
       <guid isPermaLink="false">bga-1027727</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
-      <category>"Tiere"</category>
-      <topic>Nachrichten</topic>
+      <category>Wissenschaft</category>
+      <topic>Nachrichten/Wissenschaft</topic>
       <description>Wilhelmshaven (dpa/lni) - Bärtierchen können an Land und unter Wasser und selbst extreme Umweltbedingungen überstehen. Forscher aus Wilhelmshaven haben jetzt zwei neue Arten der ...</description>
     </item>
     <item>
@@ -65,18 +83,18 @@
       <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-manuela-schwesig-wird-an-der-galle-operiert-_arid,1027725.html</link>
       <guid isPermaLink="false">bga-1027725</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
-      <category>Brennpunkt</category>
-      <topic>Nachrichten</topic>
-      <description>Schwerin (dpa) - Keine dienstlichen Termine, die Kabinettssitzung übernimmt ihre Stellvertreterin: Mecklenburg-Vorpommerns Regierungschefin unterzieht sich nächste Woche einem ...</description>
+      <category></category>
+      <topic>Sport/Fußball</topic>
+      <description></description>
     </item>
     <item>
       <title>Klingbeil: Regulierung der Finanzmärkte ist zu kompliziert</title>
       <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-klingbeil-regulierung-der-finanzmaerkte-ist-zu-kompliziert-_arid,1027724.html</link>
       <guid isPermaLink="false">bga-1027724</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
-      <category></category>
-      <topic>Nachrichten</topic>
-      <description></description>
+      <category>Wirtschaft</category>
+      <topic>Nachrichten/Wirtschaft</topic>
+      <description>Frankfurt/Main (dpa) - Der Bundesfinanzminister will Banken von Berichtspflichten entlasten – aber keine pauschale Deregulierung. Er richtet Forderungen nach Brüssel.</description>
     </item>
     <item>
       <title>Einbruch am Christkindlmarkt: Polizei bittet um Zeugenhinweise</title>
@@ -93,7 +111,7 @@
       <guid isPermaLink="false">bga-1027716</guid>
       <pubDate>Fri, 20 Nov 2026 16:52:20 +0000</pubDate>
       <category></category>
-      <topic>Kultur</topic>
+      <topic>Sport/Fußball</topic>
       <description></description>
     </item>
     <item>
@@ -102,35 +120,71 @@
       <guid isPermaLink="false">bga-1027707</guid>
       <pubDate>Fri, 20 Nov 2026 16:52:20 +0000</pubDate>
       <category></category>
-      <topic>Kultur</topic>
-      <description>Berchtesgaden – Erstmals mit dem Durchschneiden eines Bandes begann der »Berchtesgadener Advent«.</description>
+      <topic>Sport/Fußball</topic>
+      <description></description>
+    </item>
+    <item>
+      <title>Trotz Spionage-Affäre: Southampton verlängert mit Eckert</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-trotz-spionageaffaere-southampton-verlaengert-mit-eckert-_arid,1027699.html</link>
+      <guid isPermaLink="false">bga-1027699</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Fußball</category>
+      <topic>Sport/Fußball</topic>
+      <description>Southampton (dpa) - Der deutsche Coach Tonda Eckert bleibt trotz Strafe und Punktabzug langfristig Trainer des FC Southampton. Der Club setzt damit nach der Spionage-Affäre ein klares ...</description>
+    </item>
+    <item>
+      <title>Zehn Fußballer in Polen wegen möglichen Betrugs gesperrt</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-zehn-fussballer-in-polen-wegen-moeglichen-betrugs-gesperrt-_arid,1027698.html</link>
+      <guid isPermaLink="false">bga-1027698</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Fußball</category>
+      <topic>Sport/Fußball</topic>
+      <description>Warschau (dpa) - Zehn Spieler aus unteren polnischen Ligen stehen unter Verdacht des Spielbetrugs. Der Verband wurde mit neuer Technik auf sie aufmerksam.</description>
+    </item>
+    <item>
+      <title>Komische Oper: Intendanten drängen auf schnelle Sanierung</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-komische-oper-intendanten-draengen-auf-schnelle-sanierung-_arid,1027697.html</link>
+      <guid isPermaLink="false">bga-1027697</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category></category>
+      <topic>Sport/Fußball</topic>
+      <description></description>
     </item>
     <item>
       <title>Bergwacht rettet verletzte Wanderin im Lattengebirge</title>
       <link>https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land/bayerisch-gmain_artikel,-bergwacht-rettet-verletzte-wanderin-im-lattengebirge-_arid,1027693.html</link>
       <guid isPermaLink="false">bga-1027693</guid>
       <pubDate>Fri, 20 Nov 2026 16:52:20 +0000</pubDate>
-      <category>Bayerisch Gmain</category>
-      <topic>Region</topic>
-      <description>Bayrisch Gmain – Bei einem Bergunfall im nördlichen Lattengebirge ist am Freitagvormittag eine 44-jährige Frau aus dem nördlichen Landkreis verletzt worden. Die Bergwachten Bad ...</description>
+      <category></category>
+      <topic>Sport/Fußball</topic>
+      <description></description>
     </item>
     <item>
       <title>Behörde erlaubt deutlich höheres Briefporto</title>
       <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-behoerde-erlaubt-deutlich-hoeheres-briefporto-_arid,1027685.html</link>
       <guid isPermaLink="false">bga-1027685</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
-      <category></category>
-      <topic>Nachrichten</topic>
-      <description></description>
+      <category>Wirtschaft</category>
+      <topic>Nachrichten/Wirtschaft</topic>
+      <description>Bonn (dpa) - Wer noch Briefmarken in der Schublade hat, der sollte sie entweder rasch aufbrauchen oder bald nachkaufen, um seine Briefe zusätzlich zu frankieren: Zum Jahreswechsel wird ...</description>
     </item>
     <item>
       <title>Neuer »Notfallwegweiser« für Patienten in dringenden Fällen</title>
       <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-neuer-notfallwegweiser-fuer-patienten-in-dringenden-faellen-_arid,1027680.html</link>
       <guid isPermaLink="false">bga-1027680</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
-      <category>Brennpunkt</category>
-      <topic>Nachrichten</topic>
-      <description>Berlin (dpa) - Wenn abends plötzlich Beschwerden auftreten, gehen viele direkt ins Krankenhaus, stundenlanges Warten meistens inklusive. Nun sollen effizientere Abläufe kommen und auch ...</description>
+      <category></category>
+      <topic>Sport/Fußball</topic>
+      <description></description>
+    </item>
+    <item>
+      <title>Silbereisen trauert um seine Kostümbildnerin</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-silbereisen-trauert-um-seine-kostuembildnerin-_arid,1027679.html</link>
+      <guid isPermaLink="false">bga-1027679</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category></category>
+      <topic>Sport/Fußball</topic>
+      <description></description>
     </item>
     <item>
       <title>Keine Mehrheit für AfD-Mann Siegmund in Sicht - oder doch?</title>
@@ -138,8 +192,17 @@
       <guid isPermaLink="false">bga-1027676</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
       <category>Brennpunkt</category>
-      <topic>Nachrichten</topic>
+      <topic>Nachrichten/Deutschland &amp; Welt</topic>
       <description>Magdeburg (dpa) - Ulrich Siegmund möchte sich am 8. Dezember zum ersten AfD-Ministerpräsidenten in Deutschland wählen lassen. Doch der AfD fehlen die nötigen Stimmen. Was in ...</description>
+    </item>
+    <item>
+      <title>Alles andere als normal: Das Nordderby Werder gegen den HSV</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-alles-andere-als-normal-das-nordderby-werder-gegen-den-hsv-_arid,1027672.html</link>
+      <guid isPermaLink="false">bga-1027672</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>1. Fußball Bundesliga</category>
+      <topic>Sport/Fußball</topic>
+      <description>Bremen (dpa) - Eigentlich geht es nur um Bundesliga-Punkte, doch das Nordderby zwischen Werder Bremen und dem HSV birgt viel mehr. Auch diesmal hat das Duell viele Aspekte.</description>
     </item>
     <item>
       <title>Malaysia plant Umsiedlung von 10.000 Rohingya in die Türkei</title>
@@ -147,16 +210,34 @@
       <guid isPermaLink="false">bga-1027666</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
       <category>Brennpunkt</category>
-      <topic>Nachrichten</topic>
+      <topic>Nachrichten/Deutschland &amp; Welt</topic>
       <description>Kuala Lumpur/Ankara (dpa) - Malaysia will 10.000 Rohingya-Flüchtlinge in die Türkei umsiedeln und ihnen dort mit beruflicher Ausbildung den Weg in ein neues Leben ermöglichen. Derweil ...</description>
+    </item>
+    <item>
+      <title>Knieverletzung: 18-Jähriger fehlt dem BVB länger</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-knieverletzung-18jaehriger-fehlt-dem-bvb-laenger-_arid,1027658.html</link>
+      <guid isPermaLink="false">bga-1027658</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>1. Fußball Bundesliga</category>
+      <topic>Sport/Fußball</topic>
+      <description>Dortmund (dpa) - Das ist großes Pech: Ein Offensivspieler von Borussia Dortmund verletzt sich bei seiner Nationalmannschaft. Dortmunds Sportdirektor äußert sich dazu.</description>
     </item>
     <item>
       <title>Metall-Tarifkonflikt: Arbeitgeber dringen auf Gespräche</title>
       <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-metalltarifkonflikt-arbeitgeber-dringen-auf-gespraeche-_arid,1027654.html</link>
       <guid isPermaLink="false">bga-1027654</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
-      <category></category>
-      <topic>Nachrichten</topic>
+      <category>Wirtschaft</category>
+      <topic>Nachrichten/Wirtschaft</topic>
+      <description></description>
+    </item>
+    <item>
+      <title>EZB-Chefin Lagarde: Europa handelt bei Krisen oft zu spät</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-ezbchefin-lagarde-europa-handelt-bei-krisen-oft-zu-spaet-_arid,1027653.html</link>
+      <guid isPermaLink="false">bga-1027653</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Wirtschaft</category>
+      <topic>Nachrichten/Wirtschaft</topic>
       <description></description>
     </item>
     <item>
@@ -165,7 +246,7 @@
       <guid isPermaLink="false">bga-1027652</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
       <category>Brennpunkt</category>
-      <topic>Nachrichten</topic>
+      <topic>Nachrichten/Deutschland &amp; Welt</topic>
       <description>Kiew/Moskau/Warschau (dpa) - Russland reagiert mit heftigen Raketenschlägen gegen Brücken und Energieanlagen nach den Schäden an der Krim-Brücke. Mehrere Flugkörper landen in Polen. ...</description>
     </item>
     <item>
@@ -174,7 +255,7 @@
       <guid isPermaLink="false">bga-1027642</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
       <category>Brennpunkt</category>
-      <topic>Nachrichten</topic>
+      <topic>Nachrichten/Deutschland &amp; Welt</topic>
       <description>Brüssel/London (dpa) - Es sind weitgehende Schritte - aber lange nicht der Exit vom Brexit, auf den Großbritanniens Premierminister Hoffnungen geschürt hatte. Diskussionen um ...</description>
     </item>
     <item>
@@ -183,7 +264,7 @@
       <guid isPermaLink="false">bga-1027638</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
       <category>Brennpunkt</category>
-      <topic>Nachrichten</topic>
+      <topic>Nachrichten/Deutschland &amp; Welt</topic>
       <description>Berlin (dpa) - Mit sechs schon an die Rente denken? Ein Zuschuss vom Staat soll Kinder an die Altersvorsorge heranführen. Wer jetzt 10 Euro im Monat bekommt - und wer nicht.</description>
     </item>
     <item>
@@ -192,7 +273,7 @@
       <guid isPermaLink="false">bga-1027637</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
       <category>Brennpunkt</category>
-      <topic>Nachrichten</topic>
+      <topic>Nachrichten/Deutschland &amp; Welt</topic>
       <description>Antalya (dpa) - Rekordhitze und Überschwemmungen erhöhen den Druck, die Erderhitzung schneller einzudämmen. »Wir müssen aufhören, unsere Welt zu verbrennen«, warnt der ...</description>
     </item>
     <item>
@@ -201,8 +282,26 @@
       <guid isPermaLink="false">bga-1027636</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
       <category>Brennpunkt</category>
-      <topic>Nachrichten</topic>
+      <topic>Nachrichten/Deutschland &amp; Welt</topic>
       <description>Düsseldorf (dpa) - Nicht Lautstärke und Empörungsposen sollen im Bundesrat zählen, wenn es nach dem neuen Vorsitzenden geht. Hendrik Wüst wirbt für Kompromiss statt Konfrontation. ...</description>
+    </item>
+    <item>
+      <title>Pochettino und die schwierige Aufgabe bei Manchester United</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-pochettino-und-die-schwierige-aufgabe-bei-manchester-united-_arid,1027634.html</link>
+      <guid isPermaLink="false">bga-1027634</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Fußball</category>
+      <topic>Sport/Fußball</topic>
+      <description>Manchester (dpa) - Ausgerechnet beim Erzrivalen gibt Coach Mauricio Pochettino am Wochenende seinen Einstand bei Manchester United. Seit Alex Fergusons Abschied 2013 blieb kein Trainer ...</description>
+    </item>
+    <item>
+      <title>Bahn passt Verkehrskonzept zwischen Berlin und Hannover an</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-bahn-passt-verkehrskonzept-zwischen-berlin-und-hannover-an-_arid,1027631.html</link>
+      <guid isPermaLink="false">bga-1027631</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Wirtschaft</category>
+      <topic>Nachrichten/Wirtschaft</topic>
+      <description></description>
     </item>
     <item>
       <title>Antisemitismus-Vorwürfe: NFL sperrt Profi Nacua</title>
@@ -210,7 +309,7 @@
       <guid isPermaLink="false">bga-1027626</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
       <category>Sport</category>
-      <topic>Regionalsport</topic>
+      <topic>Sport</topic>
       <description>Inglewood (dpa) - Puka Nacua von den Los Angeles Rams muss in der NFL eine Sperre absitzen. Ihm werden unter anderem antisemitische Bemerkungen vorgeworfen.</description>
     </item>
     <item>
@@ -219,8 +318,26 @@
       <guid isPermaLink="false">bga-1027623</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
       <category>Sport</category>
-      <topic>Regionalsport</topic>
+      <topic>Sport</topic>
       <description>Tampa (dpa) - Nach 23 Spielen am Stück punktet Eishockey-Superstar Connor McDavid zum ersten Mal nicht für die Edmonton Oilers. Für das Team um Leon Draisaitl endet in Tampa ...</description>
+    </item>
+    <item>
+      <title>Allianz gegen Infantino? Tashima hält Wahl für einen »Test«</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-allianz-gegen-infantino-tashima-haelt-wahl-fuer-einen-test-_arid,1027622.html</link>
+      <guid isPermaLink="false">bga-1027622</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Fußball</category>
+      <topic>Sport/Fußball</topic>
+      <description>Tokio (dpa) - Der Japaner Kozo Tashima will Gianni Infantino als FIFA-Präsidenten stürzen. Den Franzosen Philippe Diallo sieht Tashima trotz dessen eigener Kandidatur als Partner.</description>
+    </item>
+    <item>
+      <title>US-Autor DeLillo wird 90</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-usautor-delillo-wird-90-_arid,1027620.html</link>
+      <guid isPermaLink="false">bga-1027620</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Boulevard</category>
+      <topic>Nachrichten/Boulevard</topic>
+      <description>New York (dpa) - Don DeLillo gehört zu den weltweit erfolgreichsten Schriftstellern. Jetzt wird der US-Bestsellerautor 90 Jahre alt - und schenkt seinen Fans ein Buch, das mit der ...</description>
     </item>
     <item>
       <title>Erster Touchdown für Deutschen Klein: Texans schlagen Colts</title>
@@ -228,7 +345,7 @@
       <guid isPermaLink="false">bga-1027619</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
       <category>Sport</category>
-      <topic>Regionalsport</topic>
+      <topic>Sport</topic>
       <description>Houston (dpa) - Das NFL-Spiel zwischen den Houston Texans und den Indianapolis Colts wird für den Deutschen Marlin Klein besonders. Doch eine schwere Verletzung überschattet die ...</description>
     </item>
     <item>
@@ -237,7 +354,7 @@
       <guid isPermaLink="false">bga-1027616</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
       <category>Brennpunkt</category>
-      <topic>Nachrichten</topic>
+      <topic>Nachrichten/Deutschland &amp; Welt</topic>
       <description>Berlin (dpa) - Maja von Borstel erkennt manche Puzzleteile auf den ersten Blick wieder – und setzt 1.000 Teile in Rekordtempo zusammen. Um besonders schnell zu sein, kommt es besonders ...</description>
     </item>
     <item>
@@ -246,7 +363,7 @@
       <guid isPermaLink="false">bga-1027612</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
       <category>Brennpunkt</category>
-      <topic>Nachrichten</topic>
+      <topic>Nachrichten/Deutschland &amp; Welt</topic>
       <description>Juneau (dpa) - In Alaska standen zwei fast identische Namen auf dem Stimmzettel. Die US-Regierung versuchte deshalb einen gravierenden Eingriff in die Wahl - und scheiterte vor ...</description>
     </item>
     <item>
@@ -255,7 +372,7 @@
       <guid isPermaLink="false">bga-1027608</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
       <category>Brennpunkt</category>
-      <topic>Nachrichten</topic>
+      <topic>Nachrichten/Deutschland &amp; Welt</topic>
       <description>Labuan Bajo (dpa) - Die größte Echse der Welt wird für einen Indonesier zum schmerzhaften Alptraum - ein Komodowaran steht plötzlich in seinem Haus. Erst kürzlich hatte ein Bindenwaran ...</description>
     </item>
     <item>
@@ -263,9 +380,9 @@
       <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-wann-gibt-es-mehr-menschenaehnliche-roboter-als-menschen-_arid,1027606.html</link>
       <guid isPermaLink="false">bga-1027606</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
-      <category></category>
-      <topic>Nachrichten</topic>
-      <description></description>
+      <category>Wissenschaft</category>
+      <topic>Nachrichten/Wissenschaft</topic>
+      <description>Toronto (dpa) - Der Erde steht eine neue Bevölkerungsexplosion bevor, meinen einige Forscher. Diesmal geht es nicht um Menschen, sondern um Maschinen.</description>
     </item>
     <item>
       <title>Hängepartie um Guterres-Nachfolge - Was droht den UN?</title>
@@ -273,7 +390,7 @@
       <guid isPermaLink="false">bga-1027605</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
       <category>Brennpunkt</category>
-      <topic>Nachrichten</topic>
+      <topic>Nachrichten/Deutschland &amp; Welt</topic>
       <description>New York (dpa) - Die UN haben den Posten ihres Chefdiplomaten ausgeschrieben. Seit Monaten ringen die Staaten im Sicherheitsrat um die Nachfolge von Guterres. Bisher ohne Erfolg. ...</description>
     </item>
     <item>
@@ -282,7 +399,7 @@
       <guid isPermaLink="false">bga-1027604</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
       <category>Brennpunkt</category>
-      <topic>Nachrichten</topic>
+      <topic>Nachrichten/Deutschland &amp; Welt</topic>
       <description>Berlin (dpa) - Nach dem ersten Aktionstag von »Gen Z regelt« Ende Oktober demonstrieren bundesweit wieder Tausende. Die Bundesjugendministerin verspricht ein offenes Ohr. ...</description>
     </item>
     <item>
@@ -291,8 +408,17 @@
       <guid isPermaLink="false">bga-1027600</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
       <category>Brennpunkt</category>
-      <topic>Nachrichten</topic>
+      <topic>Nachrichten/Deutschland &amp; Welt</topic>
       <description>Antalya (dpa) - Das Verbrennen von Öl, Gas und Kohle lässt die Klimakrise eskalieren. Doch werden sie in der Abschlusserklärung der Klimakonferenz erwähnt? Das ist nur eine der Fragen, ...</description>
+    </item>
+    <item>
+      <title>Tarifstreit bei VW: Was auf Beschäftigte zukommen könnte</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-tarifstreit-bei-vw-was-auf-beschaeftigte-zukommen-koennte-_arid,1027597.html</link>
+      <guid isPermaLink="false">bga-1027597</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Wirtschaft</category>
+      <topic>Nachrichten/Wirtschaft</topic>
+      <description></description>
     </item>
     <item>
       <title>Exit vom Brexit? Darüber verhandeln London und Brüssel</title>
@@ -300,7 +426,7 @@
       <guid isPermaLink="false">bga-1027591</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
       <category>Brennpunkt</category>
-      <topic>Nachrichten</topic>
+      <topic>Nachrichten/Deutschland &amp; Welt</topic>
       <description>Brüssel/London (dpa) - In Brüssel wollen Großbritannien und die EU weitere Schritte zur Wiederannäherung verkünden. Eines der geplanten Vorhaben dürfte vor allem Menschen unter 30 ...</description>
     </item>
     <item>
@@ -309,8 +435,17 @@
       <guid isPermaLink="false">bga-1027590</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
       <category>Brennpunkt</category>
-      <topic>Nachrichten</topic>
+      <topic>Nachrichten/Deutschland &amp; Welt</topic>
       <description>Berlin (dpa) - Am zweiten Tag des Ukraine-Gipfels geht es um Wirtschaft. Beim Ringen mit Russland deuten sich indes Fortschritte an: Trump und Putin scheinen gewillt, Europa an den ...</description>
+    </item>
+    <item>
+      <title>Kalifornien will von Nvidia Aufklärung zu China-Lieferungen</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-kalifornien-will-von-nvidia-aufklaerung-zu-chinalieferungen-_arid,1027589.html</link>
+      <guid isPermaLink="false">bga-1027589</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Digitales</category>
+      <topic>Nachrichten/Digital</topic>
+      <description>Sacramento (dpa) - Die Kontroverse um Jensen Huang ist für Nvidia mit dem Rücktritt des langjährigen Chefs noch lange nicht vorbei. Jetzt rollt die nächste Untersuchung auf den ...</description>
     </item>
     <item>
       <title>Mütze vertilgt: Berühmtes Nilpferd Fiona in US-Zoo gestorben</title>
@@ -318,7 +453,7 @@
       <guid isPermaLink="false">bga-1027588</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
       <category>Brennpunkt</category>
-      <topic>Nachrichten</topic>
+      <topic>Nachrichten/Deutschland &amp; Welt</topic>
       <description>Cincinnati (dpa) - Im Zoo von Cincinnati frisst das weltbekannte Nilpferd Fiona die Strickmütze eines Kindes. Trotz intensiver Bemühungen der Ärzte und Pfleger ist das Tier nun ...</description>
     </item>
     <item>
@@ -327,8 +462,26 @@
       <guid isPermaLink="false">bga-1027587</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
       <category>Brennpunkt</category>
-      <topic>Nachrichten</topic>
+      <topic>Nachrichten/Deutschland &amp; Welt</topic>
       <description>Frankfurt/Main (dpa) - BMW und Audi in Bayern, Werften im Norden: Tausende Beschäftigte legen für 24 Stunden die Arbeit nieder. Ein neues Gesprächsangebot hat die Streikwelle vorerst ...</description>
+    </item>
+    <item>
+      <title>EU: Ab jetzt arbeiten Frauen symbolisch kostenlos</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-eu-ab-jetzt-arbeiten-frauen-symbolisch-kostenlos-_arid,1027586.html</link>
+      <guid isPermaLink="false">bga-1027586</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Wirtschaft</category>
+      <topic>Nachrichten/Wirtschaft</topic>
+      <description>Brüssel (dpa) - Frauen gehen am Ende des Monats mit weniger Gehalt nach Hause. Das soll sich ändern. Die EU-Kommission kritisiert Verzögerungen in Ländern wie Deutschland, die seit ...</description>
+    </item>
+    <item>
+      <title>Lufthansa will 1.000 Stellen an Drehkreuzen streichen</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-lufthansa-will-1000-stellen-an-drehkreuzen-streichen-_arid,1027583.html</link>
+      <guid isPermaLink="false">bga-1027583</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Wirtschaft</category>
+      <topic>Nachrichten/Wirtschaft</topic>
+      <description>Frankfurt/Main (dpa) - Rund 1.000 Stellen an den Lufthansa-Drehkreuzen Frankfurt und München sollen wegfallen – wann und auf welchem Weg, ist noch offen.</description>
     </item>
     <item>
       <title>Haitianische Polizei tötet 34 mutmaßliche Bandenmitglieder</title>
@@ -336,7 +489,7 @@
       <guid isPermaLink="false">bga-1027579</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
       <category>Brennpunkt</category>
-      <topic>Nachrichten</topic>
+      <topic>Nachrichten/Deutschland &amp; Welt</topic>
       <description>Port-au-Prince (dpa) - Gepanzerte Fahrzeuge rollen durch die Straßen, eine Explosion lässt ein Haus einstürzen. Nach Polizeiangaben fand in Haitis Hauptstadt ein großangelegter Einsatz ...</description>
     </item>
     <item>
@@ -345,7 +498,7 @@
       <guid isPermaLink="false">bga-1027578</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
       <category>Sport</category>
-      <topic>Regionalsport</topic>
+      <topic>Sport</topic>
       <description>Svendborg/Kassel (dpa) - Der SC Magdeburg startet mit einem knappen Sieg bei GOG in Dänemark in die Hauptrunde der Champions League. Die MT Melsungen geht gegen Paris nach einem ...</description>
     </item>
     <item>
@@ -354,8 +507,17 @@
       <guid isPermaLink="false">bga-1027575</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
       <category>Brennpunkt</category>
-      <topic>Nachrichten</topic>
+      <topic>Nachrichten/Deutschland &amp; Welt</topic>
       <description>Magdeburg (dpa) - Ulrich Siegmund möchte sich früher als geplant zum ersten AfD-Ministerpräsidenten in Deutschland wählen lassen. Wie soll das gelingen? Die Ausgangslage in ...</description>
+    </item>
+    <item>
+      <title>Anthropic-Aktie rutscht bei Debüt vom hohen Startkurs ab</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-anthropicaktie-rutscht-bei-debuet-vom-hohen-startkurs-ab-_arid,1027574.html</link>
+      <guid isPermaLink="false">bga-1027574</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Digitales</category>
+      <topic>Nachrichten/Digital</topic>
+      <description>New York (dpa) - Die KI-Firma Anthropic startete an der Börse mit einer Bewertung von zwei Billionen Dollar. Im Handelsverlauf rutschte die Aktie deutlich unter den ersten hohen Kurs.</description>
     </item>
     <item>
       <title>Putin sieht Verstoß gegen Olympische Charta</title>
@@ -363,7 +525,7 @@
       <guid isPermaLink="false">bga-1027573</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
       <category>Sport</category>
-      <topic>Regionalsport</topic>
+      <topic>Sport</topic>
       <description>Shenzhen (dpa) - Im Streit um die Zulassung russischer Sportler zu internationalen Wettkämpfen ist die Eishockey-Welt vor der WM in Deutschland in Aufregung. Kremlchef Putin macht ...</description>
     </item>
     <item>
@@ -372,7 +534,7 @@
       <guid isPermaLink="false">bga-1027572</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
       <category>Brennpunkt</category>
-      <topic>Nachrichten</topic>
+      <topic>Nachrichten/Deutschland &amp; Welt</topic>
       <description>London (dpa) - Ein Prozess, der an den Fall Gisèle Pelicot erinnert, sorgt in Großbritannien für Aufsehen. Eine Frau wurde über Jahre von ihrem damaligen Ehemann im Internet für Sex ...</description>
     </item>
     <item>
@@ -381,8 +543,17 @@
       <guid isPermaLink="false">bga-1027564</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
       <category>Regionalsport TS</category>
-      <topic>Regionalsport</topic>
+      <topic>Sport/Sport aus der Region</topic>
       <description>Nach der witterungsbedingten Absage des Auswärtsspiels in Gundelfingen wird der TSV Wasserburg am morgigen Samstag ab 14 Uhr sein Heimspiel in der Fußball-Bayernliga Süd auf jeden Fall ...</description>
+    </item>
+    <item>
+      <title>Zweckverband will mehr Wohnraum schaffen – Bauen und Vermieten stehen im Zentrum</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-zweckverband-will-mehr-wohnraum-schaffen-bauen-und-vermieten-stehen-im-zentrum-_arid,1027562.html</link>
+      <guid isPermaLink="false">bga-1027562</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category></category>
+      <topic>Sport/Fußball</topic>
+      <description></description>
     </item>
     <item>
       <title>Uhu ausgewildert: Greifvogel hatte sich in einem Weidezaun verfangen</title>
@@ -390,7 +561,7 @@
       <guid isPermaLink="false">bga-1027559</guid>
       <pubDate>Fri, 20 Nov 2026 16:52:20 +0000</pubDate>
       <category>Ramsau</category>
-      <topic>Region</topic>
+      <topic>Region/Berchtesgadener Land</topic>
       <description>Ramsau – Ein Uhu mit einer Spannweite von 1,80 Metern und drei Kilogramm Gewicht hatte sich vor rund zwei Wochen beim Ruppenlehen in der Ramsau in einem Schafzaun verfangen. Die ...</description>
     </item>
     <item>
@@ -398,17 +569,17 @@
       <link>https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land_artikel,-thebestinheritagekonferenz-internationale-auszeichnung-an-dokumentation-obersalzberg-vergeben-_arid,1027556.html</link>
       <guid isPermaLink="false">bga-1027556</guid>
       <pubDate>Fri, 20 Nov 2026 16:52:20 +0000</pubDate>
-      <category>Berchtesgadener Land</category>
-      <topic>Region</topic>
-      <description>Die The-Best-in-Heritage-Konferenz versammelt alljährlich weltweite Preisträger aus den Bereichen Kulturerbe und Museum. Zum Abschluss der diesjährigen Tagung in Barcelona wurde die ...</description>
+      <category></category>
+      <topic>Sport/Fußball</topic>
+      <description></description>
     </item>
     <item>
-      <title>🔒 Abschied von der Schokolade: Bestsellerautorin Lisa Graf schließt ihre Lindt-&amp;-Sprüngli-Saga ab</title>
+      <title>Abschied von der Schokolade: Bestsellerautorin Lisa Graf schließt ihre Lindt-&amp;-Sprüngli-Saga ab</title>
       <link>https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land/berchtesgaden_artikel,-abschied-von-der-schokolade-bestsellerautorin-lisa-graf-schliesst-ihre-lindtspruenglisaga-ab-_arid,1027555.html</link>
       <guid isPermaLink="false">bga-1027555</guid>
       <pubDate>Fri, 20 Nov 2026 16:52:20 +0000</pubDate>
-      <category>Berchtesgaden</category>
-      <topic>Region</topic>
+      <category></category>
+      <topic>Sport/Fußball</topic>
       <description></description>
     </item>
     <item>
@@ -417,7 +588,7 @@
       <guid isPermaLink="false">bga-1027553</guid>
       <pubDate>Fri, 20 Nov 2026 16:52:20 +0000</pubDate>
       <category></category>
-      <topic>Kultur</topic>
+      <topic>Sport/Fußball</topic>
       <description></description>
     </item>
     <item>
@@ -426,8 +597,8 @@
       <guid isPermaLink="false">bga-1027552</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
       <category>Regionalsport TS</category>
-      <topic>Regionalsport</topic>
-      <description>Einen hervorragenden Saisonabschluss feierten die Voltigiererinnen der PSG Traunstorf II beim Movieturnier in Utting unter Leitung ihrer beiden Trainerinnen Antje Schimmelmann und ...</description>
+      <topic>Sport/Sport aus der Region</topic>
+      <description></description>
     </item>
     <item>
       <title>Bergretter und Jurist: Bundesverdienstorden für Dr. Klaus Burger</title>
@@ -435,7 +606,7 @@
       <guid isPermaLink="false">bga-1027551</guid>
       <pubDate>Fri, 20 Nov 2026 16:52:20 +0000</pubDate>
       <category></category>
-      <topic>Kultur</topic>
+      <topic>Sport/Fußball</topic>
       <description></description>
     </item>
     <item>
@@ -444,17 +615,17 @@
       <guid isPermaLink="false">bga-1027550</guid>
       <pubDate>Fri, 20 Nov 2026 16:52:20 +0000</pubDate>
       <category>Salzburg</category>
-      <topic>Region</topic>
+      <topic>Region/Berchtesgadener Land</topic>
       <description>Salzburg – Der Salzburger Christkindlmarkt am Dom- und Residenzplatz zählt zu den bekanntesten und traditionsreichsten Christkindlmärkten Europas. Während seine Wurzeln bis ins Jahr ...</description>
     </item>
     <item>
-      <title>Der nächste Kracher: SBC-Handballer empfangen den SV Anzing III zum Spitzenspiel</title>
+      <title>Der nächste Kracher: SBC-Handballer empfangen den SV Anzing III zum Spitzenspiel</title>
       <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-der-naechste-kracher-sbchandballer-empfangen-den-sv-anzing-iii-zum-spitzenspiel-_arid,1027549.html</link>
       <guid isPermaLink="false">bga-1027549</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
       <category>Regionalsport TS</category>
-      <topic>Regionalsport</topic>
-      <description>Nach dem 30:26-Sieg beim TuS Prien wollen die Handballer des SB Chiemgau Traunstein nun in der Bezirksliga 2 auf ihrer Erfolgswelle weiterreiten. Nach dem erfolgreichen Derby wartet ...</description>
+      <topic>Sport/Sport aus der Region</topic>
+      <description></description>
     </item>
     <item>
       <title>Eishockey-Nachwuchs: U 9, U 11 und U 17 gewinnen – U 13 verliert deutlich</title>
@@ -462,17 +633,17 @@
       <guid isPermaLink="false">bga-1027547</guid>
       <pubDate>Fri, 20 Nov 2026 16:52:20 +0000</pubDate>
       <category>Regionalsport BGD</category>
-      <topic>Regionalsport</topic>
-      <description>Vier Nachwuchsmannschaften des EVB waren im Einsatz und zeigten in drei Auseinandersetzungen gute Leistungen mit Siegen.</description>
+      <topic>Sport/Sport aus der Region</topic>
+      <description></description>
     </item>
     <item>
-      <title>»Gans« große Freude beim Martinischießen: Steffi Renoth verteidigt ihren Erfolg</title>
+      <title>»Gans« große Freude beim Martinischießen: Steffi Renoth verteidigt ihren Erfolg</title>
       <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-gans-grosse-freude-beim-martinischiessen-steffi-renoth-verteidigt-ihren-erfolg-_arid,1027545.html</link>
       <guid isPermaLink="false">bga-1027545</guid>
       <pubDate>Fri, 20 Nov 2026 16:52:20 +0000</pubDate>
       <category>Regionalsport BGD</category>
-      <topic>Regionalsport</topic>
-      <description>Treffsicherheit, Spannung und jede Menge gute Laune: Beim diesjährigen Martinischießen herrschte wieder reges Treiben am Schießstand der königlich privilegierten ...</description>
+      <topic>Sport/Sport aus der Region</topic>
+      <description></description>
     </item>
     <item>
       <title>Wie Gesetze in Berlin entstehen: Wanderausstellung des Deutschen Bundestages im Forum Chiemgau</title>
@@ -484,13 +655,22 @@
       <description></description>
     </item>
     <item>
+      <title>Bericht: Keine Revolution bei Abseits-Regel</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-bericht-keine-revolution-bei-abseitsregel-_arid,1027540.html</link>
+      <guid isPermaLink="false">bga-1027540</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Fußball</category>
+      <topic>Sport/Fußball</topic>
+      <description>Manchester (dpa) - Eine neue Abseitsregel sollte Offensivfußball begünstigen. Tests sollen jedoch nicht die erhofften Ergebnisse geliefert haben.</description>
+    </item>
+    <item>
       <title>EU-Behörde schlägt neue Regeln für Ewigkeitschemikalien vor</title>
       <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-eubehoerde-schlaegt-neue-regeln-fuer-ewigkeitschemikalien-vor-_arid,1027535.html</link>
       <guid isPermaLink="false">bga-1027535</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
-      <category></category>
-      <topic>Nachrichten</topic>
-      <description></description>
+      <category>Wissenschaft</category>
+      <topic>Nachrichten/Wissenschaft</topic>
+      <description>Helsinki (dpa) - In Pfannen, Make-up und Jacken: PFAS-Chemikalien begegnen uns im Alltag überall. Allerdings können sie Umwelt und Gesundheit schaden. Eine EU-Behörde meint: mehr ...</description>
     </item>
     <item>
       <title>Höchststand: Fast 10.000 Syphilis-Fälle in einem Jahr</title>
@@ -498,7 +678,7 @@
       <guid isPermaLink="false">bga-1027533</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
       <category></category>
-      <topic>Nachrichten</topic>
+      <topic>Nachrichten/Deutschland &amp; Welt</topic>
       <description></description>
     </item>
     <item>
@@ -507,7 +687,7 @@
       <guid isPermaLink="false">bga-1027532</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
       <category>Brennpunkt</category>
-      <topic>Nachrichten</topic>
+      <topic>Nachrichten/Deutschland &amp; Welt</topic>
       <description>Tel Aviv (dpa) - Nach einem Streit soll ein Israeli geplant haben, seine Frau zu töten – und dem KI-Assistenten ChatGPT davon erzählt haben. Was bei der Festnahme in seinem Haus ...</description>
     </item>
     <item>
@@ -516,7 +696,7 @@
       <guid isPermaLink="false">bga-1027531</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
       <category>Brennpunkt</category>
-      <topic>Nachrichten</topic>
+      <topic>Nachrichten/Deutschland &amp; Welt</topic>
       <description>Wolfsburg (dpa) - In den anstehenden Tarifverhandlungen verlangt Volkswagen harte Einschnitte von seinen Beschäftigten. IG Metall und Betriebsrat sprechen von einem »Katalog des ...</description>
     </item>
     <item>
@@ -525,8 +705,17 @@
       <guid isPermaLink="false">bga-1027530</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
       <category>Brennpunkt</category>
-      <topic>Nachrichten</topic>
+      <topic>Nachrichten/Deutschland &amp; Welt</topic>
       <description>Berlin (dpa) - Er wurde im Jemen entführt - und half selbst, Geiseln freizubekommen. Er war Botschafter in den USA, Genschers Büroleiter und Staatssekretär unter Joschka Fischer. Nun ...</description>
+    </item>
+    <item>
+      <title>BASF beendet Übernahmepoker um Evonik - Zuvor zwei Angebote</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-basf-beendet-uebernahmepoker-um-evonik-zuvor-zwei-angebote-_arid,1027526.html</link>
+      <guid isPermaLink="false">bga-1027526</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Wirtschaft</category>
+      <topic>Nachrichten/Wirtschaft</topic>
+      <description>Ludwigshafen/Essen (dpa) - Der Ludwigshafener Chemieriese warb lange um den Essener Spezialchemiekonzern. Warum das Bemühen nun offiziell ein Ende hat.</description>
     </item>
     <item>
       <title>Busunfall in Tschechien - eine Tote, zehn verletzte Kinder</title>
@@ -534,7 +723,7 @@
       <guid isPermaLink="false">bga-1027521</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
       <category>Brennpunkt</category>
-      <topic>Nachrichten</topic>
+      <topic>Nachrichten/Deutschland &amp; Welt</topic>
       <description>Tremosna (dpa) - Ein Ausflug von Vorschulkindern endet in Tschechien mit einem schweren Unfall. Die Fahrerin des entgegenkommenden Autos stirbt - mehrere Kinder werden verletzt.</description>
     </item>
     <item>
@@ -543,8 +732,1079 @@
       <guid isPermaLink="false">bga-1027520</guid>
       <pubDate>Fri, 20 Nov 2026 17:32:48 +0000</pubDate>
       <category>Brennpunkt</category>
-      <topic>Nachrichten</topic>
+      <topic>Nachrichten/Deutschland &amp; Welt</topic>
       <description>Zarrentin am Schaalsee (dpa) - Ein Albtraum: Eine Mutter geht kurz in ein Geschäft. Als sie wieder herauskommt, ist ihr Auto mit ihrem Kind darin weg.</description>
+    </item>
+    <item>
+      <title>Hautkrebsrisiko - Leitlinie empfiehlt Verbot von Solarien</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-hautkrebsrisiko-leitlinie-empfiehlt-verbot-von-solarien-_arid,1027512.html</link>
+      <guid isPermaLink="false">bga-1027512</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Brennpunkt</category>
+      <topic>Nachrichten/Deutschland &amp; Welt</topic>
+      <description>Berlin (dpa) - Gebräunte Haut gilt vielen noch immer als schön. Im Winter ist das über Solarien zu erreichen. Wegen des Risikos für Hautkrebs empfehlen Krebsforscher, Solarien nicht ...</description>
+    </item>
+    <item>
+      <title>EZB sieht Banken robust trotz Krisen und spricht Warnung aus</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-ezb-sieht-banken-robust-trotz-krisen-und-spricht-warnung-aus-_arid,1027508.html</link>
+      <guid isPermaLink="false">bga-1027508</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Wirtschaft</category>
+      <topic>Nachrichten/Wirtschaft</topic>
+      <description>Frankfurt/Main (dpa) - Die Großbanken im Euroraum sind nach Einschätzung der EZB für Krisen gewappnet. Doch die Aufsicht warnt Geldhäuser, sich auf ihren gestiegenen Gewinnen ...</description>
+    </item>
+    <item>
+      <title>In Sorge um Schlaf: BVB-Coach Kovac scherzt über GTA 6</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-in-sorge-um-schlaf-bvbcoach-kovac-scherzt-ueber-gta-6-_arid,1027506.html</link>
+      <guid isPermaLink="false">bga-1027506</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>1. Fußball Bundesliga</category>
+      <topic>Sport/Fußball</topic>
+      <description>Dortmund (dpa) - Dass Fußballprofis gerne an der Konsole zocken, ist bekannt. Auch BVB-Coach Kovac ist der Hype um die neueste GTA-Version nicht entgangen. Vor dem Spiel in Gladbach ...</description>
+    </item>
+    <item>
+      <title>Deutsche Telekom beteiligt sich an Mistral AI</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-deutsche-telekom-beteiligt-sich-an-mistral-ai-_arid,1027505.html</link>
+      <guid isPermaLink="false">bga-1027505</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Wirtschaft</category>
+      <topic>Nachrichten/Wirtschaft</topic>
+      <description>Bonn (dpa) - Mistral positioniert sich als europäischer Gegenentwurf zu OpenAI, Google oder Anthropic. Das französische KI-Start-up hat nun einen weiteren prominenten Partner gefunden.</description>
+    </item>
+    <item>
+      <title>Trotz EU: Prien will weiter an Social-Media-Regeln arbeiten</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-trotz-eu-prien-will-weiter-an-socialmediaregeln-arbeiten-_arid,1027504.html</link>
+      <guid isPermaLink="false">bga-1027504</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Brennpunkt</category>
+      <topic>Nachrichten/Deutschland &amp; Welt</topic>
+      <description>Brüssel (dpa) - Kinder sollen nicht auf TikTok, Instagram und Co. zugreifen, da sind sich Brüssel und Berlin einig. Die EU-Kommission bremst Länder bei eigenen Vorstößen aus - aber ...</description>
+    </item>
+    <item>
+      <title>Bundesbank erwartet Inflationsschub nach Jahreswechsel</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-bundesbank-erwartet-inflationsschub-nach-jahreswechsel-_arid,1027496.html</link>
+      <guid isPermaLink="false">bga-1027496</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Wirtschaft</category>
+      <topic>Nachrichten/Wirtschaft</topic>
+      <description>Frankfurt/Main (dpa) - Der Tankrabatt dämpft die Inflation in Deutschland, doch zum Jahreswechsel läuft er aus. Für Verbraucher dürfte das Folgen haben, schreibt die Bundesbank.</description>
+    </item>
+    <item>
+      <title>Merz lästert über »Bildtermin« von Trump, Putin und Xi</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-merz-laestert-ueber-bildtermin-von-trump-putin-und-xi-_arid,1027495.html</link>
+      <guid isPermaLink="false">bga-1027495</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Brennpunkt</category>
+      <topic>Nachrichten/Deutschland &amp; Welt</topic>
+      <description>Berlin (dpa) - Kurz nach dem Dreiertreffen der drei größten Atommächte in China kommen in Berlin die Verbündeten der Ukraine zu einer Art Gegengipfel zusammen. Sie wollen ein Diktat ...</description>
+    </item>
+    <item>
+      <title>Umfrage: Fachkräftemangel lässt nach – Industrie sucht mehr</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-umfrage-fachkraeftemangel-laesst-nach-industrie-sucht-mehr-_arid,1027490.html</link>
+      <guid isPermaLink="false">bga-1027490</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Wirtschaft</category>
+      <topic>Nachrichten/Wirtschaft</topic>
+      <description>Frankfurt/Main (dpa) - Weniger Unternehmen in Deutschland sehen sich durch den Fachkräftemangel eingeschränkt. Aber nicht für alle Branchen gibt es Entspannung.</description>
+    </item>
+    <item>
+      <title>Club: Täter nach Hitlergruß bei Drittliga-Spiel ermittelt</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-club-taeter-nach-hitlergruss-bei-drittligaspiel-ermittelt-_arid,1027487.html</link>
+      <guid isPermaLink="false">bga-1027487</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Fußball</category>
+      <topic>Sport/Fußball</topic>
+      <description>Essen (dpa) - Ein Fan von Rot-Weiss Essen zeigt beim Spiel in Saarbrücken den Hitlergruß – mehr als drei Monate später ist er identifiziert. Welche Schritte der Verein nun gegen ihn ...</description>
+    </item>
+    <item>
+      <title>Vielerorts müssen Menschen kürzer für die Miete arbeiten</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-vielerorts-muessen-menschen-kuerzer-fuer-die-miete-arbeiten-_arid,1027484.html</link>
+      <guid isPermaLink="false">bga-1027484</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Wirtschaft</category>
+      <topic>Nachrichten/Wirtschaft</topic>
+      <description>Dresden/Hamburg (dpa) - Je nach Region gibt es teils extreme Unterschiede, wie lang man für einen Quadratmeter arbeitet. Vor allem die Veränderung überrascht - auch in ihrer regionalen ...</description>
+    </item>
+    <item>
+      <title>UN-Gericht macht Myanmar für Rohingya-Genozid verantwortlich</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-ungericht-macht-myanmar-fuer-rohingyagenozid-verantwortlich-_arid,1027482.html</link>
+      <guid isPermaLink="false">bga-1027482</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Brennpunkt</category>
+      <topic>Nachrichten/Deutschland &amp; Welt</topic>
+      <description>Den Haag (dpa) - Mit unbeschreiblicher Gewalt wurde die muslimische Minderheit in Myanmar verfolgt. Das war Völkermord, sagt das höchste UN-Gericht nun. Das Urteil könnte auch Folgen ...</description>
+    </item>
+    <item>
+      <title>EU stärkt Rechte von Reisenden</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-eu-staerkt-rechte-von-reisenden-_arid,1027479.html</link>
+      <guid isPermaLink="false">bga-1027479</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Wirtschaft</category>
+      <topic>Nachrichten/Wirtschaft</topic>
+      <description>Brüssel (dpa) - Der Flug wird storniert und das Ticket wurde über ein Portal gebucht? Dann darf der Drittanbieter künftig keine Vermittlungsgebühr einbehalten. Was sich außerdem im ...</description>
+    </item>
+    <item>
+      <title>Medien: Angeschlagener Alcaraz bei ATP Finals weiter dabei</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-medien-angeschlagener-alcaraz-bei-atp-finals-weiter-dabei-_arid,1027471.html</link>
+      <guid isPermaLink="false">bga-1027471</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Tennis</category>
+      <topic>Sport</topic>
+      <description>Turin (dpa) - Diese Entwicklung dürfte auch Alexander Zverev mit Interesse verfolgen: Sein größter Rivale beim Prestigeevent in Turin plagt sich mit Oberschenkelproblemen. Nun ist wohl ...</description>
+    </item>
+    <item>
+      <title>Zwei Gegner für Infantino: FIFA verkündet Herausforderer</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-zwei-gegner-fuer-infantino-fifa-verkuendet-herausforderer-_arid,1027470.html</link>
+      <guid isPermaLink="false">bga-1027470</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Fußball</category>
+      <topic>Sport/Fußball</topic>
+      <description>Zürich (dpa) - Philippe Diallo und Kozo Tashima wollen Gianni Infantino als FIFA-Präsident ablösen. Offiziell begrüßt Infantino das. Derweil bekommt die FIFA Post von wichtigen ...</description>
+    </item>
+    <item>
+      <title>IG Metall hat ganztägige Warnstreiks gestartet</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-ig-metall-hat-ganztaegige-warnstreiks-gestartet-_arid,1027468.html</link>
+      <guid isPermaLink="false">bga-1027468</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Wirtschaft</category>
+      <topic>Nachrichten/Wirtschaft</topic>
+      <description>Frankfurt/Main (dpa) - In der Metall- und Elektroindustrie kommen die Verhandlungen nicht voran. Nun legt die IG Metall Betriebe für ganze Tage lahm.</description>
+    </item>
+    <item>
+      <title>Kein Vegas-Kater: Warum Verstappen nichts halbherzig macht</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-kein-vegaskater-warum-verstappen-nichts-halbherzig-macht-_arid,1027464.html</link>
+      <guid isPermaLink="false">bga-1027464</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Formel 1</category>
+      <topic>Sport</topic>
+      <description>Las Vegas (dpa) - 2024, Las Vegas. Max Verstappen feiert seinen vierten WM-Titel. 2026, Las Vegas. Die WM ist entschieden, Verstappen wieder geschlagen. Der Formel-1-Star erklärt, ...</description>
+    </item>
+    <item>
+      <title>Ella Langley räumt bei den CMA-Awards ab - Swift tritt auf</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-ella-langley-raeumt-bei-den-cmaawards-ab-swift-tritt-auf-_arid,1027463.html</link>
+      <guid isPermaLink="false">bga-1027463</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Boulevard</category>
+      <topic>Nachrichten/Boulevard</topic>
+      <description>Nashville (dpa) - Erstmals seit 13 Jahren ist Pop-Star Taylor Swift wieder bei den CMA-Awards in der Country-Hochburg Nashville aufgetreten. Doch der Star des Abends ist Newcomerin ...</description>
+    </item>
+    <item>
+      <title>Bund trifft Einigung mit Unicredit bei Commerzbank-Übernahme</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-bund-trifft-einigung-mit-unicredit-bei-commerzbankuebernahme-_arid,1027462.html</link>
+      <guid isPermaLink="false">bga-1027462</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Wirtschaft</category>
+      <topic>Nachrichten/Wirtschaft</topic>
+      <description>Berlin/Frankfurt (dpa) - Im Ringen um die Commerzbank lenkt der Bund ein. Eine Übereinkunft mit der Unicredit enthält wichtige deutsche Interessen. Bei den Tausenden Commerzbank-Jobs ...</description>
+    </item>
+    <item>
+      <title>Längst nicht jeder kann angemessen heizen</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-laengst-nicht-jeder-kann-angemessen-heizen-_arid,1027459.html</link>
+      <guid isPermaLink="false">bga-1027459</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Wirtschaft</category>
+      <topic>Nachrichten/Wirtschaft</topic>
+      <description>Wiesbaden (dpa) - Die Preise für Haushaltsenergie gingen zuletzt zurück, seit 2020 sind sie aber stark gestiegen. Wer in dieser Heizsaison besonders unter höheren Kosten leidet.</description>
+    </item>
+    <item>
+      <title>Referee mit Stein verletzt: Acht Jahre Sperre für Fußballer</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-referee-mit-stein-verletzt-acht-jahre-sperre-fuer-fussballer-_arid,1027458.html</link>
+      <guid isPermaLink="false">bga-1027458</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Fußball</category>
+      <topic>Sport/Fußball</topic>
+      <description>Yantzaza (dpa) - In Ecuador kommt es zu einem Eklat in der 3. Liga. Ein Spiel bewirft einen Unparteiischen mit einem Stein und verletzt ihn schwer. Nun kassiert der Fußballer die ...</description>
+    </item>
+    <item>
+      <title>6 Millionen akute Atemwegserkrankungen – »moderates Niveau«</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-6-millionen-akute-atemwegserkrankungen-moderates-niveau-_arid,1027457.html</link>
+      <guid isPermaLink="false">bga-1027457</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Wissenschaft</category>
+      <topic>Nachrichten/Wissenschaft</topic>
+      <description>Berlin (dpa) - Jeder kennt vermutlich jemanden, der gerade krank im Bett liegt – oder ist selbst betroffen. Die Erkältungssaison ist in vollem Gange. Aber auch Corona- und Grippe-Fälle ...</description>
+    </item>
+    <item>
+      <title>Nach Streit um NS-Vergangenheit: Van-Gogh-Gemälde mit Rekord</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-nach-streit-um-nsvergangenheit-vangoghgemaelde-mit-rekord-_arid,1027456.html</link>
+      <guid isPermaLink="false">bga-1027456</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Boulevard</category>
+      <topic>Nachrichten/Boulevard</topic>
+      <description></description>
+    </item>
+    <item>
+      <title>Bund einigt sich mit Unicredit bei Commerzbank-Übernahme</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-bund-einigt-sich-mit-unicredit-bei-commerzbankuebernahme-_arid,1027452.html</link>
+      <guid isPermaLink="false">bga-1027452</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Wirtschaft</category>
+      <topic>Nachrichten/Wirtschaft</topic>
+      <description>Berlin/Frankfurt (dpa) - Im Ringen um die Commerzbank hat der Bund mit der Unicredit eine Einigung erzielt. Sie enthält wichtige Punkte für deutsche Interessen.</description>
+    </item>
+    <item>
+      <title>Südkoreas wichtigster Test unter KI-Betrugsverdacht</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-suedkoreas-wichtigster-test-unter-kibetrugsverdacht-_arid,1027448.html</link>
+      <guid isPermaLink="false">bga-1027448</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Brennpunkt</category>
+      <topic>Nachrichten/Deutschland &amp; Welt</topic>
+      <description>Seoul (dpa) - Für mehr als eine halbe Million Schüler in Südkorea entscheidet die Hochschul-Aufnahmeprüfung über ihre berufliche Zukunft. Das diesjährige Examen wird von Sorgen vor ...</description>
+    </item>
+    <item>
+      <title>Marathon-Olympiasiegerin wegen Dopings drei Jahre gesperrt</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-marathonolympiasiegerin-wegen-dopings-drei-jahre-gesperrt-_arid,1027447.html</link>
+      <guid isPermaLink="false">bga-1027447</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Sport</category>
+      <topic>Sport</topic>
+      <description>Monaco (dpa) - Peres Jepchirchir gewinnt Marathon-Gold bei Olympia und der Leichtathletik-WM. Nun wird die Kenianerin wegen Epo-Dopings für drei Jahre gesperrt. Der Dopingfall reiht ...</description>
+    </item>
+    <item>
+      <title>Das sagt BVB-Sportchef Ricken nach Gespräch mit Nmecha</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-das-sagt-bvbsportchef-ricken-nach-gespraech-mit-nmecha-_arid,1027446.html</link>
+      <guid isPermaLink="false">bga-1027446</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>1. Fußball Bundesliga</category>
+      <topic>Sport/Fußball</topic>
+      <description>Dortmund (dpa) - Tagelang wird um Felix Nmecha und dessen Jubelgeste diskutiert. Nun äußert sich auch Dortmunds Sportchef Ricken zu seinem Mittelfeldspieler. Er äußert dabei einen ...</description>
+    </item>
+    <item>
+      <title>Das sagen die Formel-1-Fahrer zum Finale im Nahen Osten</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-das-sagen-die-formel1fahrer-zum-finale-im-nahen-osten-_arid,1027442.html</link>
+      <guid isPermaLink="false">bga-1027442</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Formel 1</category>
+      <topic>Sport</topic>
+      <description>Las Vegas (dpa) - Nach Las Vegas stehen noch die Rennen in Katar und Abu Dhabi im Kalender. Der Iran-Krieg ist nicht vorbei, eine Absage ist offenbar dennoch vom Tisch. Die Fahrer ...</description>
+    </item>
+    <item>
+      <title>Zweiertreffen Xi und Trump begonnen: Ukraine-Krieg Thema</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-zweiertreffen-xi-und-trump-begonnen-ukrainekrieg-thema-_arid,1027441.html</link>
+      <guid isPermaLink="false">bga-1027441</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Brennpunkt</category>
+      <topic>Nachrichten/Deutschland &amp; Welt</topic>
+      <description>Shenzhen (dpa) - Trump und Xi betonen ihren guten Draht zueinander. Die Länder führen aber einen heftigen Handelsstreit. Jetzt gibt es ein neues Gespräch.</description>
+    </item>
+    <item>
+      <title>Trump: Iran scheint sich mit Bio-Waffen zu befassen</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-trump-iran-scheint-sich-mit-biowaffen-zu-befassen-_arid,1027439.html</link>
+      <guid isPermaLink="false">bga-1027439</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Brennpunkt</category>
+      <topic>Nachrichten/Deutschland &amp; Welt</topic>
+      <description>Shenzhen/Teheran/Tel Aviv (dpa) - Trump rechtfertigte den Krieg gegen den Iran mit dessen angeblichem Streben nach Atomwaffen. Jetzt erwägt er laut Berichten einen neuen Angriff - und ...</description>
+    </item>
+    <item>
+      <title>Verstappen: Weltmeister Antonelli kann eine Ära prägen</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-verstappen-weltmeister-antonelli-kann-eine-aera-praegen-_arid,1027437.html</link>
+      <guid isPermaLink="false">bga-1027437</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Formel 1</category>
+      <topic>Sport</topic>
+      <description>Las Vegas (dpa) - Was kann Kimi Antonelli noch alles schaffen in seiner Karriere? Einer, der jahrelang dominiert hat, traut dem 20 Jahre alten Champion viel zu.</description>
+    </item>
+    <item>
+      <title>NBA: Wagner-Brüder gehen mit Pleiten ins Familienduell</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-nba-wagnerbrueder-gehen-mit-pleiten-ins-familienduell-_arid,1027436.html</link>
+      <guid isPermaLink="false">bga-1027436</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Sport</category>
+      <topic>Sport</topic>
+      <description>Orlando (dpa) - In der NBA steht in der Nacht auf Samstag das erste Duell zwischen Franz und Moritz Wagner an. Rückenwind kann keiner der beiden deutschen Basketballer mitnehmen.</description>
+    </item>
+    <item>
+      <title>70 Jahre Presserat: Von Gladbeck bis zur KI</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-70-jahre-presserat-von-gladbeck-bis-zur-ki-_arid,1027432.html</link>
+      <guid isPermaLink="false">bga-1027432</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Boulevard</category>
+      <topic>Nachrichten/Boulevard</topic>
+      <description></description>
+    </item>
+    <item>
+      <title>Klingelingeling im Popgeschäft: neue Weihnachtssounds 2026</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-klingelingeling-im-popgeschaeft-neue-weihnachtssounds-2026-_arid,1027431.html</link>
+      <guid isPermaLink="false">bga-1027431</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Boulevard</category>
+      <topic>Nachrichten/Boulevard</topic>
+      <description></description>
+    </item>
+    <item>
+      <title>Wadephul auf Rückflug von Armenien nach Berlin ausgebremst</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-wadephul-auf-rueckflug-von-armenien-nach-berlin-ausgebremst-_arid,1027430.html</link>
+      <guid isPermaLink="false">bga-1027430</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Brennpunkt</category>
+      <topic>Nachrichten/Deutschland &amp; Welt</topic>
+      <description>Eriwan (dpa) - Seit Dienstag war der deutsche Außenminister im Südkaukasus unterwegs, führte politische Gespräche über die Beschleunigung der Annäherung an Europa. Der Rückflug klappt ...</description>
+    </item>
+    <item>
+      <title>Aus der Formel 1 zum Geheimdienst? Norris hat Favoriten</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-aus-der-formel-1-zum-geheimdienst-norris-hat-favoriten-_arid,1027429.html</link>
+      <guid isPermaLink="false">bga-1027429</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Formel 1</category>
+      <topic>Sport</topic>
+      <description>Las Vegas (dpa) - Seit Montag ist klar, wer der neue James Bond wird. Vor dem Rennen in Las Vegas kommt die Frage auf, wer aus dem Fahrerlager ein geeigneter Kandidat wäre - Lando ...</description>
+    </item>
+    <item>
+      <title>Trump trifft Putin in China zu Gespräch vor Dreiergipfel</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-trump-trifft-putin-in-china-zu-gespraech-vor-dreiergipfel-_arid,1027426.html</link>
+      <guid isPermaLink="false">bga-1027426</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Brennpunkt</category>
+      <topic>Nachrichten/Deutschland &amp; Welt</topic>
+      <description>Shenzhen (dpa) - US-Präsident Trump trifft in China Kremlchef Putin zu Gesprächen über den Ukraine-Krieg. Später ist ein historischer Dreiergipfel mit Chinas Partei- und Staatschef Xi ...</description>
+    </item>
+    <item>
+      <title>Cyberangriffe: Wie uns die Dauer-Vernetzung verwundbar macht</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-cyberangriffe-wie-uns-die-dauervernetzung-verwundbar-macht-_arid,1027424.html</link>
+      <guid isPermaLink="false">bga-1027424</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Digitales</category>
+      <topic>Nachrichten/Digital</topic>
+      <description>Berlin (dpa) - Vom smarten Kühlschrank bis zur Industriesteuerung: Immer mehr Geräte sind online - oft ohne klaren Nutzen. Warum Fachleute bei der Vernetzung mehr Zurückhaltung ...</description>
+    </item>
+    <item>
+      <title>Meta legt neue Aktienstruktur auf Eis</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-meta-legt-neue-aktienstruktur-auf-eis-_arid,1027422.html</link>
+      <guid isPermaLink="false">bga-1027422</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Digitales</category>
+      <topic>Nachrichten/Digital</topic>
+      <description></description>
+    </item>
+    <item>
+      <title>Klimagipfel: Neuer Textentwurf nach zähem Ringen</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-klimagipfel-neuer-textentwurf-nach-zaehem-ringen-_arid,1027420.html</link>
+      <guid isPermaLink="false">bga-1027420</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Brennpunkt</category>
+      <topic>Nachrichten/Deutschland &amp; Welt</topic>
+      <description>Antalya (dpa) - Der neue Entwurf stärkt dem Weltklimarat den Rücken und setzt auf mehr Elektrifizierung. Zugleich werden zentrale Problemfelder nur indirekt angesprochen.</description>
+    </item>
+    <item>
+      <title>Trump warnt Musk vor MAGA-Absprung</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-trump-warnt-musk-vor-magaabsprung-_arid,1027413.html</link>
+      <guid isPermaLink="false">bga-1027413</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Brennpunkt</category>
+      <topic>Nachrichten/Deutschland &amp; Welt</topic>
+      <description>Washington (dpa) - Nach dem Erdrutsch-Sieg der Demokraten bei der Parlamentswahl sucht Tech-Milliardär Elon Musk Abstand zu Donald Trumps MAGA-Bewegung. Beim Präsidenten kommt das ...</description>
+    </item>
+    <item>
+      <title>Hype der Popkultur? Warum so viele Menschen auf GTA 6 warten</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-hype-der-popkultur-warum-so-viele-menschen-auf-gta-6-warten-_arid,1027412.html</link>
+      <guid isPermaLink="false">bga-1027412</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Digitales</category>
+      <topic>Nachrichten/Digital</topic>
+      <description></description>
+    </item>
+    <item>
+      <title>Lancet-Kommission fordert Regeln gegen digitale Suchtfallen</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-lancetkommission-fordert-regeln-gegen-digitale-suchtfallen-_arid,1027410.html</link>
+      <guid isPermaLink="false">bga-1027410</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Wissenschaft</category>
+      <topic>Nachrichten/Wissenschaft</topic>
+      <description></description>
+    </item>
+    <item>
+      <title>GTA 6: Teuerstes Videospiel der Geschichte spielbar</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-gta-6-teuerstes-videospiel-der-geschichte-spielbar-_arid,1027408.html</link>
+      <guid isPermaLink="false">bga-1027408</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Digitales</category>
+      <topic>Nachrichten/Digital</topic>
+      <description></description>
+    </item>
+    <item>
+      <title>Anthropic mit Rekord-Börsengang: 107,3 Milliarden Dollar</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-anthropic-mit-rekordboersengang-1073-milliarden-dollar-_arid,1027400.html</link>
+      <guid isPermaLink="false">bga-1027400</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Digitales</category>
+      <topic>Nachrichten/Digital</topic>
+      <description></description>
+    </item>
+    <item>
+      <title>Computerspiel GTA 6 ist in Deutschland verfügbar</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-computerspiel-gta-6-ist-in-deutschland-verfuegbar-_arid,1027399.html</link>
+      <guid isPermaLink="false">bga-1027399</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Digitales</category>
+      <topic>Nachrichten/Digital</topic>
+      <description>Berlin (dpa) - Seit Tagen konnten Vorbesteller GTA 6 auf ihre Konsolen laden, jetzt wird das mit Spannung erwartete Videospiel nach und nach rund um die Welt spielbar. Nun sind auch ...</description>
+    </item>
+    <item>
+      <title>Allianz: KI-bedingte Schäden wachsen rasant</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-allianz-kibedingte-schaeden-wachsen-rasant-_arid,1027396.html</link>
+      <guid isPermaLink="false">bga-1027396</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Digitales</category>
+      <topic>Nachrichten/Digital</topic>
+      <description>München (dpa) - KI soll das Leben erleichtern und Firmen produktiver machen. Versicherer sehen die andere Seite der Medaille: Risiken, Rechtsstreitigkeiten, Schäden - von Jahr zu Jahr ...</description>
+    </item>
+    <item>
+      <title>Medien: Anthropic-Ausgabepreis bei Börsengang bei 83 Dollar</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-medien-anthropicausgabepreis-bei-boersengang-bei-83-dollar-_arid,1027393.html</link>
+      <guid isPermaLink="false">bga-1027393</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Digitales</category>
+      <topic>Nachrichten/Digital</topic>
+      <description>New York (dpa) - In den USA steht der nächste Rekord-Börsengang bevor. Die Nachfrage nach Aktien der KI-Firma Anthropic ist so stark, dass die Aktienplatzierung Medienberichten zufolge ...</description>
+    </item>
+    <item>
+      <title>Prinz Harry: Zu 100 Prozent bereit, meinem Land zu dienen</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-prinz-harry-zu-100-prozent-bereit-meinem-land-zu-dienen-_arid,1027392.html</link>
+      <guid isPermaLink="false">bga-1027392</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Boulevard</category>
+      <topic>Nachrichten/Boulevard</topic>
+      <description></description>
+    </item>
+    <item>
+      <title>Formel-1-Pilot Bottas startet auch 2027 für Cadillac</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-formel1pilot-bottas-startet-auch-2027-fuer-cadillac-_arid,1027390.html</link>
+      <guid isPermaLink="false">bga-1027390</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Formel 1</category>
+      <topic>Sport</topic>
+      <description>Las Vegas (dpa) - Valtteri Bottas galt als Wackelkandidat. Doch US-Team Cadillac vertraut dem finnischen Formel-1-Fahrer auch im nächsten Jahr. Die Bekanntgabe erfolgt vor dem ...</description>
+    </item>
+    <item>
+      <title>Füchse patzen zum Hauptrunden-Auftakt der Königsklasse</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-fuechse-patzen-zum-hauptrundenauftakt-der-koenigsklasse-_arid,1027387.html</link>
+      <guid isPermaLink="false">bga-1027387</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Sport</category>
+      <topic>Sport</topic>
+      <description>Berlin (dpa) - Die erhoffte Aufholjagd der Füchse in der Champions League wird gleich am ersten Spieltag der Hauptrunde gestoppt. Den Aufschwung aus dem Kiel-Sieg konnten die Berliner ...</description>
+    </item>
+    <item>
+      <title>Tennis-Doppel Krawietz/Pütz im Halbfinale der ATP Finals</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-tennisdoppel-krawietzpuetz-im-halbfinale-der-atp-finals-_arid,1027385.html</link>
+      <guid isPermaLink="false">bga-1027385</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Tennis</category>
+      <topic>Sport</topic>
+      <description>Turin (dpa) - Holen sie einen großen Titel zum Abschied? Beim letzten gemeinsamen ATP-Turnier drehen Kevin Krawietz und Tim Pütz auf.</description>
+    </item>
+    <item>
+      <title>Radstar Roglic setzt Karriere fort: Einjahresvertrag bei NSN</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-radstar-roglic-setzt-karriere-fort-einjahresvertrag-bei-nsn-_arid,1027383.html</link>
+      <guid isPermaLink="false">bga-1027383</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Sport</category>
+      <topic>Sport</topic>
+      <description>Ljubljana (dpa) - Nach drei Jahren bei Red Bull steht Primoz Roglic vor einem neuen Kapitel: Der 37-Jährige hängt noch ein Jahr als Profi dran. Was ihn zu NSN zieht.</description>
+    </item>
+    <item>
+      <title>Jeanette Biedermann mit Baby: Schönste Zeit meines Lebens</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-jeanette-biedermann-mit-baby-schoenste-zeit-meines-lebens-_arid,1027379.html</link>
+      <guid isPermaLink="false">bga-1027379</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Boulevard</category>
+      <topic>Nachrichten/Boulevard</topic>
+      <description>Berlin (dpa) - Jeanette Biedermann schwärmt von ihrem Baby. Und lässt ihre Follower auf Instagram an ihrem Glück teilhaben.</description>
+    </item>
+    <item>
+      <title>Jennifer Lopez verrät Herkunft ihres Spitznamens J.Lo</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-jennifer-lopez-verraet-herkunft-ihres-spitznamens-jlo-_arid,1027378.html</link>
+      <guid isPermaLink="false">bga-1027378</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Boulevard</category>
+      <topic>Nachrichten/Boulevard</topic>
+      <description>New York (dpa) - Jennifer Lopez ist weltweit mit ihrem Spitznamen J.Lo bekannt. Nun hat sie verraten, woher der stammt – und auch über ihre Schönheitsroutine ausgepackt.</description>
+    </item>
+    <item>
+      <title>Rechnungshof: EU bei Ewigkeitschemikalien zu langsam</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-rechnungshof-eu-bei-ewigkeitschemikalien-zu-langsam-_arid,1027374.html</link>
+      <guid isPermaLink="false">bga-1027374</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Wissenschaft</category>
+      <topic>Nachrichten/Wissenschaft</topic>
+      <description></description>
+    </item>
+    <item>
+      <title>Oper Köln erhält Ehrenpreis für Leistungen während Sanierung</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-oper-koeln-erhaelt-ehrenpreis-fuer-leistungen-waehrend-sanierung-_arid,1027359.html</link>
+      <guid isPermaLink="false">bga-1027359</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Boulevard</category>
+      <topic>Nachrichten/Boulevard</topic>
+      <description>Köln (dpa) - 14 Jahre hat die Generalsanierung der Kölner Oper gedauert. Für die künstlerischen Leistungen trotz schwieriger Bedingungen gibt es nun einen Ehrenpreis.</description>
+    </item>
+    <item>
+      <title>TSV Siegsdorf empfängt SV-DJK Taufkirchen zum Kellerduell der Tischtennis-Verbandsoberliga</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-tsv-siegsdorf-empfaengt-svdjk-taufkirchen-zum-kellerduell-der-tischtennisverbandsoberliga-_arid,1027358.html</link>
+      <guid isPermaLink="false">bga-1027358</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Regionalsport TS</category>
+      <topic>Sport/Sport aus der Region</topic>
+      <description>Ein ganz wichtiges Spiel im Kampf um den Klassenerhalt in der Tischtennis-Verbandsoberliga Süd steht dem TSV Siegsdorf bevor: Am Samstag (19 Uhr) empfangen die Siegsdorfer den SV-DJK ...</description>
+    </item>
+    <item>
+      <title>»Schweres Restprogramm« für die DJK Otting – Bezirksliga-Fußballerinnen müssen in diesem Jahr noch gegen zwei Spitzenteams ran</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-schweres-restprogramm-fuer-die-djk-otting-bezirksligafussballerinnen-muessen-in-diesem-jahr-noch-gegen-_arid,1027357.html</link>
+      <guid isPermaLink="false">bga-1027357</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Regionalsport TS</category>
+      <topic>Sport/Sport aus der Region</topic>
+      <description>Teilweise haben sich die Fußballerinnen schon in die verdiente Winterpause verabschiedet, teilweise wird aber noch zwei Wochen gespielt – und zwar in der Bezirksoberliga und der ...</description>
+    </item>
+    <item>
+      <title>KSV-Schwertkämpfer überzeugen bei den German Open in Ismaning</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-ksvschwertkaempfer-ueberzeugen-bei-den-german-open-in-ismaning-_arid,1027356.html</link>
+      <guid isPermaLink="false">bga-1027356</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Regionalsport TS</category>
+      <topic>Sport/Sport aus der Region</topic>
+      <description>Erst die Titelverteidigerin bezwungen, dann im Finale souverän zum Sieg gekämpft: Anna-Lena Werners hat bei den German Open in Ismaning den Titel in der Damenklasse »Senioren« ...</description>
+    </item>
+    <item>
+      <title>Ein Stern für den SV Ruhpolding</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-ein-stern-fuer-den-sv-ruhpolding-_arid,1027355.html</link>
+      <guid isPermaLink="false">bga-1027355</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Regionalsport TS</category>
+      <topic>Sport/Sport aus der Region</topic>
+      <description>Große Ehre für die Leichtathletik-Abteilung des SV Ruhpolding: Im Rahmen der Ehrungsgala Bayern-Star des Bayerischen Leichtathletik-Verbands in Würzburg wurde auch der SVR ...</description>
+    </item>
+    <item>
+      <title>Keine Visa für Russinnen für U18-Eishockey-WM in Tschechien</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-keine-visa-fuer-russinnen-fuer-u18eishockeywm-in-tschechien-_arid,1027343.html</link>
+      <guid isPermaLink="false">bga-1027343</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Sport</category>
+      <topic>Sport</topic>
+      <description>Prag (dpa) - Der Internationale Sportgerichtshof ermöglicht Russlands Rückkehr auf die Eishockey-Bühne. Doch für die U18-WM der Frauen in Tschechien stellt sich nun die Visa-Frage. ...</description>
+    </item>
+    <item>
+      <title>🔒 James Blunt mit Königssee-Konzert – Internationaler Top-Act für VR-Bank-Open-Air im Juni 2027</title>
+      <link>https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land/schoenau-am-koenigssee_artikel,-james-blunt-mit-koenigsseekonzert-internationaler-topact-fuer-vrbankopenair-im-juni-2027-_arid,1027339.html</link>
+      <guid isPermaLink="false">bga-1027339</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Schönau am Königssee</category>
+      <topic>Region/Berchtesgadener Land</topic>
+      <description></description>
+    </item>
+    <item>
+      <title>🔒 Mobilfunkmast am Parkplatz Roßboden: Marktgemeinderat Marktschellenberg bewilligt Bauantrag mehrheitlich</title>
+      <link>https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land/marktschellenberg_artikel,-mobilfunkmast-am-parkplatz-rossboden-marktgemeinderat-marktschellenberg-bewilligt-bauantrag-mehrheitl-_arid,1027338.html</link>
+      <guid isPermaLink="false">bga-1027338</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Marktschellenberg</category>
+      <topic>Region/Berchtesgadener Land</topic>
+      <description></description>
+    </item>
+    <item>
+      <title>🔒 Von Hindenburg im Schnelldurchgang: Keine Stellungnahme aus dem Gremium</title>
+      <link>https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land/berchtesgaden_artikel,-von-hindenburg-im-schnelldurchgang-keine-stellungnahme-aus-dem-gremium-_arid,1027337.html</link>
+      <guid isPermaLink="false">bga-1027337</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Berchtesgaden</category>
+      <topic>Region/Berchtesgadener Land</topic>
+      <description></description>
+    </item>
+    <item>
+      <title>Am Freitag fällt der Startschuss für den »Berchtesgadener Advent« – Adventstasse heuer mit QR-Code</title>
+      <link>https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land/berchtesgaden_artikel,-am-freitag-faellt-der-startschuss-fuer-den-berchtesgadener-advent-adventstasse-heuer-mit-qrcode-_arid,1027336.html</link>
+      <guid isPermaLink="false">bga-1027336</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Berchtesgaden</category>
+      <topic>Region/Berchtesgadener Land</topic>
+      <description>Berchtesgaden – Mit fortschreitendem Herbst kommen nicht nur Kälte und Dunkelheit nach Berchtesgaden, sondern es beginnt auch die besinnliche Vorweihnachtszeit. Passend hierzu öffnet ...</description>
+    </item>
+    <item>
+      <title>🔒 Gelände der ehemaligen Kurklinik gesperrt</title>
+      <link>https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land/bischofswiesen_artikel,-gelaende-der-ehemaligen-kurklinik-gesperrt-_arid,1027335.html</link>
+      <guid isPermaLink="false">bga-1027335</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Bischofswiesen</category>
+      <topic>Region/Berchtesgadener Land</topic>
+      <description></description>
+    </item>
+    <item>
+      <title>»Zwischen Himmel und Opernbühne«</title>
+      <link>https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land/bad-reichenhall_artikel,-zwischen-himmel-und-opernbuehne-_arid,1027334.html</link>
+      <guid isPermaLink="false">bga-1027334</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Bad Reichenhall</category>
+      <topic>Region/Berchtesgadener Land</topic>
+      <description>Bad Reichenhall – Der Chor der Universität Mozarteum Salzburg und das Alpenbaroque-Orchester bringen Wolfgang Amadeus Mozarts Kantate »Davide penitente« im Theater Bad Reichenhall zur ...</description>
+    </item>
+    <item>
+      <title>Die Zeit der wilden Gestalten: 200 Perchten- und Krampusgruppen laufen im Salzburger Land</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-die-zeit-der-wilden-gestalten-200-perchten-und-krampusgruppen-laufen-im-salzburger-land-_arid,1027333.html</link>
+      <guid isPermaLink="false">bga-1027333</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Salzburg</category>
+      <topic>Region/Berchtesgadener Land</topic>
+      <description>Salzburg – Bald beginnen die traditionellen Krampus- und Perchtenläufe in Salzburg und Umgebung. Ein Krampus- oder Perchtenlauf ist ein besonderes Erlebnis und gehört zur ...</description>
+    </item>
+    <item>
+      <title>Ringer des TSV Berchtesgaden wollen die drohende Niederlage in Grenzen halten</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-ringer-des-tsv-berchtesgaden-wollen-die-drohende-niederlage-in-grenzen-halten-_arid,1027332.html</link>
+      <guid isPermaLink="false">bga-1027332</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Regionalsport BGD</category>
+      <topic>Sport/Sport aus der Region</topic>
+      <description>Nachdem die Ringer des TSV Berchtesgaden den Heimkampf gegen den ATSV Kelheim schon mit 10:20 verloren haben, sind die Ambitionen auch für den Rückkampf nicht sehr hoch.</description>
+    </item>
+    <item>
+      <title>Christian Pilz holt bei der Clubmeisterschaft beim TC Berchtesgaden zwei Titel</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-christian-pilz-holt-bei-der-clubmeisterschaft-beim-tc-berchtesgaden-zwei-titel-_arid,1027330.html</link>
+      <guid isPermaLink="false">bga-1027330</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Regionalsport BGD</category>
+      <topic>Sport/Sport aus der Region</topic>
+      <description>Traditionell feiert der TC Berchtesgaden den Abschluss der Freiluftsaison mit einem Schleiferlturnier und der Siegerehrung für die Clubmeister. Heuer gab es neben Herren- und ...</description>
+    </item>
+    <item>
+      <title>Genau wie Zverev: Alcaraz feiert zweiten Sieg bei ATP Finals</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-genau-wie-zverev-alcaraz-feiert-zweiten-sieg-bei-atp-finals-_arid,1027329.html</link>
+      <guid isPermaLink="false">bga-1027329</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Tennis</category>
+      <topic>Sport</topic>
+      <description>Turin (dpa) - Nicht nur Alexander Zverev ist beim Prestigeevent noch ohne Niederlage und Satzverlust. Auch sein vermutlich größter Rivale um den Titel marschiert in seiner Gruppe vorn ...</description>
+    </item>
+    <item>
+      <title>Astronaut Gerst: Helikoptertraining für mögliche Mondlandung</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-astronaut-gerst-helikoptertraining-fuer-moegliche-mondlandung-_arid,1027320.html</link>
+      <guid isPermaLink="false">bga-1027320</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Wissenschaft</category>
+      <topic>Nachrichten/Wissenschaft</topic>
+      <description></description>
+    </item>
+    <item>
+      <title>🔒 Mitreißende Kunst voller Leidenschaft: 2. Orchidee Festival in Traunstein</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-mitreissende-kunst-voller-leidenschaft-2-orchidee-festival-in-traunstein-_arid,1027314.html</link>
+      <guid isPermaLink="false">bga-1027314</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Kultur aus der Region</category>
+      <topic>Kultur</topic>
+      <description></description>
+    </item>
+    <item>
+      <title>Vorwurf sexueller Übergriffe: Ermittlungen gegen Iglesias</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-vorwurf-sexueller-uebergriffe-ermittlungen-gegen-iglesias-_arid,1027312.html</link>
+      <guid isPermaLink="false">bga-1027312</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Boulevard</category>
+      <topic>Nachrichten/Boulevard</topic>
+      <description>Madrid (dpa) - Die spanische Justiz hatte Anzeigen gegen Julio Iglesias zunächst abgewiesen. Nun sammelt ein Richter doch Beweise zu den Vorwürfen sexueller Übergriffe und Gewalt – was ...</description>
+    </item>
+    <item>
+      <title>Bibliotheken: Kabinett bringt Sonntagsöffnung auf den Weg</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-bibliotheken-kabinett-bringt-sonntagsoeffnung-auf-den-weg-_arid,1027311.html</link>
+      <guid isPermaLink="false">bga-1027311</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Boulevard</category>
+      <topic>Nachrichten/Boulevard</topic>
+      <description>Berlin (dpa) - Mal eben ein Buch oder ein Spiel ausleihen? Viele müssen jonglieren, um die Öffnungszeiten von Bibliotheken einzuhalten. Nun soll es etwas mehr Spielraum geben.</description>
+    </item>
+    <item>
+      <title>Fix: Frankfurt-Sportchef startet schon am 1. Dezember</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-fix-frankfurtsportchef-startet-schon-am-1-dezember-_arid,1027305.html</link>
+      <guid isPermaLink="false">bga-1027305</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>1. Fußball Bundesliga</category>
+      <topic>Sport/Fußball</topic>
+      <description>Frankfurt/Main (dpa) - Eintracht Frankfurt hat seinen neuen Sportvorstand Joti Chatzialexiou früher vom 1. FC Nürnberg losgeeist. Wann der 50-Jährige das Amt bei den Hessen übernimmt.</description>
+    </item>
+    <item>
+      <title>Wende der Regionalliga-Reform: 22/5-Lösung statt Kompass?</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-wende-der-regionalligareform-225loesung-statt-kompass-_arid,1027301.html</link>
+      <guid isPermaLink="false">bga-1027301</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Fußball</category>
+      <topic>Sport/Fußball</topic>
+      <description>Berlin/Leipzig (dpa) - Der Nordostdeutsche Fußball-Verband favorisiert bei der Regionalliga-Reform plötzlich die 22/5-Lösung. Wie sieht diese aus? Und kann es eine Mehrheit geben?</description>
+    </item>
+    <item>
+      <title>Neustart mit »Schmäh«: Wer ist Skisprung-Trainer Mitter?</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-neustart-mit-schmaeh-wer-ist-skisprungtrainer-mitter-_arid,1027299.html</link>
+      <guid isPermaLink="false">bga-1027299</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Skispringen</category>
+      <topic>Sport/Wintersport</topic>
+      <description>Planegg/Lillehammer (dpa) - Andreas Mitter soll die deutschen Skispringer erfolgreicher machen. Seine Athleten sagen, was ihn als Mensch auszeichnet und welchen sportlichen Ansatz er ...</description>
+    </item>
+    <item>
+      <title>FIFA-Wahl: Funktionär aus Japan hält an Kandidatur fest</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-fifawahl-funktionaer-aus-japan-haelt-an-kandidatur-fest-_arid,1027288.html</link>
+      <guid isPermaLink="false">bga-1027288</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Fußball</category>
+      <topic>Sport/Fußball</topic>
+      <description>Tokio (dpa) - Trotz eines weiteren Herausforderers will der Japaner Kozo Tashima weiter FIFA-Präsident werden. Allerdings geht der 68-Jährige als klarer Außenseiter ins Rennen.</description>
+    </item>
+    <item>
+      <title>Die Lehren der Basketballerinnen aus drei Quali-Spielen</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-die-lehren-der-basketballerinnen-aus-drei-qualispielen-_arid,1027287.html</link>
+      <guid isPermaLink="false">bga-1027287</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Sport</category>
+      <topic>Sport</topic>
+      <description>Odivelas/Portugal (dpa) - Deutschlands Basketballerinnen haben das WM-Jahr erfolgreich abgeschlossen. Den Trainer stimmt die Weiterentwicklung positiv. Was sind die Lehren?</description>
+    </item>
+    <item>
+      <title>KI-Chatbots: Jeder Fünfte missachtet Arztempfehlungen</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-kichatbots-jeder-fuenfte-missachtet-arztempfehlungen-_arid,1027286.html</link>
+      <guid isPermaLink="false">bga-1027286</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Digitales</category>
+      <topic>Nachrichten/Digital</topic>
+      <description>Berlin (dpa) - Die KI erklärt Krankheitssymptome oft verständlicher als Ärzte, sagen viele Nutzer. Doch Bitkom warnt: Chatbots können sich irren. Wie groß ist das Vertrauen trotzdem?</description>
+    </item>
+    <item>
+      <title>Ärger um Pyroshow - Leipzig prüft Schritte gegen Tokio Hotel</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-aerger-um-pyroshow-leipzig-prueft-schritte-gegen-tokio-hotel-_arid,1027277.html</link>
+      <guid isPermaLink="false">bga-1027277</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Boulevard</category>
+      <topic>Nachrichten/Boulevard</topic>
+      <description>Leipzig (dpa) - Tokio-Hotel-Sänger Bill Kaulitz schimpft bei einer Show in Leipzig über nicht genehmigte Pyroeffekte. Weil er dabei den vollen Namen eines Sachbearbeiters nennt, droht ...</description>
+    </item>
+    <item>
+      <title>Die Fransenfledermaus ist Tier des Jahres 2027</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-die-fransenfledermaus-ist-tier-des-jahres-2027-_arid,1027268.html</link>
+      <guid isPermaLink="false">bga-1027268</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Wissenschaft</category>
+      <topic>Nachrichten/Wissenschaft</topic>
+      <description>Hamburg (dpa) - Mit einer fransigen Flughaut sammelt die Fledermaus Spinnen, Asseln und Käfer von Blättern und Wänden. Was macht die eher unbekannte Art besonders?</description>
+    </item>
+    <item>
+      <title>DAK: Konsum von Nikotinbeuteln bei Jugendlichen nimmt zu</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-dak-konsum-von-nikotinbeuteln-bei-jugendlichen-nimmt-zu-_arid,1027267.html</link>
+      <guid isPermaLink="false">bga-1027267</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Wissenschaft</category>
+      <topic>Nachrichten/Wissenschaft</topic>
+      <description></description>
+    </item>
+    <item>
+      <title>Beckham-Produkte am Wühltisch? Millionenklage in den USA</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-beckhamprodukte-am-wuehltisch-millionenklage-in-den-usa-_arid,1027262.html</link>
+      <guid isPermaLink="false">bga-1027262</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Boulevard</category>
+      <topic>Nachrichten/Boulevard</topic>
+      <description>London/Darmstadt (dpa) - Der Name des früheren Fußballstars David Beckham ist eine globale Marke. Dass seine Produkte an Wühltischen gelandet sein sollen, beschäftigt ein Gericht in ...</description>
+    </item>
+    <item>
+      <title>Von wegen Boyband: »Träumer« Take That sind »weiter hungrig«</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-von-wegen-boyband-traeumer-take-that-sind-weiter-hungrig-_arid,1027253.html</link>
+      <guid isPermaLink="false">bga-1027253</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Boulevard</category>
+      <topic>Nachrichten/Boulevard</topic>
+      <description>London (dpa) - Mehr als 35 Jahre nach ihrer Gründung klingen Take That erwachsener denn je. Ihr zehntes Album »Dreamers« steckt voller Ohrwürmer - und ein alter Bekannter ...</description>
+    </item>
+    <item>
+      <title>Starker Wembanyama reicht nicht: Siegesserie der Spurs reißt</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-starker-wembanyama-reicht-nicht-siegesserie-der-spurs-reisst-_arid,1027248.html</link>
+      <guid isPermaLink="false">bga-1027248</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Sport</category>
+      <topic>Sport</topic>
+      <description>San Antonio (dpa) - Nach zwölf Siegen in Serie haben die San Antonio Spurs um Superstar Victor Wembanyama in der NBA wieder ein Spiel verloren. Die längste Siegesserie weist nun ein ...</description>
+    </item>
+    <item>
+      <title>ECDC: Resistente Keime verbreiten sich in Europa</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-ecdc-resistente-keime-verbreiten-sich-in-europa-_arid,1027236.html</link>
+      <guid isPermaLink="false">bga-1027236</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Wissenschaft</category>
+      <topic>Nachrichten/Wissenschaft</topic>
+      <description>Stockholm (dpa) - Immer mehr Bakterien trotzen Antibiotika. Die EU-Gesundheitsbehörde warnt vor einer gefährlichen Entwicklung. Besonders Kinder sollen besser geschützt werden.</description>
+    </item>
+    <item>
+      <title>Haaland-»Wahnsinn« und Nackt-Jubel: Norwegen nun gegen DFB?</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-haalandwahnsinn-und-nacktjubel-norwegen-nun-gegen-dfb-_arid,1027225.html</link>
+      <guid isPermaLink="false">bga-1027225</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Fußball</category>
+      <topic>Sport/Fußball</topic>
+      <description>Kopenhagen (dpa) - Zwei Tore, das entscheidende in der Nachspielzeit. Erling Haaland und seine Norweger liefern Spektakel nach einem fast schon verlorenen Spiel. Werden die ...</description>
+    </item>
+    <item>
+      <title>Waymo stoppt autonome Fahrten auf US-Autobahnen</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-waymo-stoppt-autonome-fahrten-auf-usautobahnen-_arid,1027223.html</link>
+      <guid isPermaLink="false">bga-1027223</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Digitales</category>
+      <topic>Nachrichten/Digital</topic>
+      <description>San Francisco (dpa) - Fahrerlose Robotaxis von Waymo sind mittlerweile Normalität in mehreren US-Städten. Auf Autobahnen wird man sie nach zwei Fahrfehlern jedoch vorerst nicht ...</description>
+    </item>
+    <item>
+      <title>Was brachte der Einschlag? Mission »Hera« liefert Bilder</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-was-brachte-der-einschlag-mission-hera-liefert-bilder-_arid,1027218.html</link>
+      <guid isPermaLink="false">bga-1027218</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Wissenschaft</category>
+      <topic>Nachrichten/Wissenschaft</topic>
+      <description>Darmstadt (dpa) - Asteroiden sind eine potenzielle Gefahr für die Erde. Erforscht wird, wie sich ihre Flugbahn verändern lässt. Zentral dafür ist die »Hera«-Mission - die ...</description>
+    </item>
+    <item>
+      <title>Boom um KI: Gelder für deutsche Start-ups fast verdoppelt</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-boom-um-ki-gelder-fuer-deutsche-startups-fast-verdoppelt-_arid,1027207.html</link>
+      <guid isPermaLink="false">bga-1027207</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Digitales</category>
+      <topic>Nachrichten/Digital</topic>
+      <description>London (dpa) - Der Trend zu Künstlicher Intelligenz und Aufrüstung treibt die Investitionen in deutsche Techfirmen. Doch das Kapital konzentriert sich auf wenige Firmen – und Europas ...</description>
+    </item>
+    <item>
+      <title>Sieg in Dänemark: Haaland schießt Norwegen ins Viertelfinale</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-sieg-in-daenemark-haaland-schiesst-norwegen-ins-viertelfinale-_arid,1027203.html</link>
+      <guid isPermaLink="false">bga-1027203</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Fußball</category>
+      <topic>Sport/Fußball</topic>
+      <description>Kopenhagen (dpa) - Norwegen steht dank Superstar Haaland im Viertelfinale der Nations League und ist damit ein möglicher Gegner Deutschlands. Portugal holt den Gruppensieg, Nordirland ...</description>
+    </item>
+    <item>
+      <title>Nvidia: Huang kommt nicht zurück - Geschäft wächst stark</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-nvidia-huang-kommt-nicht-zurueck-geschaeft-waechst-stark-_arid,1027202.html</link>
+      <guid isPermaLink="false">bga-1027202</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Digitales</category>
+      <topic>Nachrichten/Digital</topic>
+      <description>Santa Clara (dpa) - Fans von Jensen Huang wollen seine Rückkehr an die Nvidia-Spitze. Er erklärt sich vorsorglich bereit dazu, doch der Konzern hat kein Interesse. Das Geschäft läuft ...</description>
+    </item>
+    <item>
+      <title>Grönemeyer: Kultur zurzeit so überlebenswichtig wie noch nie</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-groenemeyer-kultur-zurzeit-so-ueberlebenswichtig-wie-noch-nie-_arid,1027199.html</link>
+      <guid isPermaLink="false">bga-1027199</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Boulevard</category>
+      <topic>Nachrichten/Boulevard</topic>
+      <description>Düsseldorf (dpa) - Herbert Grönemeyer setzt sich seit langem für eine offene Gesellschaft ein - so auch bei einer Ehrung in seiner Heimat NRW. Warum aus seiner Sicht viel mehr als nur ...</description>
+    </item>
+    <item>
+      <title>Störung bei Apple-Diensten</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-stoerung-bei-applediensten-_arid,1027193.html</link>
+      <guid isPermaLink="false">bga-1027193</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Digitales</category>
+      <topic>Nachrichten/Digital</topic>
+      <description>Cupertino (dpa) - Die Serie größerer technischer Störungen reißt nicht ab. Jetzt gibt es Probleme beim iPhone-Konzern Apple.</description>
+    </item>
+    <item>
+      <title>Routinier nicht dabei: Dieser Skispringer fehlt beim Auftakt</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-routinier-nicht-dabei-dieser-skispringer-fehlt-beim-auftakt-_arid,1027189.html</link>
+      <guid isPermaLink="false">bga-1027189</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Skispringen</category>
+      <topic>Sport/Wintersport</topic>
+      <description>Planegg/Lillehammer (dpa) - Der neue Bundestrainer hat seinen ersten Weltcup-Kader benannt. Ein prominenter Skispringer ist in Norwegen nicht dabei.</description>
+    </item>
+    <item>
+      <title>BVB-Coach Kovac spricht über Umgang mit mentaler Belastung</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-bvbcoach-kovac-spricht-ueber-umgang-mit-mentaler-belastung-_arid,1027185.html</link>
+      <guid isPermaLink="false">bga-1027185</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>1. Fußball Bundesliga</category>
+      <topic>Sport/Fußball</topic>
+      <description>Dortmund (dpa) - Niko Kovac schützt sich als Trainer bewusst vor mentaler Belastung. Warum er Berichte über seine Arbeit lieber meidet und wie er mit Social Media umgeht.</description>
+    </item>
+    <item>
+      <title>Philipp Öttl verlängert Vertrag</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-philipp-oettl-verlaengert-vertrag-_arid,1027173.html</link>
+      <guid isPermaLink="false">bga-1027173</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Regionalsport BGD</category>
+      <topic>Sport/Sport aus der Region</topic>
+      <description>Philipp Öttl verlängerte seinen Vertrag mit seinem Feel Racing-Team für die Saison 2027. Damit steht fest, dass er die neue Ducati Panigale V2 890 in der Supersport-Weltmeisterschaft ...</description>
+    </item>
+    <item>
+      <title>Sportkegler verlieren erneut</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-sportkegler-verlieren-erneut-_arid,1027170.html</link>
+      <guid isPermaLink="false">bga-1027170</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Regionalsport BGD</category>
+      <topic>Sport/Sport aus der Region</topic>
+      <description>Nach der unglücklichen Niederlage letzte Woche unterlagen die Bischofswieser Sportkegler am 6. Spieltag mit 2:4 auch in Kolbermoor. Sowohl die drei Herren als auch die Keglerdame kamen ...</description>
+    </item>
+    <item>
+      <title>🔒 Bildungszentrum für Integration setzt auf »Grünes Klassenzimmer« – Mit dem A.L.M.-Projekt auf die Bürgermeisterhöhe</title>
+      <link>https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land_artikel,-bildungszentrum-fuer-integration-setzt-auf-gruenes-klassenzimmer-mit-dem-almprojekt-auf-die-buergermei-_arid,1027166.html</link>
+      <guid isPermaLink="false">bga-1027166</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Berchtesgadener Land</category>
+      <topic>Region/Berchtesgadener Land</topic>
+      <description></description>
+    </item>
+    <item>
+      <title>SBC-Handballer bleiben auf Erfolgskurs: 30:26-Erfolg beim Bezirksliga-Derby in Prien</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-sbchandballer-bleiben-auf-erfolgskurs-3026erfolg-beim-bezirksligaderby-in-prien-_arid,1027147.html</link>
+      <guid isPermaLink="false">bga-1027147</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Regionalsport TS</category>
+      <topic>Sport/Sport aus der Region</topic>
+      <description>Der SB Chiemgau Traunstein bleibt in der Handball-Bezirksliga 2 weiterhin ungeschlagen. Die Traunsteiner setzten sich im Derby beim TuS Prien mit 30:26 (16:13) durch.</description>
+    </item>
+    <item>
+      <title>Gabriel Groß will Leistung bestätigen – Damenteam harmoniert</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-gabriel-gross-will-leistung-bestaetigen-damenteam-harmoniert-_arid,1027146.html</link>
+      <guid isPermaLink="false">bga-1027146</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Regionalsport TS</category>
+      <topic>Sport/Sport aus der Region</topic>
+      <description>Inzells Eisschnellläufer sind mit ordentlichen Ergebnissen in den ersten Weltcup der Saison in Peking gestartet. Dabei gelang Gabriel Groß ein richtiger Ausreißer nach oben. Der ...</description>
+    </item>
+    <item>
+      <title>DJK Nußdorf schließt eine starke Vorrunde mit einem Heimerfolg ab</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-djk-nussdorf-schliesst-eine-starke-vorrunde-mit-einem-heimerfolg-ab-_arid,1027145.html</link>
+      <guid isPermaLink="false">bga-1027145</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Regionalsport TS</category>
+      <topic>Sport/Sport aus der Region</topic>
+      <description>Nach den beiden Heimsiegen zuletzt (3:2 gegen den FFC Bad Aibling und 5:1 gegen den FC Markt Schwaben) haben die Fußballerinnen des SV Saaldorf in der Bezirksoberliga jetzt auch ...</description>
+    </item>
+    <item>
+      <title>EU lässt neues Medikament gegen Bauchspeicheldrüsenkrebs zu</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-eu-laesst-neues-medikament-gegen-bauchspeicheldruesenkrebs-zu-_arid,1027141.html</link>
+      <guid isPermaLink="false">bga-1027141</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Wissenschaft</category>
+      <topic>Nachrichten/Wissenschaft</topic>
+      <description>Brüssel (dpa) - Bauchspeicheldrüsenkrebs gehört zu den tödlichsten Krebsarten. Für Betroffene gibt es nun ein neues Medikament, das zumindest Zeit verschaffen soll.</description>
+    </item>
+    <item>
+      <title>Rooney berichtet über Probleme: Dunkle Gedanken und Alkohol</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-rooney-berichtet-ueber-probleme-dunkle-gedanken-und-alkohol-_arid,1027136.html</link>
+      <guid isPermaLink="false">bga-1027136</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Fußball</category>
+      <topic>Sport/Fußball</topic>
+      <description>London (dpa) - Nach der Geburt seines Sohnes Kai schloss sich Ex-Profi Wayne Rooney zwei Tage lang zum Trinken ein. Was ihn damals aus dem Tritt brachte - und was ihm letztlich half.</description>
+    </item>
+    <item>
+      <title>Haftstrafe nach rassistischen Beleidigungen gegen Mbappé</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-haftstrafe-nach-rassistischen-beleidigungen-gegen-mbappe-_arid,1027132.html</link>
+      <guid isPermaLink="false">bga-1027132</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Fußball</category>
+      <topic>Sport/Fußball</topic>
+      <description>Oviedo (dpa) - Ein Fan verhöhnt Kylian Mbappé mit Affenlauten - und wird dabei gefilmt. Das hat jetzt Konsequenzen.</description>
+    </item>
+    <item>
+      <title>Infantino-Gegner Diallo: »Ich will gewinnen«</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-infantinogegner-diallo-ich-will-gewinnen-_arid,1027123.html</link>
+      <guid isPermaLink="false">bga-1027123</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Fußball</category>
+      <topic>Sport/Fußball</topic>
+      <description>Paris (dpa) - Frankreichs Verbandschef fordert Gianni Infantino bei der Wahl zum FIFA-Chef heraus. Was sagt derjenige, der den Weltfußball lenken will?</description>
+    </item>
+    <item>
+      <title>William und Kate fahren Tuk-Tuk in Indien</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-william-und-kate-fahren-tuktuk-in-indien-_arid,1027110.html</link>
+      <guid isPermaLink="false">bga-1027110</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Boulevard</category>
+      <topic>Nachrichten/Boulevard</topic>
+      <description>Mumbai (dpa) - In Indien befördern sie Millionen von Menschen. Die motorisierten Rikschas tragen aber auch zur Luftverschmutzung bei. Das umweltbewusste Thronfolgerpaar testete in ...</description>
+    </item>
+    <item>
+      <title>Ohne gesperrten Ancelotti: Brasilien-Sieg gegen Singapur</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-ohne-gesperrten-ancelotti-brasiliensieg-gegen-singapur-_arid,1027103.html</link>
+      <guid isPermaLink="false">bga-1027103</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Fußball</category>
+      <topic>Sport/Fußball</topic>
+      <description>Singapur (dpa) - Gegen Japan verlor Brasilien - in der Nachspielzeit. Zudem sah auch Trainer Carlo Ancelotti Rot. Wie lief es ohne ihn der Seite im letzten Test des Jahres für den ...</description>
+    </item>
+    <item>
+      <title>Job im Nationalteam? Argentiniens Trainer lädt Messi ein</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-job-im-nationalteam-argentiniens-trainer-laedt-messi-ein-_arid,1027096.html</link>
+      <guid isPermaLink="false">bga-1027096</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Fußball</category>
+      <topic>Sport/Fußball</topic>
+      <description>Córdoba (dpa) - Noch spielt Lionel Messi weiter für Inter Miami. Aber was ist, wenn er seine Karriere auch dort mal beendet? Argentiniens Nationalcoach macht auf Nachfrage einen ...</description>
+    </item>
+    <item>
+      <title>Biathletin Grotian fehlt beim Weltcup-Auftakt</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-biathletin-grotian-fehlt-beim-weltcupauftakt-_arid,1027087.html</link>
+      <guid isPermaLink="false">bga-1027087</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Biathlon-Weltcup</category>
+      <topic>Sport/Wintersport</topic>
+      <description></description>
+    </item>
+    <item>
+      <title>Nach Album-Erfolg: Heißt James Blunt jetzt Ryan Air?</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-nach-albumerfolg-heisst-james-blunt-jetzt-ryan-air-_arid,1027077.html</link>
+      <guid isPermaLink="false">bga-1027077</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Boulevard</category>
+      <topic>Nachrichten/Boulevard</topic>
+      <description>London (dpa) - Über 20 Jahre nach seinem größten Erfolg arbeitet sich der Engländer wieder an die Spitze der britischen Albumcharts. Das dürfte er auch selbstironischen ...</description>
+    </item>
+    <item>
+      <title>Nach »Bankrotterklärung« in Berlin: Oranje im Schockzustand</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-nach-bankrotterklaerung-in-berlin-oranje-im-schockzustand-_arid,1027071.html</link>
+      <guid isPermaLink="false">bga-1027071</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Fußball</category>
+      <topic>Sport/Fußball</topic>
+      <description>Berlin (dpa) - Für das niederländische Team ist das 0:5 die höchste Niederlage seit 67 Jahren. Experten und Medien üben harsche Kritik. Rafael van der Vaart fühlt sich an einen ...</description>
+    </item>
+    <item>
+      <title>Innensenatorin: DFL soll für Nordderby-Polizeikosten zahlen</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-innensenatorin-dfl-soll-fuer-nordderbypolizeikosten-zahlen-_arid,1027070.html</link>
+      <guid isPermaLink="false">bga-1027070</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>1. Fußball Bundesliga</category>
+      <topic>Sport/Fußball</topic>
+      <description>Bremen (dpa) - Jahrelang beschäftigte der Polizeikostenstreit zwischen dem Bundesland Bremen und der DFL den deutschen Fußball. Vor dem Nordderby Werder gegen HSV kündigt die Politik ...</description>
+    </item>
+    <item>
+      <title>Foul mit tödlichem Ausgang: Piqué kritisiert Owono-Strafe</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-foul-mit-toedlichem-ausgang-pique-kritisiert-owonostrafe-_arid,1027068.html</link>
+      <guid isPermaLink="false">bga-1027068</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Fußball</category>
+      <topic>Sport/Fußball</topic>
+      <description>Madrid (dpa) - »Es war ein Unfall«, sagt Andorras Hauptanteilseigner Gerard Piqué über den Zusammenstoß von Jesús Owono und Jesús de Miguel, der danach starb. Der Torwart ...</description>
+    </item>
+    <item>
+      <title>Forscher nutzen Wüstensand als Anzeige für Windstärke</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-forscher-nutzen-wuestensand-als-anzeige-fuer-windstaerke-_arid,1027008.html</link>
+      <guid isPermaLink="false">bga-1027008</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Wissenschaft</category>
+      <topic>Nachrichten/Wissenschaft</topic>
+      <description>Stanford (dpa) - Zeig mir deine Düne und ich sag dir, wie heftig der Wind bei dir weht: Forscher haben eine Methode gefunden, Dünensand zu einer Art Wüstenwind-Tacho zu machen.</description>
+    </item>
+    <item>
+      <title>Neue US-Einschränkungen für Export von KI-Chips</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-neue-useinschraenkungen-fuer-export-von-kichips-_arid,1027006.html</link>
+      <guid isPermaLink="false">bga-1027006</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Digitales</category>
+      <topic>Nachrichten/Digital</topic>
+      <description>Washington (dpa) - Die US-Regierung verbietet den Export moderner Chips etwa von Nvidia nach China. Und doch haben chinesische Stellen manchmal Zugriff darauf. Verschärfte Exportregeln ...</description>
+    </item>
+    <item>
+      <title>Raye bei Grammy-Nominierungen vorn - auch Deutsche im Rennen</title>
+      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-raye-bei-grammynominierungen-vorn-auch-deutsche-im-rennen-_arid,1027004.html</link>
+      <guid isPermaLink="false">bga-1027004</guid>
+      <pubDate>Fri, 20 Nov 2026 17:45:57 +0000</pubDate>
+      <category>Boulevard</category>
+      <topic>Nachrichten/Boulevard</topic>
+      <description>Los Angeles (dpa) - Mit elf Nominierungen geht Sängerin Raye als Favoritin ins Rennen um den wichtigsten Musikpreis der Welt - und stellt damit den Rekord einer Branchen-Ikone ein. ...</description>
     </item>
   </channel>
 </rss>

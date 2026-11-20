@@ -6,8 +6,17 @@
    "url": "https://raw.githubusercontent.com/bergf3x/BGA-Feed/main/feed.xml",
    "topics": [
     "Region",
+    "Region/Berchtesgadener Land",
     "Nachrichten",
-    "Regionalsport",
+    "Nachrichten/Deutschland & Welt",
+    "Nachrichten/Wirtschaft",
+    "Nachrichten/Wissenschaft",
+    "Nachrichten/Digital",
+    "Nachrichten/Boulevard",
+    "Sport",
+    "Sport/Sport aus der Region",
+    "Sport/Fußball",
+    "Sport/Wintersport",
     "Kultur"
    ]
   },
@@ -15,19 +24,20 @@
    "id": "alpin",
    "name": "ALPIN",
    "url": "",
+   "direct": "https://www.alpin.de/",
    "topics": [
     "News",
-    "Touren",
     "Bergbericht",
+    "Touren",
     "Tests & Produkte",
     "Sicherheit & Technik",
     "Interviews",
     "Historie",
-    "Foto & Video",
     "Ratgeber",
+    "Foto & Video",
+    "ALPIN+",
     "Sonstiges"
-   ],
-   "direct": "https://www.alpin.de/"
+   ]
   }
  ]
 }
