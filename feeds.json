@@ -1,6 +1,31 @@
 {
  "feeds": [
-  {"id": "bga", "name": "Berchtesgadener Anzeiger", "url": "https://raw.githubusercontent.com/bergf3x/BGA-Feed/main/feed.xml", "topics": ["Region", "Nachrichten", "Regionalsport", "Sport", "Kultur"]},
-  {"id": "alpin", "name": "ALPIN", "url": "https://raw.githubusercontent.com/bergf3x/BGA-Feed/main/feeds/alpin.xml", "topics": ["News", "Touren", "Bergbericht", "Tests & Produkte", "Sicherheit & Technik", "Interviews", "Historie", "Foto & Video", "Ratgeber"]}
+  {
+   "id": "bga",
+   "name": "Berchtesgadener Anzeiger",
+   "url": "https://raw.githubusercontent.com/bergf3x/BGA-Feed/main/feed.xml",
+   "topics": [
+    "Region",
+    "Nachrichten",
+    "Regionalsport",
+    "Kultur"
+   ]
+  },
+  {
+   "id": "alpin",
+   "name": "ALPIN",
+   "url": "https://raw.githubusercontent.com/bergf3x/BGA-Feed/main/feeds/alpin.xml",
+   "topics": [
+    "News",
+    "Touren",
+    "Bergbericht",
+    "Tests & Produkte",
+    "Sicherheit & Technik",
+    "Interviews",
+    "Historie",
+    "Foto & Video",
+    "Ratgeber"
+   ]
+  }
  ]
 }
