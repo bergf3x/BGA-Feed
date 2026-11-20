@@ -28,6 +28,8 @@
         <activity
             android:name=".ConfigActivity"
             android:exported="true"
+            android:excludeFromRecents="true"
+            android:theme="@style/BubbleTheme"
             android:label="@string/config_title">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />

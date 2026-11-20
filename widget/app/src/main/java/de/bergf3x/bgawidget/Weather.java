@@ -18,10 +18,23 @@ final class Weather {
     private static String url(int place) {
         return "https://api.open-meteo.com/v1/forecast?latitude=" + COORDS[place][0]
                 + "&longitude=" + COORDS[place][1]
-                + "&current=temperature_2m,weather_code,is_day"
-                + "&daily=weather_code,temperature_2m_max,temperature_2m_min"
+                + "&current=temperature_2m,weather_code,is_day,wind_speed_10m,wind_gusts_10m"
+                + "&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max"
+                + "&hourly=freezing_level_height"
                 + "&timezone=Europe%2FBerlin&forecast_days=4";
     }
+
+    /** Temperatur auf Berghoehe (Open-Meteo rechnet mit "elevation" auf diese Hoehe um). */
+    static final int MOUNTAIN_M = 1800;
+
+    private static String mountainUrl(int place) {
+        return "https://api.open-meteo.com/v1/forecast?latitude=" + COORDS[place][0]
+                + "&longitude=" + COORDS[place][1]
+                + "&current=temperature_2m&elevation=" + MOUNTAIN_M
+                + "&timezone=Europe%2FBerlin&forecast_days=1";
+    }
+
+    static final int NONE = Integer.MIN_VALUE;
 
     private static final long MAX_AGE = 15 * 60 * 1000L;
 
@@ -29,6 +42,11 @@ final class Weather {
     int code;
     boolean day = true;
     int days;
+    int mtn = NONE;      // Temperatur auf MOUNTAIN_M
+    int freeze = NONE;   // Nullgradgrenze in m
+    int precip = NONE;   // Niederschlagswahrscheinlichkeit heute in %
+    int wind = NONE;     // km/h
+    int gust = NONE;     // km/h
     final int[] hi = new int[4];
     final int[] lo = new int[4];
     final int[] dayCode = new int[4];
@@ -49,6 +67,15 @@ final class Weather {
         try {
             String json = Net.download(url(place));
             if (parse(json) == null) return false;
+            try {
+                JSONObject m = new JSONObject(Net.download(mountainUrl(place)));
+                double t = m.getJSONObject("current").getDouble("temperature_2m");
+                JSONObject o = new JSONObject(json);
+                o.put("mtn", t);
+                json = o.toString();
+            } catch (Exception ignored) {
+                // Bergwetter ist optional; Tal-Wetter wird trotzdem gespeichert
+            }
             Prefs.setWeather(c, place, json);
             return true;
         } catch (Exception e) {
@@ -65,7 +92,22 @@ final class Weather {
             w.temp = (int) Math.round(cur.getDouble("temperature_2m"));
             w.code = cur.getInt("weather_code");
             w.day = cur.optInt("is_day", 1) == 1;
+            if (o.has("mtn")) w.mtn = (int) Math.round(o.optDouble("mtn", NONE));
+            if (cur.has("wind_speed_10m")) w.wind = (int) Math.round(cur.optDouble("wind_speed_10m", NONE));
+            if (cur.has("wind_gusts_10m")) w.gust = (int) Math.round(cur.optDouble("wind_gusts_10m", NONE));
+            try {
+                String ct = cur.optString("time", "");
+                int hour = ct.length() >= 13 ? Integer.parseInt(ct.substring(11, 13)) : 12;
+                JSONArray fz = o.getJSONObject("hourly").getJSONArray("freezing_level_height");
+                if (hour < fz.length() && !fz.isNull(hour)) w.freeze = (int) Math.round(fz.getDouble(hour));
+            } catch (Exception ignored) {
+            }
             JSONObject d = o.getJSONObject("daily");
+            try {
+                JSONArray pp = d.getJSONArray("precipitation_probability_max");
+                if (pp.length() > 0 && !pp.isNull(0)) w.precip = pp.getInt(0);
+            } catch (Exception ignored) {
+            }
             JSONArray time = d.getJSONArray("time");
             JSONArray codes = d.getJSONArray("weather_code");
             JSONArray max = d.getJSONArray("temperature_2m_max");
@@ -85,6 +127,39 @@ final class Weather {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    /** Zeile mit Niederschlag, Wind, Bergtemperatur und Nullgradgrenze; leer, wenn nichts da ist. */
+    String info() {
+        StringBuilder sb = new StringBuilder();
+        if (precip != NONE) sb.append("Regenrisiko ").append(precip).append(" %");
+        if (wind != NONE) {
+            if (sb.length() > 0) sb.append("  ·  ");
+            sb.append("Wind ").append(wind);
+            if (gust != NONE && gust > wind + 5) sb.append(" (Böen ").append(gust).append(")");
+            sb.append(" km/h");
+        }
+        if (mtn != NONE) {
+            if (sb.length() > 0) sb.append("\n");
+            sb.append(MOUNTAIN_M).append(" m: ").append(deg(mtn));
+            if (freeze != NONE) sb.append("  ·  0°-Grenze ").append(freeze).append(" m");
+        } else if (freeze != NONE) {
+            if (sb.length() > 0) sb.append("\n");
+            sb.append("0°-Grenze ").append(freeze).append(" m");
+        }
+        return sb.toString();
+    }
+
+    /** Hintergrundfarbe (opak) fuer die Wetter-Zeile. */
+    static int tint(int code, boolean day) {
+        if (code >= 95) return 0xFF7A5BC0;
+        if ((code >= 71 && code <= 77) || code == 85 || code == 86) return 0xFFBFD9F2;
+        if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) return 0xFF4A7FC1;
+        if (code == 45 || code == 48) return 0xFF9AA5A8;
+        if (code == 3) return 0xFF8A9BB0;
+        if (!day) return 0xFF3A4A8C;
+        if (code == 0 || code == 1) return 0xFFFFB84D;
+        return 0xFF7FA6D6;
     }
 
     static String deg(int v) {

@@ -3,15 +3,19 @@ package de.bergf3x.bgawidget;
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -20,24 +24,32 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/** Einstellungen im Stil der Glas-Blase, mit Live-Vorschau. */
 public class ConfigActivity extends Activity {
     private static final int[] COLORS = {
             0xFFFFFF, 0xD0D0D0, 0xFFE066, 0xFFA94D, 0xFF8FB1, 0x8CCBFF, 0x7DF0C0, 0x000000
     };
 
     private int widgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
-    private SeekBar sbBg;
-    private SeekBar sbTx;
-    private TextView lblBg;
-    private TextView lblTx;
-    private ImageView prevFill;
-    private ImageView prevBorder;
-    private TextView prevText;
-    private EditText etColor;
-    private LinearLayout feedList;
+    private Bubble b;
+    private int bgPct;
+    private int txPct;
     private int color;
+    private boolean plus;
+    private int density;
     private boolean settingHex = false;
     private final Set<String> selected = new HashSet<>();
+    private final Set<String> muted = new HashSet<>();
+
+    private GradientDrawable prevFill;
+    private TextView prevTitle;
+    private TextView prevMeta;
+    private TextView lblBg;
+    private TextView lblTx;
+    private EditText etColor;
+    private LinearLayout feedBox;
+    private LinearLayout muteBox;
+    private LinearLayout swatchBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,55 +65,79 @@ public class ConfigActivity extends Activity {
             finish();
             return;
         }
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
-        setContentView(R.layout.config);
-        sbBg = findViewById(R.id.sb_bg);
-        sbTx = findViewById(R.id.sb_tx);
-        lblBg = findViewById(R.id.lbl_bg);
-        lblTx = findViewById(R.id.lbl_tx);
-        prevFill = findViewById(R.id.prev_fill);
-        prevBorder = findViewById(R.id.prev_border);
-        prevText = findViewById(R.id.prev_text);
-        etColor = findViewById(R.id.et_color);
-        feedList = findViewById(R.id.feed_list);
-        Button save = findViewById(R.id.btn_save);
-
+        bgPct = Prefs.bg(this, widgetId);
+        txPct = Prefs.text(this, widgetId);
         color = Prefs.color(this, widgetId);
+        plus = Prefs.showPlus(this, widgetId);
+        density = Prefs.density(this, widgetId);
         selected.addAll(Prefs.feeds(this, widgetId));
-        sbBg.setProgress(Prefs.bg(this, widgetId) - 1);
-        sbTx.setProgress(Prefs.text(this, widgetId) - 1);
+        muted.addAll(Prefs.muted(this, widgetId));
+
+        b = new Bubble(this, 360, 16);
+        b.text("Einstellungen", 18, 0xFFFFFFFF, true).setPadding(0, 0, 0, b.px(10));
+
+        // Live-Vorschau auf einem bunten Hintergrund, damit man die Transparenz sieht
+        FrameLayout backdrop = new FrameLayout(this);
+        GradientDrawable bd = new GradientDrawable(GradientDrawable.Orientation.TL_BR,
+                new int[]{0xFF3B6EA5, 0xFF8E5BA8});
+        bd.setCornerRadius(b.px(16));
+        backdrop.setBackground(bd);
+        backdrop.setPadding(b.px(10), b.px(10), b.px(10), b.px(10));
+        LinearLayout card = new LinearLayout(this);
+        card.setOrientation(LinearLayout.VERTICAL);
+        card.setPadding(b.px(14), b.px(10), b.px(14), b.px(10));
+        prevFill = new GradientDrawable();
+        prevFill.setCornerRadius(b.px(16));
+        card.setBackground(prevFill);
+        prevTitle = new TextView(this);
+        prevTitle.setText("Beispiel: Neue Schlagzeile");
+        prevTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+        prevTitle.setTypeface(null, android.graphics.Typeface.BOLD);
+        prevMeta = new TextView(this);
+        prevMeta.setText("Region · vor 12 Min.");
+        prevMeta.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
+        card.addView(prevTitle);
+        card.addView(prevMeta);
+        backdrop.addView(card, new FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        b.box.addView(backdrop, new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+        LinearLayout body = b.scrollBox(0.40f);
+
+        lblBg = b.label(body, "");
+        body.addView(seek(bgPct, p -> {
+            bgPct = p;
+            refreshPreview();
+        }));
+        lblTx = b.label(body, "");
+        body.addView(seek(txPct, p -> {
+            txPct = p;
+            refreshPreview();
+        }));
+
+        b.label(body, "Schriftfarbe");
+        swatchBox = new LinearLayout(this);
+        swatchBox.setOrientation(LinearLayout.HORIZONTAL);
+        swatchBox.setGravity(Gravity.CENTER_VERTICAL);
+        body.addView(swatchBox);
+        etColor = new EditText(this);
+        etColor.setSingleLine(true);
+        etColor.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
+        etColor.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+        etColor.setTextColor(Bubble.TEXT);
+        etColor.setBackgroundTintList(ColorStateList.valueOf(0x66FFFFFF));
+        body.addView(etColor, new LinearLayout.LayoutParams(b.px(120), ViewGroup.LayoutParams.WRAP_CONTENT));
         buildSwatches();
         setHex(color);
-        buildFeedList();
-        refreshPreview();
-
-        // Katalog im Hintergrund aktualisieren (neue Feeds erscheinen ohne App-Update)
-        new Thread(() -> {
-            Catalog.refresh(getApplicationContext());
-            runOnUiThread(this::buildFeedList);
-        }).start();
-
-        SeekBar.OnSeekBarChangeListener l = new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar s, int p, boolean fromUser) {
-                refreshPreview();
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar s) {}
-
-            @Override
-            public void onStopTrackingTouch(SeekBar s) {}
-        };
-        sbBg.setOnSeekBarChangeListener(l);
-        sbTx.setOnSeekBarChangeListener(l);
-
         etColor.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int a, int b, int c) {}
+            public void beforeTextChanged(CharSequence s, int a, int c, int d) {}
 
             @Override
-            public void onTextChanged(CharSequence s, int a, int b, int c) {}
+            public void onTextChanged(CharSequence s, int a, int c, int d) {}
 
             @Override
             public void afterTextChanged(Editable e) {
@@ -111,6 +147,7 @@ public class ConfigActivity extends Activity {
                 if (t.length() == 6) {
                     try {
                         color = Integer.parseInt(t, 16) & 0xFFFFFF;
+                        buildSwatches();
                         refreshPreview();
                     } catch (NumberFormatException ignored) {
                     }
@@ -118,38 +155,92 @@ public class ConfigActivity extends Activity {
             }
         });
 
-        save.setOnClickListener(v -> {
-            if (selected.isEmpty()) selected.add("bga");
-            Prefs.set(this, widgetId, sbBg.getProgress() + 1, sbTx.getProgress() + 1, color, selected);
-            WidgetProvider.update(this, AppWidgetManager.getInstance(this), widgetId);
-            WidgetProvider.refresh(this, widgetId);
-            Intent result = new Intent();
-            result.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
-            setResult(RESULT_OK, result);
-            finish();
+        b.label(body, "Artikel");
+        b.toggle(body, "PLUS-Artikel anzeigen", plus, on -> plus = on);
+
+        b.label(body, "Dichte der Liste");
+        b.segment(body, new String[]{"Kompakt", "Luftig"}, density, i -> density = i);
+
+        b.label(body, "Quellen");
+        feedBox = new LinearLayout(this);
+        feedBox.setOrientation(LinearLayout.VERTICAL);
+        body.addView(feedBox);
+
+        b.label(body, "Themen ausblenden (markiert = versteckt)");
+        muteBox = new LinearLayout(this);
+        muteBox.setOrientation(LinearLayout.VERTICAL);
+        body.addView(muteBox);
+
+        buildLists();
+        refreshPreview();
+
+        // Katalog im Hintergrund aktualisieren (neue Feeds erscheinen ohne App-Update)
+        new Thread(() -> {
+            Catalog.refresh(getApplicationContext());
+            runOnUiThread(this::buildLists);
+        }).start();
+
+        b.space(6);
+        b.pill("Speichern", true, true, this::save);
+        b.pill("Abbrechen", false, true, () -> { });
+    }
+
+    private interface IntCb {
+        void on(int v);
+    }
+
+    private SeekBar seek(int pct, IntCb cb) {
+        SeekBar sb = new SeekBar(this);
+        sb.setMax(99);
+        sb.setProgress(pct - 1);
+        sb.setProgressTintList(ColorStateList.valueOf(Bubble.LIGHT));
+        sb.setThumbTintList(ColorStateList.valueOf(Bubble.LIGHT));
+        sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar s, int p, boolean fromUser) {
+                cb.on(p + 1);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar s) {}
+
+            @Override
+            public void onStopTrackingTouch(SeekBar s) {}
         });
+        return sb;
+    }
+
+    private void save() {
+        if (selected.isEmpty()) selected.add("bga");
+        Prefs.set(this, widgetId, bgPct, txPct, color, selected);
+        Prefs.setExtras(this, widgetId, plus, muted, density);
+        WidgetProvider.update(this, AppWidgetManager.getInstance(this), widgetId);
+        WidgetProvider.refresh(this, widgetId);
+        Intent result = new Intent();
+        result.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
+        setResult(RESULT_OK, result);
     }
 
     private void buildSwatches() {
-        LinearLayout box = findViewById(R.id.swatches);
-        float d = getResources().getDisplayMetrics().density;
-        int size = Math.round(40 * d);
+        swatchBox.removeAllViews();
+        int size = b.px(34);
         for (int c : COLORS) {
             View v = new View(this);
             GradientDrawable g = new GradientDrawable();
             g.setShape(GradientDrawable.OVAL);
             g.setColor(0xFF000000 | c);
-            g.setStroke(Math.round(2 * d), 0x99888888);
+            boolean on = c == color;
+            g.setStroke(b.px(on ? 3 : 1), on ? 0xFFFFFFFF : 0x66FFFFFF);
             v.setBackground(g);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(size, size);
-            lp.setMargins(0, 0, Math.round(10 * d), 0);
-            v.setLayoutParams(lp);
+            lp.setMargins(0, 0, b.px(7), 0);
             v.setOnClickListener(x -> {
                 color = c;
                 setHex(c);
+                buildSwatches();
                 refreshPreview();
             });
-            box.addView(v);
+            swatchBox.addView(v, lp);
         }
     }
 
@@ -159,29 +250,33 @@ public class ConfigActivity extends Activity {
         settingHex = false;
     }
 
-    private void buildFeedList() {
-        feedList.removeAllViews();
+    private void buildLists() {
+        feedBox.removeAllViews();
+        muteBox.removeAllViews();
         List<Catalog.Feed> all = Catalog.load(this);
+        Set<String> seen = new HashSet<>();
         for (Catalog.Feed f : all) {
-            CheckBox cb = new CheckBox(this);
-            cb.setText(f.name);
-            cb.setTextSize(16);
-            cb.setChecked(selected.contains(f.id));
-            cb.setOnCheckedChangeListener((b, on) -> {
+            b.toggle(feedBox, f.name, selected.contains(f.id), on -> {
                 if (on) selected.add(f.id);
                 else selected.remove(f.id);
             });
-            feedList.addView(cb);
+            for (String t : f.topics) {
+                if (!seen.add(t)) continue;
+                int slash = t.indexOf('/');
+                String label = slash < 0 ? t : "      " + t.substring(t.lastIndexOf('/') + 1);
+                b.toggle(muteBox, label, muted.contains(t), on -> {
+                    if (on) muted.add(t);
+                    else muted.remove(t);
+                });
+            }
         }
     }
 
     private void refreshPreview() {
-        int bg = sbBg.getProgress() + 1;
-        int tx = sbTx.getProgress() + 1;
-        lblBg.setText("Hintergrund-Deckkraft: " + bg + " %");
-        lblTx.setText("Schrift-Deckkraft: " + tx + " %");
-        prevFill.setImageAlpha(Prefs.alpha(bg));
-        prevBorder.setImageAlpha(Math.round(Prefs.alpha(Math.max(bg, 20)) * 0.45f));
-        prevText.setTextColor(Prefs.argb(color, tx, 1f));
+        lblBg.setText("Hintergrund-Deckkraft: " + bgPct + " %");
+        lblTx.setText("Schrift-Deckkraft: " + txPct + " %");
+        prevFill.setColor(Prefs.argb(0x1E1E26, bgPct, 1f));
+        prevTitle.setTextColor(Prefs.argb(color, txPct, 1f));
+        prevMeta.setTextColor(Prefs.argb(color, txPct, 0.7f));
     }
 }

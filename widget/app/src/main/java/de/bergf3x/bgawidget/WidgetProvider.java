@@ -110,6 +110,8 @@ public class WidgetProvider extends AppWidgetProvider {
     private static final int[] FC_D = {R.id.fc1_d, R.id.fc2_d, R.id.fc3_d};
     private static final int[] FC_I = {R.id.fc1_i, R.id.fc2_i, R.id.fc3_i};
     private static final int[] FC_T = {R.id.fc1_t, R.id.fc2_t, R.id.fc3_t};
+    private static final int[] FC_BAR = {R.id.fc1_bar, R.id.fc2_bar, R.id.fc3_bar};
+    private static final int BAR_DP = 56;
 
     /** Wetterbereich oben: aktueller Stand, Hoechst/Tiefst, Vorhersage (nur bei genug Hoehe). */
     private static void applyWeather(Context ctx, RemoteViews rv, int id, int fg, int fgSoft) {
@@ -127,21 +129,45 @@ public class WidgetProvider extends AppWidgetProvider {
         rv.setTextColor(R.id.w_hi, fg);
         rv.setTextColor(R.id.w_lo, fgSoft);
         if (w == null) {
+            rv.setInt(R.id.w_tint, "setImageAlpha", 0);
             rv.setImageViewResource(R.id.w_icon, R.drawable.w_cloud);
             rv.setTextViewText(R.id.w_desc, "Wetter lädt …");
             rv.setTextViewText(R.id.w_temp, "–");
             rv.setTextViewText(R.id.w_hi, "");
             rv.setTextViewText(R.id.w_lo, "");
         } else {
+            rv.setInt(R.id.w_tint, "setColorFilter", Weather.tint(w.code, w.day));
+            rv.setInt(R.id.w_tint, "setImageAlpha", 58);
             rv.setImageViewResource(R.id.w_icon, Weather.icon(w.code, w.day));
             rv.setTextViewText(R.id.w_desc, Weather.text(w.code, w.day));
             rv.setTextViewText(R.id.w_temp, Weather.deg(w.temp));
             rv.setTextViewText(R.id.w_hi, w.days > 0 ? "↑ " + Weather.deg(w.hi[0]) : "");
             rv.setTextViewText(R.id.w_lo, w.days > 0 ? "↓ " + Weather.deg(w.lo[0]) : "");
         }
+        // gemeinsame Skala fuer die Temperaturbalken (heute + 3 Tage)
+        int gMin = 100, gMax = -100;
+        if (w != null) {
+            for (int d = 0; d < w.days; d++) {
+                gMin = Math.min(gMin, w.lo[d]);
+                gMax = Math.max(gMax, w.hi[d]);
+            }
+        }
+        float dens = ctx.getResources().getDisplayMetrics().density;
+        int barPx = Math.round(BAR_DP * dens);
+        int minBar = Math.round(6 * dens);
         for (int i = 0; i < 3; i++) {
             int d = i + 1;
             boolean ok = w != null && d < w.days;
+            if (ok && gMax > gMin) {
+                float range = gMax - gMin;
+                int left = Math.round((w.lo[d] - gMin) / range * barPx);
+                int right = Math.round((gMax - w.hi[d]) / range * barPx);
+                if (barPx - left - right < minBar) right = Math.max(0, barPx - left - minBar);
+                rv.setViewPadding(FC_BAR[i], left, 0, right, 0);
+            } else {
+                rv.setViewPadding(FC_BAR[i], 0, 0, 0, 0);
+            }
+            rv.setViewVisibility(FC_BAR[i], ok ? android.view.View.VISIBLE : android.view.View.INVISIBLE);
             rv.setTextColor(FC_D[i], fgSoft);
             rv.setTextColor(FC_T[i], fg);
             rv.setTextViewText(FC_D[i], ok ? w.dayName[d] : "");
@@ -151,7 +177,22 @@ public class WidgetProvider extends AppWidgetProvider {
         }
         int minH = AppWidgetManager.getInstance(ctx).getAppWidgetOptions(id)
                 .getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, 300);
-        rv.setViewVisibility(R.id.fc_box, minH >= 215 ? android.view.View.VISIBLE : android.view.View.GONE);
+        rv.setViewVisibility(R.id.fc_box, minH >= 260 ? android.view.View.VISIBLE : android.view.View.GONE);
+        String info = w == null ? "" : w.info();
+        rv.setTextViewText(R.id.w_info, info);
+        rv.setTextColor(R.id.w_info, fgSoft);
+        rv.setViewVisibility(R.id.w_info, minH >= 190 && !info.isEmpty() ? android.view.View.VISIBLE : android.view.View.GONE);
+
+        // Stand der Nachrichten + Offline-Hinweis
+        long t = Prefs.newsTime(ctx);
+        String stand = t == 0 ? "" : new java.text.SimpleDateFormat("HH:mm", java.util.Locale.GERMANY).format(new java.util.Date(t));
+        boolean ok = Prefs.newsOk(ctx);
+        String line;
+        if (ok) line = stand.isEmpty() ? "" : "Stand " + stand;
+        else line = "Offline – " + (stand.isEmpty() ? "keine Daten" : "Stand " + stand);
+        rv.setTextViewText(R.id.w_stand, line);
+        rv.setTextColor(R.id.w_stand, ok ? fgSoft : 0xFFFFB74D);
+        rv.setViewVisibility(R.id.w_stand, line.isEmpty() ? android.view.View.GONE : android.view.View.VISIBLE);
     }
 
     @Override

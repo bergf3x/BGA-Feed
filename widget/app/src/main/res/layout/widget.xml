@@ -26,11 +26,26 @@
         android:paddingRight="18dp"
         android:paddingBottom="14dp">
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/w_tint"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/w_tint" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingLeft="6dp"
+            android:paddingTop="4dp"
+            android:paddingRight="6dp"
+            android:paddingBottom="4dp">
 
             <ImageView
                 android:id="@+id/w_icon"
@@ -128,6 +143,20 @@
                     android:src="@drawable/ic_tune" />
             </LinearLayout>
         </LinearLayout>
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/w_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp"
+            android:textColor="#B3FFFFFF"
+            android:textSize="11sp"
+            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/fc_box"
@@ -148,99 +177,162 @@
                 android:paddingTop="6dp"
                 android:paddingBottom="6dp">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/fc1_d"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:textColor="#B3FFFFFF"
-                    android:textSize="11sp" />
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/fc1_i"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:layout_marginLeft="3dp"
-                    android:layout_marginRight="3dp"
-                    android:src="@drawable/w_cloud" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/fc1_t"
-                    android:layout_width="wrap_content"
+                        <TextView
+                            android:id="@+id/fc1_d"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:maxLines="1"
+                            android:textColor="#B3FFFFFF"
+                            android:textSize="11sp" />
+
+                        <ImageView
+                            android:id="@+id/fc1_i"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_marginLeft="3dp"
+                            android:layout_marginRight="3dp"
+                            android:src="@drawable/w_cloud" />
+
+                        <TextView
+                            android:id="@+id/fc1_t"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:maxLines="1"
+                            android:textColor="#FFFFFFFF"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+
+                    <FrameLayout
+                        android:id="@+id/fc1_bar"
+                        android:layout_width="56dp"
+                        android:layout_height="4dp"
+                        android:layout_marginTop="3dp"
+                        android:background="@drawable/bar_track">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/bar_fill" />
+                    </FrameLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:textColor="#FFFFFFFF"
-                    android:textSize="11sp" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="horizontal">
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/fc2_d"
-                    android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/fc2_d"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:maxLines="1"
+                            android:textColor="#B3FFFFFF"
+                            android:textSize="11sp" />
+
+                        <ImageView
+                            android:id="@+id/fc2_i"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_marginLeft="3dp"
+                            android:layout_marginRight="3dp"
+                            android:src="@drawable/w_cloud" />
+
+                        <TextView
+                            android:id="@+id/fc2_t"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:maxLines="1"
+                            android:textColor="#FFFFFFFF"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+
+                    <FrameLayout
+                        android:id="@+id/fc2_bar"
+                        android:layout_width="56dp"
+                        android:layout_height="4dp"
+                        android:layout_marginTop="3dp"
+                        android:background="@drawable/bar_track">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/bar_fill" />
+                    </FrameLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:textColor="#B3FFFFFF"
-                    android:textSize="11sp" />
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/fc2_i"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:layout_marginLeft="3dp"
-                    android:layout_marginRight="3dp"
-                    android:src="@drawable/w_cloud" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/fc2_t"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:textColor="#FFFFFFFF"
-                    android:textSize="11sp" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/fc3_d"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:maxLines="1"
+                            android:textColor="#B3FFFFFF"
+                            android:textSize="11sp" />
 
-                <TextView
-                    android:id="@+id/fc3_d"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:textColor="#B3FFFFFF"
-                    android:textSize="11sp" />
+                        <ImageView
+                            android:id="@+id/fc3_i"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_marginLeft="3dp"
+                            android:layout_marginRight="3dp"
+                            android:src="@drawable/w_cloud" />
 
-                <ImageView
-                    android:id="@+id/fc3_i"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:layout_marginLeft="3dp"
-                    android:layout_marginRight="3dp"
-                    android:src="@drawable/w_cloud" />
+                        <TextView
+                            android:id="@+id/fc3_t"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:maxLines="1"
+                            android:textColor="#FFFFFFFF"
+                            android:textSize="11sp" />
+                    </LinearLayout>
 
-                <TextView
-                    android:id="@+id/fc3_t"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:textColor="#FFFFFFFF"
-                    android:textSize="11sp" />
-            </LinearLayout>
+                    <FrameLayout
+                        android:id="@+id/fc3_bar"
+                        android:layout_width="56dp"
+                        android:layout_height="4dp"
+                        android:layout_marginTop="3dp"
+                        android:background="@drawable/bar_track">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/bar_fill" />
+                    </FrameLayout>
+                </LinearLayout>
             </LinearLayout>
 
             <FrameLayout
@@ -248,6 +340,17 @@
                 android:layout_height="1dp"
                 android:background="#2EFFFFFF" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/w_stand"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:gravity="right"
+            android:maxLines="1"
+            android:paddingRight="6dp"
+            android:textColor="#80FFFFFF"
+            android:textSize="10sp" />
 
         <LinearLayout
             android:id="@+id/row_p"

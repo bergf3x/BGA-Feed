@@ -22,6 +22,8 @@ public class ListService extends RemoteViewsService {
         private final Context ctx;
         private final int widgetId;
         private List<FeedItem> items = new ArrayList<>();
+        private Set<String> readSet = new java.util.HashSet<>();
+        private boolean airy;
 
         Factory(Context ctx, int widgetId) {
             this.ctx = ctx;
@@ -35,16 +37,27 @@ public class ListService extends RemoteViewsService {
 
         @Override
         public void onDataSetChanged() {
+            if (Prefs.takeLocalOnly(ctx)) {
+                items = load(false);
+                return;
+            }
             Catalog.refresh(ctx);
-            if (Weather.refreshIfStale(ctx, Prefs.place(ctx, widgetId))) WidgetProvider.refreshHeader(ctx, widgetId);
+            Weather.refreshIfStale(ctx, Prefs.place(ctx, widgetId));
             items = load(true);
+            WidgetProvider.refreshHeader(ctx, widgetId);
         }
 
         /** Gewaehlte Feeds laden (live oder aus dem Cache), mischen, nach Thema filtern. */
         private List<FeedItem> load(boolean online) {
+            readSet = Prefs.readSet(ctx);
+            airy = Prefs.density(ctx, widgetId) == 1;
             List<Catalog.Feed> all = Catalog.load(ctx);
             Set<String> selected = Catalog.effective(all, Prefs.feeds(ctx, widgetId));
             String topic = Prefs.topic(ctx, widgetId);
+            boolean plusOn = Prefs.showPlus(ctx, widgetId);
+            Set<String> muted = Prefs.muted(ctx, widgetId);
+            boolean anyOk = false;
+            boolean anyFail = false;
             List<FeedItem> merged = new ArrayList<>();
             for (Catalog.Feed f : all) {
                 if (!selected.contains(f.id)) continue;
@@ -58,22 +71,41 @@ public class ListService extends RemoteViewsService {
                         } else {
                             Prefs.setStatus(ctx, f.id, "");
                         }
-                        if (xml != null) Prefs.setFeedCache(ctx, f.id, xml);
+                        if (xml != null) {
+                            Prefs.setFeedCache(ctx, f.id, xml);
+                            anyOk = true;
+                        } else {
+                            anyFail = true;
+                        }
                     } catch (Exception e) {
                         xml = null;
+                        anyFail = true;
                         Prefs.setStatus(ctx, f.id, String.valueOf(e.getMessage() != null ? e.getMessage() : e));
                     }
                 }
                 if (xml == null) xml = Prefs.feedCache(ctx, f.id);
                 for (FeedItem it : FeedItem.parse(xml, f.name)) {
-                    String t = it.topic.isEmpty() ? "Region" : it.topic;
-                    if (topic.isEmpty() || t.equals(topic) || t.startsWith(topic + "/")) merged.add(it);
+                    if (!topic.isEmpty() && !it.inTopic(topic)) continue;
+                    if (it.plus && !plusOn) continue;
+                    if (isMuted(it, muted, topic)) continue;
+                    merged.add(it);
                 }
             }
+            if (online) Prefs.setNews(ctx, anyOk || !anyFail);
             if (online && merged.isEmpty()) showEmptyReason(all, selected, topic);
             // Gleiche Zeit (z. B. erster Lauf): Reihenfolge innerhalb des Feeds bleibt erhalten
             Collections.sort(merged, (a, b) -> Long.compare(b.time, a.time));
             return merged;
+        }
+
+        /** Ausgeblendetes Thema – es sei denn, genau dieses Thema ist gerade gewaehlt. */
+        private boolean isMuted(FeedItem it, Set<String> muted, String selTopic) {
+            for (String m : muted) {
+                if (!it.inTopic(m)) continue;
+                boolean selected = !selTopic.isEmpty() && (selTopic.equals(m) || selTopic.startsWith(m + "/"));
+                if (!selected) return true;
+            }
+            return false;
         }
 
         private void showEmptyReason(List<Catalog.Feed> all, Set<String> selected, String topic) {
@@ -109,13 +141,24 @@ public class ListService extends RemoteViewsService {
             FeedItem it = items.get(position);
             int tx = Prefs.text(ctx, widgetId);
             int rgb = Prefs.color(ctx, widgetId);
+            boolean read = Prefs.isRead(readSet, it.link);
+            float dim = read ? 0.55f : 1f;
             String meta = it.meta();
             rv.setTextViewText(R.id.item_title, it.title);
             rv.setTextViewText(R.id.item_meta, meta);
-            rv.setTextColor(R.id.item_title, Prefs.argb(rgb, tx, 1f));
-            rv.setTextColor(R.id.item_meta, Prefs.argb(rgb, tx, 0.7f));
+            rv.setTextColor(R.id.item_title, Prefs.argb(rgb, tx, dim));
+            rv.setTextColor(R.id.item_meta, Prefs.argb(rgb, tx, 0.7f * dim));
             rv.setInt(R.id.item_accent, "setColorFilter", it.accentColor());
+            rv.setInt(R.id.item_accent, "setImageAlpha", read ? 90 : 255);
             rv.setViewVisibility(R.id.item_plus, it.plus ? android.view.View.VISIBLE : android.view.View.GONE);
+            boolean dot = !read && it.isFresh();
+            rv.setTextColor(R.id.item_dot, it.accentColor());
+            rv.setViewVisibility(R.id.item_dot, dot ? android.view.View.VISIBLE : android.view.View.GONE);
+            float dp = ctx.getResources().getDisplayMetrics().density;
+            int cardPad = Math.round((airy ? 13 : 8) * dp);
+            int rowPad = Math.round((airy ? 5 : 3) * dp);
+            rv.setViewPadding(R.id.item_card, cardPad, cardPad, cardPad, cardPad);
+            rv.setViewPadding(R.id.item_root, 0, rowPad, 0, rowPad);
             Intent fill = new Intent();
             fill.putExtra(PreviewActivity.EXTRA_TITLE, it.title);
             fill.putExtra(PreviewActivity.EXTRA_META, meta);

@@ -21,6 +21,15 @@ public class PreviewActivity extends Activity {
         String text = str(in, EXTRA_TEXT);
         final String link = str(in, EXTRA_LINK);
 
+        // als gelesen markieren; Liste nur aus dem Cache neu zeichnen (kein Netz, kein Flackern)
+        if (!link.isEmpty()) {
+            Prefs.markRead(this, link);
+            Prefs.setLocalOnly(this);
+            android.appwidget.AppWidgetManager mgr = android.appwidget.AppWidgetManager.getInstance(this);
+            int[] ids = mgr.getAppWidgetIds(new android.content.ComponentName(this, WidgetProvider.class));
+            for (int id : ids) mgr.notifyAppWidgetViewDataChanged(id, R.id.list);
+        }
+
         final Bubble b = new Bubble(this, 330, 16);
         b.text(meta, 12, 0xB3B5D4F4, false);
         b.text(title, 18, 0xFFFFFFFF, true).setPadding(0, b.px(6), 0, b.px(10));

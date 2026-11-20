@@ -44,15 +44,30 @@ final class FeedItem {
 
     String timeText() {
         if (time == 0) return "";
-        long diff = System.currentTimeMillis() - time;
-        if (diff >= 0 && diff < 60L * 60000) return "vor " + Math.max(1, diff / 60000) + " Min.";
-        Date d = new Date(time);
+        long now = System.currentTimeMillis();
+        long diff = now - time;
+        if (diff < 60L * 60000) return "vor " + Math.max(1, diff / 60000) + " Min.";
         Calendar a = Calendar.getInstance();
         Calendar b = Calendar.getInstance();
-        b.setTime(d);
-        boolean today = a.get(Calendar.YEAR) == b.get(Calendar.YEAR)
-                && a.get(Calendar.DAY_OF_YEAR) == b.get(Calendar.DAY_OF_YEAR);
-        return new SimpleDateFormat(today ? "HH:mm" : "dd.MM. HH:mm", Locale.GERMANY).format(d);
+        b.setTimeInMillis(time);
+        a.set(Calendar.HOUR_OF_DAY, 0); a.set(Calendar.MINUTE, 0); a.set(Calendar.SECOND, 0); a.set(Calendar.MILLISECOND, 0);
+        b.set(Calendar.HOUR_OF_DAY, 0); b.set(Calendar.MINUTE, 0); b.set(Calendar.SECOND, 0); b.set(Calendar.MILLISECOND, 0);
+        long dayDiff = Math.round((a.getTimeInMillis() - b.getTimeInMillis()) / 86400000.0);
+        Date d = new Date(time);
+        if (dayDiff <= 0) return "heute " + new SimpleDateFormat("HH:mm", Locale.GERMANY).format(d);
+        if (dayDiff == 1) return "gestern " + new SimpleDateFormat("HH:mm", Locale.GERMANY).format(d);
+        return new SimpleDateFormat("dd.MM. HH:mm", Locale.GERMANY).format(d);
+    }
+
+    /** Neu = juengerer als 12 Stunden. */
+    boolean isFresh() {
+        return time != 0 && System.currentTimeMillis() - time < 12L * 3600000;
+    }
+
+    /** Gehoert der Artikel zu diesem Thema (gleich oder Unterthema)? */
+    boolean inTopic(String t) {
+        String mine = topic.isEmpty() ? "Region" : topic;
+        return mine.equals(t) || mine.startsWith(t + "/");
     }
 
     static List<FeedItem> parse(String xml, String feedName) {
