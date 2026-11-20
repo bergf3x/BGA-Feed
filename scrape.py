@@ -108,7 +108,7 @@ SITES = [
         # Reihenfolge: allgemein -> speziell; spaeter genannte Seiten ueberschreiben das Thema
         sources=[
             ("/region-und-lokal/lokales-berchtesgadener-land.html", "Region/Berchtesgadener Land"),
-            ("/region-und-lokal/lokalnachrichten-landkreis-traunstein.html", "Region/Landkreis Traunstein"),
+            ("/region-und-lokal/lokalnachrichten-landkreis-traunstein.html", "Region/Landkreis Traunstein", "/startseite_artikel"),
             ("/region-und-lokal/bergsteiger-und-naturfreunde.html", "Region/Bergsteiger & Naturfreunde"),
             ("/nachrichten.html", "Nachrichten/Deutschland & Welt"),
             ("/nachrichten/wirtschaft.html", "Nachrichten/Wirtschaft"),
@@ -140,7 +140,9 @@ def fetch_site(site):
     import requests
 
     found = {}
-    for path, topic in site["sources"]:
+    for src in site["sources"]:
+        path, topic = src[0], src[1]
+        only = src[2] if len(src) > 2 else ""  # nur Artikel, deren URL dies enthaelt (Seite mischt mehrere Rubriken)
         try:
             r = requests.get(site["base"] + path, headers={"User-Agent": UA}, timeout=30)
             r.raise_for_status()
@@ -148,12 +150,19 @@ def fetch_site(site):
             print(f"[{site['id']}] {path}: {e}", file=sys.stderr)
             continue
         for it in site["parse"](r.text, site["base"]):
+            if only and only not in it["url"]:
+                continue
             it.setdefault("topic", topic)
             if site["retopic"]:
                 it["topic"] = site["retopic"](it, topic)
             old = found.get(it["sid"])
-            if old and old.get("plus"):
-                it["plus"] = True  # Plus-Kennzeichen geht nicht verloren, wenn eine andere Seite es nicht zeigt
+            if old:
+                if old.get("plus"):
+                    it["plus"] = True  # Plus-Kennzeichen geht nicht verloren
+                # Artikel tauchen auf fremden Rubrikseiten wieder auf (Seitenleisten): innerhalb
+                # derselben Hauptrubrik gewinnt die speziellere (spaetere) Seite, sonst die erste.
+                if old["topic"].split("/")[0] != it["topic"].split("/")[0]:
+                    it["topic"] = old["topic"]
             found[it["sid"]] = it
     return list(found.values())
 
