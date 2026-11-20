@@ -90,8 +90,7 @@ def build(items, state, now):
 
     out = []
     for it in ordered:
-        label = f"[{it['category']}] " if it["category"] else ""
-        title = label + it["title"] + (" (Plus)" if it["plus"] else "")
+        title = ("🔒 " if it["plus"] else "") + it["title"]
         pub = format_datetime(datetime.fromisoformat(it["first_seen"]))
         out.append(
             "    <item>\n"
