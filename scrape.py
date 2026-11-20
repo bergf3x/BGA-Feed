@@ -24,7 +24,8 @@ from xml.sax.saxutils import escape
 HERE = Path(__file__).parent
 UA = "bga-feed/1.1 (privater Feed-Generator, 1 Abruf alle 30 Min.)"
 RAW = "https://raw.githubusercontent.com/bergf3x/BGA-Feed/main/"
-MAX_ITEMS = 200
+MAX_ITEMS = 400
+MAX_PER_TOPIC = 40  # damit auch kleine Themen nicht von grossen verdraengt werden
 
 BGA_ARID = re.compile(r"_arid,(\d+)\.html")
 ALP_ID = re.compile(r"/(\d{4,9})/(?:artikel|galerie|produkttest|tour)_")
@@ -259,7 +260,12 @@ def build(site, items, state, now):
         else:
             state_items[key].update({k: it[k] for k in ("title", "teaser", "category", "topic")})
             state_items[key]["plus"] = bool(state_items[key].get("plus") or it.get("plus"))
-    ordered = sorted(state_items.values(), key=sort_key(site), reverse=True)[:MAX_ITEMS]
+    ordered, per_topic = [], {}
+    for x in sorted(state_items.values(), key=sort_key(site), reverse=True):
+        t = x.get("topic") or "Region"
+        per_topic[t] = per_topic.get(t, 0) + 1
+        if per_topic[t] <= MAX_PER_TOPIC and len(ordered) < MAX_ITEMS:
+            ordered.append(x)
     state["items"] = {str(x["sid"]): x for x in ordered}
 
     out = []
