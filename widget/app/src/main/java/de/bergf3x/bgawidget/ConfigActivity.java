@@ -122,6 +122,7 @@ public class ConfigActivity extends Activity {
             if (selected.isEmpty()) selected.add("bga");
             Prefs.set(this, widgetId, sbBg.getProgress() + 1, sbTx.getProgress() + 1, color, selected);
             WidgetProvider.update(this, AppWidgetManager.getInstance(this), widgetId);
+            WidgetProvider.refresh(this, widgetId);
             Intent result = new Intent();
             result.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
             setResult(RESULT_OK, result);

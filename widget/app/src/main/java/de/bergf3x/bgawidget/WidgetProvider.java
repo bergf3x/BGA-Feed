@@ -18,9 +18,6 @@ public class WidgetProvider extends AppWidgetProvider {
     private static final int[] P = {R.id.p0, R.id.p1, R.id.p2, R.id.p3, R.id.p4};
     private static final int[] P_ON = {R.id.p0_on, R.id.p1_on, R.id.p2_on, R.id.p3_on, R.id.p4_on};
     private static final int[] P_T = {R.id.p0_t, R.id.p1_t, R.id.p2_t, R.id.p3_t, R.id.p4_t};
-    private static final int[] S = {R.id.s0, R.id.s1, R.id.s2, R.id.s3, R.id.s4, R.id.s5};
-    private static final int[] S_ON = {R.id.s0_on, R.id.s1_on, R.id.s2_on, R.id.s3_on, R.id.s4_on, R.id.s5_on};
-    private static final int[] S_T = {R.id.s0_t, R.id.s1_t, R.id.s2_t, R.id.s3_t, R.id.s4_t, R.id.s5_t};
 
     @Override
     public void onUpdate(Context ctx, AppWidgetManager mgr, int[] ids) {
@@ -44,7 +41,8 @@ public class WidgetProvider extends AppWidgetProvider {
         for (int id : ids) Prefs.remove(ctx, id);
     }
 
-    static void update(Context ctx, AppWidgetManager mgr, int id) {
+    /** Kopfzeile (Farben, Titel, Chips) in ein RemoteViews schreiben. */
+    private static void applyHeader(Context ctx, RemoteViews rv, int id) {
         int bg = Prefs.bg(ctx, id);
         int tx = Prefs.text(ctx, id);
         int rgb = Prefs.color(ctx, id);
@@ -64,17 +62,16 @@ public class WidgetProvider extends AppWidgetProvider {
             Catalog.Feed f = Catalog.find(all, selected.iterator().next());
             if (f != null) title = f.name;
         }
+        int immutable = Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0;
+        int fg = Prefs.argb(rgb, tx, 1f);
+        int dark = 0xFF1B1F22;
 
-        RemoteViews rv = new RemoteViews(ctx.getPackageName(), R.layout.widget);
         rv.setInt(R.id.bg_fill, "setImageAlpha", Prefs.alpha(bg));
         rv.setInt(R.id.bg_border, "setImageAlpha", Math.round(Prefs.alpha(Math.max(bg, 20)) * 0.45f));
         rv.setTextViewText(R.id.title, title);
-        rv.setTextColor(R.id.title, Prefs.argb(rgb, tx, 1f));
-        rv.setTextColor(R.id.empty, Prefs.argb(rgb, tx, 1f));
-        int immutable = Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0;
-        int mutable = Build.VERSION.SDK_INT >= 31 ? PendingIntent.FLAG_MUTABLE : 0;
-        int fg = Prefs.argb(rgb, tx, 1f);
-        int dark = 0xFF1B1F22;
+        rv.setTextColor(R.id.title, fg);
+        rv.setTextColor(R.id.empty, fg);
+
         List<String> parents = new java.util.ArrayList<>();
         for (String t : topics) if (t.indexOf('/') < 0) parents.add(t);
         String curParent = topic.isEmpty() ? "" : topic.split("/")[0];
@@ -85,37 +82,37 @@ public class WidgetProvider extends AppWidgetProvider {
                 continue;
             }
             boolean on = value.equals(curParent);
+            boolean hasSubs = false;
+            for (String t : topics) if (t.startsWith(value + "/") && !value.isEmpty()) hasSubs = true;
+            String label = i == 0 ? "Alle" : value;
+            if (on && topic.indexOf('/') >= 0) label = topic.substring(topic.indexOf('/') + 1);
+            else if (hasSubs) label = label + " ▾";
             rv.setViewVisibility(P[i], android.view.View.VISIBLE);
-            rv.setTextViewText(P_T[i], i == 0 ? "Alle" : value);
+            rv.setTextViewText(P_T[i], label);
             rv.setViewVisibility(P_ON[i], on ? android.view.View.VISIBLE : android.view.View.GONE);
             rv.setTextColor(P_T[i], on ? dark : fg);
-            rv.setOnClickPendingIntent(P[i], topicPending(ctx, id, 100 + i, value, immutable));
+            rv.setOnClickPendingIntent(P[i], topicPending(ctx, id, 100 + i, value, hasSubs, immutable));
         }
-        // Unterthemen des gewaehlten Oberthemas: "Alle <Thema>" plus die Unterthemen (max. 5)
-        List<String> subs = new java.util.ArrayList<>();
-        if (!curParent.isEmpty()) {
-            for (String t : topics) if (t.startsWith(curParent + "/")) subs.add(t);
-            if (!subs.isEmpty()) subs.add(0, curParent);
-        }
-        for (int i = 0; i < S.length; i++) {
-            if (i >= subs.size()) {
-                rv.setViewVisibility(S[i], android.view.View.GONE);
-                continue;
-            }
-            String value = subs.get(i);
-            boolean on = value.equals(topic);
-            rv.setViewVisibility(S[i], android.view.View.VISIBLE);
-            rv.setTextViewText(S_T[i], i == 0 ? "Alle" : value.substring(value.indexOf('/') + 1));
-            rv.setViewVisibility(S_ON[i], on ? android.view.View.VISIBLE : android.view.View.GONE);
-            rv.setTextColor(S_T[i], on ? dark : fg);
-            rv.setOnClickPendingIntent(S[i], topicPending(ctx, id, 200 + i, value, immutable));
-        }
-        rv.setViewVisibility(R.id.row_s1, subs.isEmpty() ? android.view.View.GONE : android.view.View.VISIBLE);
-        rv.setViewVisibility(R.id.row_s2, subs.size() > 3 ? android.view.View.VISIBLE : android.view.View.GONE);
         rv.setInt(R.id.btn_refresh, "setColorFilter", solid);
         rv.setInt(R.id.btn_settings, "setColorFilter", solid);
         rv.setInt(R.id.btn_refresh, "setImageAlpha", textAlpha);
         rv.setInt(R.id.btn_settings, "setImageAlpha", textAlpha);
+    }
+
+    /** Weiche Aktualisierung nur der Kopfzeile + Liste, ohne das ganze Widget neu aufzubauen. */
+    static void refresh(Context ctx, int id) {
+        AppWidgetManager mgr = AppWidgetManager.getInstance(ctx);
+        RemoteViews rv = new RemoteViews(ctx.getPackageName(), R.layout.widget);
+        applyHeader(ctx, rv, id);
+        mgr.partiallyUpdateAppWidget(id, rv);
+        mgr.notifyAppWidgetViewDataChanged(id, R.id.list);
+    }
+
+    static void update(Context ctx, AppWidgetManager mgr, int id) {
+        int immutable = Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0;
+        int mutable = Build.VERSION.SDK_INT >= 31 ? PendingIntent.FLAG_MUTABLE : 0;
+        RemoteViews rv = new RemoteViews(ctx.getPackageName(), R.layout.widget);
+        applyHeader(ctx, rv, id);
 
         Intent svc = new Intent(ctx, ListService.class);
         svc.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id);
@@ -140,10 +137,11 @@ public class WidgetProvider extends AppWidgetProvider {
         mgr.notifyAppWidgetViewDataChanged(id, R.id.list);
     }
 
-    private static PendingIntent topicPending(Context ctx, int id, int slot, String topic, int immutable) {
+    private static PendingIntent topicPending(Context ctx, int id, int slot, String topic, boolean menu, int immutable) {
         Intent i = new Intent(ctx, TopicActivity.class);
         i.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id);
         i.putExtra("topic", topic);
+        i.putExtra("menu", menu);
         i.setData(Uri.parse("bgawidget://topic/" + id + "/" + slot));
         return PendingIntent.getActivity(ctx, id * 1000 + slot, i, PendingIntent.FLAG_UPDATE_CURRENT | immutable);
     }
