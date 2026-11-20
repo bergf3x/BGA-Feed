@@ -59,52 +59,22 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/row_p"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:layout_marginBottom="6dp"
-            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <FrameLayout
-                android:id="@+id/chip0"
-                android:layout_width="wrap_content"
-                android:layout_height="26dp"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/chip_bg">
-
-                <ImageView
-                    android:id="@+id/chip0_on"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/chip_on"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:id="@+id/chip0_t"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:ellipsize="end"
-                    android:gravity="center"
-                    android:maxLines="1"
-                    android:paddingLeft="9dp"
-                    android:paddingRight="9dp"
-                    android:text="Alle"
-                    android:textColor="#FFFFFFFF"
-                    android:textSize="11sp" />
-            </FrameLayout>
-            <FrameLayout
-                android:id="@+id/chip1"
+                android:id="@+id/p0"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="26dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginRight="4dp"
+                android:layout_weight="0.75"
                 android:background="@drawable/chip_bg">
 
                 <ImageView
-                    android:id="@+id/chip1_on"
+                    android:id="@+id/p0_on"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="fitXY"
@@ -112,29 +82,27 @@
                     android:visibility="gone" />
 
                 <TextView
-                    android:id="@+id/chip1_t"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/p0_t"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"
                     android:ellipsize="end"
                     android:gravity="center"
                     android:maxLines="1"
-                    android:paddingLeft="9dp"
-                    android:paddingRight="9dp"
-                    android:text="Alle"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
                     android:textColor="#FFFFFFFF"
                     android:textSize="11sp" />
             </FrameLayout>
             <FrameLayout
-                android:id="@+id/chip2"
+                android:id="@+id/p1"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="26dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginRight="4dp"
+                android:layout_weight="1"
                 android:background="@drawable/chip_bg">
 
                 <ImageView
-                    android:id="@+id/chip2_on"
+                    android:id="@+id/p1_on"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="fitXY"
@@ -142,29 +110,27 @@
                     android:visibility="gone" />
 
                 <TextView
-                    android:id="@+id/chip2_t"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/p1_t"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"
                     android:ellipsize="end"
                     android:gravity="center"
                     android:maxLines="1"
-                    android:paddingLeft="9dp"
-                    android:paddingRight="9dp"
-                    android:text="Alle"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
                     android:textColor="#FFFFFFFF"
                     android:textSize="11sp" />
             </FrameLayout>
             <FrameLayout
-                android:id="@+id/chip3"
+                android:id="@+id/p2"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="26dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginRight="4dp"
+                android:layout_weight="1.4"
                 android:background="@drawable/chip_bg">
 
                 <ImageView
-                    android:id="@+id/chip3_on"
+                    android:id="@+id/p2_on"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="fitXY"
@@ -172,28 +138,27 @@
                     android:visibility="gone" />
 
                 <TextView
-                    android:id="@+id/chip3_t"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/p2_t"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"
                     android:ellipsize="end"
                     android:gravity="center"
                     android:maxLines="1"
-                    android:paddingLeft="9dp"
-                    android:paddingRight="9dp"
-                    android:text="Alle"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
                     android:textColor="#FFFFFFFF"
                     android:textSize="11sp" />
             </FrameLayout>
             <FrameLayout
-                android:id="@+id/chip5"
-                android:layout_width="wrap_content"
+                android:id="@+id/p3"
+                android:layout_width="0dp"
                 android:layout_height="26dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginRight="4dp"
+                android:layout_weight="0.9"
                 android:background="@drawable/chip_bg">
 
                 <ImageView
-                    android:id="@+id/chip5_on"
+                    android:id="@+id/p3_on"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="fitXY"
@@ -201,21 +166,234 @@
                     android:visibility="gone" />
 
                 <TextView
-                    android:id="@+id/chip5_t"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/p3_t"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"
                     android:ellipsize="end"
                     android:gravity="center"
                     android:maxLines="1"
-                    android:maxWidth="120dp"
-                    android:paddingLeft="9dp"
-                    android:paddingRight="9dp"
-                    android:text="Alle"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
+                    android:textColor="#FFFFFFFF"
+                    android:textSize="11sp" />
+            </FrameLayout>
+            <FrameLayout
+                android:id="@+id/p4"
+                android:layout_width="0dp"
+                android:layout_height="26dp"
+                android:layout_marginRight="4dp"
+                android:layout_weight="0.9"
+                android:background="@drawable/chip_bg">
+
+                <ImageView
+                    android:id="@+id/p4_on"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/chip_on"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/p4_t"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
                     android:textColor="#FFFFFFFF"
                     android:textSize="11sp" />
             </FrameLayout>
         </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/row_s1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:id="@+id/s0"
+                android:layout_width="0dp"
+                android:layout_height="24dp"
+                android:layout_marginRight="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/chip_bg">
+
+                <ImageView
+                    android:id="@+id/s0_on"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/chip_on"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/s0_t"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
+                    android:textColor="#FFFFFFFF"
+                    android:textSize="11sp" />
+            </FrameLayout>
+            <FrameLayout
+                android:id="@+id/s1"
+                android:layout_width="0dp"
+                android:layout_height="24dp"
+                android:layout_marginRight="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/chip_bg">
+
+                <ImageView
+                    android:id="@+id/s1_on"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/chip_on"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/s1_t"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
+                    android:textColor="#FFFFFFFF"
+                    android:textSize="11sp" />
+            </FrameLayout>
+            <FrameLayout
+                android:id="@+id/s2"
+                android:layout_width="0dp"
+                android:layout_height="24dp"
+                android:layout_marginRight="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/chip_bg">
+
+                <ImageView
+                    android:id="@+id/s2_on"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/chip_on"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/s2_t"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
+                    android:textColor="#FFFFFFFF"
+                    android:textSize="11sp" />
+            </FrameLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/row_s2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:id="@+id/s3"
+                android:layout_width="0dp"
+                android:layout_height="24dp"
+                android:layout_marginRight="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/chip_bg">
+
+                <ImageView
+                    android:id="@+id/s3_on"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/chip_on"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/s3_t"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
+                    android:textColor="#FFFFFFFF"
+                    android:textSize="11sp" />
+            </FrameLayout>
+            <FrameLayout
+                android:id="@+id/s4"
+                android:layout_width="0dp"
+                android:layout_height="24dp"
+                android:layout_marginRight="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/chip_bg">
+
+                <ImageView
+                    android:id="@+id/s4_on"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/chip_on"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/s4_t"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
+                    android:textColor="#FFFFFFFF"
+                    android:textSize="11sp" />
+            </FrameLayout>
+            <FrameLayout
+                android:id="@+id/s5"
+                android:layout_width="0dp"
+                android:layout_height="24dp"
+                android:layout_marginRight="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/chip_bg">
+
+                <ImageView
+                    android:id="@+id/s5_on"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/chip_on"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/s5_t"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
+                    android:textColor="#FFFFFFFF"
+                    android:textSize="11sp" />
+            </FrameLayout>
+        </LinearLayout>
+
+        <View android:layout_width="match_parent" android:layout_height="4dp" />
 
         <FrameLayout
             android:layout_width="match_parent"

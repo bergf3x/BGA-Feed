@@ -3,49 +3,19 @@ package de.bergf3x.bgawidget;
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
-import java.util.ArrayList;
-import java.util.List;
-
-/** Auswahlmenue fuer das Thema; das aktuelle Thema ist markiert. */
+/** Unsichtbarer Zwischenschritt: setzt das Thema aus einem Chip-Tipp und aktualisiert das Widget. */
 public class TopicActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final int id = getIntent().getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, 0);
-        if (id == 0) {
-            finish();
-            return;
-        }
-        setTitle("Thema wählen");
-
-        final List<String> topics = new ArrayList<>();
-        topics.add("");
-        topics.addAll(Catalog.topicsFor(Catalog.load(this), Catalog.effective(Catalog.load(this), Prefs.feeds(this, id))));
-        List<String> labels = new ArrayList<>();
-        for (String t : topics) labels.add(label(t, topics));
-
-        ListView lv = new ListView(this);
-        lv.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_single_choice, labels));
-        lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        int cur = topics.indexOf(Prefs.topic(this, id));
-        lv.setItemChecked(Math.max(cur, 0), true);
-        lv.setOnItemClickListener((parent, view, pos, rowId) -> {
-            Prefs.setTopic(this, id, topics.get(pos));
+        int id = getIntent().getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, 0);
+        String topic = getIntent().getStringExtra("topic");
+        if (id != 0) {
+            Prefs.setTopic(this, id, topic == null ? "" : topic);
             WidgetProvider.update(this, AppWidgetManager.getInstance(this), id);
-            finish();
-        });
-        setContentView(lv);
-    }
-
-    /** Oberthemen mit Unterthemen heissen "X – alle", Unterthemen sind eingerueckt. */
-    private static String label(String t, List<String> all) {
-        if (t.isEmpty()) return "Alle Themen";
-        int slash = t.indexOf('/');
-        if (slash >= 0) return "\u2003\u2003" + t.substring(slash + 1);
-        for (String o : all) if (o.startsWith(t + "/")) return t + " – alle";
-        return t;
+        }
+        finish();
+        overridePendingTransition(0, 0);
     }
 }

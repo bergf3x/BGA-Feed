@@ -15,10 +15,12 @@ import java.util.Set;
 
 public class WidgetProvider extends AppWidgetProvider {
     static final String ACTION_REFRESH = "de.bergf3x.bgawidget.REFRESH";
-    static final String ACTION_SET_TOPIC = "de.bergf3x.bgawidget.SET_TOPIC";
-    private static final int[] CHIPS = {R.id.chip0, R.id.chip1, R.id.chip2, R.id.chip3};
-    private static final int[] CHIP_ON = {R.id.chip0_on, R.id.chip1_on, R.id.chip2_on, R.id.chip3_on};
-    private static final int[] CHIP_T = {R.id.chip0_t, R.id.chip1_t, R.id.chip2_t, R.id.chip3_t};
+    private static final int[] P = {R.id.p0, R.id.p1, R.id.p2, R.id.p3, R.id.p4};
+    private static final int[] P_ON = {R.id.p0_on, R.id.p1_on, R.id.p2_on, R.id.p3_on, R.id.p4_on};
+    private static final int[] P_T = {R.id.p0_t, R.id.p1_t, R.id.p2_t, R.id.p3_t, R.id.p4_t};
+    private static final int[] S = {R.id.s0, R.id.s1, R.id.s2, R.id.s3, R.id.s4, R.id.s5};
+    private static final int[] S_ON = {R.id.s0_on, R.id.s1_on, R.id.s2_on, R.id.s3_on, R.id.s4_on, R.id.s5_on};
+    private static final int[] S_T = {R.id.s0_t, R.id.s1_t, R.id.s2_t, R.id.s3_t, R.id.s4_t, R.id.s5_t};
 
     @Override
     public void onUpdate(Context ctx, AppWidgetManager mgr, int[] ids) {
@@ -32,14 +34,6 @@ public class WidgetProvider extends AppWidgetProvider {
             AppWidgetManager mgr = AppWidgetManager.getInstance(ctx);
             int[] ids = mgr.getAppWidgetIds(new ComponentName(ctx, WidgetProvider.class));
             for (int id : ids) mgr.notifyAppWidgetViewDataChanged(id, R.id.list);
-            return;
-        }
-        if (ACTION_SET_TOPIC.equals(action)) {
-            int id = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, 0);
-            if (id != 0) {
-                Prefs.setTopic(ctx, id, intent.getStringExtra("topic") == null ? "" : intent.getStringExtra("topic"));
-                update(ctx, AppWidgetManager.getInstance(ctx), id);
-            }
             return;
         }
         super.onReceive(ctx, intent);
@@ -84,30 +78,40 @@ public class WidgetProvider extends AppWidgetProvider {
         List<String> parents = new java.util.ArrayList<>();
         for (String t : topics) if (t.indexOf('/') < 0) parents.add(t);
         String curParent = topic.isEmpty() ? "" : topic.split("/")[0];
-        for (int i = 0; i < CHIPS.length; i++) {
-            int cid = CHIPS[i];
+        for (int i = 0; i < P.length; i++) {
             String value = i == 0 ? "" : (i - 1 < parents.size() ? parents.get(i - 1) : null);
             if (value == null || topics.isEmpty()) {
-                rv.setViewVisibility(cid, android.view.View.GONE);
+                rv.setViewVisibility(P[i], android.view.View.GONE);
                 continue;
             }
             boolean on = value.equals(curParent);
-            rv.setViewVisibility(cid, android.view.View.VISIBLE);
-            rv.setTextViewText(CHIP_T[i], i == 0 ? "Alle" : value);
-            rv.setViewVisibility(CHIP_ON[i], on ? android.view.View.VISIBLE : android.view.View.GONE);
-            rv.setTextColor(CHIP_T[i], on ? dark : fg);
-            Intent ci = new Intent(ctx, WidgetProvider.class).setAction(ACTION_SET_TOPIC);
-            ci.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id);
-            ci.putExtra("topic", value);
-            ci.setData(Uri.parse("bgawidget://chip/" + id + "/" + i));
-            rv.setOnClickPendingIntent(cid,
-                    PendingIntent.getBroadcast(ctx, id * 10 + i, ci, PendingIntent.FLAG_UPDATE_CURRENT | immutable));
+            rv.setViewVisibility(P[i], android.view.View.VISIBLE);
+            rv.setTextViewText(P_T[i], i == 0 ? "Alle" : value);
+            rv.setViewVisibility(P_ON[i], on ? android.view.View.VISIBLE : android.view.View.GONE);
+            rv.setTextColor(P_T[i], on ? dark : fg);
+            rv.setOnClickPendingIntent(P[i], topicPending(ctx, id, 100 + i, value, immutable));
         }
-        boolean hasSub = topic.indexOf('/') >= 0;
-        rv.setTextViewText(R.id.chip5_t, (hasSub ? topic.substring(topic.indexOf('/') + 1) + " " : "") + "▾");
-        rv.setViewVisibility(R.id.chip5_on, hasSub ? android.view.View.VISIBLE : android.view.View.GONE);
-        rv.setTextColor(R.id.chip5_t, hasSub ? dark : fg);
-        rv.setViewVisibility(R.id.chip5, topics.isEmpty() ? android.view.View.GONE : android.view.View.VISIBLE);
+        // Unterthemen des gewaehlten Oberthemas: "Alle <Thema>" plus die Unterthemen (max. 5)
+        List<String> subs = new java.util.ArrayList<>();
+        if (!curParent.isEmpty()) {
+            for (String t : topics) if (t.startsWith(curParent + "/")) subs.add(t);
+            if (!subs.isEmpty()) subs.add(0, curParent);
+        }
+        for (int i = 0; i < S.length; i++) {
+            if (i >= subs.size()) {
+                rv.setViewVisibility(S[i], android.view.View.GONE);
+                continue;
+            }
+            String value = subs.get(i);
+            boolean on = value.equals(topic);
+            rv.setViewVisibility(S[i], android.view.View.VISIBLE);
+            rv.setTextViewText(S_T[i], i == 0 ? "Alle" : value.substring(value.indexOf('/') + 1));
+            rv.setViewVisibility(S_ON[i], on ? android.view.View.VISIBLE : android.view.View.GONE);
+            rv.setTextColor(S_T[i], on ? dark : fg);
+            rv.setOnClickPendingIntent(S[i], topicPending(ctx, id, 200 + i, value, immutable));
+        }
+        rv.setViewVisibility(R.id.row_s1, subs.isEmpty() ? android.view.View.GONE : android.view.View.VISIBLE);
+        rv.setViewVisibility(R.id.row_s2, subs.size() > 3 ? android.view.View.VISIBLE : android.view.View.GONE);
         rv.setInt(R.id.btn_refresh, "setColorFilter", solid);
         rv.setInt(R.id.btn_settings, "setColorFilter", solid);
         rv.setInt(R.id.btn_refresh, "setImageAlpha", textAlpha);
@@ -127,12 +131,6 @@ public class WidgetProvider extends AppWidgetProvider {
         rv.setOnClickPendingIntent(R.id.btn_refresh,
                 PendingIntent.getBroadcast(ctx, 0, refresh, PendingIntent.FLAG_UPDATE_CURRENT | immutable));
 
-        Intent topicIntent = new Intent(ctx, TopicActivity.class);
-        topicIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id);
-        topicIntent.setData(Uri.parse("bgawidget://topic/" + id));
-        rv.setOnClickPendingIntent(R.id.chip5,
-                PendingIntent.getActivity(ctx, id, topicIntent, PendingIntent.FLAG_UPDATE_CURRENT | immutable));
-
         Intent cfg = new Intent(ctx, ConfigActivity.class);
         cfg.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id);
         rv.setOnClickPendingIntent(R.id.btn_settings,
@@ -140,5 +138,13 @@ public class WidgetProvider extends AppWidgetProvider {
 
         mgr.updateAppWidget(id, rv);
         mgr.notifyAppWidgetViewDataChanged(id, R.id.list);
+    }
+
+    private static PendingIntent topicPending(Context ctx, int id, int slot, String topic, int immutable) {
+        Intent i = new Intent(ctx, TopicActivity.class);
+        i.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id);
+        i.putExtra("topic", topic);
+        i.setData(Uri.parse("bgawidget://topic/" + id + "/" + slot));
+        return PendingIntent.getActivity(ctx, id * 1000 + slot, i, PendingIntent.FLAG_UPDATE_CURRENT | immutable);
     }
 }
