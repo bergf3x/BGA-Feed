@@ -61,11 +61,20 @@ final class Weather {
 
     /** Im Hintergrund-Thread aufrufen. true, wenn neue Daten gespeichert wurden. */
     static boolean refreshIfStale(Context c, int place) {
-        boolean fresh = Prefs.weather(c, place) != null
+        String cached = Prefs.weather(c, place);
+        // Alter Stand ohne die neuen Felder (Wind/Regenrisiko) gilt als veraltet
+        boolean fresh = cached != null && cached.contains("wind_speed_10m")
                 && System.currentTimeMillis() - Prefs.weatherTime(c, place) < MAX_AGE;
         if (fresh) return false;
         try {
-            String json = Net.download(url(place));
+            String json;
+            try {
+                json = Net.download(url(place));
+            } catch (Exception ex) {
+                // Notfall: Grundversion ohne Zusatzfelder
+                json = Net.download(url(place).replace(",wind_speed_10m,wind_gusts_10m", "")
+                        .replace(",precipitation_probability_max", "").replace("&hourly=freezing_level_height", ""));
+            }
             if (parse(json) == null) return false;
             try {
                 JSONObject m = new JSONObject(Net.download(mountainUrl(place)));
