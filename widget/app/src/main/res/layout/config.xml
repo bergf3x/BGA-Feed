@@ -80,6 +80,55 @@
             android:layout_height="wrap_content"
             android:max="99" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Schriftfarbe"
+            android:textSize="16sp" />
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/swatches"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+        </HorizontalScrollView>
+
+        <EditText
+            android:id="@+id/et_color"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Eigene Farbe als Hex, z. B. FFD54F"
+            android:inputType="textNoSuggestions|textCapCharacters"
+            android:maxLength="7"
+            android:singleLine="true" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Feeds in diesem Widget"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:id="@+id/feed_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="Das Thema (z. B. Regionalsport) wählst du direkt im Widget oben per Tipp auf den Themen-Button."
+            android:textSize="12sp" />
+
         <Button
             android:id="@+id/btn_save"
             android:layout_width="match_parent"

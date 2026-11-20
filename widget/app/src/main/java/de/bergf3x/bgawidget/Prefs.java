@@ -3,11 +3,13 @@ package de.bergf3x.bgawidget;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.HashSet;
+import java.util.Set;
+
 final class Prefs {
-    static final String FEED_URL =
-            "https://raw.githubusercontent.com/bergf3x/BGA-Feed/main/feed.xml";
     static final int DEFAULT_BG = 75;
     static final int DEFAULT_TEXT = 100;
+    static final int DEFAULT_COLOR = 0xFFFFFF;
 
     private Prefs() {}
 
@@ -23,20 +25,59 @@ final class Prefs {
         return clamp(sp(c).getInt("tx_" + id, DEFAULT_TEXT));
     }
 
-    static void set(Context c, int id, int bg, int text) {
-        sp(c).edit().putInt("bg_" + id, clamp(bg)).putInt("tx_" + id, clamp(text)).apply();
+    /** Schriftfarbe als RGB ohne Alpha. */
+    static int color(Context c, int id) {
+        return sp(c).getInt("tc_" + id, DEFAULT_COLOR) & 0xFFFFFF;
+    }
+
+    static void set(Context c, int id, int bg, int text, int color, Set<String> feeds) {
+        sp(c).edit()
+                .putInt("bg_" + id, clamp(bg))
+                .putInt("tx_" + id, clamp(text))
+                .putInt("tc_" + id, color & 0xFFFFFF)
+                .putStringSet("fd_" + id, new HashSet<>(feeds))
+                .remove("tp_" + id)
+                .apply();
+    }
+
+    /** Gewaehlte Feeds; Standard: nur der Berchtesgadener Anzeiger (wie in Version 1). */
+    static Set<String> feeds(Context c, int id) {
+        Set<String> s = sp(c).getStringSet("fd_" + id, null);
+        if (s == null || s.isEmpty()) {
+            s = new HashSet<>();
+            s.add("bga");
+        }
+        return new HashSet<>(s);
+    }
+
+    /** Aktuell gewaehltes Thema, leer = alle. */
+    static String topic(Context c, int id) {
+        return sp(c).getString("tp_" + id, "");
+    }
+
+    static void setTopic(Context c, int id, String topic) {
+        sp(c).edit().putString("tp_" + id, topic).apply();
     }
 
     static void remove(Context c, int id) {
-        sp(c).edit().remove("bg_" + id).remove("tx_" + id).apply();
+        sp(c).edit().remove("bg_" + id).remove("tx_" + id).remove("tc_" + id)
+                .remove("fd_" + id).remove("tp_" + id).apply();
     }
 
-    static String cache(Context c) {
-        return sp(c).getString("cache", null);
+    static String feedCache(Context c, String feedId) {
+        return sp(c).getString("cache_" + feedId, null);
     }
 
-    static void setCache(Context c, String xml) {
-        sp(c).edit().putString("cache", xml).apply();
+    static void setFeedCache(Context c, String feedId, String xml) {
+        sp(c).edit().putString("cache_" + feedId, xml).apply();
+    }
+
+    static String catalogCache(Context c) {
+        return sp(c).getString("catalog", null);
+    }
+
+    static void setCatalogCache(Context c, String json) {
+        sp(c).edit().putString("catalog", json).apply();
     }
 
     static int clamp(int pct) {
@@ -46,5 +87,10 @@ final class Prefs {
     /** Prozent (1-100) in Alpha-Wert (0-255). */
     static int alpha(int pct) {
         return Math.round(clamp(pct) * 255f / 100f);
+    }
+
+    /** Farbe mit Deckkraft-Prozent und optionalem Faktor (z. B. 0.7 fuer Nebentext). */
+    static int argb(int rgb, int pct, float factor) {
+        return (Math.round(alpha(pct) * factor) << 24) | (rgb & 0xFFFFFF);
     }
 }

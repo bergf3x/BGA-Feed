@@ -43,6 +43,20 @@
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
+            <TextView
+                android:id="@+id/btn_topic"
+                android:layout_width="wrap_content"
+                android:layout_height="24dp"
+                android:layout_marginRight="6dp"
+                android:background="@drawable/chip_bg"
+                android:gravity="center"
+                android:maxLines="1"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="Alle ▾"
+                android:textColor="#FFFFFFFF"
+                android:textSize="12sp" />
+
             <ImageView
                 android:id="@+id/btn_refresh"
                 android:layout_width="28dp"

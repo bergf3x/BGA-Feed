@@ -16,33 +16,44 @@ final class FeedItem {
     String title = "";
     String link = "";
     String category = "";
+    String topic = "";
+    String description = "";
     String pubDate = "";
+    String feedName = "";
+    long time = 0;
 
-    /** Rubrik und Zeit fuer die Zeile unter dem Titel. */
-    String meta() {
-        String time = "";
-        try {
-            SimpleDateFormat in = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH);
-            Date d = in.parse(pubDate.trim());
-            if (d != null) {
-                Calendar a = Calendar.getInstance();
-                Calendar b = Calendar.getInstance();
-                b.setTime(d);
-                boolean today = a.get(Calendar.YEAR) == b.get(Calendar.YEAR)
-                        && a.get(Calendar.DAY_OF_YEAR) == b.get(Calendar.DAY_OF_YEAR);
-                time = new SimpleDateFormat(today ? "HH:mm" : "dd.MM. HH:mm", Locale.GERMANY).format(d);
-            }
-        } catch (Exception ignored) {
-        }
+    /** "Feed · Rubrik · Zeit" fuer die Zeile unter dem Titel. */
+    String meta(boolean withFeedName) {
+        StringBuilder sb = new StringBuilder();
+        if (withFeedName && !feedName.isEmpty()) sb.append(feedName);
         String cat = category.trim();
-        if (cat.isEmpty()) return time;
-        if (time.isEmpty()) return cat;
-        return cat + " · " + time;
+        if (!cat.isEmpty()) {
+            if (sb.length() > 0) sb.append(" · ");
+            sb.append(cat);
+        }
+        String t = timeText();
+        if (!t.isEmpty()) {
+            if (sb.length() > 0) sb.append(" · ");
+            sb.append(t);
+        }
+        return sb.toString();
     }
 
-    static List<FeedItem> parse(String xml) {
+    String timeText() {
+        if (time == 0) return "";
+        Date d = new Date(time);
+        Calendar a = Calendar.getInstance();
+        Calendar b = Calendar.getInstance();
+        b.setTime(d);
+        boolean today = a.get(Calendar.YEAR) == b.get(Calendar.YEAR)
+                && a.get(Calendar.DAY_OF_YEAR) == b.get(Calendar.DAY_OF_YEAR);
+        return new SimpleDateFormat(today ? "HH:mm" : "dd.MM. HH:mm", Locale.GERMANY).format(d);
+    }
+
+    static List<FeedItem> parse(String xml, String feedName) {
         List<FeedItem> out = new ArrayList<>();
         if (xml == null) return out;
+        SimpleDateFormat in = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH);
         try {
             XmlPullParser p = Xml.newPullParser();
             p.setInput(new StringReader(xml));
@@ -57,11 +68,21 @@ final class FeedItem {
                     if ("title".equals(tag)) cur.title += t;
                     else if ("link".equals(tag)) cur.link += t;
                     else if ("category".equals(tag)) cur.category += t;
+                    else if ("topic".equals(tag)) cur.topic += t;
+                    else if ("description".equals(tag)) cur.description += t;
                     else if ("pubDate".equals(tag)) cur.pubDate += t;
                 } else if (e == XmlPullParser.END_TAG) {
                     if ("item".equals(p.getName()) && cur != null) {
                         cur.title = cur.title.trim();
                         cur.link = cur.link.trim();
+                        cur.topic = cur.topic.trim();
+                        cur.description = cur.description.trim();
+                        cur.feedName = feedName;
+                        try {
+                            Date d = in.parse(cur.pubDate.trim());
+                            if (d != null) cur.time = d.getTime();
+                        } catch (Exception ignored) {
+                        }
                         if (!cur.title.isEmpty()) out.add(cur);
                         cur = null;
                     }

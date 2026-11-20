@@ -2,17 +2,13 @@ package de.bergf3x.bgawidget;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 public class ListService extends RemoteViewsService {
 
@@ -26,6 +22,7 @@ public class ListService extends RemoteViewsService {
         private final Context ctx;
         private final int widgetId;
         private List<FeedItem> items = new ArrayList<>();
+        private boolean multi = false;
 
         Factory(Context ctx, int widgetId) {
             this.ctx = ctx;
@@ -34,22 +31,45 @@ public class ListService extends RemoteViewsService {
 
         @Override
         public void onCreate() {
-            items = FeedItem.parse(Prefs.cache(ctx));
+            items = load(false);
         }
 
         @Override
         public void onDataSetChanged() {
-            try {
-                String xml = download(Prefs.FEED_URL + "?t=" + (System.currentTimeMillis() / 60000L));
-                List<FeedItem> fresh = FeedItem.parse(xml);
-                if (!fresh.isEmpty()) {
-                    Prefs.setCache(ctx, xml);
-                    items = fresh;
-                    return;
+            Catalog.refresh(ctx);
+            items = load(true);
+        }
+
+        /** Gewaehlte Feeds laden (live oder aus dem Cache), mischen, nach Thema filtern. */
+        private List<FeedItem> load(boolean online) {
+            List<Catalog.Feed> all = Catalog.load(ctx);
+            Set<String> selected = Prefs.feeds(ctx, widgetId);
+            String topic = Prefs.topic(ctx, widgetId);
+            List<FeedItem> merged = new ArrayList<>();
+            int used = 0;
+            for (Catalog.Feed f : all) {
+                if (!selected.contains(f.id)) continue;
+                used++;
+                String xml = null;
+                if (online) {
+                    try {
+                        xml = Net.download(Net.fresh(f.url));
+                        if (FeedItem.parse(xml, f.name).isEmpty()) xml = null;
+                        else Prefs.setFeedCache(ctx, f.id, xml);
+                    } catch (Exception ignored) {
+                        xml = null;
+                    }
                 }
-            } catch (Exception ignored) {
+                if (xml == null) xml = Prefs.feedCache(ctx, f.id);
+                for (FeedItem it : FeedItem.parse(xml, f.name)) {
+                    String t = it.topic.isEmpty() ? "Region" : it.topic;
+                    if (topic.isEmpty() || topic.equals(t)) merged.add(it);
+                }
             }
-            if (items.isEmpty()) items = FeedItem.parse(Prefs.cache(ctx));
+            multi = used > 1;
+            // Gleiche Zeit (z. B. erster Lauf): Reihenfolge innerhalb des Feeds bleibt erhalten
+            Collections.sort(merged, (a, b) -> Long.compare(b.time, a.time));
+            return merged;
         }
 
         @Override
@@ -59,7 +79,7 @@ public class ListService extends RemoteViewsService {
 
         @Override
         public int getCount() {
-            return Math.min(items.size(), 40);
+            return Math.min(items.size(), 60);
         }
 
         @Override
@@ -68,13 +88,17 @@ public class ListService extends RemoteViewsService {
             if (position < 0 || position >= items.size()) return rv;
             FeedItem it = items.get(position);
             int tx = Prefs.text(ctx, widgetId);
-            int a = Prefs.alpha(tx);
+            int rgb = Prefs.color(ctx, widgetId);
+            String meta = it.meta(multi);
             rv.setTextViewText(R.id.item_title, it.title);
-            rv.setTextViewText(R.id.item_meta, it.meta());
-            rv.setTextColor(R.id.item_title, (a << 24) | 0x00FFFFFF);
-            rv.setTextColor(R.id.item_meta, (Math.round(a * 0.7f) << 24) | 0x00FFFFFF);
+            rv.setTextViewText(R.id.item_meta, meta);
+            rv.setTextColor(R.id.item_title, Prefs.argb(rgb, tx, 1f));
+            rv.setTextColor(R.id.item_meta, Prefs.argb(rgb, tx, 0.7f));
             Intent fill = new Intent();
-            fill.setData(Uri.parse(it.link));
+            fill.putExtra(PreviewActivity.EXTRA_TITLE, it.title);
+            fill.putExtra(PreviewActivity.EXTRA_META, meta);
+            fill.putExtra(PreviewActivity.EXTRA_TEXT, it.description);
+            fill.putExtra(PreviewActivity.EXTRA_LINK, it.link);
             rv.setOnClickFillInIntent(R.id.item_root, fill);
             return rv;
         }
@@ -97,24 +121,6 @@ public class ListService extends RemoteViewsService {
         @Override
         public boolean hasStableIds() {
             return false;
-        }
-
-        private static String download(String url) throws IOException {
-            HttpURLConnection c = (HttpURLConnection) new URL(url).openConnection();
-            c.setConnectTimeout(10000);
-            c.setReadTimeout(15000);
-            c.setRequestProperty("User-Agent", "bga-widget/1.0");
-            try {
-                if (c.getResponseCode() != 200) throw new IOException("HTTP " + c.getResponseCode());
-                InputStream in = c.getInputStream();
-                ByteArrayOutputStream out = new ByteArrayOutputStream();
-                byte[] buf = new byte[8192];
-                int n;
-                while ((n = in.read(buf)) > 0) out.write(buf, 0, n);
-                return out.toString("UTF-8");
-            } finally {
-                c.disconnect();
-            }
         }
     }
 }

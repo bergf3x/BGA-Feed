@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">BGA Widget</string>
     <string name="config_title">Widget-Einstellungen</string>
-    <string name="widget_title">Berchtesgaden aktuell</string>
-    <string name="widget_desc">Lokalnachrichten des Berchtesgadener Anzeigers</string>
+    <string name="widget_title">Nachrichten</string>
+    <string name="widget_desc">Nachrichten aus Berchtesgaden und den Bergen</string>
     <string name="empty_text">Lade Nachrichten …</string>
 </resources>
