@@ -61,7 +61,7 @@ final class Prefs {
 
     static void remove(Context c, int id) {
         sp(c).edit().remove("bg_" + id).remove("tx_" + id).remove("tc_" + id)
-                .remove("fd_" + id).remove("tp_" + id).apply();
+                .remove("fd_" + id).remove("tp_" + id).remove("pl_" + id).apply();
     }
 
     static String feedCache(Context c, String feedId) {
@@ -88,21 +88,33 @@ final class Prefs {
         sp(c).edit().putString("catalog", json).apply();
     }
 
-    static String weather(Context c) {
-        return sp(c).getString("weather", null);
+    static String weather(Context c, int place) {
+        return sp(c).getString("weather_" + place, null);
     }
 
-    static long weatherTime(Context c) {
-        return sp(c).getLong("weather_t", 0);
+    static long weatherTime(Context c, int place) {
+        return sp(c).getLong("weather_t_" + place, 0);
     }
 
-    static void setWeather(Context c, String json) {
-        sp(c).edit().putString("weather", json).putLong("weather_t", System.currentTimeMillis()).apply();
+    static void setWeather(Context c, int place, String json) {
+        sp(c).edit().putString("weather_" + place, json).putLong("weather_t_" + place, System.currentTimeMillis()).apply();
     }
 
-    /** Naechster Abruf soll sofort neu laden. */
+    /** Naechster Abruf soll fuer alle Orte sofort neu laden. */
     static void invalidateWeather(Context c) {
-        sp(c).edit().putLong("weather_t", 0).apply();
+        SharedPreferences.Editor e = sp(c).edit();
+        for (int i = 0; i < Weather.PLACES.length; i++) e.putLong("weather_t_" + i, 0);
+        e.apply();
+    }
+
+    /** Gewaehlter Wetter-Ort dieses Widgets (Index in Weather.PLACES). */
+    static int place(Context c, int id) {
+        int p = sp(c).getInt("pl_" + id, 0);
+        return p >= 0 && p < Weather.PLACES.length ? p : 0;
+    }
+
+    static void setPlace(Context c, int id, int place) {
+        sp(c).edit().putInt("pl_" + id, place).apply();
     }
 
     /** Zeitpunkt, zu dem dieses Handy einen Artikel zum ersten Mal gesehen hat. */

@@ -11,10 +11,18 @@ import java.util.Locale;
 
 /** Wetter fuer Berchtesgaden von Open-Meteo (kostenlos, ohne Schluessel). */
 final class Weather {
-    static final String URL = "https://api.open-meteo.com/v1/forecast?latitude=47.6297&longitude=13.0036"
-            + "&current=temperature_2m,weather_code,is_day"
-            + "&daily=weather_code,temperature_2m_max,temperature_2m_min"
-            + "&timezone=Europe%2FBerlin&forecast_days=4";
+    /** Orte zur Auswahl: Name, Breite, Laenge. */
+    static final String[] PLACES = {"Berchtesgaden", "Ramsau bei Berchtesgaden", "Bischofswiesen"};
+    private static final double[][] COORDS = {{47.6297, 13.0036}, {47.6333, 12.8833}, {47.6417, 12.9833}};
+
+    private static String url(int place) {
+        return "https://api.open-meteo.com/v1/forecast?latitude=" + COORDS[place][0]
+                + "&longitude=" + COORDS[place][1]
+                + "&current=temperature_2m,weather_code,is_day"
+                + "&daily=weather_code,temperature_2m_max,temperature_2m_min"
+                + "&timezone=Europe%2FBerlin&forecast_days=4";
+    }
+
     private static final long MAX_AGE = 15 * 60 * 1000L;
 
     int temp;
@@ -29,18 +37,19 @@ final class Weather {
     private Weather() {}
 
     /** Gespeicherten Stand lesen; null, wenn es noch keinen gibt. */
-    static Weather load(Context c) {
-        return parse(Prefs.weather(c));
+    static Weather load(Context c, int place) {
+        return parse(Prefs.weather(c, place));
     }
 
     /** Im Hintergrund-Thread aufrufen. true, wenn neue Daten gespeichert wurden. */
-    static boolean refreshIfStale(Context c) {
-        boolean fresh = Prefs.weather(c) != null && System.currentTimeMillis() - Prefs.weatherTime(c) < MAX_AGE;
+    static boolean refreshIfStale(Context c, int place) {
+        boolean fresh = Prefs.weather(c, place) != null
+                && System.currentTimeMillis() - Prefs.weatherTime(c, place) < MAX_AGE;
         if (fresh) return false;
         try {
-            String json = Net.download(URL);
+            String json = Net.download(url(place));
             if (parse(json) == null) return false;
-            Prefs.setWeather(c, json);
+            Prefs.setWeather(c, place, json);
             return true;
         } catch (Exception e) {
             return false;

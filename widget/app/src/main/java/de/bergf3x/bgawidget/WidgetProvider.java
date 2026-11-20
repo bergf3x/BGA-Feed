@@ -101,8 +101,15 @@ public class WidgetProvider extends AppWidgetProvider {
 
     /** Wetterbereich oben: aktueller Stand, Hoechst/Tiefst, Vorhersage (nur bei genug Hoehe). */
     private static void applyWeather(Context ctx, RemoteViews rv, int id, int fg, int fgSoft) {
-        Weather w = Weather.load(ctx);
+        int place = Prefs.place(ctx, id);
+        Weather w = Weather.load(ctx, place);
+        rv.setTextViewText(R.id.w_place, Weather.PLACES[place] + " ▾");
         rv.setTextColor(R.id.w_place, fg);
+        Intent pi = new Intent(ctx, PlaceActivity.class);
+        pi.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id);
+        pi.setData(Uri.parse("bgawidget://place/" + id));
+        rv.setOnClickPendingIntent(R.id.w_box, PendingIntent.getActivity(ctx, id * 1000 + 900, pi,
+                PendingIntent.FLAG_UPDATE_CURRENT | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0)));
         rv.setTextColor(R.id.w_desc, fgSoft);
         rv.setTextColor(R.id.w_temp, fg);
         rv.setTextColor(R.id.w_hi, fg);

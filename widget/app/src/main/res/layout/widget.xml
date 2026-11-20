@@ -39,6 +39,7 @@
                 android:src="@drawable/w_cloud" />
 
             <LinearLayout
+                android:id="@+id/w_box"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
@@ -49,8 +50,9 @@
                     android:id="@+id/w_place"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="Berchtesgaden"
+                    android:text="Berchtesgaden ▾"
                     android:textColor="#FFFFFFFF"
                     android:textSize="13sp"
                     android:textStyle="bold" />
