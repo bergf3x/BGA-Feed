@@ -80,6 +80,17 @@ final class Prefs {
         sp(c).edit().putString("catalog", json).apply();
     }
 
+    /** Zeitpunkt, zu dem dieses Handy einen Artikel zum ersten Mal gesehen hat. */
+    static long firstSeen(Context c, String key) {
+        SharedPreferences s = sp(c);
+        long t = s.getLong("seen_" + key, 0);
+        if (t == 0) {
+            t = System.currentTimeMillis();
+            s.edit().putLong("seen_" + key, t).apply();
+        }
+        return t;
+    }
+
     static int clamp(int pct) {
         return Math.max(1, Math.min(100, pct));
     }

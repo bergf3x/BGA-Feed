@@ -17,6 +17,7 @@ final class Catalog {
         String id;
         String name;
         String url;
+        String direct = "";
         List<String> topics = new ArrayList<>();
     }
 
@@ -61,7 +62,8 @@ final class Catalog {
                 Feed f = new Feed();
                 f.id = o.getString("id");
                 f.name = o.getString("name");
-                f.url = o.getString("url");
+                f.url = o.optString("url", "");
+                f.direct = o.optString("direct", "");
                 JSONArray t = o.optJSONArray("topics");
                 if (t != null) for (int k = 0; k < t.length(); k++) f.topics.add(t.getString(k));
                 out.add(f);
@@ -87,9 +89,12 @@ final class Catalog {
         Feed b = new Feed();
         b.id = "alpin";
         b.name = "ALPIN";
-        b.url = RAW + "feeds/alpin.xml";
-        b.topics.add("News");
-        b.topics.add("Touren");
+        b.url = "";
+        b.direct = "https://www.alpin.de/";
+        for (String t : new String[]{"News", "Touren", "Bergbericht", "Tests & Produkte",
+                "Sicherheit & Technik", "Interviews", "Historie", "Foto & Video", "Ratgeber"}) {
+            b.topics.add(t);
+        }
         out.add(b);
         return out;
     }

@@ -177,6 +177,9 @@ SITES = [
         parse=parse_alpin,
         retopic=None,
         order="seen",
+        # alpin.de sperrt GitHub-Server (403). Das Widget liest die Seite deshalb direkt
+        # auf dem Handy; hier wird nur der Katalogeintrag erzeugt.
+        direct=True,
     ),
 ]
 
@@ -295,6 +298,10 @@ def main():
     catalog = []
     for site in SITES:
         if args.site and site["id"] != args.site:
+            continue
+        if site.get("direct"):
+            catalog.append(dict(id=site["id"], name=site["name"], url="",
+                                direct=site["base"] + site["link"], topics=site["topics"]))
             continue
         topics = run_site(site, now, args.html, args.out, args.state)
         if topics is not None:

@@ -53,9 +53,16 @@ public class ListService extends RemoteViewsService {
                 String xml = null;
                 if (online) {
                     try {
-                        xml = Net.download(Net.fresh(f.url));
-                        if (FeedItem.parse(xml, f.name).isEmpty()) xml = null;
-                        else Prefs.setFeedCache(ctx, f.id, xml);
+                        if (!f.direct.isEmpty()) {
+                            // Seite sperrt Server: direkt auf dem Handy lesen und selbst parsen
+                            List<FeedItem> page = AlpinParser.parse(Net.download(f.direct), f.name);
+                            for (FeedItem it : page) it.time = Prefs.firstSeen(ctx, it.link);
+                            xml = page.isEmpty() ? null : AlpinParser.toXml(page);
+                        } else {
+                            xml = Net.download(Net.fresh(f.url));
+                            if (FeedItem.parse(xml, f.name).isEmpty()) xml = null;
+                        }
+                        if (xml != null) Prefs.setFeedCache(ctx, f.id, xml);
                     } catch (Exception ignored) {
                         xml = null;
                     }

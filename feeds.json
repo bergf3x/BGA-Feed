@@ -14,7 +14,7 @@
   {
    "id": "alpin",
    "name": "ALPIN",
-   "url": "https://raw.githubusercontent.com/bergf3x/BGA-Feed/main/feeds/alpin.xml",
+   "url": "",
    "topics": [
     "News",
     "Touren",
@@ -24,8 +24,10 @@
     "Interviews",
     "Historie",
     "Foto & Video",
-    "Ratgeber"
-   ]
+    "Ratgeber",
+    "Sonstiges"
+   ],
+   "direct": "https://www.alpin.de/"
   }
  ]
 }

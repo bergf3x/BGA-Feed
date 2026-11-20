@@ -15,7 +15,6 @@ import java.util.Set;
 
 public class WidgetProvider extends AppWidgetProvider {
     static final String ACTION_REFRESH = "de.bergf3x.bgawidget.REFRESH";
-    static final String ACTION_TOPIC = "de.bergf3x.bgawidget.TOPIC";
 
     @Override
     public void onUpdate(Context ctx, AppWidgetManager mgr, int[] ids) {
@@ -31,29 +30,12 @@ public class WidgetProvider extends AppWidgetProvider {
             for (int id : ids) mgr.notifyAppWidgetViewDataChanged(id, R.id.list);
             return;
         }
-        if (ACTION_TOPIC.equals(action)) {
-            int id = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, 0);
-            if (id != 0) {
-                cycleTopic(ctx, id);
-                update(ctx, AppWidgetManager.getInstance(ctx), id);
-            }
-            return;
-        }
         super.onReceive(ctx, intent);
     }
 
     @Override
     public void onDeleted(Context ctx, int[] ids) {
         for (int id : ids) Prefs.remove(ctx, id);
-    }
-
-    /** Alle -> erstes Thema -> zweites ... -> wieder Alle. */
-    private static void cycleTopic(Context ctx, int id) {
-        List<String> topics = Catalog.topicsFor(Catalog.load(ctx), Prefs.feeds(ctx, id));
-        String cur = Prefs.topic(ctx, id);
-        int idx = cur.isEmpty() ? -1 : topics.indexOf(cur);
-        int next = idx + 1;
-        Prefs.setTopic(ctx, id, next >= topics.size() ? "" : topics.get(next));
     }
 
     static void update(Context ctx, AppWidgetManager mgr, int id) {
@@ -80,10 +62,10 @@ public class WidgetProvider extends AppWidgetProvider {
         RemoteViews rv = new RemoteViews(ctx.getPackageName(), R.layout.widget);
         rv.setInt(R.id.bg_fill, "setImageAlpha", Prefs.alpha(bg));
         rv.setInt(R.id.bg_border, "setImageAlpha", Math.round(Prefs.alpha(Math.max(bg, 20)) * 0.45f));
-        rv.setTextViewText(R.id.title, title);
+        rv.setTextViewText(R.id.title, topic.isEmpty() ? title : title + " · " + topic);
         rv.setTextColor(R.id.title, Prefs.argb(rgb, tx, 1f));
         rv.setTextColor(R.id.empty, Prefs.argb(rgb, tx, 1f));
-        rv.setTextViewText(R.id.btn_topic, (topic.isEmpty() ? "Alle Themen" : topic) + " ▾");
+        rv.setTextViewText(R.id.btn_topic, (topic.isEmpty() ? "Alle" : topic) + " ▾");
         rv.setTextColor(R.id.btn_topic, Prefs.argb(rgb, tx, 1f));
         rv.setViewVisibility(R.id.btn_topic, topics.isEmpty() ? android.view.View.GONE : android.view.View.VISIBLE);
         rv.setInt(R.id.btn_refresh, "setColorFilter", solid);
@@ -108,11 +90,11 @@ public class WidgetProvider extends AppWidgetProvider {
         rv.setOnClickPendingIntent(R.id.btn_refresh,
                 PendingIntent.getBroadcast(ctx, 0, refresh, PendingIntent.FLAG_UPDATE_CURRENT | immutable));
 
-        Intent topicIntent = new Intent(ctx, WidgetProvider.class).setAction(ACTION_TOPIC);
+        Intent topicIntent = new Intent(ctx, TopicActivity.class);
         topicIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id);
         topicIntent.setData(Uri.parse("bgawidget://topic/" + id));
         rv.setOnClickPendingIntent(R.id.btn_topic,
-                PendingIntent.getBroadcast(ctx, id, topicIntent, PendingIntent.FLAG_UPDATE_CURRENT | immutable));
+                PendingIntent.getActivity(ctx, id, topicIntent, PendingIntent.FLAG_UPDATE_CURRENT | immutable));
 
         Intent cfg = new Intent(ctx, ConfigActivity.class);
         cfg.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id);
