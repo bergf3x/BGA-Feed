@@ -37,6 +37,20 @@ def _clean_parts(a):
 
 
 # ---------------------------------------------------------------- Berchtesgadener Anzeiger
+PLUS = re.compile(r"plus", re.I)
+
+
+def is_plus(a):
+    """Plus+-Kennzeichnung: Bild (alt/src/class) oder Element mit passender CSS-Klasse."""
+    for img in a.find_all("img"):
+        if PLUS.search(" ".join([img.get("alt", ""), img.get("src", ""), " ".join(img.get("class", []))])):
+            return True
+    for el in a.find_all(True):
+        if any(PLUS.search(c) for c in el.get("class", [])):
+            return True
+    return False
+
+
 def parse_bga(html, base):
     from bs4 import BeautifulSoup
 
@@ -63,11 +77,15 @@ def parse_bga(html, base):
             title = max(parts, key=len)
         if not title:
             continue
-        plus = bool(a.find("img", alt=re.compile(r"Plus", re.I)))
+        plus = is_plus(a)
         prev = items.get(sid)
-        # Der gleiche Artikel taucht mehrfach auf; die Variante mit Teaser gewinnt.
-        if prev and len(prev["teaser"]) >= len(teaser):
-            continue
+        if prev:
+            # Der gleiche Artikel taucht mehrfach auf (mit/ohne Bild); Plus gilt, sobald
+            # eine Variante es zeigt, und die Variante mit Teaser gewinnt.
+            plus = plus or prev["plus"]
+            if len(prev["teaser"]) >= len(teaser):
+                prev["plus"] = plus
+                continue
         items[sid] = dict(
             sid=sid, url=url, title=title, teaser=teaser, category=category, plus=plus
         )
@@ -218,6 +236,9 @@ def fetch_site(site):
             it.setdefault("topic", topic)
             if site["retopic"]:
                 it["topic"] = site["retopic"](it, topic)
+            old = found.get(it["sid"])
+            if old and old.get("plus"):
+                it["plus"] = True  # Plus-Kennzeichen geht nicht verloren, wenn eine andere Seite es nicht zeigt
             found[it["sid"]] = it
     return list(found.values())
 
@@ -236,9 +257,8 @@ def build(site, items, state, now):
         if key not in state_items:
             state_items[key] = {**it, "first_seen": now.isoformat()}
         else:
-            state_items[key].update(
-                {k: it[k] for k in ("title", "teaser", "category", "plus", "topic")}
-            )
+            state_items[key].update({k: it[k] for k in ("title", "teaser", "category", "topic")})
+            state_items[key]["plus"] = bool(state_items[key].get("plus") or it.get("plus"))
     ordered = sorted(state_items.values(), key=sort_key(site), reverse=True)[:MAX_ITEMS]
     state["items"] = {str(x["sid"]): x for x in ordered}
 
