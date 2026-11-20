@@ -28,6 +28,7 @@ public class WidgetProvider extends AppWidgetProvider {
     public void onReceive(Context ctx, Intent intent) {
         String action = intent.getAction();
         if (ACTION_REFRESH.equals(action)) {
+            Prefs.invalidateWeather(ctx);
             AppWidgetManager mgr = AppWidgetManager.getInstance(ctx);
             int[] ids = mgr.getAppWidgetIds(new ComponentName(ctx, WidgetProvider.class));
             for (int id : ids) mgr.notifyAppWidgetViewDataChanged(id, R.id.list);
@@ -57,20 +58,15 @@ public class WidgetProvider extends AppWidgetProvider {
             topic = "";
             Prefs.setTopic(ctx, id, "");
         }
-        String title = "Nachrichten";
-        if (selected.size() == 1) {
-            Catalog.Feed f = Catalog.find(all, selected.iterator().next());
-            if (f != null) title = f.name;
-        }
         int immutable = Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0;
         int fg = Prefs.argb(rgb, tx, 1f);
         int dark = 0xFF1B1F22;
 
         rv.setInt(R.id.bg_fill, "setImageAlpha", Prefs.alpha(bg));
         rv.setInt(R.id.bg_border, "setImageAlpha", Math.round(Prefs.alpha(Math.max(bg, 20)) * 0.45f));
-        rv.setTextViewText(R.id.title, title);
-        rv.setTextColor(R.id.title, fg);
         rv.setTextColor(R.id.empty, fg);
+
+        applyWeather(ctx, rv, id, fg, Prefs.argb(rgb, tx, 0.7f));
 
         List<String> parents = new java.util.ArrayList<>();
         for (String t : topics) if (t.indexOf('/') < 0) parents.add(t);
@@ -99,13 +95,62 @@ public class WidgetProvider extends AppWidgetProvider {
         rv.setInt(R.id.btn_settings, "setImageAlpha", textAlpha);
     }
 
-    /** Weiche Aktualisierung nur der Kopfzeile + Liste, ohne das ganze Widget neu aufzubauen. */
-    static void refresh(Context ctx, int id) {
-        AppWidgetManager mgr = AppWidgetManager.getInstance(ctx);
+    private static final int[] FC_D = {R.id.fc1_d, R.id.fc2_d, R.id.fc3_d};
+    private static final int[] FC_I = {R.id.fc1_i, R.id.fc2_i, R.id.fc3_i};
+    private static final int[] FC_T = {R.id.fc1_t, R.id.fc2_t, R.id.fc3_t};
+
+    /** Wetterbereich oben: aktueller Stand, Hoechst/Tiefst, Vorhersage (nur bei genug Hoehe). */
+    private static void applyWeather(Context ctx, RemoteViews rv, int id, int fg, int fgSoft) {
+        Weather w = Weather.load(ctx);
+        rv.setTextColor(R.id.w_place, fg);
+        rv.setTextColor(R.id.w_desc, fgSoft);
+        rv.setTextColor(R.id.w_temp, fg);
+        rv.setTextColor(R.id.w_hi, fg);
+        rv.setTextColor(R.id.w_lo, fgSoft);
+        if (w == null) {
+            rv.setImageViewResource(R.id.w_icon, R.drawable.w_cloud);
+            rv.setTextViewText(R.id.w_desc, "Wetter lädt …");
+            rv.setTextViewText(R.id.w_temp, "–");
+            rv.setTextViewText(R.id.w_hi, "");
+            rv.setTextViewText(R.id.w_lo, "");
+        } else {
+            rv.setImageViewResource(R.id.w_icon, Weather.icon(w.code, w.day));
+            rv.setTextViewText(R.id.w_desc, Weather.text(w.code, w.day));
+            rv.setTextViewText(R.id.w_temp, Weather.deg(w.temp));
+            rv.setTextViewText(R.id.w_hi, w.days > 0 ? "↑ " + Weather.deg(w.hi[0]) : "");
+            rv.setTextViewText(R.id.w_lo, w.days > 0 ? "↓ " + Weather.deg(w.lo[0]) : "");
+        }
+        for (int i = 0; i < 3; i++) {
+            int d = i + 1;
+            boolean ok = w != null && d < w.days;
+            rv.setTextColor(FC_D[i], fgSoft);
+            rv.setTextColor(FC_T[i], fg);
+            rv.setTextViewText(FC_D[i], ok ? w.dayName[d] : "");
+            rv.setTextViewText(FC_T[i], ok ? Weather.deg(w.hi[d]) + " / " + Weather.deg(w.lo[d]) : "");
+            rv.setImageViewResource(FC_I[i], ok ? Weather.icon(w.dayCode[d], true) : R.drawable.w_cloud);
+            rv.setViewVisibility(FC_I[i], ok ? android.view.View.VISIBLE : android.view.View.INVISIBLE);
+        }
+        int minH = AppWidgetManager.getInstance(ctx).getAppWidgetOptions(id)
+                .getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, 300);
+        rv.setViewVisibility(R.id.fc_box, minH >= 215 ? android.view.View.VISIBLE : android.view.View.GONE);
+    }
+
+    @Override
+    public void onAppWidgetOptionsChanged(Context ctx, AppWidgetManager mgr, int id, android.os.Bundle opts) {
+        refreshHeader(ctx, id);
+    }
+
+    /** Nur die Kopfzeile (Wetter, Chips, Farben) neu zeichnen, ohne die Liste neu zu laden. */
+    static void refreshHeader(Context ctx, int id) {
         RemoteViews rv = new RemoteViews(ctx.getPackageName(), R.layout.widget);
         applyHeader(ctx, rv, id);
-        mgr.partiallyUpdateAppWidget(id, rv);
-        mgr.notifyAppWidgetViewDataChanged(id, R.id.list);
+        AppWidgetManager.getInstance(ctx).partiallyUpdateAppWidget(id, rv);
+    }
+
+    /** Weiche Aktualisierung nur der Kopfzeile + Liste, ohne das ganze Widget neu aufzubauen. */
+    static void refresh(Context ctx, int id) {
+        refreshHeader(ctx, id);
+        AppWidgetManager.getInstance(ctx).notifyAppWidgetViewDataChanged(id, R.id.list);
     }
 
     static void update(Context ctx, AppWidgetManager mgr, int id) {

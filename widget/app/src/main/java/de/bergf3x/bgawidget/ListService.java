@@ -36,6 +36,7 @@ public class ListService extends RemoteViewsService {
         @Override
         public void onDataSetChanged() {
             Catalog.refresh(ctx);
+            if (Weather.refreshIfStale(ctx)) WidgetProvider.refreshHeader(ctx, widgetId);
             items = load(true);
         }
 

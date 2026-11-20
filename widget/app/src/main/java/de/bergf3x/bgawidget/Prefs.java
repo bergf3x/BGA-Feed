@@ -88,6 +88,23 @@ final class Prefs {
         sp(c).edit().putString("catalog", json).apply();
     }
 
+    static String weather(Context c) {
+        return sp(c).getString("weather", null);
+    }
+
+    static long weatherTime(Context c) {
+        return sp(c).getLong("weather_t", 0);
+    }
+
+    static void setWeather(Context c, String json) {
+        sp(c).edit().putString("weather", json).putLong("weather_t", System.currentTimeMillis()).apply();
+    }
+
+    /** Naechster Abruf soll sofort neu laden. */
+    static void invalidateWeather(Context c) {
+        sp(c).edit().putLong("weather_t", 0).apply();
+    }
+
     /** Zeitpunkt, zu dem dieses Handy einen Artikel zum ersten Mal gesehen hat. */
     static long firstSeen(Context c, String key) {
         SharedPreferences s = sp(c);
