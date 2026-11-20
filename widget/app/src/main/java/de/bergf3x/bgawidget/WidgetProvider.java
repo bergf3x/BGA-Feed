@@ -15,6 +15,7 @@ import java.util.Set;
 
 public class WidgetProvider extends AppWidgetProvider {
     static final String ACTION_REFRESH = "de.bergf3x.bgawidget.REFRESH";
+    static final String ACTION_SET_TOPIC = "de.bergf3x.bgawidget.SET_TOPIC";
     private static final int[] P = {R.id.p0, R.id.p1, R.id.p2, R.id.p3, R.id.p4};
     private static final int[] P_ON = {R.id.p0_on, R.id.p1_on, R.id.p2_on, R.id.p3_on, R.id.p4_on};
     private static final int[] P_T = {R.id.p0_t, R.id.p1_t, R.id.p2_t, R.id.p3_t, R.id.p4_t};
@@ -32,6 +33,15 @@ public class WidgetProvider extends AppWidgetProvider {
             AppWidgetManager mgr = AppWidgetManager.getInstance(ctx);
             int[] ids = mgr.getAppWidgetIds(new ComponentName(ctx, WidgetProvider.class));
             for (int id : ids) mgr.notifyAppWidgetViewDataChanged(id, R.id.list);
+            return;
+        }
+        if (ACTION_SET_TOPIC.equals(action)) {
+            int id = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, 0);
+            String t = intent.getStringExtra("topic");
+            if (id != 0) {
+                Prefs.setTopic(ctx, id, t == null ? "" : t);
+                refresh(ctx, id);
+            }
             return;
         }
         super.onReceive(ctx, intent);
@@ -87,7 +97,9 @@ public class WidgetProvider extends AppWidgetProvider {
             rv.setTextViewText(P_T[i], label);
             rv.setViewVisibility(P_ON[i], on ? android.view.View.VISIBLE : android.view.View.GONE);
             rv.setTextColor(P_T[i], on ? dark : fg);
-            rv.setOnClickPendingIntent(P[i], topicPending(ctx, id, 100 + i, value, hasSubs, immutable));
+            rv.setOnClickPendingIntent(P[i], hasSubs
+                    ? topicPending(ctx, id, 100 + i, value, true, immutable)
+                    : topicBroadcast(ctx, id, 100 + i, value, immutable));
         }
         rv.setInt(R.id.btn_refresh, "setColorFilter", solid);
         rv.setInt(R.id.btn_settings, "setColorFilter", solid);
@@ -187,6 +199,15 @@ public class WidgetProvider extends AppWidgetProvider {
 
         mgr.updateAppWidget(id, rv);
         mgr.notifyAppWidgetViewDataChanged(id, R.id.list);
+    }
+
+    /** Direkt wechselndes Thema ohne Fenster (kein Start-Effekt des Launchers). */
+    private static PendingIntent topicBroadcast(Context ctx, int id, int slot, String topic, int immutable) {
+        Intent i = new Intent(ctx, WidgetProvider.class).setAction(ACTION_SET_TOPIC);
+        i.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id);
+        i.putExtra("topic", topic);
+        i.setData(Uri.parse("bgawidget://topicset/" + id + "/" + slot));
+        return PendingIntent.getBroadcast(ctx, id * 1000 + slot, i, PendingIntent.FLAG_UPDATE_CURRENT | immutable);
     }
 
     private static PendingIntent topicPending(Context ctx, int id, int slot, String topic, boolean menu, int immutable) {
