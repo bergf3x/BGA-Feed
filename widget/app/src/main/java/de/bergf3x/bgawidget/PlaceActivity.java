@@ -1,11 +1,10 @@
 package de.bergf3x.bgawidget;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.appwidget.AppWidgetManager;
 import android.os.Bundle;
 
-/** Auswahlmenue fuer den Wetter-Ort. */
+/** Auswahl-Blase fuer den Wetter-Ort. */
 public class PlaceActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,17 +14,17 @@ public class PlaceActivity extends Activity {
             finish();
             return;
         }
-        new AlertDialog.Builder(this)
-                .setTitle("Wetter-Ort")
-                .setSingleChoiceItems(Weather.PLACES, Prefs.place(this, id), (d, which) -> {
-                    d.dismiss();
-                    Prefs.setPlace(this, id, which);
-                    WidgetProvider.refreshHeader(this, id);
-                    // Daten neu laden lassen: ListService holt dabei das Wetter fuer den neuen Ort
-                    AppWidgetManager.getInstance(this).notifyAppWidgetViewDataChanged(id, R.id.list);
-                    finish();
-                })
-                .setOnCancelListener(d -> finish())
-                .show();
+        final Bubble b = new Bubble(this, 270, 8);
+        b.text("Wetter-Ort", 11, 0x99FFFFFF, false).setPadding(b.px(10), b.px(4), b.px(10), b.px(6));
+        int cur = Prefs.place(this, id);
+        for (int i = 0; i < Weather.PLACES.length; i++) {
+            final int place = i;
+            b.row(Weather.PLACES[i], i == cur, () -> {
+                Prefs.setPlace(this, id, place);
+                WidgetProvider.refreshHeader(this, id);
+                // ListService holt beim Neuladen auch das Wetter fuer den neuen Ort
+                AppWidgetManager.getInstance(this).notifyAppWidgetViewDataChanged(id, R.id.list);
+            });
+        }
     }
 }

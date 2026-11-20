@@ -1,14 +1,12 @@
 package de.bergf3x.bgawidget;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.appwidget.AppWidgetManager;
 import android.os.Bundle;
 
-import java.util.ArrayList;
 import java.util.List;
 
-/** Chip-Tipp: Thema direkt setzen oder (bei Oberthemen mit Unterthemen) ein kleines Untermenue zeigen. */
+/** Chip-Tipp: Thema direkt setzen oder (bei Oberthemen mit Unterthemen) die Auswahl-Blase zeigen. */
 public class TopicActivity extends Activity {
     private int id;
 
@@ -24,34 +22,25 @@ public class TopicActivity extends Activity {
         }
         if (!getIntent().getBooleanExtra("menu", false)) {
             apply(topic);
+            finish();
+            overridePendingTransition(0, 0);
             return;
         }
-        final List<String> values = new ArrayList<>();
-        List<String> labels = new ArrayList<>();
-        values.add(topic);
-        labels.add("Alle in „" + topic + "“");
+        final Bubble b = new Bubble(this, 270, 8);
+        b.text(topic, 11, 0x99FFFFFF, false).setPadding(b.px(10), b.px(4), b.px(10), b.px(6));
+        String current = Prefs.topic(this, id);
+        final String parent = topic;
+        b.row("Alle in „" + topic + "“", current.equals(topic), () -> apply(parent));
         List<Catalog.Feed> all = Catalog.load(this);
         for (String t : Catalog.topicsFor(all, Catalog.effective(all, Prefs.feeds(this, id)))) {
-            if (t.startsWith(topic + "/")) {
-                values.add(t);
-                labels.add(t.substring(t.indexOf('/') + 1));
-            }
+            if (!t.startsWith(topic + "/")) continue;
+            final String value = t;
+            b.row(t.substring(t.indexOf('/') + 1), t.equals(current), () -> apply(value));
         }
-        int cur = values.indexOf(Prefs.topic(this, id));
-        new AlertDialog.Builder(this)
-                .setTitle(topic)
-                .setSingleChoiceItems(labels.toArray(new String[0]), cur, (d, which) -> {
-                    d.dismiss();
-                    apply(values.get(which));
-                })
-                .setOnCancelListener(d -> finish())
-                .show();
     }
 
     private void apply(String topic) {
         Prefs.setTopic(this, id, topic);
         WidgetProvider.refresh(this, id);
-        finish();
-        overridePendingTransition(0, 0);
     }
 }
