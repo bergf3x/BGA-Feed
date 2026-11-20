@@ -22,7 +22,6 @@ public class ListService extends RemoteViewsService {
         private final Context ctx;
         private final int widgetId;
         private List<FeedItem> items = new ArrayList<>();
-        private boolean multi = false;
 
         Factory(Context ctx, int widgetId) {
             this.ctx = ctx;
@@ -43,34 +42,20 @@ public class ListService extends RemoteViewsService {
         /** Gewaehlte Feeds laden (live oder aus dem Cache), mischen, nach Thema filtern. */
         private List<FeedItem> load(boolean online) {
             List<Catalog.Feed> all = Catalog.load(ctx);
-            Set<String> selected = Prefs.feeds(ctx, widgetId);
+            Set<String> selected = Catalog.effective(all, Prefs.feeds(ctx, widgetId));
             String topic = Prefs.topic(ctx, widgetId);
             List<FeedItem> merged = new ArrayList<>();
-            int used = 0;
             for (Catalog.Feed f : all) {
                 if (!selected.contains(f.id)) continue;
-                used++;
                 String xml = null;
                 if (online) {
                     try {
-                        if (!f.direct.isEmpty()) {
-                            // Seite sperrt Server: direkt auf dem Handy lesen und selbst parsen
-                            List<FeedItem> page = AlpinParser.parse(Net.download(f.direct), f.name);
-                            for (FeedItem it : page) it.time = Prefs.firstSeen(ctx, it.link);
-                            if (page.isEmpty()) {
-                                Prefs.setStatus(ctx, f.id, "Seite geladen, aber keine Artikel erkannt");
-                            } else {
-                                xml = AlpinParser.toXml(page);
-                                Prefs.setStatus(ctx, f.id, "");
-                            }
+                        xml = Net.download(Net.fresh(f.url));
+                        if (FeedItem.parse(xml, f.name).isEmpty()) {
+                            xml = null;
+                            Prefs.setStatus(ctx, f.id, "Feed ist leer");
                         } else {
-                            xml = Net.download(Net.fresh(f.url));
-                            if (FeedItem.parse(xml, f.name).isEmpty()) {
-                                xml = null;
-                                Prefs.setStatus(ctx, f.id, "Feed ist leer");
-                            } else {
-                                Prefs.setStatus(ctx, f.id, "");
-                            }
+                            Prefs.setStatus(ctx, f.id, "");
                         }
                         if (xml != null) Prefs.setFeedCache(ctx, f.id, xml);
                     } catch (Exception e) {
@@ -84,7 +69,6 @@ public class ListService extends RemoteViewsService {
                     if (topic.isEmpty() || t.equals(topic) || t.startsWith(topic + "/")) merged.add(it);
                 }
             }
-            multi = used > 1;
             if (online && merged.isEmpty()) showEmptyReason(all, selected, topic);
             // Gleiche Zeit (z. B. erster Lauf): Reihenfolge innerhalb des Feeds bleibt erhalten
             Collections.sort(merged, (a, b) -> Long.compare(b.time, a.time));
@@ -124,11 +108,13 @@ public class ListService extends RemoteViewsService {
             FeedItem it = items.get(position);
             int tx = Prefs.text(ctx, widgetId);
             int rgb = Prefs.color(ctx, widgetId);
-            String meta = it.meta(multi);
+            String meta = it.meta();
             rv.setTextViewText(R.id.item_title, it.title);
             rv.setTextViewText(R.id.item_meta, meta);
             rv.setTextColor(R.id.item_title, Prefs.argb(rgb, tx, 1f));
             rv.setTextColor(R.id.item_meta, Prefs.argb(rgb, tx, 0.7f));
+            rv.setInt(R.id.item_accent, "setColorFilter", it.accentColor());
+            rv.setViewVisibility(R.id.item_plus, it.plus ? android.view.View.VISIBLE : android.view.View.GONE);
             Intent fill = new Intent();
             fill.putExtra(PreviewActivity.EXTRA_TITLE, it.title);
             fill.putExtra(PreviewActivity.EXTRA_META, meta);

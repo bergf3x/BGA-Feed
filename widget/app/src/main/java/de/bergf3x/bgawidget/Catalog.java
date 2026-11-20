@@ -17,7 +17,6 @@ final class Catalog {
         String id;
         String name;
         String url;
-        String direct = "";
         List<String> topics = new ArrayList<>();
     }
 
@@ -42,6 +41,14 @@ final class Catalog {
         return null;
     }
 
+    /** Gewaehlte Feeds, die es noch gibt; sonst der erste Feed (z. B. wenn ein entfernter Feed gewaehlt war). */
+    static java.util.Set<String> effective(List<Feed> all, java.util.Set<String> selected) {
+        java.util.Set<String> out = new java.util.LinkedHashSet<>();
+        for (Feed f : all) if (selected.contains(f.id)) out.add(f.id);
+        if (out.isEmpty() && !all.isEmpty()) out.add(all.get(0).id);
+        return out;
+    }
+
     /** Alle Themen der gewaehlten Feeds, ohne Doppelte, in Katalog-Reihenfolge. */
     static List<String> topicsFor(List<Feed> all, java.util.Set<String> selected) {
         List<String> out = new ArrayList<>();
@@ -63,7 +70,6 @@ final class Catalog {
                 f.id = o.getString("id");
                 f.name = o.getString("name");
                 f.url = o.optString("url", "");
-                f.direct = o.optString("direct", "");
                 JSONArray t = o.optJSONArray("topics");
                 if (t != null) for (int k = 0; k < t.length(); k++) f.topics.add(t.getString(k));
                 out.add(f);
@@ -82,20 +88,9 @@ final class Catalog {
         a.url = RAW + "feed.xml";
         a.topics.add("Region");
         a.topics.add("Nachrichten");
-        a.topics.add("Regionalsport");
         a.topics.add("Sport");
         a.topics.add("Kultur");
         out.add(a);
-        Feed b = new Feed();
-        b.id = "alpin";
-        b.name = "ALPIN";
-        b.url = "";
-        b.direct = "https://www.alpin.de/";
-        for (String t : new String[]{"News", "Touren", "Bergbericht", "Tests & Produkte",
-                "Sicherheit & Technik", "Interviews", "Historie", "Foto & Video", "Ratgeber"}) {
-            b.topics.add(t);
-        }
-        out.add(b);
         return out;
     }
 }

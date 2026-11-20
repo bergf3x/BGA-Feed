@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Erzeugt aus Nachrichtenseiten ohne eigenen RSS-Feed private RSS-Feeds.
+"""Erzeugt aus Nachrichtenseiten ohne eigenen RSS-Feed private RSS-Feeds (derzeit: Berchtesgadener Anzeiger).
 
 Nutzung:
   python scrape.py                          # alle Seiten live abrufen
-  python scrape.py --site alpin --html f    # statt Abruf eine lokale HTML-Datei parsen (Test)
+  python scrape.py --site bga --html f    # statt Abruf eine lokale HTML-Datei parsen (Test)
 
-Ausgabe je Seite: ein Feed (bga -> feed.xml, alpin -> feeds/alpin.xml) plus feeds.json
+Ausgabe je Seite: ein Feed (bga -> feed.xml) plus feeds.json
 (Katalog fuer das Widget: Name, Feed-URL, vorhandene Themen).
 
 Die Seiten zeigen bei den Artikeln keine Zeitangaben. Als Veroeffentlichungszeit wird der
@@ -28,13 +28,6 @@ MAX_ITEMS = 400
 MAX_PER_TOPIC = 40  # damit auch kleine Themen nicht von grossen verdraengt werden
 
 BGA_ARID = re.compile(r"_arid,(\d+)\.html")
-ALP_ID = re.compile(r"/(\d{4,9})/(?:artikel|galerie|produkttest|tour)_")
-SKIP_PART = re.compile(r"[\d:,.\s]*(Std\.?|Hm|km|Min\.?)?")
-HAS_WORD = re.compile(r"[A-Za-zÄÖÜäöüß]{3,}")
-
-
-def _clean_parts(a):
-    return [p for p in a.stripped_strings if HAS_WORD.search(p) and not SKIP_PART.fullmatch(p)]
 
 
 # ---------------------------------------------------------------- Berchtesgadener Anzeiger
@@ -102,69 +95,6 @@ def bga_topic(item, source_topic):
     return source_topic
 
 
-# ---------------------------------------------------------------- ALPIN
-ALP_TOPICS = [
-    ("/home/news/", "News"),
-    ("/touren/bergbericht/", "Bergbericht"),
-    ("/touren/", "Touren"),
-    ("/tests-produkte/", "Tests & Produkte"),
-    ("/sicher-am-berg/", "Sicherheit & Technik"),
-    ("/home/interviews/", "Interviews"),
-    ("/home/historisches/", "Historie"),
-    ("/home/olaf-klaert-das-schon/", "Ratgeber"),
-    ("/foto-video/", "Foto & Video"),
-    ("/alpin-plus/", "ALPIN+"),
-]
-
-
-def alp_topic(path):
-    for prefix, name in ALP_TOPICS:
-        if path.startswith(prefix):
-            return name
-    return "Sonstiges"
-
-
-def parse_alpin(html, base):
-    from bs4 import BeautifulSoup
-
-    soup = BeautifulSoup(html, "html.parser")
-    items = {}
-    for art in soup.find_all("article"):
-        a = art.find("a", href=ALP_ID)
-        if not a:
-            continue  # Anzeigen, Taboola, Platzhalter
-        href = a["href"]
-        sid = int(ALP_ID.search(href).group(1))
-        if sid in items:
-            continue
-        path = href.replace(base, "")
-        url = href if href.startswith("http") else base + href
-        h1 = a.find("h1")
-        h2 = a.find("h2")
-        if h1:  # grosser Aufmacher: h1 = Titel, h2 = Unterzeile
-            title = h1.get_text(" ", strip=True)
-            category = h2.get_text(" ", strip=True) if h2 else ""
-            teaser = ""
-        elif h2:
-            title = h2.get_text(" ", strip=True)
-            parts = _clean_parts(a)
-            category = teaser = ""
-            if title in parts:
-                idx = parts.index(title)
-                category = parts[idx - 1] if idx > 0 else ""
-                teaser = parts[idx + 1] if idx + 1 < len(parts) else ""
-        else:
-            continue
-        title = re.sub(r"\s+", " ", title).strip()
-        if not title:
-            continue
-        items[sid] = dict(
-            sid=sid, url=url, title=title, teaser=teaser, category=category, plus=False,
-            topic=alp_topic(path),
-        )
-    return list(items.values())
-
-
 # ---------------------------------------------------------------- Seiten-Konfiguration
 SITES = [
     dict(
@@ -202,22 +132,6 @@ SITES = [
         parse=parse_bga,
         retopic=bga_topic,
         order="id",
-    ),
-    dict(
-        id="alpin",
-        name="ALPIN",
-        base="https://www.alpin.de",
-        link="/",
-        feed="feeds/alpin.xml",
-        state="state-alpin.json",
-        sources=[("/", "")],
-        topics=[t for _, t in ALP_TOPICS] + ["Sonstiges"],
-        parse=parse_alpin,
-        retopic=None,
-        order="seen",
-        # alpin.de sperrt GitHub-Server (403). Das Widget liest die Seite deshalb direkt
-        # auf dem Handy; hier wird nur der Katalogeintrag erzeugt.
-        direct=True,
     ),
 ]
 
@@ -348,10 +262,6 @@ def main():
     catalog = []
     for site in SITES:
         if args.site and site["id"] != args.site:
-            continue
-        if site.get("direct"):
-            catalog.append(dict(id=site["id"], name=site["name"], url="",
-                                direct=site["base"] + site["link"], topics=site["topics"]))
             continue
         topics = run_site(site, now, args.html, args.out, args.state)
         if topics is not None:

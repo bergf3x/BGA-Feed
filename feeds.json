@@ -1,44 +1,5 @@
 {
  "feeds": [
-  {
-   "id": "bga",
-   "name": "Berchtesgadener Anzeiger",
-   "url": "https://raw.githubusercontent.com/bergf3x/BGA-Feed/main/feed.xml",
-   "topics": [
-    "Region",
-    "Region/Berchtesgadener Land",
-    "Region/Bergsteiger & Naturfreunde",
-    "Nachrichten",
-    "Nachrichten/Deutschland & Welt",
-    "Nachrichten/Wirtschaft",
-    "Nachrichten/Wissenschaft",
-    "Nachrichten/Digital",
-    "Nachrichten/Boulevard",
-    "Sport",
-    "Sport/Sport aus der Region",
-    "Sport/Fußball",
-    "Sport/Wintersport",
-    "Kultur"
-   ]
-  },
-  {
-   "id": "alpin",
-   "name": "ALPIN",
-   "url": "",
-   "direct": "https://www.alpin.de/",
-   "topics": [
-    "News",
-    "Bergbericht",
-    "Touren",
-    "Tests & Produkte",
-    "Sicherheit & Technik",
-    "Interviews",
-    "Historie",
-    "Ratgeber",
-    "Foto & Video",
-    "ALPIN+",
-    "Sonstiges"
-   ]
-  }
+  {"id": "bga", "name": "Berchtesgadener Anzeiger", "url": "https://raw.githubusercontent.com/bergf3x/BGA-Feed/main/feed.xml", "topics": ["Region", "Region/Berchtesgadener Land", "Region/Bergsteiger & Naturfreunde", "Nachrichten", "Nachrichten/Deutschland & Welt", "Nachrichten/Wirtschaft", "Nachrichten/Wissenschaft", "Nachrichten/Digital", "Nachrichten/Boulevard", "Sport", "Sport/Sport aus der Region", "Sport/Fußball", "Sport/Wintersport", "Kultur"]}
  ]
 }

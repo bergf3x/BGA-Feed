@@ -23,7 +23,7 @@ public class TopicActivity extends Activity {
 
         final List<String> topics = new ArrayList<>();
         topics.add("");
-        topics.addAll(Catalog.topicsFor(Catalog.load(this), Prefs.feeds(this, id)));
+        topics.addAll(Catalog.topicsFor(Catalog.load(this), Catalog.effective(Catalog.load(this), Prefs.feeds(this, id))));
         List<String> labels = new ArrayList<>();
         for (String t : topics) labels.add(label(t, topics));
 

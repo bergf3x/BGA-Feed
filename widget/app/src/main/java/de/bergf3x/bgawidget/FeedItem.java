@@ -21,26 +21,31 @@ final class FeedItem {
     String pubDate = "";
     String feedName = "";
     long time = 0;
+    boolean plus = false;
 
-    /** "Feed · Rubrik · Zeit" fuer die Zeile unter dem Titel. */
-    String meta(boolean withFeedName) {
-        StringBuilder sb = new StringBuilder();
-        if (withFeedName && !feedName.isEmpty()) sb.append(feedName);
-        String cat = category.trim();
-        if (!cat.isEmpty()) {
-            if (sb.length() > 0) sb.append(" · ");
-            sb.append(cat);
-        }
+    /** "Region · vor 12 Min." fuer die Zeile unter dem Titel. */
+    String meta() {
+        String leaf = topic.isEmpty() ? category.trim() : topic.substring(topic.lastIndexOf('/') + 1);
+        if (leaf.isEmpty()) leaf = topic.isEmpty() ? "Region" : leaf;
         String t = timeText();
-        if (!t.isEmpty()) {
-            if (sb.length() > 0) sb.append(" · ");
-            sb.append(t);
+        return t.isEmpty() ? leaf : leaf + " · " + t;
+    }
+
+    int accentColor() {
+        String parent = topic.isEmpty() ? "Region" : topic.split("/")[0];
+        switch (parent) {
+            case "Region": return 0xFF5DCAA5;
+            case "Nachrichten": return 0xFF85B7EB;
+            case "Sport": return 0xFFF0997B;
+            case "Kultur": return 0xFFED93B1;
+            default: return 0xFFAFA9EC;
         }
-        return sb.toString();
     }
 
     String timeText() {
         if (time == 0) return "";
+        long diff = System.currentTimeMillis() - time;
+        if (diff >= 0 && diff < 60L * 60000) return "vor " + Math.max(1, diff / 60000) + " Min.";
         Date d = new Date(time);
         Calendar a = Calendar.getInstance();
         Calendar b = Calendar.getInstance();
@@ -74,6 +79,10 @@ final class FeedItem {
                 } else if (e == XmlPullParser.END_TAG) {
                     if ("item".equals(p.getName()) && cur != null) {
                         cur.title = cur.title.trim();
+                        if (cur.title.startsWith("\uD83D\uDD12")) {
+                            cur.plus = true;
+                            cur.title = cur.title.substring(2).trim();
+                        }
                         cur.link = cur.link.trim();
                         cur.topic = cur.topic.trim();
                         cur.description = cur.description.trim();
