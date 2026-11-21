@@ -5,6 +5,9 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.08",
+                    "+ Einheitlicher „Schließen“-Knopf in allen Blasen (Ort, Thema, Suche, Aktualisierung, Gemerkt, Webcams, Info)",
+                    "~ Medien im Themen-Menü hervorgehoben mit kleinem Kennzeichen"},
             {"1.07",
                     "+ Kopf, Wetter, Werkzeuge und Reiter bleiben oben stehen, nur die Nachrichten scrollen",
                     "+ Nachrichtenliste nach Medium gegliedert, mit Überschrift je Medium (App und Widget)"},

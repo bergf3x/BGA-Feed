@@ -52,6 +52,11 @@ public class SearchActivity extends Activity {
 
     private void show(String q) {
         b.box.removeViews(fixed, b.box.getChildCount() - fixed);
+        showResults(q);
+        b.pill("Schließen", false, true, () -> { });
+    }
+
+    private void showResults(String q) {
         if (q.length() < 2) {
             b.text("Mindestens 2 Buchstaben. Gesucht wird in den zuletzt geladenen und in den gemerkten Artikeln.",
                     13, b.soft, false).setPadding(b.px(10), b.px(6), b.px(10), b.px(8));

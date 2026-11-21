@@ -49,6 +49,8 @@ public class TopicActivity extends Activity {
                 final String value = t;
                 b.row(body, t.substring(t.indexOf('/') + 1), t.equals(current), () -> apply(value), true);
             }
+            b.space(4);
+            b.pill("Schließen", false, true, () -> { });
             return;
         }
         // mehrere Medien: je Medium ein eigener Block mit Ueberschrift, Auswahl gilt nur fuer dieses Medium
@@ -61,13 +63,7 @@ public class TopicActivity extends Activity {
                     android.view.ViewGroup.LayoutParams.MATCH_PARENT, Math.max(1, b.px(1)));
             sp.setMargins(b.px(14), b.px(8), b.px(14), b.px(4));
             body.addView(sep, sp);
-            android.widget.TextView h = new android.widget.TextView(this);
-            h.setText(f.name);
-            h.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 13);
-            h.setTypeface(null, android.graphics.Typeface.BOLD);
-            h.setTextColor(b.title);
-            h.setPadding(b.px(12), b.px(6), b.px(12), b.px(2));
-            body.addView(h);
+            body.addView(mediumHeader(b, f.name));
             final String all1 = parent + tag;
             b.row(body, "Alle von " + f.name, current.equals(all1), () -> apply(all1), true);
             for (String t : f.topics) {
@@ -76,6 +72,57 @@ public class TopicActivity extends Activity {
                 b.row(body, t.substring(t.indexOf('/') + 1), value.equals(current), () -> apply(value), true);
             }
         }
+        b.space(4);
+        b.pill("Schließen", false, true, () -> { });
+    }
+
+    /** Hervorgehobene Medien-Ueberschrift mit kleinem Kennzeichen (eigene Buchstaben-Marke, kein Original-Logo). */
+    private android.view.View mediumHeader(Bubble b, String name) {
+        android.widget.LinearLayout row = new android.widget.LinearLayout(this);
+        row.setOrientation(android.widget.LinearLayout.HORIZONTAL);
+        row.setGravity(android.view.Gravity.CENTER_VERTICAL);
+        row.setPadding(b.px(10), b.px(8), b.px(10), b.px(8));
+        android.graphics.drawable.GradientDrawable bg = new android.graphics.drawable.GradientDrawable();
+        bg.setColor(b.light ? 0x1A000000 : 0x2EFFFFFF);
+        bg.setCornerRadius(b.px(12));
+        row.setBackground(bg);
+        String low = name.toLowerCase(java.util.Locale.GERMANY);
+        String mark;
+        int color;
+        if (low.contains("bgland")) {
+            mark = "B24";
+            color = 0xFF85B7EB;
+        } else if (low.contains("anzeiger")) {
+            mark = "BA";
+            color = 0xFF5DCAA5;
+        } else {
+            mark = name.substring(0, Math.min(2, name.length())).toUpperCase(java.util.Locale.GERMANY);
+            color = 0xFFF0997B;
+        }
+        android.widget.TextView badge = new android.widget.TextView(this);
+        badge.setText(mark);
+        badge.setGravity(android.view.Gravity.CENTER);
+        badge.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 10);
+        badge.setTypeface(null, android.graphics.Typeface.BOLD);
+        badge.setTextColor(0xFF10151B);
+        android.graphics.drawable.GradientDrawable bb = new android.graphics.drawable.GradientDrawable();
+        bb.setColor(color);
+        bb.setCornerRadius(b.px(7));
+        badge.setBackground(bb);
+        row.addView(badge, new android.widget.LinearLayout.LayoutParams(b.px(32), b.px(24)));
+        android.widget.TextView t = new android.widget.TextView(this);
+        t.setText(name);
+        t.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 15);
+        t.setTypeface(null, android.graphics.Typeface.BOLD);
+        t.setTextColor(b.title);
+        t.setPadding(b.px(10), 0, 0, 0);
+        row.addView(t);
+        android.widget.LinearLayout.LayoutParams lp = new android.widget.LinearLayout.LayoutParams(
+                android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
+        lp.topMargin = b.px(10);
+        lp.bottomMargin = b.px(2);
+        row.setLayoutParams(lp);
+        return row;
     }
 
     private void apply(String topic) {

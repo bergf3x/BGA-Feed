@@ -50,6 +50,7 @@ public class PlaceActivity extends Activity {
         foot.setText(sp);
         foot.setMovementMethod(android.text.method.LinkMovementMethod.getInstance());
         foot.setLinkTextColor(b.tx);
+        b.pill("Schließen", false, true, () -> { });
     }
 
     private void link(android.text.SpannableString sp, String full, String word, String url) {

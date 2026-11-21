@@ -47,6 +47,7 @@ public class UpdateActivity extends Activity {
         });
         battery = b.pillKeep("", false, this::askBattery);
         b.pillKeep("Autostart-Einstellung öffnen (Xiaomi)", false, this::openAutostart);
+        b.pill("Schließen", false, true, () -> { });
     }
 
     @Override
