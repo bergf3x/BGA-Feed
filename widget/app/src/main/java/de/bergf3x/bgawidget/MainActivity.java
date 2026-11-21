@@ -39,9 +39,11 @@ public class MainActivity extends Activity {
     private final Handler ui = new Handler(Looper.getMainLooper());
     private ScrollView scroll;
     /** Wetterkarte gross / als schmale Zeile (beim Scrollen der Nachrichten). */
-    private static boolean wxSmall;
-    private long wxChanged;
     private View wxFull, wxMini, hintCard;
+    /** Ueberlagerung oben ueber der Liste: schmale Wetterzeile + mitlaufende Reiter (synchron zum Scrollen). */
+    private LinearLayout overlay, overlayChips;
+    private View chipsInline;
+    private int[] winCols = {0xFF101010};
     private LinearLayout page;
     private LinearLayout top;
     private float d;
@@ -241,6 +243,8 @@ public class MainActivity extends Activity {
             bg.setColor(0xFF000000 | cols[0]);
         }
         getWindow().setBackgroundDrawable(bg);
+        winCols = new int[cols.length];
+        for (int i = 0; i < cols.length; i++) winCols[i] = 0xFF000000 | cols[i];
         int base = 0xFF000000 | cols[0];
         getWindow().setStatusBarColor(base);
         getWindow().setNavigationBarColor(base);
@@ -258,7 +262,6 @@ public class MainActivity extends Activity {
         // Oben (Kopf, Wetter, Werkzeuge, Reiter) steht fest, nur die Nachrichtenliste scrollt.
         int keepY = 0;
         if (scroll == null) {
-            wxSmall = false; // neues Fenster: Wetter gross
             LinearLayout root = new LinearLayout(this);
             root.setOrientation(LinearLayout.VERTICAL);
             top = new LinearLayout(this);
@@ -267,27 +270,26 @@ public class MainActivity extends Activity {
             root.addView(top, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             scroll = new ScrollView(this);
             scroll.setVerticalScrollBarEnabled(false);
-            // Wetterkarte beim Scrollen zur schmalen Zeile, ganz oben wieder gross
-            scroll.setOnScrollChangeListener((v, x, y, ox, oy) -> {
-                long now = android.os.SystemClock.uptimeMillis();
-                if (!wxSmall && y > px(56) && y > oy) {
-                    wxChanged = now;
-                    setWxSmall(true);
-                } else if (wxSmall && y <= 0 && now - wxChanged > 450) {
-                    // kurze Sperre: kein Hin- und Herspringen, wenn die Liste nach dem Einklappen kaum noch scrollt
-                    setWxSmall(false);
-                }
-            });
+            // Wetterkarte scrollt mit der Liste weg; oben bleibt synchron eine schmale Wetterzeile + Reiter stehen
+            scroll.setOnScrollChangeListener((v, x, y, ox, oy) -> updateOverlay(y));
+            scroll.getViewTreeObserver().addOnGlobalLayoutListener(() -> updateOverlay(scroll.getScrollY()));
             page = new LinearLayout(this);
             page.setOrientation(LinearLayout.VERTICAL);
             page.setPadding(px(14), 0, px(14), px(28));
             scroll.addView(page, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            root.addView(scroll, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
+            FrameLayout stack = new FrameLayout(this);
+            stack.addView(scroll, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            overlay = new LinearLayout(this);
+            overlay.setOrientation(LinearLayout.VERTICAL);
+            overlay.setPadding(px(14), 0, px(14), 0);
+            stack.addView(overlay, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.TOP));
+            root.addView(stack, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
             setContentView(root);
         } else {
             keepY = scroll.getScrollY();
             top.removeAllViews();
             page.removeAllViews();
+            overlay.removeAllViews();
         }
 
         final LinearLayout list = page;
@@ -295,11 +297,28 @@ public class MainActivity extends Activity {
         wxFull = null;
         wxMini = null;
         hintCard = null;
+        chipsInline = null;
         header();
+        page = list;
         if (widgetCount() == 0 && !Prefs.addCardHidden(this)) addWidgetCard(true);
         if (Prefs.showWeather(this, ID)) weatherCard();
+        int before = page.getChildCount();
+        newsChips();
+        if (page.getChildCount() > before) chipsInline = page.getChildAt(page.getChildCount() - 1);
+        // Ueberlagerung: schmale Wetterzeile + Kopie der Reiter
+        if (wxMini != null) overlay.addView(wxMini, lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 10));
+        overlayChips = new LinearLayout(this);
+        overlayChips.setOrientation(LinearLayout.VERTICAL);
+        overlay.addView(overlayChips, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        page = overlayChips;
         newsChips();
         page = list;
+        overlayChips.setVisibility(View.INVISIBLE);
+        if (wxMini != null) {
+            wxMini.setAlpha(0f);
+            wxMini.setVisibility(View.INVISIBLE);
+        }
+        overlay.setBackground(null);
         news();
         addWidgetCard(false);
         footer();
@@ -509,8 +528,6 @@ public class MainActivity extends Activity {
         page.addView(card, lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 10));
         wxFull = card;
         wxMini = miniWeather(w, place);
-        page.addView(wxMini, lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 10));
-        applyWx();
     }
 
     /** Schmale Wetterzeile, wenn die Nachrichten nach unten gescrollt sind; Antippen klappt die Karte wieder auf. */
@@ -540,27 +557,47 @@ public class MainActivity extends Activity {
         row.addView(text("▾", 14, soft, false));
         row.setContentDescription("Wetter " + Weather.PLACES[place] + (w != null ? ", " + Weather.deg(w.temp) + ", " + Weather.text(w.code, w.day) : "") + ", aufklappen");
         row.setOnClickListener(v -> {
-            setWxSmall(false);
             if (scroll != null) scroll.smoothScrollTo(0, 0);
         });
         return row;
     }
 
-    private void applyWx() {
-        if (wxFull != null) wxFull.setVisibility(wxSmall ? View.GONE : View.VISIBLE);
-        if (wxMini != null) wxMini.setVisibility(wxSmall ? View.VISIBLE : View.GONE);
-        if (hintCard != null) hintCard.setVisibility(wxSmall ? View.GONE : View.VISIBLE);
+    /**
+     * Synchron zum Scrollen: die grosse Wetterkarte laeuft mit der Liste nach oben weg, waehrend die schmale
+     * Wetterzeile im letzten Stueck weich einblendet; danach bleiben Zeile und Reiter oben stehen.
+     */
+    private void updateOverlay(int y) {
+        if (overlay == null || overlayChips == null) return;
+        int miniBlock = 0;
+        if (wxMini != null && wxFull != null && wxFull.getParent() != null) {
+            int h = wxMini.getHeight();
+            if (h == 0) h = px(48);
+            int end = wxFull.getBottom() - h;           // Karte ist bis auf Zeilenhoehe weggescrollt
+            float a = Math.max(0f, Math.min(1f, (y - (end - h)) / (float) h));
+            wxMini.setAlpha(a);
+            wxMini.setVisibility(a > 0f ? View.VISIBLE : View.INVISIBLE);
+            miniBlock = h + px(10);
+        }
+        boolean stick = chipsInline != null && y >= chipsInline.getTop() - miniBlock;
+        if (chipsInline == null && wxFull != null) stick = y >= wxFull.getBottom() - miniBlock + px(10);
+        if (stick != (overlayChips.getVisibility() == View.VISIBLE)) {
+            if (chipsInline instanceof android.widget.HorizontalScrollView && overlayChips.getChildCount() > 0
+                    && overlayChips.getChildAt(0) instanceof android.widget.HorizontalScrollView) {
+                android.widget.HorizontalScrollView a = (android.widget.HorizontalScrollView) chipsInline;
+                android.widget.HorizontalScrollView b = (android.widget.HorizontalScrollView) overlayChips.getChildAt(0);
+                if (stick) b.scrollTo(a.getScrollX(), 0);
+                else a.scrollTo(b.getScrollX(), 0);
+            }
+            overlayChips.setVisibility(stick ? View.VISIBLE : View.INVISIBLE);
+            overlay.setBackground(stick ? windowBg() : null);
+        }
     }
 
-    private void setWxSmall(boolean small) {
-        if (small == wxSmall || wxFull == null) return;
-        wxSmall = small;
-        if (top != null && top.getParent() instanceof ViewGroup) {
-            android.transition.AutoTransition t = new android.transition.AutoTransition();
-            t.setDuration(220);
-            android.transition.TransitionManager.beginDelayedTransition((ViewGroup) top.getParent(), t);
-        }
-        applyWx();
+    private android.graphics.drawable.Drawable windowBg() {
+        if (winCols.length > 1) return new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, winCols);
+        GradientDrawable g = new GradientDrawable();
+        g.setColor(winCols[0]);
+        return g;
     }
 
     private View forecast(Weather w) {
@@ -881,10 +918,7 @@ public class MainActivity extends Activity {
         for (int i = 0; i < 2; i++) ((LinearLayout.LayoutParams) row.getChildAt(i).getLayoutParams()).weight = 1f;
         box.addView(row);
         page.addView(box, lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, first ? 0 : 14, 0, 12));
-        if (first) {
-            hintCard = box;
-            if (wxSmall) box.setVisibility(View.GONE);
-        }
+        if (first) hintCard = box;
     }
 
     private View bigPill(String label, boolean primary, final Runnable click) {
