@@ -200,8 +200,51 @@ final class Direct {
 
     // ------------------------------------------------------------------ BGLand24
 
+    private static final Pattern BG_ART = Pattern.compile("-\\d{6,}\\.html$");
+
     private static List<Map<String, Object>> scrapeBgland() throws IOException {
-        String html = Net.download(BGL + "/");
+        String home = Net.download(BGL + "/");
+        // Rubrikseiten der Region (z. B. /bgland/region-berchtesgaden/) selbst auf der Startseite finden
+        java.util.Set<String> cats = new java.util.LinkedHashSet<>();
+        Matcher cm = A_ANY.matcher(home);
+        while (cm.find()) {
+            String h = cm.group(1).split("#")[0].split("\\?")[0];
+            if (h.startsWith(BGL)) h = h.substring(BGL.length());
+            else if (h.startsWith("https://bgland24.de")) h = h.substring("https://bgland24.de".length());
+            if (h.matches("/bgland/[a-z0-9-]+/?")) cats.add(h.endsWith("/") ? h : h + "/");
+        }
+        for (String c : new String[]{"/bgland/region-bad-reichenhall/", "/bgland/region-berchtesgaden/", "/bgland/rupertiwinkel/",
+                "/bgland/region-traunstein/", "/bgland/region-salzburg/"}) cats.add(c);
+        List<String> pages = new ArrayList<>(cats);
+        if (pages.size() > 14) pages = pages.subList(0, 14);
+        ExecutorService ex = Executors.newFixedThreadPool(5);
+        List<Callable<List<Map<String, Object>>>> tasks = new ArrayList<>();
+        for (final String pg : pages) {
+            tasks.add(() -> parseBgland(Net.download(BGL + pg)));
+        }
+        Map<String, Map<String, Object>> byUrl = new java.util.LinkedHashMap<>();
+        for (Map<String, Object> it : parseBgland(home)) byUrl.put((String) it.get("url"), it);
+        try {
+            for (Future<List<Map<String, Object>>> fu : ex.invokeAll(tasks, 30, TimeUnit.SECONDS)) {
+                if (fu.isCancelled()) continue;
+                try {
+                    for (Map<String, Object> it : fu.get()) {
+                        Map<String, Object> old = byUrl.get((String) it.get("url"));
+                        // Region-Rubrik hat Vorrang vor dem allgemeinen Thema der Startseite
+                        if (old == null || ((String) it.get("topic")).startsWith("Region")) byUrl.put((String) it.get("url"), it);
+                    }
+                } catch (Exception ignored) {
+                }
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        } finally {
+            ex.shutdownNow();
+        }
+        return new ArrayList<>(byUrl.values());
+    }
+
+    private static List<Map<String, Object>> parseBgland(String html) throws IOException {
         String host = "bgland24.de";
         String[] skip = {"/category/", "/tag/", "/author/", "/page/", "/impressum", "/datenschutz", "/kontakt", "/wp-", "/feed", "/tags/", "/kategorie"};
         java.util.Set<String> seen = new java.util.HashSet<>();
@@ -224,7 +267,7 @@ final class Direct {
             if (!h.equals(host)) continue;
             boolean bad = false;
             for (String s : skip) if (path.contains(s)) bad = true;
-            if (bad) continue;
+            if (bad || !BG_ART.matcher(path).find()) continue;
             String slug = path.replaceAll("/+$", "");
             slug = slug.substring(slug.lastIndexOf('/') + 1);
             String inner = m.group(2);
@@ -281,6 +324,8 @@ final class Direct {
     private static final Pattern P_DATUM = Pattern.compile("Datum:?\\s*(?:<[^>]*>\\s*)*(\\d{1,2})\\.(\\d{1,2})\\.(\\d{4})\\s*,?\\s*(\\d{1,2}):(\\d{2})");
     private static final Pattern P_ISO = Pattern.compile("(?:article:published_time|datePublished|og:article:published_time)[\"']?\\s*(?:content=|:)?\\s*[\"']?(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}(?::\\d{2})?(?:[.,]\\d+)?(?:Z|[+-]\\d{2}:?\\d{2})?)");
     private static final Pattern P_ISO2 = Pattern.compile("content=[\"'](\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}[^\"']*)[\"'][^>]*(?:published_time)|(?:published_time)[^>]*content=[\"'](\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}[^\"']*)[\"']");
+
+    private static final Pattern PAID = Pattern.compile("\"isAccessibleForFree\"\\s*:\\s*\"?false\"?|\"paid\"\\s*:\\s*1\\b|\"paywall\"\\s*:\\s*\"hard\"", Pattern.CASE_INSENSITIVE);
 
     /** Liest die echte Zeit aus einer Artikelseite; -1 wenn nicht gefunden. */
     static long parseTime(String html) {
@@ -341,8 +386,10 @@ final class Direct {
         for (final Map<String, Object> it : todo) {
             tasks.add(() -> {
                 try {
-                    long t = parseTime(Net.download((String) it.get("url")));
+                    String page = Net.download((String) it.get("url"));
+                    long t = parseTime(page);
                     if (t > 0) it.put("pub", t);
+                    if (!f.id.equals("bga") && PAID.matcher(page).find()) it.put("plus", true);
                 } catch (Exception ignored) {
                 }
                 return true;
