@@ -506,16 +506,27 @@ BR_PLACES = re.compile(
     r"Tittmoning|Siegsdorf|Grassau|Übersee|Watzmann|Untersberg|Kehlstein|Obersalzberg|Jenner|Hochkalter|Salzach")
 
 
+def br_topic(cat):
+    c = (cat or "").lower()
+    if "bayern" in c: return "Bayern"
+    if "sport" in c: return "Sport"
+    if "wirtschaft" in c: return "Nachrichten/Wirtschaft"
+    if "kultur" in c: return "Kultur"
+    if "wissen" in c: return "Nachrichten/Wissenschaft"
+    if "netzwelt" in c: return "Nachrichten/Digital"
+    return "Nachrichten/Deutschland & Welt"
+
+
 def fetch_br(site):
-    """BR24: offizieller Feed, nur Meldungen mit Ortsbezug Berchtesgadener Land / Chiemgau."""
+    """BR24: offizieller Feed, alle Rubriken (App ordnet nach Region/Rubrik)."""
     import requests
 
     r = requests.get(site["rss"], headers={"User-Agent": UA}, timeout=30)
     r.raise_for_status()
-    items = [it for it in _rss_items(r.content, art=False) if BR_PLACES.search(it["title"] + " " + it["teaser"])]
+    items = _rss_items(r.content, art=False)
     for it in items:
-        it["topic"] = site["topic"]
-    print(f"[{site['id']}] RSS {r.status_code} -> {len(items)} mit Ortsbezug")
+        it["topic"] = br_topic(it.get("category"))
+    print(f"[{site['id']}] RSS {r.status_code} -> {len(items)}")
     return items
 
 
