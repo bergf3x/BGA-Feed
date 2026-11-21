@@ -35,6 +35,8 @@ public class WebcamActivity extends Activity {
     private final Handler ui = new Handler(Looper.getMainLooper());
     private Bubble b;
     private int cur = -1;
+    private int listY = 0;
+    private android.widget.ScrollView listScroll;
     private int gen;
     private ImageView prevImg;
     private TextView prevStatus;
@@ -79,6 +81,9 @@ public class WebcamActivity extends Activity {
         b.box.removeAllViews();
         b.text("Webcams", 11, b.soft, false).setPadding(b.px(10), b.px(4), b.px(10), b.px(6));
         LinearLayout body = b.scrollBox(0.62f);
+        listScroll = (android.widget.ScrollView) body.getParent();
+        final int restoreY = listY;
+        listScroll.post(() -> listScroll.scrollTo(0, restoreY));
         section(body, "Live-Bild", "Bild direkt hier in der Blase · " + Webcams.CAMS.length + " Kameras", 0xFF5DCAA5, 0);
         for (int i = 0; i < Webcams.CAMS.length; i++) {
             final int idx = i;
@@ -157,6 +162,7 @@ public class WebcamActivity extends Activity {
     // ---------------------------------------------------------------- Vorschau
 
     private void showCam(int i) {
+        if (listScroll != null && cur < 0) listY = listScroll.getScrollY();
         cur = i;
         final Webcams.Cam cam = Webcams.CAMS[i];
         gen++;
