@@ -408,7 +408,9 @@ final class Bubble {
 
     /** Scrollbarer Container (Hoehe hoechstens heightFraction des Bildschirms) fuer beliebige Inhalte. */
     LinearLayout scrollBox(float heightFraction) {
-        final int max = Math.round(act.getResources().getDisplayMetrics().heightPixels * heightFraction);
+        // Hoehe begrenzen: Blase beginnt bei 18 % der Hoehe; Kopf und "Schliessen" muessen immer sichtbar bleiben
+        int screenH = act.getResources().getDisplayMetrics().heightPixels;
+        final int max = Math.max(px(160), Math.min(Math.round(screenH * heightFraction), Math.round(screenH * 0.82f) - px(200)));
         ScrollView sv = new ScrollView(act) {
             @Override
             protected void onMeasure(int w, int h) {

@@ -294,8 +294,8 @@ public class WidgetProvider extends AppWidgetProvider {
         boolean ok = weatherWidget || Prefs.newsOk(ctx);
         String line;
         String sw = weatherWidget ? "" : Prefs.srcWarn(ctx);
-        if (ok) line = stand.isEmpty() ? "" : "Stand " + stand + (sw.isEmpty() ? "" : "  ·  " + sw);
-        else line = "Offline – " + (stand.isEmpty() ? "keine Daten" : "Stand " + stand);
+        if (ok) line = stand.isEmpty() ? "" : "Letzte Aktualisierung " + stand + (sw.isEmpty() ? "" : "  ·  " + sw);
+        else line = "Offline – " + (stand.isEmpty() ? "keine Daten" : "Letzte Aktualisierung " + stand);
         rv.setTextViewText(R.id.w_stand, line);
         if (ok) Pal.text(ctx, id, rv, R.id.w_stand, cw, 0.7f); else rv.setTextColor(R.id.w_stand, 0xFFFFB74D);
         rv.setViewVisibility(R.id.w_stand, line.isEmpty() || !plan.tools ? android.view.View.GONE : android.view.View.VISIBLE);

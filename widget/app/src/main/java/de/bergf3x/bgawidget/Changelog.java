@@ -5,6 +5,9 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.20",
+                    "! Auswahl-Blasen: „Schließen“ bleibt immer sichtbar, auch wenn mehrere Reiter offen sind (Liste scrollt darüber)",
+                    "~ „Stand xx:xx“ heißt jetzt „Letzte Aktualisierung xx:xx“"},
             {"1.19",
                     "! Nach einem Themenwechsel springt die Liste nach oben (stand vorher an der alten Stelle, neueste Meldungen wirkten „verschwunden“)",
                     "! Abo-Kennzeichen von BGLand24/chiemgau24 wurden vom laufenden Abruf überschrieben; jetzt sofort sichtbar",

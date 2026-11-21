@@ -370,9 +370,9 @@ public class MainActivity extends Activity {
         long t = Prefs.newsTime(this);
         String stand = t == 0 ? "" : new java.text.SimpleDateFormat("HH:mm", java.util.Locale.GERMANY).format(new java.util.Date(t));
         if (syncing) return "Aktualisiere …";
-        if (!Prefs.newsOk(this)) return "Offline – " + (stand.isEmpty() ? "keine Daten" : "Stand " + stand);
+        if (!Prefs.newsOk(this)) return "Offline – " + (stand.isEmpty() ? "keine Daten" : "Letzte Aktualisierung " + stand);
         String sw = Prefs.srcWarn(this);
-        return stand.isEmpty() ? "Noch keine Daten" : "Stand " + stand + (sw.isEmpty() ? "" : "  ·  " + sw);
+        return stand.isEmpty() ? "Noch keine Daten" : "Letzte Aktualisierung " + stand + (sw.isEmpty() ? "" : "  ·  " + sw);
     }
 
     private void weatherCard() {
