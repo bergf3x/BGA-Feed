@@ -517,6 +517,39 @@ def br_topic(cat):
     return "Nachrichten/Deutschland & Welt"
 
 
+MERKUR_SOURCES = [("/bayern/rssfeed.rdf", "Bayern", "Bayern"),
+                  ("/lokales/muenchen/rssfeed.rdf", "Bayern/München", "München"),
+                  ("/lokales/rssfeed.rdf", "Bayern/Oberbayern", "Lokales")]
+
+
+def fetch_merkur(site):
+    """Merkur: offizielle RSS je Rubrik; Feeds, die nur die Startseite liefern, verwerfen."""
+    import requests
+
+    out, seen = [], set()
+    for path, topic, expect in MERKUR_SOURCES:
+        try:
+            r = requests.get(site["base"] + path, headers={"User-Agent": UA}, timeout=30)
+            r.raise_for_status()
+        except Exception as e:
+            print(f"[merkur] {path}: {e}")
+            continue
+        ch = re.search(rb"<channel>.*?<title>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?</title>", r.content, re.S)
+        if ch and expect.encode() not in ch.group(1):
+            print(f"[merkur] {path}: falscher Kanal")
+            continue
+        n = 0
+        for it in _rss_items(r.content, art=False):
+            if it["url"] in seen:
+                continue
+            seen.add(it["url"])
+            it["topic"] = topic
+            out.append(it)
+            n += 1
+        print(f"[merkur] {path}: {n}")
+    return out
+
+
 def fetch_br(site):
     """BR24: offizieller Feed, alle Rubriken (App ordnet nach Region/Rubrik)."""
     import requests
@@ -677,6 +710,21 @@ SITES = [
         parse=None,
         retopic=None,
         fetch=fetch_br,
+        order="seen",
+    ),
+    dict(
+        id="merkur",
+        name="Merkur",
+        base="https://www.merkur.de",
+        link="/bayern/",
+        topic="Bayern",
+        feed="feed_merkur.xml",
+        state="state_merkur.json",
+        sources=[("/bayern/", "Bayern")],
+        topics=None,
+        parse=None,
+        retopic=None,
+        fetch=fetch_merkur,
         order="seen",
     ),
 ]
