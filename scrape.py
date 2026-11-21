@@ -212,7 +212,7 @@ def bg_topic(url):
 
 
 BG_SAMPLE = []
-BG_PROBE = ["https://www.bgland24.de/bayern/berg-brand-in-tiefgarage-13-autos-beschaedigt-schaden-in-millionenhoehe-94453192.html"]
+BG_PROBE = []  # Diagnose-URLs (leer = aus). Bezahl-Erkennung: JSON "paid":1 / "paywall":"hard" in der Artikelseite
 
 
 def bg_signals(html):
@@ -221,6 +221,7 @@ def bg_signals(html):
         free_false=bool(re.search(r'"isAccessibleForFree"\s*:\s*"?false"?', html, re.I)),
         paywall_cls=bool(re.search(r'class="[^"]*(paywall|premium)[^"]*"', html, re.I)),
         plus_text=bool(re.search(r"BGLand24\s*Plus|Plus-Artikel|mit Plus|Plus\+", html)),
+        paid=bool(re.search(r'"paid"\s*:\s*1\b', html) or re.search(r'"paywall"\s*:\s*"hard"', html)),
     )
 
 
@@ -233,9 +234,9 @@ def bg_enrich(it):
     r = requests.get(it["url"], headers={"User-Agent": UA}, timeout=15)
     r.raise_for_status()
     sig = bg_signals(r.text)
-    if sig["free_false"]:
+    if sig["paid"] or sig["free_false"]:
         it["plus"] = True
-    it["pc"] = True
+    it["pc"] = 2
     m = (re.search(r'article:published_time"\s+content="([^"]+)"', r.text)
          or re.search(r'"datePublished"\s*:\s*"([^"]+)"', r.text)
          or re.search(r'<time[^>]+datetime="([^"]+)"', r.text))
@@ -413,7 +414,7 @@ def build(site, items, state, now):
             state_items[key].update({k: it[k] for k in ("title", "teaser", "category", "topic")})
             state_items[key]["plus"] = bool(state_items[key].get("plus") or it.get("plus"))
             if it.get("pc"):
-                state_items[key]["pc"] = True
+                state_items[key]["pc"] = it["pc"]
     if site["id"] == "bgland24":  # alte Statedaten auf das aktuelle Themenschema bringen
         for v in state_items.values():
             v["topic"] = bg_topic(v["url"])
@@ -486,9 +487,12 @@ def run_site(site, now, html_file=None, out=None, state_file=None):
             v["sid"] = v.pop("arid")
     if site.get("enrich"):
         known = state.get("items", {})
+        for v in known.values():
+            if v.get("pc") != 2:
+                v["plus"] = False  # frueher falsch/ungeprueft erkannt: neu pruefen
         n = 0
         for it in items:
-            if not it["url"].endswith(".html") or (str(it["sid"]) in known and known[str(it["sid"])].get("pc")) or n >= 25:
+            if not it["url"].endswith(".html") or (str(it["sid"]) in known and known[str(it["sid"])].get("pc") == 2) or n >= 25:
                 continue
             n += 1
             try:
@@ -496,8 +500,8 @@ def run_site(site, now, html_file=None, out=None, state_file=None):
             except Exception as e:  # ohne Zeit: dann gilt "zuerst gesehen"
                 print(f"[{site['id']}] Zeit fuer {it['url']}: {e}", file=sys.stderr)
     if site["id"] == "bgland24":
-        BG_SAMPLE[:] = [x["url"] for x in items if x["url"].endswith(".html")][:3]
-        bg_probe()
+        if BG_PROBE:
+            bg_probe()
     xml, topics = build(site, items, state, now)
     op = Path(out or HERE / site["feed"])
     op.parent.mkdir(parents=True, exist_ok=True)
