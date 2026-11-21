@@ -8,7 +8,7 @@ final class Changelog {
             {"1.14",
                     "! Sonderzeichen in Überschriften korrigiert (z. B. »Costa Concordia« statt &raquo;…&laquo;)"},
             {"1.11",
-                    "+ Test: App-Name oben in altdeutscher Schrift (UnifrakturMaguntia, freie Lizenz)"},
+                    "+ Test: App-Name oben in Fraunces (freie Lizenz) mit Farbverlauf Weiß → Grau"},
             {"1.10",
                     "+ Hinweis „Widget auf den Startbildschirm“ lässt sich mit ✕ schließen und bleibt in den Einstellungen ganz oben erreichbar"},
             {"1.09",
