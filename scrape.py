@@ -16,6 +16,7 @@ import argparse
 import json
 import re
 import sys
+import zlib
 from datetime import datetime, timezone
 from email.utils import format_datetime
 from pathlib import Path
@@ -95,6 +96,124 @@ def bga_topic(item, source_topic):
     return source_topic
 
 
+# ---------------------------------------------------------------- bgland24.de
+def _clean(t):
+    import html as _h
+    return re.sub(r"\s+", " ", _h.unescape(re.sub(r"<[^>]+>", " ", t or ""))).strip()
+
+
+def _bg_wp(base):
+    """WordPress-Schnittstelle (falls vorhanden)."""
+    import requests
+
+    h = {"User-Agent": UA}
+    r = requests.get(
+        base + "/wp-json/wp/v2/posts",
+        params={"per_page": 50, "_fields": "id,link,title,excerpt,date_gmt,categories"},
+        headers=h, timeout=30,
+    )
+    r.raise_for_status()
+    posts = r.json()
+    cats = {}
+    try:
+        c = requests.get(base + "/wp-json/wp/v2/categories", params={"per_page": 100, "_fields": "id,name"}, headers=h, timeout=30)
+        cats = {x["id"]: _clean(x["name"]) for x in c.json()}
+    except Exception:
+        pass
+    out = []
+    for p in posts:
+        names = [cats[i] for i in p.get("categories", []) if i in cats and cats[i].lower() != "allgemein"]
+        out.append(dict(
+            sid=int(p["id"]), url=p["link"], title=_clean(p["title"]["rendered"]),
+            teaser=_clean(p["excerpt"]["rendered"])[:300], category=names[0] if names else "",
+            topic=names[0] if names else "Region", plus=False,
+            date=(p.get("date_gmt") or "") + "+00:00" if p.get("date_gmt") else "",
+        ))
+    return out
+
+
+def _bg_rss(base, html):
+    """Feed-Autodiscovery auf der Startseite."""
+    import requests
+    from xml.etree import ElementTree as ET
+
+    m = re.search(r'<link[^>]+type="application/(?:rss|atom)\+xml"[^>]*href="([^"]+)"', html, re.I)
+    if not m:
+        return []
+    url = m.group(1)
+    if url.startswith("/"):
+        url = base + url
+    r = requests.get(url, headers={"User-Agent": UA}, timeout=30)
+    r.raise_for_status()
+    root = ET.fromstring(r.content)
+    out = []
+    for it in root.iter("item"):
+        link = (it.findtext("link") or "").strip()
+        if not link:
+            continue
+        out.append(dict(
+            sid=zlib.crc32(link.encode()), url=link, title=_clean(it.findtext("title")),
+            teaser=_clean(it.findtext("description"))[:300], category=_clean(it.findtext("category")),
+            topic="Region", plus=False, date="",
+        ))
+    return out
+
+
+def _bg_html(base, html):
+    """Notnagel: Artikellinks der Startseite."""
+    from bs4 import BeautifulSoup
+    from urllib.parse import urljoin, urlparse
+
+    host = urlparse(base).netloc.replace("www.", "")
+    skip = ("/category/", "/tag/", "/author/", "/page/", "/impressum", "/datenschutz", "/kontakt", "/wp-", "/feed", "/tags/", "/kategorie")
+    soup = BeautifulSoup(html, "html.parser")
+    seen, out = set(), []
+    for a in soup.find_all("a", href=True):
+        url = urljoin(base + "/", a["href"]).split("#")[0]
+        pu = urlparse(url)
+        if pu.netloc.replace("www.", "") != host or any(x in pu.path for x in skip):
+            continue
+        slug = pu.path.rstrip("/").rsplit("/", 1)[-1]
+        title = _clean(a.get_text(" "))
+        h = a.find(["h1", "h2", "h3", "h4"])
+        if h:
+            title = _clean(h.get_text(" "))
+        if url in seen or len(slug) < 15 or "-" not in slug or len(title) < 20:
+            continue
+        seen.add(url)
+        out.append(dict(sid=zlib.crc32(url.encode()), url=url, title=title, teaser="", category="", topic="Region", plus=False, date=""))
+    return out
+
+
+def fetch_bgland(site):
+    import requests
+
+    base = site["base"]
+    for name, fn in (("wp-json", lambda: _bg_wp(base)),):
+        try:
+            items = fn()
+            if items:
+                print(f"[{site['id']}] Quelle: {name}")
+                return items
+        except Exception as e:
+            print(f"[{site['id']}] {name}: {e}", file=sys.stderr)
+    try:
+        r = requests.get(base + "/", headers={"User-Agent": UA}, timeout=30)
+        r.raise_for_status()
+    except Exception as e:
+        print(f"[{site['id']}] Startseite: {e}", file=sys.stderr)
+        return []
+    for name, fn in (("rss", lambda: _bg_rss(base, r.text)), ("startseite", lambda: _bg_html(base, r.text))):
+        try:
+            items = fn()
+            if items:
+                print(f"[{site['id']}] Quelle: {name}")
+                return items
+        except Exception as e:
+            print(f"[{site['id']}] {name}: {e}", file=sys.stderr)
+    return []
+
+
 # ---------------------------------------------------------------- Seiten-Konfiguration
 SITES = [
     dict(
@@ -133,11 +252,28 @@ SITES = [
         retopic=bga_topic,
         order="id",
     ),
+    dict(
+        id="bgland24",
+        name="BGLand24",
+        base="https://www.bgland24.de",
+        link="/",
+        feed="feed_bgland24.xml",
+        state="state_bgland24.json",
+        sources=[("/", "Region")],
+        topics=None,  # dynamisch aus den Kategorien der Artikel
+        parse=None,
+        retopic=None,
+        fetch=fetch_bgland,
+        order="seen",
+    ),
 ]
 
 
 def fetch_site(site):
     import requests
+
+    if site.get("fetch"):
+        return site["fetch"](site)
 
     found = {}
     for src in site["sources"]:
@@ -179,7 +315,7 @@ def build(site, items, state, now):
     for it in items:
         key = str(it["sid"])
         if key not in state_items:
-            state_items[key] = {**it, "first_seen": now.isoformat()}
+            state_items[key] = {**it, "first_seen": it.get("date") or now.isoformat()}
         else:
             state_items[key].update({k: it[k] for k in ("title", "teaser", "category", "topic")})
             state_items[key]["plus"] = bool(state_items[key].get("plus") or it.get("plus"))
@@ -219,7 +355,7 @@ def build(site, items, state, now):
     )
     present = {it.get("topic") or "Region" for it in ordered}
     topics = [
-        t for t in site["topics"]
+        t for t in (site["topics"] or sorted(present))
         if t in present or any(p.startswith(t + "/") for p in present)
     ]
     return xml, topics
@@ -277,6 +413,8 @@ def main():
             ok += 1
         else:
             topics = old_topics.get(site["id"], [])
+            if not topics:
+                continue  # Quelle lieferte noch nie Artikel: nicht im Katalog anbieten
         catalog.append(
             dict(id=site["id"], name=site["name"], url=RAW + site["feed"], topics=topics)
         )
