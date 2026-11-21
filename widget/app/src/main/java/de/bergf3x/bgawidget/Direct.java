@@ -76,15 +76,38 @@ final class Direct {
             List<Map<String, Object>> found = bga ? scrapeBga() : scrapeBgland();
             if (found.isEmpty()) throw new IOException("keine Artikel gefunden");
             int timed = 0;
-            try {
-                timed = resolveTimes(ctx, f, found);
-            } catch (Exception ignored) {
+            if (bga) {
+                try {
+                    timed = resolveTimes(ctx, f, found);
+                } catch (Exception ignored) {
+                }
             }
             String xml;
             synchronized (Direct.class) {
                 xml = merge(ctx, f, bga, found);
             }
-            log(ctx, f.name + ": " + found.size() + " Artikel direkt, " + timed + " Zeiten neu gelesen, " + (System.currentTimeMillis() - t0) / 1000 + " s");
+            if (!bga) {
+                // BGLand24: Zeiten/Bezahl-Kennzeichen im Hintergrund nachladen, damit die Liste sofort erscheint
+                final Context app = ctx.getApplicationContext();
+                final Catalog.Feed ff = f;
+                final List<Map<String, Object>> fl = found;
+                Thread th = new Thread(() -> {
+                    try {
+                        int n = resolveTimes(app, ff, fl);
+                        synchronized (Direct.class) {
+                            merge(app, ff, false, fl);
+                        }
+                        log(app, ff.name + ": " + n + " Zeiten im Hintergrund gelesen");
+                    } catch (Throwable ignored) {
+                    }
+                });
+                th.setDaemon(true);
+                th.start();
+            }
+            int regionN = 0;
+            for (Map<String, Object> it : found) if (String.valueOf(it.get("topic")).startsWith("Region")) regionN++;
+            log(ctx, f.name + ": " + found.size() + " Artikel direkt (davon Region " + regionN + "), " + timed + " Zeiten, "
+                    + (System.currentTimeMillis() - t0) / 1000 + " s");
             return xml;
         } catch (Exception e) {
             log(ctx, f.name + ": FEHLER direkt (" + e + ") - nehme GitHub-Feed");
@@ -225,7 +248,7 @@ final class Direct {
         Map<String, Map<String, Object>> byUrl = new java.util.LinkedHashMap<>();
         for (Map<String, Object> it : parseBgland(home)) byUrl.put((String) it.get("url"), it);
         try {
-            for (Future<List<Map<String, Object>>> fu : ex.invokeAll(tasks, 30, TimeUnit.SECONDS)) {
+            for (Future<List<Map<String, Object>>> fu : ex.invokeAll(tasks, 18, TimeUnit.SECONDS)) {
                 if (fu.isCancelled()) continue;
                 try {
                     for (Map<String, Object> it : fu.get()) {
@@ -397,7 +420,7 @@ final class Direct {
         }
         int ok = 0;
         try {
-            ex.invokeAll(tasks, 12, TimeUnit.SECONDS);
+            ex.invokeAll(tasks, f.id.equals("bga") ? 8 : 25, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         } finally {
