@@ -27,7 +27,6 @@ final class Prefs {
 
     /** Schriftfarbe als RGB ohne Alpha. */
     static int color(Context c, int id) {
-        if (theme(c, id) == 2) return isLight(c, id) ? 0x1B1F22 : 0xFFFFFF;  // Auto: Textfarbe folgt dem Design
         return sp(c).getInt("tc_" + id, DEFAULT_COLOR) & 0xFFFFFF;
     }
 
@@ -103,11 +102,7 @@ final class Prefs {
 
     /** Auto-Design: hell am Tag laut Systemeinstellung (Dunkelmodus aus). */
     static boolean isLight(Context c, int id) {
-        int t = sp(c).getInt("theme_" + id, 0);
-        if (t == 1) return true;
-        if (t != 2) return false;
-        int mode = c.getResources().getConfiguration().uiMode & android.content.res.Configuration.UI_MODE_NIGHT_MASK;
-        return mode != android.content.res.Configuration.UI_MODE_NIGHT_YES;
+        return theme(c, id) == 1;
     }
 
     static void set(Context c, int id, int bg, int text, int color, Set<String> feeds) {
@@ -144,7 +139,7 @@ final class Prefs {
                 .remove("fd_" + id).remove("tp_" + id).remove("pl_" + id)
                 .remove("plus_" + id).remove("mute_" + id).remove("dens_" + id)
                 .remove("tcs2_" + id).remove("tcw2_" + id).remove("font_" + id).remove("size_" + id).remove("theme_" + id)
-                .remove("wx_" + id).remove("warn_" + id).remove("tcs_" + id).remove("tcw_" + id).remove("cmp_" + id).apply();
+                .remove("wx_" + id).remove("warn_" + id).remove("tcs_" + id).remove("tcw_" + id).remove("cmp_" + id).remove("acc_" + id).apply();
         BgStyle.remove(c, id);
     }
 
@@ -219,9 +214,23 @@ final class Prefs {
     }
 
     /** 0 dunkel, 1 hell, 2 automatisch. */
+    /** 0 = dunkel, 1 = hell. Der frueher gespeicherte Wert "Auto" (2) wird einmalig nach dem Systemdesign aufgeloest. */
     static int theme(Context c, int id) {
         int t = sp(c).getInt("theme_" + id, 0);
-        return t == 1 || t == 2 ? t : 0;
+        if (t == 2) {
+            int mode = c.getResources().getConfiguration().uiMode & android.content.res.Configuration.UI_MODE_NIGHT_MASK;
+            return mode == android.content.res.Configuration.UI_MODE_NIGHT_YES ? 0 : 1;
+        }
+        return t == 1 ? 1 : 0;
+    }
+
+    /** Eigene Akzentfarbe (aktiver Chip); -1 = Standard. */
+    static int accent(Context c, int id) {
+        return sp(c).getInt("acc_" + id, -1);
+    }
+
+    static void setAccent(Context c, int id, int rgb) {
+        sp(c).edit().putInt("acc_" + id, rgb < 0 ? -1 : rgb & 0xFFFFFF).apply();
     }
 
     static boolean showWeather(Context c, int id) {

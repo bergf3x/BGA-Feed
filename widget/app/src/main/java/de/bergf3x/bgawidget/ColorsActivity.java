@@ -236,8 +236,8 @@ public class ColorsActivity extends Activity {
             boolean bright = (c1 >= 0 && tooBright(c1)) || (c1 >= 0 && c2 >= 0 && tooBright(c2));
             boolean dark = (c1 >= 0 && tooDark(c1)) || (c1 >= 0 && c2 >= 0 && tooDark(c2));
             String w = "";
-            if (bright && (theme == 1 || theme == 2)) w = "Achtung: Diese Farbe ist auf hellem Design schlecht lesbar.";
-            else if (dark && (theme == 0 || theme == 2)) w = "Achtung: Diese Farbe ist auf dunklem Design schlecht lesbar.";
+            if (bright && theme == 1) w = "Achtung: Diese Farbe ist auf hellem Design schlecht lesbar.";
+            else if (dark && theme == 0) w = "Achtung: Diese Farbe ist auf dunklem Design schlecht lesbar.";
             warn.setText(w);
             warn.setVisibility(w.isEmpty() ? View.GONE : View.VISIBLE);
             refreshPreview();

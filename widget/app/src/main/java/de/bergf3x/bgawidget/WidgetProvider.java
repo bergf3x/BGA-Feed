@@ -110,9 +110,13 @@ public class WidgetProvider extends AppWidgetProvider {
             rv.setViewVisibility(P[i], android.view.View.VISIBLE);
             rv.setTextViewText(P_T[i], Style.font(ctx, id, label));
             rv.setInt(P[i], "setBackgroundResource", Pal.chipBg(ctx, id));
-            Pal.pair(ctx, id, rv, P_ON[i], "setColorFilter", 0xFF2A2F36, 0xFFF2F2F2);
+            int acc = Prefs.accent(ctx, id);
+            if (acc >= 0) rv.setInt(P_ON[i], "setColorFilter", 0xFF000000 | acc);
+            else Pal.pair(ctx, id, rv, P_ON[i], "setColorFilter", 0xFF2A2F36, 0xFFF2F2F2);
             rv.setViewVisibility(P_ON[i], on ? android.view.View.VISIBLE : android.view.View.GONE);
-            if (on) Pal.textPair(ctx, id, rv, P_T[i], 0xFFFFFFFF, dark); else Pal.text(ctx, id, rv, P_T[i], -1, 1f);
+            if (on && acc >= 0) rv.setTextColor(P_T[i], Pal.onColor(acc));
+            else if (on) Pal.textPair(ctx, id, rv, P_T[i], 0xFFFFFFFF, dark);
+            else Pal.text(ctx, id, rv, P_T[i], -1, 1f);
             rv.setOnClickPendingIntent(P[i], hasSubs
                     ? topicPending(ctx, id, 100 + i, value, true, immutable)
                     : topicBroadcast(ctx, id, 100 + i, value, immutable));
@@ -132,36 +136,26 @@ public class WidgetProvider extends AppWidgetProvider {
     /** Glas-Hintergrund passend zur aktuellen Widget-Groesse zeichnen. */
     static void applyGlass(Context ctx, RemoteViews rv, int id) {
         int bg = Prefs.bg(ctx, id);
-        int theme = Prefs.theme(ctx, id);
+        boolean light = Prefs.isLight(ctx, id);
         android.os.Bundle o = AppWidgetManager.getInstance(ctx).getAppWidgetOptions(id);
         float d = ctx.getResources().getDisplayMetrics().density;
-        float sc = theme == 2 ? 0.4f : 0.55f;
+        float sc = 0.55f;
         int wDp = o.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, 0);
         int hDp = o.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT, 0);
         int w = Math.round(wDp * d * sc), h = Math.round(hDp * d * sc);
-        boolean needDark = theme != 1, needLight = theme != 0;
-        float rDp = BgStyle.radiusDp(ctx, id);
-        android.graphics.Bitmap bd = needDark ? GlassBg.get(w, h, bg, false, d * sc, BgStyle.colors(ctx, id, false), rDp) : null;
-        android.graphics.Bitmap bl = needLight ? GlassBg.get(w, h, bg, true, d * sc, BgStyle.colors(ctx, id, true), rDp) : null;
-        if (theme != 2) {
-            rv.setFloat(R.id.bg_fill, "setAlpha", theme == 1 ? 0f : 1f);
-            rv.setFloat(R.id.bg_fill_l, "setAlpha", theme == 1 ? 1f : 0f);
-        }
-        if (bd != null) {
-            rv.setImageViewBitmap(R.id.bg_fill, bd);
-            rv.setInt(R.id.bg_fill, "setImageAlpha", 255);
-        } else {
-            rv.setInt(R.id.bg_fill, "setImageAlpha", needDark ? Prefs.alpha(bg) : 0);
-        }
-        if (bl != null) {
-            rv.setImageViewBitmap(R.id.bg_fill_l, bl);
-            rv.setInt(R.id.bg_fill_l, "setImageAlpha", 255);
-        } else {
-            rv.setInt(R.id.bg_fill_l, "setImageAlpha", 0);
-        }
-        if (bd != null || bl != null) {
+        android.graphics.Bitmap bmp = GlassBg.get(w, h, bg, light, d * sc, BgStyle.colors(ctx, id, light), BgStyle.radiusDp(ctx, id));
+        // zwei Flaechen im Layout: dunkle und helle; nur die zum Design passende ist sichtbar
+        int on = light ? R.id.bg_fill_l : R.id.bg_fill;
+        int off = light ? R.id.bg_fill : R.id.bg_fill_l;
+        rv.setFloat(R.id.bg_fill, "setAlpha", light ? 0f : 1f);
+        rv.setFloat(R.id.bg_fill_l, "setAlpha", light ? 1f : 0f);
+        rv.setInt(off, "setImageAlpha", 0);
+        if (bmp != null) {
+            rv.setImageViewBitmap(on, bmp);
+            rv.setInt(on, "setImageAlpha", 255);
             rv.setInt(R.id.bg_border, "setImageAlpha", 0);
         } else {
+            rv.setInt(on, "setImageAlpha", Prefs.alpha(bg));
             rv.setInt(R.id.bg_border, "setImageAlpha", Math.round(Prefs.alpha(Math.max(bg, 20)) * 0.45f));
         }
     }
@@ -226,10 +220,8 @@ public class WidgetProvider extends AppWidgetProvider {
             android.graphics.Bitmap bgL = on && th != 0 ? WeatherBg.get(ctx, w.code, w.day, true) : null;
             rv.setInt(R.id.w_tint, "setColorFilter", 0);
             rv.setInt(R.id.w_tint_l, "setColorFilter", 0);
-            if (th != 2) {
-                rv.setFloat(R.id.w_tint, "setAlpha", th == 1 ? 0f : 1f);
-                rv.setFloat(R.id.w_tint_l, "setAlpha", th == 1 ? 1f : 0f);
-            }
+            rv.setFloat(R.id.w_tint, "setAlpha", th == 1 ? 0f : 1f);
+            rv.setFloat(R.id.w_tint_l, "setAlpha", th == 1 ? 1f : 0f);
             if (bgD != null) {
                 rv.setImageViewBitmap(R.id.w_tint, bgD);
                 rv.setInt(R.id.w_tint, "setImageAlpha", 255);

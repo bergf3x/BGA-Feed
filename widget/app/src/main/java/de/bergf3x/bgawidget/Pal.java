@@ -1,61 +1,31 @@
 package de.bergf3x.bgawidget;
 
 import android.content.Context;
-import android.os.Build;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.widget.RemoteViews;
 
-/**
- * Farben fuer Hell/Dunkel/Auto. Bei Auto bekommt das Widget beide Farbwerte mit (ab Android 12),
- * das System waehlt dann selbst und schaltet beim Wechsel des Systemdesigns sofort um.
- */
+/** Farben fuer Hell/Dunkel: Schrift, Symbole und Hintergruende passend zum gewaehlten Design. */
 final class Pal {
     static final int INK = 0x1B1F22;
     static final int WHITE = 0xFFFFFF;
 
     private Pal() {}
 
-    static boolean auto(Context c, int id) {
-        return Prefs.theme(c, id) == 2;
-    }
-
-    private static boolean dual() {
-        return Build.VERSION.SDK_INT >= 31;
-    }
-
     /** Textfarbe; override = eigene Farbe (-1 = Standardfarbe des Designs). f = Deckkraft-Faktor. */
     static void text(Context c, int id, RemoteViews rv, int viewId, int override, float f) {
-        int tx = Prefs.text(c, id);
-        if (override >= 0 || !auto(c, id)) {
-            rv.setTextColor(viewId, Prefs.argb(override >= 0 ? override : Prefs.color(c, id), tx, f));
-            return;
-        }
-        int l = Prefs.argb(INK, tx, f);
-        int d = Prefs.argb(WHITE, tx, f);
-        if (dual()) rv.setColorInt(viewId, "setTextColor", l, d);
-        else rv.setTextColor(viewId, Prefs.isLight(c, id) ? l : d);
+        rv.setTextColor(viewId, Prefs.argb(override >= 0 ? override : Prefs.color(c, id), Prefs.text(c, id), f));
     }
 
     /** Farbfilter fuer Symbole (Aktualisieren, Einstellungen, Werkzeuge). */
     static void filter(Context c, int id, RemoteViews rv, int viewId, int override) {
-        if (override >= 0 || !auto(c, id)) {
-            rv.setInt(viewId, "setColorFilter", 0xFF000000 | (override >= 0 ? override : Prefs.color(c, id)));
-            return;
-        }
-        if (dual()) rv.setColorInt(viewId, "setColorFilter", 0xFF000000 | INK, 0xFF000000 | WHITE);
-        else rv.setInt(viewId, "setColorFilter", 0xFF000000 | (Prefs.isLight(c, id) ? INK : WHITE));
+        rv.setInt(viewId, "setColorFilter", 0xFF000000 | (override >= 0 ? override : Prefs.color(c, id)));
     }
 
     /** Beliebige Farbe mit zwei Werten (hell/dunkel) auf eine Methode setzen, z. B. setColorFilter. */
     static void pair(Context c, int id, RemoteViews rv, int viewId, String method, int light, int dark) {
-        if (!auto(c, id)) {
-            rv.setInt(viewId, method, Prefs.isLight(c, id) ? light : dark);
-            return;
-        }
-        if (dual()) rv.setColorInt(viewId, method, light, dark);
-        else rv.setInt(viewId, method, Prefs.isLight(c, id) ? light : dark);
+        rv.setInt(viewId, method, Prefs.isLight(c, id) ? light : dark);
     }
 
     /** Text mit zwei festen Farben (hell/dunkel). */
@@ -63,15 +33,19 @@ final class Pal {
         pair(c, id, rv, viewId, "setTextColor", light, dark);
     }
 
-    /** Hintergrund-Drawable: Auto nutzt Ressourcen mit Nacht-Variante. */
+    /** Hintergrund-Drawable der Chips. */
     static int chipBg(Context c, int id) {
-        if (auto(c, id)) return R.drawable.chip_bg_auto;
         return Prefs.isLight(c, id) ? R.drawable.chip_bg_light : R.drawable.chip_bg;
     }
 
     static int cardBg(Context c, int id) {
-        if (auto(c, id)) return R.drawable.card_bg_auto;
         return Prefs.isLight(c, id) ? R.drawable.card_bg_light : R.drawable.card_bg;
+    }
+
+    /** Lesbare Schriftfarbe (dunkel oder hell) auf einem Untergrund. */
+    static int onColor(int rgb) {
+        double l = (0.299 * ((rgb >> 16) & 255) + 0.587 * ((rgb >> 8) & 255) + 0.114 * (rgb & 255)) / 255.0;
+        return 0xFF000000 | (l > 0.6 ? INK : WHITE);
     }
 
     static int mix(int a, int b, float t) {

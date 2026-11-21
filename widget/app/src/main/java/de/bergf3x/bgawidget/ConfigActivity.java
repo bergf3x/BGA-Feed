@@ -43,6 +43,7 @@ public class ConfigActivity extends Activity {
     private boolean wxOn;
     private boolean warnOn;
     private int bgMode, bgC1, bgC2, bgTint, bgSrc;
+    private int accent = -1;
     private boolean bgRound;
     private LinearLayout bgBox;
     private boolean settingHex = false;
@@ -98,6 +99,7 @@ public class ConfigActivity extends Activity {
         bgC2 = BgStyle.c2(this, widgetId);
         bgTint = BgStyle.tint(this, widgetId);
         bgSrc = BgStyle.src(this, widgetId);
+        accent = Prefs.accent(this, widgetId);
         bgRound = BgStyle.sysCorner(this, widgetId);
         kwNotifyOn = Prefs.kwNotify(this);
         selected.addAll(Prefs.feeds(this, widgetId));
@@ -119,7 +121,7 @@ public class ConfigActivity extends Activity {
     }
 
     // ---------- Seiten ----------
-    private static final int P_MAIN = 0, P_SOURCES = 1, P_DESIGN = 2, P_LIST = 3, P_WEATHER = 4;
+    private static final int P_MAIN = 0, P_SOURCES = 1, P_DESIGN = 2, P_LIST = 3, P_WEATHER = 4, P_COLORS = 5;
     private int page = P_MAIN;
     private String kwText = "";
 
@@ -138,7 +140,8 @@ public class ConfigActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        if (page != P_MAIN) showMain();
+        if (page == P_COLORS) showDesign();
+        else if (page != P_MAIN) showMain();
         else super.onBackPressed();
     }
 
@@ -149,13 +152,20 @@ public class ConfigActivity extends Activity {
         muteBox = null;
         catStatus = null;
         prevFill = null;
+        lblBg = null;
+        lblTx = null;
+        bgBox = null;
         b.box.removeAllViews();
     }
 
     private LinearLayout subPage(String title, int pg, float frac, boolean preview) {
+        return subPage(title, pg, frac, preview, this::showMain);
+    }
+
+    private LinearLayout subPage(String title, int pg, float frac, boolean preview, Runnable back) {
         clear();
         page = pg;
-        b.header(title, this::showMain);
+        b.header(title, back);
         if (preview) buildPreview();
         return b.scrollBox(frac);
     }
@@ -169,7 +179,7 @@ public class ConfigActivity extends Activity {
         page = P_MAIN;
         b.text("Einstellungen", 20, b.title, true).setPadding(b.px(4), 0, 0, b.px(4));
         b.tile("Quellen & Themen", selected.size() + (selected.size() == 1 ? " Quelle" : " Quellen") + " · Stichwörter", this::showSources);
-        b.tile("Design", new String[]{"Dunkel", "Hell", "Auto"}[Math.max(0, Math.min(2, theme))] + " · "
+        b.tile("Design", (theme == 1 ? "Hell" : "Dunkel") + " · "
                 + Style.FONT_NAMES[Math.max(0, Math.min(Style.FONT_NAMES.length - 1, font))] + " · Farben", this::showDesign);
         b.tile("Liste", (density == 1 ? "Luftig" : "Kompakt") + " · Themen ausblenden · Gemerkte", this::showList);
         b.tile("Wetter", Weather.PLACES[Prefs.place(this, widgetId)] + (wxOn ? "" : " · ausgeblendet"), this::showWeather);
@@ -247,26 +257,24 @@ public class ConfigActivity extends Activity {
     }
 
     private void showDesign() {
-        LinearLayout body = subPage("Design", P_DESIGN, 0.40f, true);
+        LinearLayout body = subPage("Design", P_DESIGN, 0.40f, true, this::showMain);
         b.label(body, "Modus");
-        b.segment(body, new String[]{"Dunkel", "Hell", "Auto"}, theme, i -> {
+        b.segment(body, new String[]{"Dunkel", "Hell"}, theme, i -> {
             theme = i;
             if (i == 1 && color == 0xFFFFFF) color = 0x1B1F22;
             if (i == 0 && color == 0x1B1F22) color = 0xFFFFFF;
-            setHex(color);
-            buildSwatches();
             refreshPreview();
         });
-        b.label(body, "Hintergrund");
-        b.segment(body, new String[]{"Standard", "Farbe", "Dynamisch"}, bgMode, i -> {
-            bgMode = i;
-            buildBgBox();
+        b.label(body, "Schriftart");
+        b.segment(body, Style.FONT_NAMES, font, i -> {
+            font = i;
             refreshPreview();
         });
-        bgBox = new LinearLayout(this);
-        bgBox.setOrientation(LinearLayout.VERTICAL);
-        body.addView(bgBox);
-        buildBgBox();
+        b.label(body, "Schriftgröße");
+        b.segment(body, new String[]{"Klein", "Normal", "Groß"}, size, i -> {
+            size = i;
+            refreshPreview();
+        });
         lblBg = b.label(body, "");
         body.addView(seek(bgPct, p -> {
             bgPct = p;
@@ -277,6 +285,24 @@ public class ConfigActivity extends Activity {
             txPct = p;
             refreshPreview();
         }));
+        refreshPreview();
+        b.pillKeep("Farben des Widgets …", false, this::showColors);
+        b.pillKeep("Fertig", true, this::showMain);
+    }
+
+    /** Alle Farben des Widgets an einem Ort: Hintergrund, Schrift, Nebenzeilen, Wetter, Akzent. */
+    private void showColors() {
+        LinearLayout body = subPage("Farben", P_COLORS, 0.40f, true, this::showDesign);
+        b.label(body, "Hintergrund");
+        b.segment(body, new String[]{"Standard", "Farbe", "Dynamisch"}, bgMode, i -> {
+            bgMode = i;
+            buildBgBox();
+            refreshPreview();
+        });
+        bgBox = new LinearLayout(this);
+        bgBox.setOrientation(LinearLayout.VERTICAL);
+        body.addView(bgBox);
+        buildBgBox();
 
         b.label(body, "Schriftfarbe");
         swatchBox = new LinearLayout(this);
@@ -314,28 +340,32 @@ public class ConfigActivity extends Activity {
                 }
             }
         });
-        b.pillKeep("Nebenzeilen- und Wetterfarben, Verlauf …", false, () -> {
+
+        b.label(body, "Akzent (aktiver Chip), erstes Feld = Standard");
+        final LinearLayout accBox = new LinearLayout(this);
+        body.addView(accBox);
+        buildAccent(accBox);
+
+        b.pillKeep("Nebenzeilen, Wetter und Verlauf …", false, () -> {
             Intent in = new Intent(this, ColorsActivity.class);
             in.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
             startActivity(in);
         });
-
-        b.label(body, "Schriftart");
-        b.segment(body, Style.FONT_NAMES, font, i -> {
-            font = i;
-            refreshPreview();
-        });
-        b.label(body, "Schriftgröße");
-        b.segment(body, new String[]{"Klein", "Normal", "Groß"}, size, i -> {
-            size = i;
-            refreshPreview();
-        });
         refreshPreview();
-        b.pillKeep("Fertig", true, this::showMain);
+        b.pillKeep("Fertig", true, this::showDesign);
+    }
+
+    private void buildAccent(final LinearLayout box) {
+        box.removeAllViews();
+        box.addView(swatches(accent, true, c -> {
+            accent = c;
+            buildAccent(box);
+        }));
     }
 
     private static final int[] BG_COLORS = {
-            0x3B6EA5, 0x1F8A70, 0x8E5BA8, 0xC8553D, 0xD9A441, 0x2B2D42, 0x5C677D, 0xFFFFFF, 0x000000
+            0x3B6EA5, 0x118AB2, 0x1F8A70, 0x2A9D8F, 0x8E5BA8, 0xC8553D, 0xE63946, 0xD9A441, 0xF4A261,
+            0xFF8FB1, 0x7DF0C0, 0x2B2D42, 0x5C677D, 0xFFFFFF, 0x000000
     };
 
     private void buildBgBox() {
@@ -473,6 +503,7 @@ public class ConfigActivity extends Activity {
         Prefs.setLook(this, widgetId, font, size, theme, wxOn, warnOn);
         Prefs.setColors(this, widgetId, Prefs.colorSub(this, widgetId), Prefs.colorWx(this, widgetId), compact, notify);
         BgStyle.set(this, widgetId, bgMode, bgC1, bgC2, bgTint, bgRound, bgSrc);
+        Prefs.setAccent(this, widgetId, accent);
         Prefs.setKeywords(this, etKw != null ? etKw.getText().toString() : kwText, kwNotifyOn);
         for (java.util.Map.Entry<String, Boolean> e : plusF.entrySet()) Prefs.setPlusFeed(this, widgetId, e.getKey(), e.getValue());
         WidgetProvider.updateAny(this, widgetId);
@@ -541,23 +572,20 @@ public class ConfigActivity extends Activity {
     }
 
     private boolean lightNow() {
-        if (theme == 1) return true;
-        if (theme != 2) return false;
-        int mode = getResources().getConfiguration().uiMode & android.content.res.Configuration.UI_MODE_NIGHT_MASK;
-        return mode != android.content.res.Configuration.UI_MODE_NIGHT_YES;
+        return theme == 1;
     }
 
     private void refreshPreview() {
-        if (prevFill == null || lblBg == null) return;
-        lblBg.setText("Hintergrund-Deckkraft: " + bgPct + " %");
-        lblTx.setText("Schrift-Deckkraft: " + txPct + " %");
+        if (prevFill == null) return;
+        if (lblBg != null) lblBg.setText("Hintergrund-Deckkraft: " + bgPct + " %");
+        if (lblTx != null) lblTx.setText("Schrift-Deckkraft: " + txPct + " %");
         int[] fc = BgStyle.colors(this, bgMode, bgC1, bgC2, bgTint, lightNow(), bgSrc);
         int a = Prefs.alpha(bgPct);
         int[] cs = new int[Math.max(2, fc.length)];
         for (int i = 0; i < cs.length; i++) cs[i] = (a << 24) | (fc[Math.min(i, fc.length - 1)] & 0xFFFFFF);
         prevFill.setOrientation(GradientDrawable.Orientation.LEFT_RIGHT);
         prevFill.setColors(cs);
-        int shown = theme == 2 ? (lightNow() ? 0x1B1F22 : 0xFFFFFF) : color;
+        int shown = color;
         prevTitle.setTextColor(Prefs.argb(shown, txPct, 1f));
         prevMeta.setTextColor(Prefs.argb(shown, txPct, 0.7f));
         prevTitle.setTypeface(Style.typeface(font), android.graphics.Typeface.BOLD);

@@ -7,7 +7,7 @@
         android:id="@+id/bg_fill"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:alpha="@dimen/auto_a_dark"
+        android:alpha="1"
         android:scaleType="fitXY"
         android:src="@drawable/glass_fill" />
 
@@ -15,7 +15,7 @@
         android:id="@+id/bg_fill_l"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:alpha="@dimen/auto_a_light"
+        android:alpha="0"
         android:scaleType="fitXY" />
 
     <ImageView
@@ -43,7 +43,7 @@
             android:id="@+id/w_tint"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:alpha="@dimen/auto_a_dark"
+            android:alpha="1"
             android:scaleType="fitXY"
             android:src="@drawable/w_tint" />
 
@@ -51,7 +51,7 @@
             android:id="@+id/w_tint_l"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:alpha="@dimen/auto_a_light"
+            android:alpha="0"
             android:scaleType="fitXY" />
 
         <LinearLayout
