@@ -212,6 +212,7 @@ def _bg_sections(base, sections=None, tag="bgland24"):
             st = r.status_code
             if r.ok:
                 for it in _rss_items(r.content):
+                    it.setdefault("sec", sec)
                     found.setdefault(it["url"], it)
                     n_rss += 1
         except Exception as e:
@@ -400,11 +401,22 @@ def fetch_chiemgau(site):
                 secs.append(m.group(1))
     except Exception as e:
         print(f"[{site['id']}] Startseite: {e}", file=sys.stderr)
-    secs = secs[:12] or ["/lokal/traunstein/", "/lokal/rupertiwinkel/", "/lokal/chiemsee/"]
-    items = _bg_sections(base, secs, site["id"])
-    for it in items:
-        it["topic"] = bg_topic(it["url"])
+    print(f"[{site['id']}] Lokalrubriken auf der Startseite: {len(secs)}")
+    for d in ("/lokal/traunstein/", "/lokal/rupertiwinkel/", "/lokal/chiemsee/"):
+        if d not in secs:
+            secs.append(d)
+    items = _bg_sections(base, secs[:12], site["id"])
+    from collections import Counter
+    print(f"[{site['id']}] Pfadmuster: {Counter('/'.join(urlparse_path(it['url']).split('/')[:2]) for it in items).most_common(6)}")
+    for it in items:  # Thema = Rubrik, aus der die Meldung kam (verlaesslicher als die Adresse)
+        sec = it.get("sec", "")
+        it["topic"] = "Region/" + " ".join(w.capitalize() for w in sec.strip("/").split("/")[-1].split("-")) if sec.startswith("/lokal") else bg_topic(it["url"])
     return [it for it in items if it["topic"].startswith("Region")]
+
+
+def urlparse_path(u):
+    from urllib.parse import urlparse
+    return urlparse(u).path
 
 
 def fetch_rss_site(site):
