@@ -211,6 +211,7 @@ def bg_topic(url):
     return nice(top)
 
 
+BG_SAMPLE = []
 BG_PROBE = ["https://www.bgland24.de/bayern/berg-brand-in-tiefgarage-13-autos-beschaedigt-schaden-in-millionenhoehe-94453192.html"]
 
 
@@ -232,7 +233,7 @@ def bg_enrich(it):
     r = requests.get(it["url"], headers={"User-Agent": UA}, timeout=15)
     r.raise_for_status()
     sig = bg_signals(r.text)
-    if sig["free_false"] or sig["paywall_cls"]:
+    if sig["free_false"]:
         it["plus"] = True
     it["pc"] = True
     m = (re.search(r'article:published_time"\s+content="([^"]+)"', r.text)
@@ -250,7 +251,7 @@ def bg_probe():
     """Diagnose: welche Paywall-Signale zeigen bekannte Bezahl-Artikel? (nur Kennzahlen im Log)"""
     import requests
 
-    for u in BG_PROBE:
+    for u in BG_PROBE + (BG_SAMPLE or []):
         try:
             r = requests.get(u, headers={"User-Agent": UA}, timeout=15)
             classes = sorted(set(re.findall(r'class="([^"]*(?:plus|paywall|premium|abo|locked)[^"]*)"', r.text, re.I)))[:8]
@@ -262,6 +263,8 @@ def bg_probe():
                 meta=sorted(set(re.findall(r'<meta[^>]+(?:name|property)="([^"]*(?:paid|premium|plus|paywall|access|content_tier|tier)[^"]*)"', t, re.I)))[:8],
                 json_keys=sorted(set(re.findall(r'"(\w*(?:paid|premium|paywall|access|plus|tier)\w*)"\s*:', t, re.I)))[:12],
             )
+            extra["paid_vals"] = re.findall(r'"paid"\s*:\s*([^,}\s]{1,12})', t)[:4]
+            extra["paywall_vals"] = re.findall(r'"paywall"\s*:\s*("[^"]{0,30}"|[^,}\s]{1,12})', t)[:4]
             print(f"[bgland24] probe2 {extra}")
             print(f"[bgland24] probe HTTP {r.status_code}, {len(r.text)} Zeichen, Signale {bg_signals(r.text)}, Klassen {classes}")
         except Exception as e:
@@ -485,7 +488,7 @@ def run_site(site, now, html_file=None, out=None, state_file=None):
         known = state.get("items", {})
         n = 0
         for it in items:
-            if (str(it["sid"]) in known and known[str(it["sid"])].get("pc")) or n >= 25:
+            if not it["url"].endswith(".html") or (str(it["sid"]) in known and known[str(it["sid"])].get("pc")) or n >= 25:
                 continue
             n += 1
             try:
@@ -493,6 +496,7 @@ def run_site(site, now, html_file=None, out=None, state_file=None):
             except Exception as e:  # ohne Zeit: dann gilt "zuerst gesehen"
                 print(f"[{site['id']}] Zeit fuer {it['url']}: {e}", file=sys.stderr)
     if site["id"] == "bgland24":
+        BG_SAMPLE[:] = [x["url"] for x in items if x["url"].endswith(".html")][:3]
         bg_probe()
     xml, topics = build(site, items, state, now)
     op = Path(out or HERE / site["feed"])
