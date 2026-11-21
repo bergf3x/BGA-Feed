@@ -332,9 +332,10 @@ final class Direct {
         final List<Map<String, Object>> todo = new ArrayList<>();
         for (Map<String, Object> it : found) {
             if (!done.contains(String.valueOf(it.get("sid")))) todo.add(it);
-            if (todo.size() >= 30) break;
+            if (todo.size() >= 60) break;
         }
         if (todo.isEmpty()) return 0;
+        if (f.id.equals("bga")) Collections.sort(todo, (x, y) -> Long.compare((Long) y.get("sid"), (Long) x.get("sid")));
         ExecutorService ex = Executors.newFixedThreadPool(8);
         List<Callable<Boolean>> tasks = new ArrayList<>();
         for (final Map<String, Object> it : todo) {
