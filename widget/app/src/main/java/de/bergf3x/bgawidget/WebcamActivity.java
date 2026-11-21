@@ -79,12 +79,13 @@ public class WebcamActivity extends Activity {
         b.box.removeAllViews();
         b.text("Webcams", 11, b.soft, false).setPadding(b.px(10), b.px(4), b.px(10), b.px(6));
         LinearLayout body = b.scrollBox(0.62f);
-        b.label(body, "Live-Bild in der Blase");
+        section(body, "Live-Bild", "Bild direkt hier in der Blase · " + Webcams.CAMS.length + " Kameras", 0xFF5DCAA5, 0);
         for (int i = 0; i < Webcams.CAMS.length; i++) {
             final int idx = i;
             b.row(body, Webcams.CAMS[i].name, false, () -> showCam(idx), false);
+            decorate(body, R.drawable.ic_cam, "›");
         }
-        b.label(body, "Nur Webseite (öffnet im Browser)");
+        section(body, "Nur Webseite", "öffnet den Browser, kein Bild hier", 0xFFF0997B, 14);
         for (final String[] c : LINKS) {
             b.row(body, c[0], false, () -> {
                 try {
@@ -92,7 +93,63 @@ public class WebcamActivity extends Activity {
                 } catch (Exception ignored) {
                 }
             }, false);
+            decorate(body, 0, "↗");
         }
+    }
+
+    /** Abschnittskopf: farbiger Balken, fette Ueberschrift und eine Zeile Erklaerung auf eigener Flaeche. */
+    private void section(LinearLayout body, String title, String sub, int accent, int topMarginDp) {
+        LinearLayout row = new LinearLayout(this);
+        row.setOrientation(LinearLayout.HORIZONTAL);
+        row.setGravity(Gravity.CENTER_VERTICAL);
+        row.setPadding(b.px(10), b.px(9), b.px(12), b.px(9));
+        android.graphics.drawable.GradientDrawable bg = new android.graphics.drawable.GradientDrawable();
+        bg.setColor(b.light ? 0x1A000000 : 0x2EFFFFFF);
+        bg.setCornerRadius(b.px(12));
+        row.setBackground(bg);
+        View bar = new View(this);
+        android.graphics.drawable.GradientDrawable barBg = new android.graphics.drawable.GradientDrawable();
+        barBg.setColor(accent);
+        barBg.setCornerRadius(b.px(2));
+        bar.setBackground(barBg);
+        row.addView(bar, new LinearLayout.LayoutParams(b.px(4), ViewGroup.LayoutParams.MATCH_PARENT));
+        LinearLayout col = new LinearLayout(this);
+        col.setOrientation(LinearLayout.VERTICAL);
+        col.setPadding(b.px(10), 0, 0, 0);
+        TextView t = new TextView(this);
+        t.setText(title);
+        t.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 16);
+        t.setTextColor(b.title);
+        t.setTypeface(null, android.graphics.Typeface.BOLD);
+        TextView st = new TextView(this);
+        st.setText(sub);
+        st.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 12);
+        st.setTextColor(b.soft);
+        col.addView(t);
+        col.addView(st);
+        row.addView(col, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        lp.topMargin = b.px(topMarginDp);
+        lp.bottomMargin = b.px(4);
+        body.addView(row, lp);
+    }
+
+    /** Zeile der Liste um ein Symbol vorne und eine Marke hinten ergaenzen (Kamera + Pfeil bzw. Aussprung-Pfeil). */
+    private void decorate(LinearLayout body, int iconRes, String trailing) {
+        LinearLayout r = (LinearLayout) body.getChildAt(body.getChildCount() - 1);
+        if (iconRes != 0) {
+            ImageView iv = new ImageView(this);
+            iv.setImageResource(iconRes);
+            iv.setColorFilter(b.soft);
+            LinearLayout.LayoutParams ip = new LinearLayout.LayoutParams(b.px(18), b.px(18));
+            ip.rightMargin = b.px(12);
+            r.addView(iv, 0, ip);
+        }
+        TextView tr = new TextView(this);
+        tr.setText(trailing);
+        tr.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 17);
+        tr.setTextColor(b.soft);
+        r.addView(tr);
     }
 
     // ---------------------------------------------------------------- Vorschau
