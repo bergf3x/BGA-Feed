@@ -30,8 +30,10 @@ tapw "Fertig" 1.5; tapw "Fertig" 1.5
 tapw "Benachrichtigungen" 2; shot 06_benachrichtigungen; tapw "Fertig" 1.5
 tapw "Wetter" 2; shot 07_wetter; tapw "Fertig" 1.5
 tapw "Darstellung" 2; shot 08_darstellung; adb shell input swipe 540 1700 540 900 300; sleep 1; shot 08b_darstellung_unten; tapw "Fertig" 1.5
-tapw "Widgets" 2; shot 09_widgets; $UI texts > $OUT/09_widgets.txt; adb shell input keyevent KEYCODE_BACK; sleep 1.5
-tapw "Über die App" 2; tapw "Neuigkeiten" 1.5; shot 10_ueber; tapw "Technisches Protokoll" 1.5; shot 10b_protokoll; adb shell input keyevent KEYCODE_BACK; sleep 1.5
+tapw "Widgets" 2; shot 09_widgets; $UI texts > $OUT/09_widgets.txt; tapw "Schließen" 2
+$UI texts > $OUT/09b_nach_widgets.txt
+adb shell input swipe 540 1600 540 900 300; sleep 1; shot 09c_einstellungen_unten
+tapw "Über die App" 2; tapw "Neuigkeiten" 1.5; shot 10_ueber; tapw "Technisches Protokoll" 1.5; shot 10b_protokoll; tapw "Schließen" 2
 tapw "Speichern" 2
 adb shell run-as $PKG cat shared_prefs/bga_widget.xml | grep -E 'name="fd_' -A11 | head -12 | tee -a $R
 
@@ -42,8 +44,9 @@ adb shell input motionevent DOWN 540 1500
 for y in 1560 1640 1720 1800 1880 1960 2040 2120 2160; do adb shell input motionevent MOVE 540 $y; done
 adb shell input motionevent UP 540 2160
 sleep 0.5; shot 11_laedt
-for i in $(seq 1 40); do sleep 2; $UI texts | grep -q "Aktualisiere" || break; done
+for i in $(seq 1 60); do sleep 2; T=$($UI texts); echo "$T" | grep -qE "Aktualisieren …|Aktualisiere …" || break; done
 log "Abruf sichtbar fertig nach $(( $(date +%s) - T0 )) s"
+echo "$T" | head -8 >> $R
 sleep 8; shot 12_nach_abruf
 log "Speicher: $(appmem)"
 
