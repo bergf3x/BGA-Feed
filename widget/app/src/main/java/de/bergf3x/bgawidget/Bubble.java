@@ -55,9 +55,9 @@ final class Bubble {
         hiTx = light ? 0xFFFFFFFF : 0xFF1B1F22;
         ripple = light ? 0x33000000 : 0x40FFFFFF;
         line = light ? 0x331B1F22 : 0x2EFFFFFF;
-        int bgPct = Math.max(wid != 0 ? Prefs.bg(act, wid) : 80, 70);
+        int bgPct = Math.max(wid != 0 ? Prefs.bg(act, wid) : 80, 94);
         act.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-        act.getWindow().setDimAmount(light ? 0.10f : 0.25f);
+        act.getWindow().setDimAmount(light ? 0.40f : 0.60f);
 
         FrameLayout root = new FrameLayout(act);
         root.setOnClickListener(v -> close());
@@ -183,6 +183,11 @@ final class Bubble {
 
     /** Auswahlzeile; die gewaehlte ist hell hinterlegt und hat ein Haekchen. */
     void row(String label, boolean selected, Runnable onClick) {
+        row(box, label, selected, onClick, true);
+    }
+
+    /** Wie row, aber in einem beliebigen Container; closeAfter = Blase danach schliessen. */
+    void row(ViewGroup parent, String label, boolean selected, Runnable onClick, boolean closeAfter) {
         LinearLayout r = new LinearLayout(act);
         r.setOrientation(LinearLayout.HORIZONTAL);
         r.setGravity(Gravity.CENTER_VERTICAL);
@@ -202,12 +207,55 @@ final class Bubble {
         }
         r.setOnClickListener(v -> {
             onClick.run();
-            close();
+            if (closeAfter) close();
         });
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         lp.topMargin = px(1);
+        parent.addView(r, lp);
+    }
+
+    /** Kachel fuer ein Untermenue: Titel, kurze Zusammenfassung, Pfeil. */
+    void tile(String title, String sub, Runnable onClick) {
+        LinearLayout r = new LinearLayout(act);
+        r.setOrientation(LinearLayout.HORIZONTAL);
+        r.setGravity(Gravity.CENTER_VERTICAL);
+        r.setPadding(px(16), px(12), px(14), px(12));
+        pressable(r, light ? 0x14000000 : 0x1AFFFFFF, ripple);
+        LinearLayout col = new LinearLayout(act);
+        col.setOrientation(LinearLayout.VERTICAL);
+        TextView t = new TextView(act);
+        t.setText(title);
+        t.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        t.setTextColor(tx);
+        t.setTypeface(null, Typeface.BOLD);
+        col.addView(t);
+        TextView s = new TextView(act);
+        s.setText(sub);
+        s.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+        s.setTextColor(soft);
+        s.setMaxLines(1);
+        s.setEllipsize(android.text.TextUtils.TruncateAt.END);
+        col.addView(s);
+        r.addView(col, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+        TextView c = new TextView(act);
+        c.setText("›");
+        c.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
+        c.setTextColor(soft);
+        r.addView(c);
+        r.setOnClickListener(v -> onClick.run());
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        lp.topMargin = px(7);
         box.addView(r, lp);
+    }
+
+    /** Kopf eines Untermenues: Zurueck-Zeile und Titel. */
+    void header(String title, Runnable onBack) {
+        TextView back = text("‹  Zurück", 14, soft, false);
+        back.setPadding(px(4), px(2), px(14), px(8));
+        back.setOnClickListener(v -> onBack.run());
+        text(title, 18, this.title, true).setPadding(px(4), 0, 0, px(8));
     }
 
     /** Auswahlzeile mit Symbol vor dem Text. */

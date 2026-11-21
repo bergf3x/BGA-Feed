@@ -3,8 +3,13 @@ package de.bergf3x.bgawidget;
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.os.Bundle;
+import android.widget.LinearLayout;
 
-/** Auswahl-Blase fuer den Wetter-Ort. */
+import java.text.Collator;
+import java.util.Arrays;
+import java.util.Locale;
+
+/** Auswahl-Blase fuer den Wetter-Ort (alphabetisch, scrollbar). */
 public class PlaceActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -14,17 +19,26 @@ public class PlaceActivity extends Activity {
             finish();
             return;
         }
-        final Bubble b = new Bubble(this, 270, 8);
-        b.text("Wetter-Ort", 11, b.soft, false).setPadding(b.px(10), b.px(4), b.px(10), b.px(6));
+        final Bubble b = new Bubble(this, 300, 12);
+        b.text("Wetter-Ort im Berchtesgadener Land", 12, b.soft, false).setPadding(b.px(10), b.px(4), b.px(10), b.px(8));
         int cur = Prefs.place(this, id);
-        for (int i = 0; i < Weather.PLACES.length; i++) {
-            final int place = i;
-            b.row(Weather.PLACES[i], i == cur, () -> {
+        Integer[] order = new Integer[Weather.PLACES.length];
+        for (int i = 0; i < order.length; i++) order[i] = i;
+        final Collator col = Collator.getInstance(Locale.GERMANY);
+        Arrays.sort(order, (x, y) -> col.compare(Weather.PLACES[x], Weather.PLACES[y]));
+        LinearLayout body = b.scrollBox(0.6f);
+        for (int idx : order) {
+            final int place = idx;
+            b.row(body, Weather.PLACES[idx], idx == cur, () -> {
                 Prefs.setPlace(this, id, place);
                 WidgetProvider.refreshHeader(this, id);
                 // ListService holt beim Neuladen auch das Wetter fuer den neuen Ort
                 AppWidgetManager.getInstance(this).notifyAppWidgetViewDataChanged(id, R.id.list);
-            });
+                android.appwidget.AppWidgetProviderInfo info = AppWidgetManager.getInstance(this).getAppWidgetInfo(id);
+                if (info != null && WeatherWidgetProvider.class.getName().equals(info.provider.getClassName())) {
+                    WeatherWidgetProvider.refresh(this, id);
+                }
+            }, true);
         }
     }
 }

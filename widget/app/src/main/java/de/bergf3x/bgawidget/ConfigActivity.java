@@ -101,37 +101,153 @@ public class ConfigActivity extends Activity {
         muted.addAll(Prefs.muted(this, widgetId));
 
         b = new Bubble(this, 360, 16);
-        b.text("Einstellungen", 18, b.title, true).setPadding(0, 0, 0, b.px(10));
+        kwText = Prefs.keywords(this);
+        showMain();
 
-        // Live-Vorschau auf einem bunten Hintergrund, damit man die Transparenz sieht
-        FrameLayout backdrop = new FrameLayout(this);
-        GradientDrawable bd = new GradientDrawable(GradientDrawable.Orientation.TL_BR,
-                new int[]{0xFF3B6EA5, 0xFF8E5BA8});
-        bd.setCornerRadius(b.px(16));
-        backdrop.setBackground(bd);
-        backdrop.setPadding(b.px(10), b.px(10), b.px(10), b.px(10));
-        LinearLayout card = new LinearLayout(this);
-        card.setOrientation(LinearLayout.VERTICAL);
-        card.setPadding(b.px(14), b.px(10), b.px(14), b.px(10));
-        prevFill = new GradientDrawable();
-        prevFill.setCornerRadius(b.px(16));
-        card.setBackground(prevFill);
-        prevTitle = new TextView(this);
-        prevTitle.setText("Beispiel: Neue Schlagzeile");
-        prevTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-        prevTitle.setTypeface(null, android.graphics.Typeface.BOLD);
-        prevMeta = new TextView(this);
-        prevMeta.setText("Region · vor 12 Min.");
-        prevMeta.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
-        card.addView(prevTitle);
-        card.addView(prevMeta);
-        backdrop.addView(card, new FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        b.box.addView(backdrop, new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        // Katalog im Hintergrund aktualisieren (neue Feeds erscheinen ohne App-Update)
+        new Thread(() -> {
+            String st = Catalog.refreshStatus(getApplicationContext());
+            runOnUiThread(() -> {
+                if (catStatus != null) catStatus.setText(st);
+                buildFeeds();
+                buildMutes();
+            });
+        }).start();
+    }
 
-        LinearLayout body = b.scrollBox(0.40f);
+    // ---------- Seiten ----------
+    private static final int P_MAIN = 0, P_SOURCES = 1, P_DESIGN = 2, P_LIST = 3, P_WEATHER = 4;
+    private int page = P_MAIN;
+    private String kwText = "";
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (b != null && page == P_WEATHER) showWeather();
+        else if (b != null && page == P_MAIN) showMain();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (page != P_MAIN) showMain();
+        else super.onBackPressed();
+    }
+
+    private void clear() {
+        if (etKw != null) kwText = etKw.getText().toString();
+        etKw = null;
+        feedBox = null;
+        muteBox = null;
+        catStatus = null;
+        prevFill = null;
+        b.box.removeAllViews();
+    }
+
+    private LinearLayout subPage(String title, int pg, float frac, boolean preview) {
+        clear();
+        page = pg;
+        b.header(title, this::showMain);
+        if (preview) buildPreview();
+        return b.scrollBox(frac);
+    }
+
+    private static String ivName(int idx) {
+        return Prefs.INTERVAL_NAMES[idx];
+    }
+
+    private void showMain() {
+        clear();
+        page = P_MAIN;
+        b.text("Einstellungen", 20, b.title, true).setPadding(b.px(4), 0, 0, b.px(4));
+        b.tile("Quellen & Themen", selected.size() + (selected.size() == 1 ? " Quelle" : " Quellen") + " · Stichwörter", this::showSources);
+        b.tile("Design", new String[]{"Dunkel", "Hell", "Auto"}[Math.max(0, Math.min(2, theme))] + " · "
+                + Style.FONT_NAMES[Math.max(0, Math.min(Style.FONT_NAMES.length - 1, font))] + " · Farben", this::showDesign);
+        b.tile("Liste", (density == 1 ? "Luftig" : "Kompakt") + " · Themen ausblenden · Gemerkte", this::showList);
+        b.tile("Wetter", Weather.PLACES[Prefs.place(this, widgetId)] + (wxOn ? "" : " · ausgeblendet"), this::showWeather);
+        b.tile("Aktualisierung", "Wetter " + ivName(Prefs.wxIdx(this)) + " · Nachrichten " + ivName(Prefs.newsIdx(this)), () -> {
+            Intent in = new Intent(this, UpdateActivity.class);
+            in.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
+            startActivity(in);
+        });
+        b.space(10);
+        b.pill("Speichern", true, true, this::save);
+        b.pill("Abbrechen", false, true, () -> { });
+    }
+
+    private void showSources() {
+        LinearLayout body = subPage("Quellen & Themen", P_SOURCES, 0.62f, false);
+        catStatus = b.label(body, "Katalog wird geladen ...");
+        feedBox = new LinearLayout(this);
+        feedBox.setOrientation(LinearLayout.VERTICAL);
+        body.addView(feedBox);
+        buildFeeds();
+
+        b.label(body, "Stichwörter (mit Komma trennen, z. B. Sperrung, Vermisst, Lawine)");
+        etKw = new EditText(this);
+        etKw.setSingleLine(false);
+        etKw.setText(kwText);
+        etKw.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+        etKw.setTextColor(b.tx);
+        etKw.setBackgroundTintList(ColorStateList.valueOf(b.soft));
+        body.addView(etKw, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        b.toggle(body, "Treffer als Benachrichtigung melden", kwNotifyOn, on -> {
+            kwNotifyOn = on;
+            askNotifPermission(on);
+        });
+        b.pillKeep("Fertig", true, this::showMain);
+    }
+
+    private void askNotifPermission(boolean on) {
+        if (on && android.os.Build.VERSION.SDK_INT >= 33
+                && checkSelfPermission("android.permission.POST_NOTIFICATIONS") != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{"android.permission.POST_NOTIFICATIONS"}, 1);
+        }
+    }
+
+    private void showList() {
+        LinearLayout body = subPage("Liste", P_LIST, 0.62f, false);
+        b.label(body, "Dichte der Liste");
+        b.segment(body, new String[]{"Kompakt", "Luftig"}, density, i -> density = i);
+        b.label(body, "Themen ausblenden (markiert = versteckt)");
+        muteBox = new LinearLayout(this);
+        muteBox.setOrientation(LinearLayout.VERTICAL);
+        body.addView(muteBox);
+        buildMutes();
+        b.pillKeep("Gemerkte Artikel ansehen", false, () -> startActivity(new Intent(this, SavedActivity.class)));
+        b.pillKeep("Fertig", true, this::showMain);
+    }
+
+    private void showWeather() {
+        LinearLayout body = subPage("Wetter", P_WEATHER, 0.62f, false);
+        b.label(body, "Ort");
+        b.pillKeep(Weather.PLACES[Prefs.place(this, widgetId)] + "  ›", false, () -> {
+            Intent in = new Intent(this, PlaceActivity.class);
+            in.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
+            startActivity(in);
+        });
+        b.label(body, "Anzeige");
+        b.toggle(body, "Wetterbereich anzeigen", wxOn, on -> wxOn = on);
+        b.toggle(body, "Wetter kompakt (ohne Vorschau und Zusatzzeilen)", compact, on -> compact = on);
+        b.label(body, "Warnungen");
+        b.toggle(body, "Unwetterwarnungen anzeigen", warnOn, on -> warnOn = on);
+        b.toggle(body, "Unwetterwarnung als Benachrichtigung (ab Stufe 3)", notify, on -> {
+            notify = on;
+            askNotifPermission(on);
+        });
+        b.pillKeep("Fertig", true, this::showMain);
+    }
+
+    private void showDesign() {
+        LinearLayout body = subPage("Design", P_DESIGN, 0.40f, true);
+        b.label(body, "Modus");
+        b.segment(body, new String[]{"Dunkel", "Hell", "Auto"}, theme, i -> {
+            theme = i;
+            if (i == 1 && color == 0xFFFFFF) color = 0x1B1F22;
+            if (i == 0 && color == 0x1B1F22) color = 0xFFFFFF;
+            setHex(color);
+            buildSwatches();
+            refreshPreview();
+        });
         lblBg = b.label(body, "");
         body.addView(seek(bgPct, p -> {
             bgPct = p;
@@ -179,11 +295,11 @@ public class ConfigActivity extends Activity {
                 }
             }
         });
-
-        b.label(body, "Artikel");
-
-        b.label(body, "Dichte der Liste");
-        b.segment(body, new String[]{"Kompakt", "Luftig"}, density, i -> density = i);
+        b.pillKeep("Nebenzeilen- und Wetterfarben, Verlauf …", false, () -> {
+            Intent in = new Intent(this, ColorsActivity.class);
+            in.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
+            startActivity(in);
+        });
 
         b.label(body, "Schriftart");
         b.segment(body, Style.FONT_NAMES, font, i -> {
@@ -195,84 +311,37 @@ public class ConfigActivity extends Activity {
             size = i;
             refreshPreview();
         });
-        b.label(body, "Design");
-        b.segment(body, new String[]{"Dunkel", "Hell", "Auto"}, theme, i -> {
-            theme = i;
-            if (i == 1 && color == 0xFFFFFF) color = 0x1B1F22;
-            if (i == 0 && color == 0x1B1F22) color = 0xFFFFFF;
-            setHex(color);
-            buildSwatches();
-            refreshPreview();
-        });
-
-        b.pillKeep("Aktualisierung (Wetter, Nachrichten) …", false, () -> {
-            Intent in = new Intent(this, UpdateActivity.class);
-            in.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
-            startActivity(in);
-        });
-
-        b.pillKeep("Farben für Nebenzeilen und Wetter …", false, () -> {
-            Intent in = new Intent(this, ColorsActivity.class);
-            in.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
-            startActivity(in);
-        });
-
-        b.label(body, "Stichwörter (mit Komma trennen, z. B. Sperrung, Vermisst, Lawine)");
-        etKw = new EditText(this);
-        etKw.setSingleLine(false);
-        etKw.setText(Prefs.keywords(this));
-        etKw.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-        etKw.setTextColor(b.tx);
-        etKw.setBackgroundTintList(ColorStateList.valueOf(b.soft));
-        body.addView(etKw, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        b.toggle(body, "Treffer als Benachrichtigung melden", kwNotifyOn, on -> {
-            kwNotifyOn = on;
-            if (on && android.os.Build.VERSION.SDK_INT >= 33
-                    && checkSelfPermission("android.permission.POST_NOTIFICATIONS") != android.content.pm.PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{"android.permission.POST_NOTIFICATIONS"}, 1);
-            }
-        });
-
-        b.label(body, "Anzeige");
-        b.toggle(body, "Wetter kompakt (ohne Vorschau und Zusatzzeilen)", compact, on -> compact = on);
-        b.toggle(body, "Unwetterwarnung als Benachrichtigung (ab Stufe 3)", notify, on -> {
-            notify = on;
-            if (on && android.os.Build.VERSION.SDK_INT >= 33
-                    && checkSelfPermission("android.permission.POST_NOTIFICATIONS") != android.content.pm.PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{"android.permission.POST_NOTIFICATIONS"}, 1);
-            }
-        });
-        b.toggle(body, "Wetterbereich anzeigen", wxOn, on -> wxOn = on);
-        b.toggle(body, "Unwetterwarnungen anzeigen", warnOn, on -> warnOn = on);
-        b.pillKeep("Gemerkte Artikel ansehen", false,
-                () -> startActivity(new Intent(this, SavedActivity.class)));
-
-        b.label(body, "Quellen");
-        catStatus = b.label(body, "Katalog wird geladen ...");
-        feedBox = new LinearLayout(this);
-        feedBox.setOrientation(LinearLayout.VERTICAL);
-        body.addView(feedBox);
-
-        b.label(body, "Themen ausblenden (markiert = versteckt)");
-        muteBox = new LinearLayout(this);
-        muteBox.setOrientation(LinearLayout.VERTICAL);
-        body.addView(muteBox);
-
-        buildLists();
         refreshPreview();
+        b.pillKeep("Fertig", true, this::showMain);
+    }
 
-        // Katalog im Hintergrund aktualisieren (neue Feeds erscheinen ohne App-Update)
-        new Thread(() -> {
-            String st = Catalog.refreshStatus(getApplicationContext());
-            runOnUiThread(() -> {
-                catStatus.setText(st);
-                buildLists();
-            });
-        }).start();
-
-        b.space(6);
-        b.pill("Speichern", true, true, this::save);
-        b.pill("Abbrechen", false, true, () -> { });
+    /** Live-Vorschau auf einem bunten Hintergrund, damit man die Transparenz sieht. */
+    private void buildPreview() {
+        FrameLayout backdrop = new FrameLayout(this);
+        GradientDrawable bd = new GradientDrawable(GradientDrawable.Orientation.TL_BR,
+                new int[]{0xFF3B6EA5, 0xFF8E5BA8});
+        bd.setCornerRadius(b.px(16));
+        backdrop.setBackground(bd);
+        backdrop.setPadding(b.px(10), b.px(10), b.px(10), b.px(10));
+        LinearLayout card = new LinearLayout(this);
+        card.setOrientation(LinearLayout.VERTICAL);
+        card.setPadding(b.px(14), b.px(10), b.px(14), b.px(10));
+        prevFill = new GradientDrawable();
+        prevFill.setCornerRadius(b.px(16));
+        card.setBackground(prevFill);
+        prevTitle = new TextView(this);
+        prevTitle.setText("Beispiel: Neue Schlagzeile");
+        prevTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+        prevTitle.setTypeface(null, android.graphics.Typeface.BOLD);
+        prevMeta = new TextView(this);
+        prevMeta.setText("Region · vor 12 Min.");
+        prevMeta.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
+        card.addView(prevTitle);
+        card.addView(prevMeta);
+        backdrop.addView(card, new FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        b.box.addView(backdrop, new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
     }
 
     private interface IntCb {
@@ -306,7 +375,7 @@ public class ConfigActivity extends Activity {
         Prefs.setExtras(this, widgetId, plus, muted, density);
         Prefs.setLook(this, widgetId, font, size, theme, wxOn, warnOn);
         Prefs.setColors(this, widgetId, Prefs.colorSub(this, widgetId), Prefs.colorWx(this, widgetId), compact, notify);
-        Prefs.setKeywords(this, etKw.getText().toString(), kwNotifyOn);
+        Prefs.setKeywords(this, etKw != null ? etKw.getText().toString() : kwText, kwNotifyOn);
         for (java.util.Map.Entry<String, Boolean> e : plusF.entrySet()) Prefs.setPlusFeed(this, widgetId, e.getKey(), e.getValue());
         WidgetProvider.updateAny(this, widgetId);
         Intent result = new Intent();
@@ -343,18 +412,24 @@ public class ConfigActivity extends Activity {
         settingHex = false;
     }
 
-    private void buildLists() {
+    private void buildFeeds() {
+        if (feedBox == null) return;
         feedBox.removeAllViews();
-        muteBox.removeAllViews();
-        List<Catalog.Feed> all = Catalog.load(this);
-        Set<String> seen = new HashSet<>();
-        for (Catalog.Feed f : all) {
+        for (Catalog.Feed f : Catalog.load(this)) {
             b.toggle(feedBox, f.name, selected.contains(f.id), on -> {
                 if (on) selected.add(f.id);
                 else selected.remove(f.id);
             });
             if (!plusF.containsKey(f.id)) plusF.put(f.id, Prefs.showPlusFeed(this, widgetId, f.id));
             b.toggle(feedBox, "      Bezahlartikel anzeigen (🔒)", plusF.get(f.id), on -> plusF.put(f.id, on));
+        }
+    }
+
+    private void buildMutes() {
+        if (muteBox == null) return;
+        muteBox.removeAllViews();
+        Set<String> seen = new HashSet<>();
+        for (Catalog.Feed f : Catalog.load(this)) {
             for (String t : f.topics) {
                 if (!seen.add(t)) continue;
                 int slash = t.indexOf('/');
@@ -380,6 +455,7 @@ public class ConfigActivity extends Activity {
     }
 
     private void refreshPreview() {
+        if (prevFill == null || lblBg == null) return;
         lblBg.setText("Hintergrund-Deckkraft: " + bgPct + " %");
         lblTx.setText("Schrift-Deckkraft: " + txPct + " %");
         prevFill.setColor(Prefs.argb(lightNow() ? 0xEEF1F6 : 0x1E1E26, bgPct, 1f));

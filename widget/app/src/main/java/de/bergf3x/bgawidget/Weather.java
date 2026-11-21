@@ -12,8 +12,13 @@ import java.util.Locale;
 /** Wetter fuer Berchtesgaden von Open-Meteo (kostenlos, ohne Schluessel). */
 final class Weather {
     /** Orte zur Auswahl: Name, Breite, Laenge. */
-    static final String[] PLACES = {"Berchtesgaden", "Ramsau bei Berchtesgaden", "Bischofswiesen", "Schönau am Königssee"};
-    private static final double[][] COORDS = {{47.6297, 13.0036}, {47.6333, 12.8833}, {47.6417, 12.9833}, {47.6050, 12.9870}};
+    static final String[] PLACES = {"Berchtesgaden", "Ramsau bei Berchtesgaden", "Bischofswiesen", "Schönau am Königssee",
+            "Bad Reichenhall", "Bayerisch Gmain", "Piding", "Anger", "Schneizlreuth", "Marktschellenberg",
+            "Ainring", "Freilassing", "Saaldorf-Surheim", "Teisendorf", "Laufen", "Königssee", "Obersalzberg"};
+    private static final double[][] COORDS = {{47.6297, 13.0036}, {47.6333, 12.8833}, {47.6417, 12.9833}, {47.6050, 12.9870},
+            {47.7233, 12.8767}, {47.7167, 12.8500}, {47.7447, 12.9300}, {47.7667, 12.8333}, {47.6918, 12.7728}, {47.7100, 13.0200},
+            {47.8272, 12.9433}, {47.8372, 12.9786}, {47.8750, 12.9333}, {47.8531, 12.8280}, {47.9392, 12.9306},
+            {47.5558, 12.9858}, {47.6125, 13.0200}};
 
     private static String url(int place) {
         return "https://api.open-meteo.com/v1/forecast?latitude=" + COORDS[place][0]
@@ -36,8 +41,11 @@ final class Weather {
     /** Temperatur auf Berghoehe (Open-Meteo rechnet mit "elevation" auf diese Hoehe um). */
     static final int MOUNTAIN_M = 1800;
     /** Hausberg je Ort: Name und Hoehe (Temperatur wird auf diese Hoehe umgerechnet). */
-    static final String[] PEAK_N = {"Watzmann", "Hochkalter", "Untersberg", "Jenner"};
-    static final int[] PEAK_M = {2713, 2607, 1972, 1874};
+    static final String[] PEAK_N = {"Watzmann", "Hochkalter", "Untersberg", "Jenner",
+            "Predigtstuhl", "Untersberg", "Hochstaufen", "Hochstaufen", "Reiter Alpe", "Untersberg",
+            "Untersberg", "Untersberg", "Hochstaufen", "Teisenberg", "Hochstaufen", "Watzmann", "Hoher Göll"};
+    static final int[] PEAK_M = {2713, 2607, 1972, 1874, 1613, 1972, 1771, 1771, 2286, 1972,
+            1972, 1972, 1771, 1333, 1771, 2713, 2522};
 
     private static String mountainUrl(int place) {
         return "https://api.open-meteo.com/v1/forecast?latitude=" + COORDS[place][0]
