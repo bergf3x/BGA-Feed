@@ -6,8 +6,8 @@ final class Changelog {
 
     static final String[][] LOG = {
             {"1.14",
-                    "! Test: Meldungen zeigen die echte Veröffentlichungszeit der Artikelseite statt „vor 9 Min.“ (Erstsichtung)"},
-            {"1.14",
+                    "! Test: BGLand24 wieder sichtbar (Zeitlimit beim direkten Abruf), bei Fehler automatisch GitHub-Feed",
+                    "! Test: Meldungen zeigen die echte Veröffentlichungszeit der Artikelseite statt „vor 9 Min.“",
                     "! Sonderzeichen in Überschriften korrigiert (z. B. »Costa Concordia« statt &raquo;…&laquo;)"},
             {"1.11",
                     "+ Test: App-Name oben in Fraunces (freie Lizenz) mit Farbverlauf Weiß → Grau"},

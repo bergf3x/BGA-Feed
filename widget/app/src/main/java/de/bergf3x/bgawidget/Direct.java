@@ -71,16 +71,25 @@ final class Direct {
     /** Holt die Seite(n) live, mischt mit dem gemerkten Stand und liefert den RSS-Text. */
     static String fetch(Context ctx, Catalog.Feed f) throws IOException {
         long t0 = System.currentTimeMillis();
-        boolean bga = f.id.equals("bga");
-        List<Map<String, Object>> found = bga ? scrapeBga() : scrapeBgland();
-        if (found.isEmpty()) throw new IOException("keine Artikel gefunden");
-        int timed = resolveTimes(ctx, f, found);
-        String xml;
-        synchronized (Direct.class) {
-            xml = merge(ctx, f, bga, found);
+        try {
+            boolean bga = f.id.equals("bga");
+            List<Map<String, Object>> found = bga ? scrapeBga() : scrapeBgland();
+            if (found.isEmpty()) throw new IOException("keine Artikel gefunden");
+            int timed = 0;
+            try {
+                timed = resolveTimes(ctx, f, found);
+            } catch (Exception ignored) {
+            }
+            String xml;
+            synchronized (Direct.class) {
+                xml = merge(ctx, f, bga, found);
+            }
+            log(ctx, f.name + ": " + found.size() + " Artikel direkt, " + timed + " Zeiten neu gelesen, " + (System.currentTimeMillis() - t0) / 1000 + " s");
+            return xml;
+        } catch (Exception e) {
+            log(ctx, f.name + ": FEHLER direkt (" + e + ") - nehme GitHub-Feed");
+            return Net.download(Net.fresh(f.url));
         }
-        log(ctx, f.name + ": " + found.size() + " Artikel direkt, " + timed + " Zeiten neu gelesen, " + (System.currentTimeMillis() - t0) / 1000 + " s");
-        return xml;
     }
 
     // ------------------------------------------------------------------ Anzeiger
@@ -323,10 +332,10 @@ final class Direct {
         final List<Map<String, Object>> todo = new ArrayList<>();
         for (Map<String, Object> it : found) {
             if (!done.contains(String.valueOf(it.get("sid")))) todo.add(it);
-            if (todo.size() >= 70) break;
+            if (todo.size() >= 30) break;
         }
         if (todo.isEmpty()) return 0;
-        ExecutorService ex = Executors.newFixedThreadPool(6);
+        ExecutorService ex = Executors.newFixedThreadPool(8);
         List<Callable<Boolean>> tasks = new ArrayList<>();
         for (final Map<String, Object> it : todo) {
             tasks.add(() -> {
@@ -340,7 +349,7 @@ final class Direct {
         }
         int ok = 0;
         try {
-            ex.invokeAll(tasks, 25, TimeUnit.SECONDS);
+            ex.invokeAll(tasks, 12, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         } finally {

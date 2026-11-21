@@ -80,7 +80,7 @@ public class ListService extends RemoteViewsService {
         tasks.add(() -> { Avalanche.refreshIfStale(ctx); return null; });
         java.util.concurrent.ExecutorService ex = java.util.concurrent.Executors.newFixedThreadPool(Math.min(5, tasks.size()));
         try {
-            List<java.util.concurrent.Future<Fetched>> fs = ex.invokeAll(tasks, 25, java.util.concurrent.TimeUnit.SECONDS);
+            List<java.util.concurrent.Future<Fetched>> fs = ex.invokeAll(tasks, Direct.enabled(ctx) ? 50 : 25, java.util.concurrent.TimeUnit.SECONDS);
             for (int i = 0; i < feedCount; i++) {
                 java.util.concurrent.Future<Fetched> fu = fs.get(i);
                 if (fu.isCancelled()) continue;
