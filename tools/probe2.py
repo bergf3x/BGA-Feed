@@ -24,7 +24,7 @@ for u in sys.argv[1:]:
     except Exception as e:
         print("  FEHLER", e.__class__.__name__); continue
     t = r.text
-    items = re.findall(r"<(item|entry)\b.*?</\1>", t, re.S)
+    items = [m.group(0) for m in re.finditer(r"<(item|entry)\b.*?</\1>", t, re.S)]
     print(f"  HTTP {r.status_code}, {len(t)//1024} KB, Items {len(items)}")
     if not items:
         for x in sorted(set(re.findall(r'href="([^"]*(?:rss|feed|\.xml|atom)[^"]*)"', t, re.I)))[:8]: print("  F:", x)
