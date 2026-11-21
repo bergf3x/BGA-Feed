@@ -5,11 +5,7 @@
     <link>https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land.html</link>
     <description>Neueste Meldungen, automatisch erzeugt. Nur Titel und Anrisstext.</description>
     <language>de-de</language>
-<<<<<<< HEAD
-    <lastBuildDate>Sat, 21 Nov 2026 16:46:01 +0000</lastBuildDate>
-=======
-    <lastBuildDate>Sat, 21 Nov 2026 16:58:56 +0000</lastBuildDate>
->>>>>>> main
+    <lastBuildDate>Sat, 21 Nov 2026 17:12:25 +0000</lastBuildDate>
     <item>
       <title>Zwei Freunde, ein Sieger: Hütters Eintracht bezwingt die TSG</title>
       <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-zwei-freunde-ein-sieger-huetters-eintracht-bezwingt-die-tsg-_arid,1027854.html</link>
@@ -603,6 +599,15 @@
       <category>Piding</category>
       <topic>Region/Berchtesgadener Land</topic>
       <description>Piding – Der Christkindlmarkt der Pidinger Werkstätten ist am zweiten und dritten Adventswochenende an den Samstagen und Sonntagen wieder jeweils von 13 Uhr bis 19 Uhr geöffnet. Auch ...</description>
+    </item>
+    <item>
+      <title>Abenteurer seit 60 Jahren – Otto Huber erzählt aus seinem Leben</title>
+      <link>https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land/bad-reichenhall_artikel,-abenteurer-seit-60-jahren-otto-huber-erzaehlt-aus-seinem-leben-_arid,1027720.html</link>
+      <guid isPermaLink="false">bga-1027720</guid>
+      <pubDate>Sat, 21 Nov 2026 17:00:57 +0000</pubDate>
+      <category>Bad Reichenhall</category>
+      <topic>Region/Berchtesgadener Land</topic>
+      <description>Bad Reichenhall – Seit sechs Jahrzehnten ist der Traunsteiner Bergsteiger und Weltenbummler Otto Huber auf der Suche nach Abenteuern. Darüber spricht er am Mittwoch, 25. November, um ...</description>
     </item>
     <item>
       <title>Einbruch am Christkindlmarkt: Inzwischen noch mehr Fälle bekannt geworden</title>
@@ -3598,15 +3603,6 @@
       <guid isPermaLink="false">bga-715456</guid>
       <pubDate>Fri, 20 Nov 2026 17:50:08 +0000</pubDate>
       <category>Regional</category>
-      <topic>Region/Bergsteiger &amp; Naturfreunde</topic>
-      <description></description>
-    </item>
-    <item>
-      <title>»Das war Heavy-Metal-Wetter« – Tina Gröne und Florian Reiterberger müssen das Trans-Balkan-Race abbrechen</title>
-      <link>https://www.berchtesgadener-anzeiger.de/startseite_artikel,-das-war-heavymetalwetter-tina-groene-und-florian-reiterberger-muessen-das-transbalkanrace-abbrechen-_arid,713806.html</link>
-      <guid isPermaLink="false">bga-713806</guid>
-      <pubDate>Fri, 20 Nov 2026 17:50:08 +0000</pubDate>
-      <category>Bergsteiger</category>
       <topic>Region/Bergsteiger &amp; Naturfreunde</topic>
       <description></description>
     </item>

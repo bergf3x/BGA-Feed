@@ -62,19 +62,7 @@
     "Region/Polizeimeldungen",
     "Region/Rupertiwinkel",
     "Region/Traunstein",
-    "Region/Trostberg",
-    "Bayern",
-    "Bayern/Altoetting",
-    "Bayern/Berchtesgadener Land",
-    "Bayern/Muehldorf",
-    "Bayern/Rosenheim",
-    "Sport",
-    "Sport/Wintersport",
-    "Nachrichten",
-    "Nachrichten/Deutschland",
-    "Nachrichten/Stars",
-    "Nachrichten/Welt",
-    "Nachrichten/Wirtschaft"
+    "Region/Trostberg"
    ]
   },
   {
@@ -84,6 +72,37 @@
    "topics": [
     "Region",
     "Region/Salzburg"
+   ]
+  },
+  {
+   "id": "tt",
+   "name": "Traunsteiner Tagblatt",
+   "url": "https://raw.githubusercontent.com/bergf3x/BGA-Feed/main/feed_tt.xml",
+   "topics": [
+    "Region",
+    "Region/Berchtesgadener Land",
+    "Region/Landkreis Traunstein",
+    "Sport",
+    "Sport/Sport aus der Region",
+    "Kultur"
+   ]
+  },
+  {
+   "id": "lra_bgl",
+   "name": "Landratsamt BGL",
+   "url": "https://raw.githubusercontent.com/bergf3x/BGA-Feed/main/feed_lra_bgl.xml",
+   "topics": [
+    "Region",
+    "Region/Landratsamt"
+   ]
+  },
+  {
+   "id": "npv",
+   "name": "Nationalpark Berchtesgaden",
+   "url": "https://raw.githubusercontent.com/bergf3x/BGA-Feed/main/feed_npv.xml",
+   "topics": [
+    "Region",
+    "Region/Nationalpark"
    ]
   }
  ]
