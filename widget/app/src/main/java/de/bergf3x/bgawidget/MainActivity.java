@@ -291,7 +291,12 @@ public class MainActivity extends Activity {
         row.setGravity(Gravity.CENTER_VERTICAL);
         LinearLayout titles = new LinearLayout(this);
         titles.setOrientation(LinearLayout.VERTICAL);
-        titles.addView(text("BGL Wetter & News", 21, tx, true));
+        TextView appName = text("BGL Wetter & News", 27, tx, false);
+        try {
+            appName.setTypeface(getResources().getFont(R.font.unifraktur_maguntia));
+        } catch (Exception ignored) {
+        }
+        titles.addView(appName);
         titles.addView(text(statusLine(), 11.5f, soft, false));
         row.addView(titles, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
         if (syncing) {

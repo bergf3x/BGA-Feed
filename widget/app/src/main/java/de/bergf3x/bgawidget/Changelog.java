@@ -5,6 +5,8 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.11",
+                    "+ Test: App-Name oben in altdeutscher Schrift (UnifrakturMaguntia, freie Lizenz)"},
             {"1.10",
                     "+ Hinweis „Widget auf den Startbildschirm“ lässt sich mit ✕ schließen und bleibt in den Einstellungen ganz oben erreichbar"},
             {"1.09",
