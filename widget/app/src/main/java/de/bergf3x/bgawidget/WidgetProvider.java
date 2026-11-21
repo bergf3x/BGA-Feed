@@ -75,7 +75,7 @@ public class WidgetProvider extends AppWidgetProvider {
 
         applyGlass(ctx, rv, id);
         rv.setTextColor(R.id.empty, fg);
-        boolean light = Prefs.theme(ctx, id) == 1;
+        boolean light = Prefs.isLight(ctx, id);
 
         applyWeather(ctx, rv, id, fg, Prefs.argb(rgb, tx, 0.7f), false);
 
@@ -119,7 +119,7 @@ public class WidgetProvider extends AppWidgetProvider {
     /** Glas-Hintergrund passend zur aktuellen Widget-Groesse zeichnen. */
     static void applyGlass(Context ctx, RemoteViews rv, int id) {
         int bg = Prefs.bg(ctx, id);
-        boolean light = Prefs.theme(ctx, id) == 1;
+        boolean light = Prefs.isLight(ctx, id);
         android.os.Bundle o = AppWidgetManager.getInstance(ctx).getAppWidgetOptions(id);
         float d = ctx.getResources().getDisplayMetrics().density;
         float sc = 0.55f;
@@ -146,9 +146,15 @@ public class WidgetProvider extends AppWidgetProvider {
 
     /** Wetterbereich: aktueller Stand, Hoechst/Tiefst, Zusatzzeile, Warnung, Vorschau. weatherWidget = eigenes Wetter-Widget. */
     static void applyWeather(Context ctx, RemoteViews rv, int id, int fg, int fgSoft, boolean weatherWidget) {
+        int cw = Prefs.colorWx(ctx, id);
+        if (cw >= 0) {
+            int txw = Prefs.text(ctx, id);
+            fg = Prefs.argb(cw, txw, 1f);
+            fgSoft = Prefs.argb(cw, txw, 0.7f);
+        }
         int place = Prefs.place(ctx, id);
         Weather w = Weather.load(ctx, place);
-        boolean light = Prefs.theme(ctx, id) == 1;
+        boolean light = Prefs.isLight(ctx, id);
         boolean on = weatherWidget || Prefs.showWeather(ctx, id);
         int visOn = on ? android.view.View.VISIBLE : android.view.View.GONE;
         rv.setViewVisibility(R.id.w_icon, visOn);
@@ -164,8 +170,15 @@ public class WidgetProvider extends AppWidgetProvider {
         rv.setOnClickPendingIntent(R.id.w_hi, hourly);
         rv.setOnClickPendingIntent(R.id.w_lo, hourly);
         rv.setOnClickPendingIntent(R.id.btn_cam, activity(ctx, WebcamActivity.class, id, 903, "webcam"));
-        rv.setInt(R.id.btn_cam, "setColorFilter", 0xFF000000 | Prefs.color(ctx, id));
-        rv.setInt(R.id.btn_cam, "setImageAlpha", Prefs.alpha(Prefs.text(ctx, id)));
+        rv.setOnClickPendingIntent(R.id.btn_search, activity(ctx, SearchActivity.class, id, 904, "search"));
+        rv.setOnClickPendingIntent(R.id.btn_saved, activity(ctx, SavedActivity.class, id, 905, "saved"));
+        int toolRgb = cw >= 0 ? cw : Prefs.color(ctx, id);
+        for (int tb : new int[]{R.id.btn_cam, R.id.btn_search, R.id.btn_saved}) {
+            rv.setInt(tb, "setColorFilter", 0xFF000000 | toolRgb);
+            rv.setInt(tb, "setImageAlpha", Prefs.alpha(Prefs.text(ctx, id)));
+        }
+        rv.setViewVisibility(R.id.btn_search, weatherWidget ? android.view.View.GONE : android.view.View.VISIBLE);
+        rv.setViewVisibility(R.id.btn_saved, weatherWidget ? android.view.View.GONE : android.view.View.VISIBLE);
         rv.setTextColor(R.id.w_desc, fgSoft);
         rv.setTextColor(R.id.w_temp, fg);
         rv.setTextColor(R.id.w_hi, fg);
@@ -228,13 +241,14 @@ public class WidgetProvider extends AppWidgetProvider {
         int infoH = weatherWidget ? 120 : 190;
         int fcH = weatherWidget ? 200 : 260;
         int warnH = weatherWidget ? 90 : 150;
-        rv.setViewVisibility(R.id.fc_box, on && minH >= fcH ? android.view.View.VISIBLE : android.view.View.GONE);
+        boolean compact = Prefs.compact(ctx, id);
+        rv.setViewVisibility(R.id.fc_box, on && !compact && minH >= fcH ? android.view.View.VISIBLE : android.view.View.GONE);
         String info = w == null ? "" : w.info();
         rv.setTextViewText(R.id.w_info, Style.font(ctx, id, info));
         rv.setTextColor(R.id.w_info, fgSoft);
-        int infoVis = on && minH >= infoH && !info.isEmpty() ? android.view.View.VISIBLE : android.view.View.GONE;
+        int infoVis = on && !compact && minH >= infoH && !info.isEmpty() ? android.view.View.VISIBLE : android.view.View.GONE;
         rv.setViewVisibility(R.id.w_info, infoVis);
-        rv.setViewVisibility(R.id.btn_cam, on && minH >= infoH ? android.view.View.VISIBLE : android.view.View.GONE);
+        rv.setViewVisibility(R.id.tools, on && minH >= infoH ? android.view.View.VISIBLE : android.view.View.GONE);
 
         // amtliche DWD-Warnung (nur wenn aktuell)
         int wl = Prefs.warnLevel(ctx);
@@ -250,7 +264,8 @@ public class WidgetProvider extends AppWidgetProvider {
         String stand = t == 0 ? "" : new java.text.SimpleDateFormat("HH:mm", java.util.Locale.GERMANY).format(new java.util.Date(t));
         boolean ok = weatherWidget || Prefs.newsOk(ctx);
         String line;
-        if (ok) line = stand.isEmpty() ? "" : "Stand " + stand;
+        String sw = weatherWidget ? "" : Prefs.srcWarn(ctx);
+        if (ok) line = stand.isEmpty() ? "" : "Stand " + stand + (sw.isEmpty() ? "" : "  ·  " + sw);
         else line = "Offline – " + (stand.isEmpty() ? "keine Daten" : "Stand " + stand);
         rv.setTextViewText(R.id.w_stand, line);
         rv.setTextColor(R.id.w_stand, ok ? fgSoft : 0xFFFFB74D);

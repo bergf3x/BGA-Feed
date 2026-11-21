@@ -46,6 +46,7 @@ public class ListService extends RemoteViewsService {
             Catalog.refresh(ctx);
             Weather.refreshIfStale(ctx, Prefs.place(ctx, widgetId));
             Warnings.refreshIfStale(ctx);
+            Avalanche.refreshIfStale(ctx);
             items = load(true);
             WidgetProvider.refreshHeader(ctx, widgetId);
         }
@@ -55,7 +56,7 @@ public class ListService extends RemoteViewsService {
             readSet = Prefs.readSet(ctx);
             airy = Prefs.density(ctx, widgetId) == 1;
             sizeIdx = Prefs.size(ctx, widgetId);
-            lightTheme = Prefs.theme(ctx, widgetId) == 1;
+            lightTheme = Prefs.isLight(ctx, widgetId);
             List<Catalog.Feed> all = Catalog.load(ctx);
             Set<String> selected = Catalog.effective(all, Prefs.feeds(ctx, widgetId));
             String topic = Prefs.topic(ctx, widgetId);
@@ -64,6 +65,8 @@ public class ListService extends RemoteViewsService {
             boolean anyOk = false;
             boolean anyFail = false;
             List<FeedItem> merged = new ArrayList<>();
+            StringBuilder stale = new StringBuilder();
+            long nowMs = System.currentTimeMillis();
             for (Catalog.Feed f : all) {
                 if (!selected.contains(f.id)) continue;
                 String xml = null;
@@ -89,7 +92,14 @@ public class ListService extends RemoteViewsService {
                     }
                 }
                 if (xml == null) xml = Prefs.feedCache(ctx, f.id);
-                for (FeedItem it : FeedItem.parse(xml, f.name)) {
+                long newest = 0;
+                List<FeedItem> parsed = FeedItem.parse(xml, f.name);
+                for (FeedItem it : parsed) newest = Math.max(newest, it.time);
+                if (newest > 0 && nowMs - newest > 24L * 3600000) {
+                    if (stale.length() > 0) stale.append(", ");
+                    stale.append(f.name).append(" ohne Neues seit ").append((nowMs - newest) / 3600000L).append(" Std.");
+                }
+                for (FeedItem it : parsed) {
                     if (!topic.isEmpty() && !it.inTopic(topic)) continue;
                     if (it.plus && !plusOn) continue;
                     if (isMuted(it, muted, topic)) continue;
@@ -100,7 +110,37 @@ public class ListService extends RemoteViewsService {
             if (online && merged.isEmpty()) showEmptyReason(all, selected, topic);
             // Gleiche Zeit (z. B. erster Lauf): Reihenfolge innerhalb des Feeds bleibt erhalten
             Collections.sort(merged, (a, b) -> Long.compare(b.time, a.time));
-            return merged;
+            Prefs.setSrcWarn(ctx, stale.toString());
+            return dedupe(merged);
+        }
+
+        /** Gleiche Meldung aus zwei Quellen nur einmal zeigen (aehnlicher Titel, ueber 60 % gleiche Woerter). */
+        private List<FeedItem> dedupe(List<FeedItem> in) {
+            List<FeedItem> out = new ArrayList<>();
+            List<Set<String>> sets = new ArrayList<>();
+            for (FeedItem it : in) {
+                Set<String> w = words(it.title);
+                boolean dup = false;
+                for (int i = 0; i < out.size() && !dup; i++) {
+                    if (out.get(i).feedName.equals(it.feedName)) continue;
+                    Set<String> o = sets.get(i);
+                    if (w.size() < 3 || o.size() < 3) continue;
+                    int common = 0;
+                    for (String x : w) if (o.contains(x)) common++;
+                    int union = w.size() + o.size() - common;
+                    if (union > 0 && common / (double) union >= 0.6) dup = true;
+                }
+                if (dup) continue;
+                out.add(it);
+                sets.add(w);
+            }
+            return out;
+        }
+
+        private Set<String> words(String t) {
+            Set<String> r = new java.util.HashSet<>();
+            for (String x : t.toLowerCase(java.util.Locale.GERMANY).split("[^\\p{L}\\p{N}]+")) if (x.length() >= 4) r.add(x);
+            return r;
         }
 
         /** Ausgeblendetes Thema – es sei denn, genau dieses Thema ist gerade gewaehlt. */
@@ -155,7 +195,8 @@ public class ListService extends RemoteViewsService {
             rv.setTextViewTextSize(R.id.item_meta, android.util.TypedValue.COMPLEX_UNIT_SP, Style.metaSp(sizeIdx));
             rv.setInt(R.id.item_card, "setBackgroundResource", lightTheme ? R.drawable.card_bg_light : R.drawable.card_bg);
             rv.setTextColor(R.id.item_title, Prefs.argb(rgb, tx, dim));
-            rv.setTextColor(R.id.item_meta, Prefs.argb(rgb, tx, 0.7f * dim));
+            int sub = Prefs.colorSub(ctx, widgetId);
+            rv.setTextColor(R.id.item_meta, Prefs.argb(sub >= 0 ? sub : rgb, tx, 0.7f * dim));
             rv.setInt(R.id.item_accent, "setColorFilter", it.accentColor());
             rv.setInt(R.id.item_accent, "setImageAlpha", read ? 90 : 255);
             rv.setViewVisibility(R.id.item_plus, it.plus ? android.view.View.VISIBLE : android.view.View.GONE);

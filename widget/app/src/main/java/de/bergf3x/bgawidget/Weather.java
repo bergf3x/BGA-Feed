@@ -35,11 +35,14 @@ final class Weather {
 
     /** Temperatur auf Berghoehe (Open-Meteo rechnet mit "elevation" auf diese Hoehe um). */
     static final int MOUNTAIN_M = 1800;
+    /** Hausberg je Ort: Name und Hoehe (Temperatur wird auf diese Hoehe umgerechnet). */
+    static final String[] PEAK_N = {"Watzmann", "Hochkalter", "Untersberg", "Jenner"};
+    static final int[] PEAK_M = {2713, 2607, 1972, 1874};
 
     private static String mountainUrl(int place) {
         return "https://api.open-meteo.com/v1/forecast?latitude=" + COORDS[place][0]
                 + "&longitude=" + COORDS[place][1]
-                + "&current=temperature_2m&elevation=" + MOUNTAIN_M
+                + "&current=temperature_2m&elevation=" + PEAK_M[place]
                 + "&timezone=Europe%2FBerlin&forecast_days=1";
     }
 
@@ -51,6 +54,8 @@ final class Weather {
     int code;
     boolean day = true;
     int days;
+    int place = 0;
+    String avalanche = "";
     int mtn = NONE;      // Temperatur auf MOUNTAIN_M
     int freeze = NONE;   // Nullgradgrenze in m
     int precip = NONE;   // Niederschlagswahrscheinlichkeit heute in %
@@ -71,14 +76,16 @@ final class Weather {
 
     /** Gespeicherten Stand lesen; null, wenn es noch keinen gibt. */
     static Weather load(Context c, int place) {
-        return parse(Prefs.weather(c, place));
+        Weather w = parse(Prefs.weather(c, place));
+        if (w != null && System.currentTimeMillis() - Prefs.avalTime(c) < 12L * 3600000) w.avalanche = Prefs.avalText(c);
+        return w;
     }
 
     /** Im Hintergrund-Thread aufrufen. true, wenn neue Daten gespeichert wurden. */
     static boolean refreshIfStale(Context c, int place) {
         String cached = Prefs.weather(c, place);
         // Alter Stand ohne die neuen Felder (Wind/Regenrisiko) gilt als veraltet
-        boolean fresh = cached != null && cached.contains("sunrise")
+        boolean fresh = cached != null && cached.contains("sunrise") && cached.contains("\"peak\"")
                 && System.currentTimeMillis() - Prefs.weatherTime(c, place) < MAX_AGE;
         if (fresh) return false;
         try {
@@ -95,6 +102,7 @@ final class Weather {
                 double t = m.getJSONObject("current").getDouble("temperature_2m");
                 JSONObject o = new JSONObject(json);
                 o.put("mtn", t);
+                o.put("peak", place);
                 json = o.toString();
             } catch (Exception ignored) {
                 // Bergwetter ist optional; Tal-Wetter wird trotzdem gespeichert
@@ -115,6 +123,7 @@ final class Weather {
             w.temp = (int) Math.round(cur.getDouble("temperature_2m"));
             w.code = cur.getInt("weather_code");
             w.day = cur.optInt("is_day", 1) == 1;
+            w.place = Math.max(0, Math.min(PEAK_M.length - 1, o.optInt("peak", 0)));
             if (o.has("mtn")) w.mtn = (int) Math.round(o.optDouble("mtn", NONE));
             if (cur.has("wind_speed_10m")) w.wind = (int) Math.round(cur.optDouble("wind_speed_10m", NONE));
             if (cur.has("wind_gusts_10m")) w.gust = (int) Math.round(cur.optDouble("wind_gusts_10m", NONE));
@@ -180,25 +189,28 @@ final class Weather {
 
     /** Zeile mit Niederschlag, Wind, Bergtemperatur und Nullgradgrenze; leer, wenn nichts da ist. */
     String info() {
-        StringBuilder sb = new StringBuilder();
-        if (precip != NONE) sb.append("Regenrisiko ").append(precip).append(" %");
+        java.util.List<String> lines = new java.util.ArrayList<>();
+        StringBuilder l1 = new StringBuilder();
+        if (precip != NONE) l1.append("Regen ").append(precip).append(" %");
         if (wind != NONE) {
-            if (sb.length() > 0) sb.append("  ·  ");
-            sb.append("Wind ").append(wind);
-            if (gust != NONE && gust > wind + 5) sb.append(" (Böen ").append(gust).append(")");
-            sb.append(" km/h");
+            if (l1.length() > 0) l1.append("   ·   ");
+            l1.append("Wind ").append(wind);
+            if (gust != NONE && gust > wind + 5) l1.append("–").append(gust);
+            l1.append(" km/h");
         }
-        if (!sunrise.isEmpty() && !sunset.isEmpty()) {
-            if (sb.length() > 0) sb.append("\n");
-            sb.append("Sonne ").append(sunrise).append(" – ").append(sunset);
+        if (l1.length() > 0) lines.add(l1.toString());
+        if (!sunrise.isEmpty() && !sunset.isEmpty()) lines.add("Sonne " + sunrise + " – " + sunset);
+        if (mtn != NONE) lines.add(PEAK_N[place] + " (" + PEAK_M[place] + " m): " + deg(mtn));
+        if (freeze != NONE) {
+            // grobe Faustregel: Schneefallgrenze etwa 300 m unter der Nullgradgrenze
+            int snow = Math.max(0, Math.round((freeze - 300) / 50f) * 50);
+            lines.add("Nullgrad " + freeze + " m   ·   Schnee ab ca. " + snow + " m");
         }
-        if (mtn != NONE) {
+        if (avalanche != null && !avalanche.isEmpty()) lines.add(avalanche);
+        StringBuilder sb = new StringBuilder();
+        for (String l : lines) {
             if (sb.length() > 0) sb.append("\n");
-            sb.append(MOUNTAIN_M).append(" m: ").append(deg(mtn));
-            if (freeze != NONE) sb.append("  ·  0°-Grenze ").append(freeze).append(" m");
-        } else if (freeze != NONE) {
-            if (sb.length() > 0) sb.append("\n");
-            sb.append("0°-Grenze ").append(freeze).append(" m");
+            sb.append(l);
         }
         return sb.toString();
     }

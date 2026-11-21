@@ -27,7 +27,70 @@ final class Prefs {
 
     /** Schriftfarbe als RGB ohne Alpha. */
     static int color(Context c, int id) {
+        if (theme(c, id) == 2) return isLight(c, id) ? 0x1B1F22 : 0xFFFFFF;  // Auto: Textfarbe folgt dem Design
         return sp(c).getInt("tc_" + id, DEFAULT_COLOR) & 0xFFFFFF;
+    }
+
+    /** Eigene Farbe fuer Nebenzeilen (-1 = wie Titel). */
+    static int colorSub(Context c, int id) {
+        return theme(c, id) == 2 ? -1 : sp(c).getInt("tcs_" + id, -1);
+    }
+
+    /** Eigene Farbe fuer den Wetterbereich (-1 = wie Titel). */
+    static int colorWx(Context c, int id) {
+        return theme(c, id) == 2 ? -1 : sp(c).getInt("tcw_" + id, -1);
+    }
+
+    static boolean compact(Context c, int id) {
+        return sp(c).getBoolean("cmp_" + id, false);
+    }
+
+    static boolean warnNotify(Context c) {
+        return sp(c).getBoolean("warn_notify", false);
+    }
+
+    static void setColors(Context c, int id, int sub, int wx, boolean compact, boolean notify) {
+        sp(c).edit().putInt("tcs_" + id, sub).putInt("tcw_" + id, wx).putBoolean("cmp_" + id, compact)
+                .putBoolean("warn_notify", notify).apply();
+    }
+
+    static String lastNotified(Context c) {
+        return sp(c).getString("warn_notified", "");
+    }
+
+    static void setLastNotified(Context c, String k) {
+        sp(c).edit().putString("warn_notified", k).apply();
+    }
+
+    // ---- Lawinenlagebericht ----
+    static void setAval(Context c, String text) {
+        sp(c).edit().putString("aval_text", text == null ? "" : text).putLong("aval_t", System.currentTimeMillis()).apply();
+    }
+
+    static String avalText(Context c) {
+        return sp(c).getString("aval_text", "");
+    }
+
+    static long avalTime(Context c) {
+        return sp(c).getLong("aval_t", 0);
+    }
+
+    // ---- Quellen ohne Neues ----
+    static void setSrcWarn(Context c, String t) {
+        sp(c).edit().putString("src_warn", t == null ? "" : t).apply();
+    }
+
+    static String srcWarn(Context c) {
+        return sp(c).getString("src_warn", "");
+    }
+
+    /** Auto-Design: hell am Tag laut Systemeinstellung (Dunkelmodus aus). */
+    static boolean isLight(Context c, int id) {
+        int t = sp(c).getInt("theme_" + id, 0);
+        if (t == 1) return true;
+        if (t != 2) return false;
+        int mode = c.getResources().getConfiguration().uiMode & android.content.res.Configuration.UI_MODE_NIGHT_MASK;
+        return mode != android.content.res.Configuration.UI_MODE_NIGHT_YES;
     }
 
     static void set(Context c, int id, int bg, int text, int color, Set<String> feeds) {
@@ -64,7 +127,7 @@ final class Prefs {
                 .remove("fd_" + id).remove("tp_" + id).remove("pl_" + id)
                 .remove("plus_" + id).remove("mute_" + id).remove("dens_" + id)
                 .remove("font_" + id).remove("size_" + id).remove("theme_" + id)
-                .remove("wx_" + id).remove("warn_" + id).apply();
+                .remove("wx_" + id).remove("warn_" + id).remove("tcs_" + id).remove("tcw_" + id).remove("cmp_" + id).apply();
     }
 
     /** PLUS-Artikel anzeigen (Standard: ja). */
@@ -102,9 +165,10 @@ final class Prefs {
         return f >= 0 && f <= 2 ? f : 1;
     }
 
-    /** 0 dunkel, 1 hell. */
+    /** 0 dunkel, 1 hell, 2 automatisch. */
     static int theme(Context c, int id) {
-        return sp(c).getInt("theme_" + id, 0) == 1 ? 1 : 0;
+        int t = sp(c).getInt("theme_" + id, 0);
+        return t == 1 || t == 2 ? t : 0;
     }
 
     static boolean showWeather(Context c, int id) {

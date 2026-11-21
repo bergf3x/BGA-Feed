@@ -53,6 +53,7 @@ final class Warnings {
             } else {
                 String t = "Warnung: " + nice(bestText) + (count > 1 ? " +" + (count - 1) : "");
                 Prefs.setWarn(c, best, t);
+                Notifier.warn(c, best, t);
             }
         } catch (Exception ignored) {
             // bei Fehlern den alten Stand behalten

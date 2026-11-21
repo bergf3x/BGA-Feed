@@ -54,6 +54,12 @@ public class ConfigActivity extends Activity {
     private EditText etColor;
     private LinearLayout feedBox;
     private TextView catStatus;
+    private int colSub = -1;
+    private int colWx = -1;
+    private boolean compact;
+    private boolean notify;
+    private static final int[] TONES = {-1, 0xFFFFFF, 0x9CC9FF, 0x7CE3BE, 0xFFE08A};
+    private static final String[] TONE_NAMES = {"Wie Titel", "Weiß", "Hellblau", "Mint", "Gelb"};
     private LinearLayout muteBox;
     private LinearLayout swatchBox;
 
@@ -83,6 +89,10 @@ public class ConfigActivity extends Activity {
         theme = Prefs.theme(this, widgetId);
         wxOn = Prefs.showWeather(this, widgetId);
         warnOn = Prefs.showWarn(this, widgetId);
+        colSub = Prefs.colorSub(this, widgetId);
+        colWx = Prefs.colorWx(this, widgetId);
+        compact = Prefs.compact(this, widgetId);
+        notify = Prefs.warnNotify(this);
         selected.addAll(Prefs.feeds(this, widgetId));
         muted.addAll(Prefs.muted(this, widgetId));
 
@@ -183,7 +193,7 @@ public class ConfigActivity extends Activity {
             refreshPreview();
         });
         b.label(body, "Design");
-        b.segment(body, new String[]{"Dunkel", "Hell"}, theme, i -> {
+        b.segment(body, new String[]{"Dunkel", "Hell", "Auto"}, theme, i -> {
             theme = i;
             if (i == 1 && color == 0xFFFFFF) color = 0x1B1F22;
             if (i == 0 && color == 0x1B1F22) color = 0xFFFFFF;
@@ -192,7 +202,21 @@ public class ConfigActivity extends Activity {
             refreshPreview();
         });
 
+        b.label(body, "Auto folgt dem System (Hell/Dunkel); die Textfarben unten gelten dann nicht.");
+        b.label(body, "Farbe der Nebenzeilen");
+        b.segment(body, TONE_NAMES, toneIndex(colSub), i -> colSub = TONES[i]);
+        b.label(body, "Farbe des Wetterbereichs");
+        b.segment(body, TONE_NAMES, toneIndex(colWx), i -> colWx = TONES[i]);
+
         b.label(body, "Anzeige");
+        b.toggle(body, "Wetter kompakt (ohne Vorschau und Zusatzzeilen)", compact, on -> compact = on);
+        b.toggle(body, "Unwetterwarnung als Benachrichtigung (ab Stufe 3)", notify, on -> {
+            notify = on;
+            if (on && android.os.Build.VERSION.SDK_INT >= 33
+                    && checkSelfPermission("android.permission.POST_NOTIFICATIONS") != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{"android.permission.POST_NOTIFICATIONS"}, 1);
+            }
+        });
         b.toggle(body, "Wetterbereich anzeigen", wxOn, on -> wxOn = on);
         b.toggle(body, "Unwetterwarnungen anzeigen", warnOn, on -> warnOn = on);
         b.pillKeep("Gemerkte Artikel ansehen", false,
@@ -256,6 +280,7 @@ public class ConfigActivity extends Activity {
         Prefs.set(this, widgetId, bgPct, txPct, color, selected);
         Prefs.setExtras(this, widgetId, plus, muted, density);
         Prefs.setLook(this, widgetId, font, size, theme, wxOn, warnOn);
+        Prefs.setColors(this, widgetId, colSub, colWx, compact, notify);
         WidgetProvider.updateAny(this, widgetId);
         Intent result = new Intent();
         result.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
@@ -313,12 +338,25 @@ public class ConfigActivity extends Activity {
         }
     }
 
+    private static int toneIndex(int rgb) {
+        for (int i = 0; i < TONES.length; i++) if (TONES[i] == rgb) return i;
+        return 0;
+    }
+
+    private boolean lightNow() {
+        if (theme == 1) return true;
+        if (theme != 2) return false;
+        int mode = getResources().getConfiguration().uiMode & android.content.res.Configuration.UI_MODE_NIGHT_MASK;
+        return mode != android.content.res.Configuration.UI_MODE_NIGHT_YES;
+    }
+
     private void refreshPreview() {
         lblBg.setText("Hintergrund-Deckkraft: " + bgPct + " %");
         lblTx.setText("Schrift-Deckkraft: " + txPct + " %");
-        prevFill.setColor(Prefs.argb(theme == 1 ? 0xEEF1F6 : 0x1E1E26, bgPct, 1f));
-        prevTitle.setTextColor(Prefs.argb(color, txPct, 1f));
-        prevMeta.setTextColor(Prefs.argb(color, txPct, 0.7f));
+        prevFill.setColor(Prefs.argb(lightNow() ? 0xEEF1F6 : 0x1E1E26, bgPct, 1f));
+        int shown = theme == 2 ? (lightNow() ? 0x1B1F22 : 0xFFFFFF) : color;
+        prevTitle.setTextColor(Prefs.argb(shown, txPct, 1f));
+        prevMeta.setTextColor(Prefs.argb(theme != 2 && colSub >= 0 ? colSub : shown, txPct, 0.7f));
         prevTitle.setTypeface(Style.typeface(font), android.graphics.Typeface.BOLD);
         prevMeta.setTypeface(Style.typeface(font));
         prevTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, Style.titleSp(size));

@@ -211,6 +211,25 @@ def bg_topic(url):
     return nice(top)
 
 
+def bg_enrich(it):
+    """Echte Veroeffentlichungszeit aus der Artikelseite (nur fuer neue Artikel)."""
+    import requests
+    from datetime import timezone as _tz
+    from zoneinfo import ZoneInfo
+
+    r = requests.get(it["url"], headers={"User-Agent": UA}, timeout=15)
+    r.raise_for_status()
+    m = (re.search(r'article:published_time"\s+content="([^"]+)"', r.text)
+         or re.search(r'"datePublished"\s*:\s*"([^"]+)"', r.text)
+         or re.search(r'<time[^>]+datetime="([^"]+)"', r.text))
+    if not m:
+        return
+    d = datetime.fromisoformat(m.group(1).replace("Z", "+00:00"))
+    if d.tzinfo is None:
+        d = d.replace(tzinfo=ZoneInfo("Europe/Berlin"))
+    it["date"] = d.astimezone(_tz.utc).isoformat()
+
+
 def fetch_bgland(site):
     items = _fetch_bgland(site)
     for it in items:
@@ -297,6 +316,7 @@ SITES = [
         parse=None,
         retopic=None,
         fetch=fetch_bgland,
+        enrich=bg_enrich,
         order="seen",
     ),
 ]
@@ -422,6 +442,17 @@ def run_site(site, now, html_file=None, out=None, state_file=None):
             v["topic"] = "Sport/Sport aus der Region"
         if "sid" not in v and "arid" in v:
             v["sid"] = v.pop("arid")
+    if site.get("enrich"):
+        known = state.get("items", {})
+        n = 0
+        for it in items:
+            if str(it["sid"]) in known or n >= 25:
+                continue
+            n += 1
+            try:
+                site["enrich"](it)
+            except Exception as e:  # ohne Zeit: dann gilt "zuerst gesehen"
+                print(f"[{site['id']}] Zeit fuer {it['url']}: {e}", file=sys.stderr)
     xml, topics = build(site, items, state, now)
     op = Path(out or HERE / site["feed"])
     op.parent.mkdir(parents=True, exist_ok=True)

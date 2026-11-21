@@ -47,6 +47,7 @@ public class WeatherWidgetProvider extends AppWidgetProvider {
         new Thread(() -> {
             try {
                 Warnings.refreshIfStale(ctx);
+                Avalanche.refreshIfStale(ctx);
                 for (int id : ids) Weather.refreshIfStale(ctx, Prefs.place(ctx, id));
                 AppWidgetManager mgr = AppWidgetManager.getInstance(ctx);
                 for (int id : ids) update(ctx, mgr, id);
