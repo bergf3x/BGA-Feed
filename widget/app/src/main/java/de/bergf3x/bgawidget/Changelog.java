@@ -5,6 +5,9 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.07",
+                    "+ Kopf, Wetter, Werkzeuge und Reiter bleiben oben stehen, nur die Nachrichten scrollen",
+                    "+ Nachrichtenliste nach Medium gegliedert, mit Überschrift je Medium (App und Widget)"},
             {"1.06",
                     "+ Themen-Menü getrennt nach Medium (Berchtesgadener Anzeiger / BGLand24), Auswahl gilt nur für das gewählte Medium"},
             {"1.05",

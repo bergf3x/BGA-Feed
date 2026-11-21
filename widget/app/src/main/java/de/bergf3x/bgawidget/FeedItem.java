@@ -22,6 +22,8 @@ final class FeedItem {
     String feedName = "";
     long time = 0;
     boolean plus = false;
+    /** Platzhalter fuer eine Medien-Ueberschrift in der Liste (title = Name des Mediums). */
+    boolean header = false;
 
     /** "Region · vor 12 Min." fuer die Zeile unter dem Titel. */
     String meta() {

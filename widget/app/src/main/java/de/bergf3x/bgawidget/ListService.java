@@ -154,6 +154,29 @@ public class ListService extends RemoteViewsService {
         return dedupe(merged);
     }
 
+    /**
+     * Bei mehreren Medien: Liste nach Medium gruppieren (Reihenfolge wie im Katalog), je Gruppe eine Ueberschrift,
+     * innerhalb der Gruppe weiter nach Zeit. Bei nur einem Medium unveraendert.
+     */
+    static List<FeedItem> grouped(Context ctx, List<FeedItem> in) {
+        java.util.Set<String> names = new java.util.LinkedHashSet<>();
+        for (FeedItem it : in) names.add(it.feedName);
+        if (names.size() < 2) return in;
+        List<String> order = new ArrayList<>();
+        for (Catalog.Feed f : Catalog.load(ctx)) if (names.contains(f.name)) order.add(f.name);
+        for (String n : names) if (!order.contains(n)) order.add(n);
+        List<FeedItem> out = new ArrayList<>();
+        for (String n : order) {
+            FeedItem h = new FeedItem();
+            h.header = true;
+            h.title = n;
+            h.feedName = n;
+            out.add(h);
+            for (FeedItem it : in) if (it.feedName.equals(n)) out.add(it);
+        }
+        return out;
+    }
+
     /** Gleiche Meldung aus zwei Quellen nur einmal zeigen (aehnlicher Titel, ueber 60 % gleiche Woerter). */
     private static List<FeedItem> dedupe(List<FeedItem> in) {
         List<FeedItem> out = new ArrayList<>();
@@ -281,12 +304,30 @@ public class ListService extends RemoteViewsService {
             airy = Prefs.density(ctx, widgetId) == 1;
             sizeIdx = Prefs.size(ctx, widgetId);
             lightTheme = Prefs.isLight(ctx, widgetId);
-            return loadItems(ctx, widgetId, online, res);
+            List<FeedItem> all = loadItems(ctx, widgetId, online, res);
+            return grouped(ctx, new ArrayList<>(all.subList(0, Math.min(all.size(), 60))));
         }
 
         @Override
         public void onDestroy() {
             items.clear();
+        }
+
+        private RemoteViews headerView(FeedItem it) {
+            RemoteViews rv = new RemoteViews(ctx.getPackageName(), R.layout.widget_item);
+            rv.setInt(R.id.item_card, "setBackgroundResource", 0);
+            rv.setViewVisibility(R.id.item_accent, android.view.View.GONE);
+            rv.setViewVisibility(R.id.item_meta, android.view.View.GONE);
+            rv.setViewVisibility(R.id.item_dot, android.view.View.GONE);
+            rv.setViewVisibility(R.id.item_plus, android.view.View.GONE);
+            rv.setTextViewText(R.id.item_title, Style.font(ctx, widgetId, it.title.toUpperCase(java.util.Locale.GERMANY)));
+            rv.setTextViewTextSize(R.id.item_title, android.util.TypedValue.COMPLEX_UNIT_SP, 12f);
+            Pal.text(ctx, widgetId, rv, R.id.item_title, -1, 0.8f);
+            float dp = ctx.getResources().getDisplayMetrics().density;
+            rv.setViewPadding(R.id.item_card, Math.round(4 * dp), Math.round(8 * dp), Math.round(4 * dp), 0);
+            rv.setViewPadding(R.id.item_root, 0, 0, 0, 0);
+            rv.setOnClickFillInIntent(R.id.item_root, new Intent());
+            return rv;
         }
 
         @Override
@@ -299,6 +340,7 @@ public class ListService extends RemoteViewsService {
             RemoteViews rv = new RemoteViews(ctx.getPackageName(), R.layout.widget_item);
             if (position < 0 || position >= items.size()) return rv;
             FeedItem it = items.get(position);
+            if (it.header) return headerView(it);
             int tx = Prefs.text(ctx, widgetId);
             int rgb = Prefs.color(ctx, widgetId);
             boolean read = Prefs.isRead(readSet, it.link);

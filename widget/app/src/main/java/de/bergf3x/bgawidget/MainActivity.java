@@ -39,6 +39,7 @@ public class MainActivity extends Activity {
     private final Handler ui = new Handler(Looper.getMainLooper());
     private ScrollView scroll;
     private LinearLayout page;
+    private LinearLayout top;
     private float d;
     private boolean light;
     private int tx, soft, line, cardFill, chipOn, chipOnTx, accentBar;
@@ -195,26 +196,38 @@ public class MainActivity extends Activity {
     private void build() {
         loadLook();
         applyWindow();
-        // dieselbe Seite wiederverwenden: kein neues Fenster-Inhalt, kein Aufblitzen, Scrollposition bleibt
+        // dieselben Ansichten wiederverwenden: kein neues Fenster-Inhalt, kein Aufblitzen, Scrollposition bleibt.
+        // Oben (Kopf, Wetter, Werkzeuge, Reiter) steht fest, nur die Nachrichtenliste scrollt.
         int keepY = 0;
         if (scroll == null) {
+            LinearLayout root = new LinearLayout(this);
+            root.setOrientation(LinearLayout.VERTICAL);
+            top = new LinearLayout(this);
+            top.setOrientation(LinearLayout.VERTICAL);
+            top.setPadding(px(14), px(8), px(14), 0);
+            root.addView(top, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             scroll = new ScrollView(this);
-            scroll.setFillViewport(true);
             scroll.setVerticalScrollBarEnabled(false);
             page = new LinearLayout(this);
             page.setOrientation(LinearLayout.VERTICAL);
-            page.setPadding(px(14), px(8), px(14), px(28));
+            page.setPadding(px(14), 0, px(14), px(28));
             scroll.addView(page, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            setContentView(scroll);
+            root.addView(scroll, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
+            setContentView(root);
         } else {
             keepY = scroll.getScrollY();
+            top.removeAllViews();
             page.removeAllViews();
         }
 
+        final LinearLayout list = page;
+        page = top;
         header();
         if (widgetCount() == 0) addWidgetCard(true);
         if (Prefs.showWeather(this, ID)) weatherCard();
         tools();
+        newsChips();
+        page = list;
         news();
         addWidgetCard(false);
         footer();
@@ -412,7 +425,8 @@ public class MainActivity extends Activity {
 
     // ------------------------------------------------------------------ Nachrichten
 
-    private void news() {
+    /** Themen-Reiter (bleiben oben stehen). */
+    private void newsChips() {
         List<Catalog.Feed> all = Catalog.load(this);
         Set<String> selected = Catalog.effective(all, Prefs.feeds(this, ID));
         List<String> topics = Catalog.topicsFor(all, selected);
@@ -422,6 +436,10 @@ public class MainActivity extends Activity {
             Prefs.setTopic(this, ID, "");
         }
         chips(topics, topic);
+    }
+
+    /** Nachrichtenliste (scrollt). */
+    private void news() {
 
         List<FeedItem> items = ListService.loadItems(this, ID, false, null);
         Set<String> read = Prefs.readSet(this);
@@ -436,7 +454,8 @@ public class MainActivity extends Activity {
             return;
         }
         int n = Math.min(items.size(), MAX_ITEMS);
-        for (int i = 0; i < n; i++) page.addView(newsCard(items.get(i), read, kw));
+        items = ListService.grouped(this, new java.util.ArrayList<>(items.subList(0, n)));
+        for (FeedItem it : items) page.addView(it.header ? mediumHeader(it.title) : newsCard(it, read, kw));
     }
 
     private void chips(List<String> topics, final String topic) {
@@ -486,6 +505,24 @@ public class MainActivity extends Activity {
         c.setOnClickListener(v -> click.run());
         c.setLayoutParams(lp(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 8, 0));
         return c;
+    }
+
+    /** Ueberschrift eines Mediums in der Liste: Balken, Name in Grossbuchstaben. */
+    private View mediumHeader(String name) {
+        LinearLayout row = new LinearLayout(this);
+        row.setOrientation(LinearLayout.HORIZONTAL);
+        row.setGravity(Gravity.CENTER_VERTICAL);
+        row.setPadding(px(4), px(10), px(4), px(6));
+        TextView t = text(name.toUpperCase(java.util.Locale.GERMANY), 12.5f, tx, true);
+        t.setLetterSpacing(0.08f);
+        row.addView(t);
+        View rule = new View(this);
+        rule.setBackgroundColor(line);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, Math.max(1, px(1)), 1f);
+        lp.leftMargin = px(10);
+        row.addView(rule, lp);
+        row.setLayoutParams(lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 0));
+        return row;
     }
 
     private View newsCard(final FeedItem it, Set<String> read, List<String> kw) {

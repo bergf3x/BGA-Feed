@@ -21,6 +21,11 @@ public class PreviewActivity extends Activity {
         String meta = str(in, EXTRA_META);
         String text = str(in, EXTRA_TEXT);
         final String link = str(in, EXTRA_LINK);
+        if (title.isEmpty() && link.isEmpty()) {
+            // Tipp auf eine Medien-Ueberschrift im Widget: nichts anzuzeigen
+            finish();
+            return;
+        }
 
         // als gelesen markieren; Liste nur aus dem Cache neu zeichnen (kein Netz, kein Flackern)
         if (!link.isEmpty()) {
