@@ -254,6 +254,15 @@ def bg_probe():
         try:
             r = requests.get(u, headers={"User-Agent": UA}, timeout=15)
             classes = sorted(set(re.findall(r'class="([^"]*(?:plus|paywall|premium|abo|locked)[^"]*)"', r.text, re.I)))[:8]
+            t = r.text
+            extra = dict(
+                accessible_any=len(re.findall(r"isAccessibleForFree", t)),
+                word_Plus=len(re.findall(r"\bPlus\b", t)),
+                data_attrs=sorted(set(re.findall(r'(data-[a-z-]*(?:paid|premium|plus|paywall|access|lock)[a-z-]*)=', t, re.I)))[:8],
+                meta=sorted(set(re.findall(r'<meta[^>]+(?:name|property)="([^"]*(?:paid|premium|plus|paywall|access|content_tier|tier)[^"]*)"', t, re.I)))[:8],
+                json_keys=sorted(set(re.findall(r'"(\w*(?:paid|premium|paywall|access|plus|tier)\w*)"\s*:', t, re.I)))[:12],
+            )
+            print(f"[bgland24] probe2 {extra}")
             print(f"[bgland24] probe HTTP {r.status_code}, {len(r.text)} Zeichen, Signale {bg_signals(r.text)}, Klassen {classes}")
         except Exception as e:
             print(f"[bgland24] probe Fehler: {e}", file=sys.stderr)
