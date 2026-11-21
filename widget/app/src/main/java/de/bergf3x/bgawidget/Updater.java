@@ -31,7 +31,11 @@ final class Updater {
         AppWidgetManager mgr = AppWidgetManager.getInstance(ctx);
         int[] news = mgr.getAppWidgetIds(new ComponentName(ctx, WidgetProvider.class));
         int[] wx = mgr.getAppWidgetIds(new ComponentName(ctx, WeatherWidgetProvider.class));
-        if (news.length == 0 && wx.length == 0) return;
+        if (news.length == 0 && wx.length == 0) {
+            // ohne Widgets nur die Vollbild-App bedienen (Knopf "Jetzt aktualisieren")
+            if (force) ListService.syncApp(ctx, true);
+            return;
+        }
         Prefs.takeLocalOnly(ctx);
         if (force) {
             Prefs.invalidateWeather(ctx);

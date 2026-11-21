@@ -40,6 +40,8 @@ public class ListService extends RemoteViewsService {
     }
 
     private static final Object FETCH_LOCK = new Object();
+    /** Grund, warum die letzte Abfrage keine Artikel ergab (fuer die Vollbild-App). */
+    static volatile String emptyReason = "";
     private static volatile long lastFetchEnd = 0;
 
     static boolean recentlyFetched() {
@@ -96,6 +98,134 @@ public class ListService extends RemoteViewsService {
         return out;
     }
 
+    /** Gewaehlte Feeds laden (live oder aus dem Cache), mischen, nach Thema filtern. */
+    static List<FeedItem> loadItems(Context ctx, int id, boolean online, java.util.Map<String, Fetched> res) {
+        List<Catalog.Feed> all = Catalog.load(ctx);
+        Set<String> selected = Catalog.effective(all, Prefs.feeds(ctx, id));
+        String topic = Prefs.topic(ctx, id);
+        List<String> kw = Keywords.list(ctx);
+        Set<String> muted = Prefs.muted(ctx, id);
+        boolean anyOk = false;
+        boolean anyFail = false;
+        List<FeedItem> merged = new ArrayList<>();
+        StringBuilder stale = new StringBuilder();
+        long nowMs = System.currentTimeMillis();
+        for (Catalog.Feed f : all) {
+            if (!selected.contains(f.id)) continue;
+            List<FeedItem> parsed = null;
+            if (online) {
+                Fetched r = res == null ? null : res.get(f.id);
+                if (r == null || r.err != null) {
+                    anyFail = true;
+                    Prefs.setStatus(ctx, f.id, r == null ? "Zeitüberschreitung" : r.err);
+                } else if (r.items.isEmpty()) {
+                    anyFail = true;
+                    Prefs.setStatus(ctx, f.id, "Feed ist leer");
+                } else {
+                    Prefs.setStatus(ctx, f.id, "");
+                    FeedCache.put(ctx, f.id, r.xml, r.items);
+                    anyOk = true;
+                    parsed = r.items;
+                }
+            }
+            if (parsed == null) parsed = FeedCache.items(ctx, f.id, f.name);
+            long newest = 0;
+            for (FeedItem it : parsed) newest = Math.max(newest, it.time);
+            if (newest > 0 && nowMs - newest > 24L * 3600000) {
+                if (stale.length() > 0) stale.append(", ");
+                stale.append(f.name).append(" ohne Neues seit ").append((nowMs - newest) / 3600000L).append(" Std.");
+            }
+            boolean plusFeed = Prefs.showPlusFeed(ctx, id, f.id);
+            for (FeedItem it : parsed) {
+                if (it.plus && !plusFeed) continue;
+                if (isMuted(it, muted, topic)) continue;
+                if (online && Keywords.matches(kw, it)) Notifier.keyword(ctx, it);
+                if (!topic.isEmpty() && !it.inTopic(topic)) continue;
+                merged.add(it);
+            }
+        }
+        if (online) Prefs.setNews(ctx, anyOk || !anyFail);
+        if (online && merged.isEmpty()) showEmptyReason(ctx, id, all, selected, topic);
+        // Gleiche Zeit (z. B. erster Lauf): Reihenfolge innerhalb des Feeds bleibt erhalten
+        Collections.sort(merged, (a, b) -> Long.compare(b.time, a.time));
+        Prefs.setSrcWarn(ctx, stale.toString());
+        return dedupe(merged);
+    }
+
+    /** Gleiche Meldung aus zwei Quellen nur einmal zeigen (aehnlicher Titel, ueber 60 % gleiche Woerter). */
+    private static List<FeedItem> dedupe(List<FeedItem> in) {
+        List<FeedItem> out = new ArrayList<>();
+        List<Set<String>> sets = new ArrayList<>();
+        for (FeedItem it : in) {
+            Set<String> w = words(it.title);
+            boolean dup = false;
+            for (int i = 0; i < out.size() && !dup; i++) {
+                if (out.get(i).feedName.equals(it.feedName)) continue;
+                Set<String> o = sets.get(i);
+                if (w.size() < 3 || o.size() < 3) continue;
+                int common = 0;
+                for (String x : w) if (o.contains(x)) common++;
+                int union = w.size() + o.size() - common;
+                if (union > 0 && common / (double) union >= 0.6) dup = true;
+            }
+            if (dup) continue;
+            out.add(it);
+            sets.add(w);
+        }
+        return out;
+    }
+
+    private static Set<String> words(String t) {
+        Set<String> r = new java.util.HashSet<>();
+        for (String x : t.toLowerCase(java.util.Locale.GERMANY).split("[^\\p{L}\\p{N}]+")) if (x.length() >= 4) r.add(x);
+        return r;
+    }
+
+    /** Ausgeblendetes Thema – es sei denn, genau dieses Thema ist gerade gewaehlt. */
+    private static boolean isMuted(FeedItem it, Set<String> muted, String selTopic) {
+        for (String m : muted) {
+            if (!it.inTopic(m)) continue;
+            boolean selected = !selTopic.isEmpty() && (selTopic.equals(m) || selTopic.startsWith(m + "/"));
+            if (!selected) return true;
+        }
+        return false;
+    }
+
+    private static void showEmptyReason(Context ctx, int id, List<Catalog.Feed> all, Set<String> selected, String topic) {
+        StringBuilder sb = new StringBuilder();
+        for (Catalog.Feed f : all) {
+            if (!selected.contains(f.id)) continue;
+            String st = Prefs.status(ctx, f.id);
+            if (!st.isEmpty()) sb.append(f.name).append(": ").append(st).append("\n");
+        }
+        if (sb.length() == 0) {
+            sb.append(topic.isEmpty() ? "Keine Artikel gefunden"
+                    : "Keine Artikel im Thema „" + topic.substring(topic.indexOf('/') + 1) + "“");
+        }
+        emptyReason = sb.toString().trim();
+        if (id <= 0) return;
+        RemoteViews rv = new RemoteViews(ctx.getPackageName(), R.layout.widget);
+        rv.setTextViewText(R.id.empty, emptyReason);
+        android.appwidget.AppWidgetManager.getInstance(ctx).partiallyUpdateAppWidget(id, rv);
+    }
+
+    /** Abruf fuer die Vollbild-App (eigene Einstellungen unter Prefs.APP); nie doppelt zum Widget-Abruf. */
+    static void syncApp(Context ctx, boolean force) {
+        synchronized (FETCH_LOCK) {
+            if (!force && recentlyFetched()) return;
+            if (force) {
+                Prefs.invalidateWeather(ctx);
+                Prefs.invalidateWarn(ctx);
+            }
+            Catalog.refresh(ctx);
+            List<Catalog.Feed> all = Catalog.load(ctx);
+            Set<String> selected = Catalog.effective(all, Prefs.feeds(ctx, Prefs.APP));
+            java.util.Map<String, Fetched> res = fetchAll(ctx, all, selected, Prefs.place(ctx, Prefs.APP));
+            loadItems(ctx, Prefs.APP, true, res);
+            lastFetchEnd = System.currentTimeMillis();
+        }
+    }
+
     static final class Factory implements RemoteViewsFactory {
         private final Context ctx;
         private final int widgetId;
@@ -143,118 +273,13 @@ public class ListService extends RemoteViewsService {
             WidgetProvider.refreshHeader(ctx, widgetId);
         }
 
-        /** Gewaehlte Feeds laden (live oder aus dem Cache), mischen, nach Thema filtern. */
         private List<FeedItem> load(boolean online, java.util.Map<String, Fetched> res) {
             readSet = Prefs.readSet(ctx);
             kwList = Keywords.list(ctx);
             airy = Prefs.density(ctx, widgetId) == 1;
             sizeIdx = Prefs.size(ctx, widgetId);
             lightTheme = Prefs.isLight(ctx, widgetId);
-            List<Catalog.Feed> all = Catalog.load(ctx);
-            Set<String> selected = Catalog.effective(all, Prefs.feeds(ctx, widgetId));
-            String topic = Prefs.topic(ctx, widgetId);
-            List<String> kw = kwList;
-            Set<String> muted = Prefs.muted(ctx, widgetId);
-            boolean anyOk = false;
-            boolean anyFail = false;
-            List<FeedItem> merged = new ArrayList<>();
-            StringBuilder stale = new StringBuilder();
-            long nowMs = System.currentTimeMillis();
-            for (Catalog.Feed f : all) {
-                if (!selected.contains(f.id)) continue;
-                List<FeedItem> parsed = null;
-                if (online) {
-                    Fetched r = res == null ? null : res.get(f.id);
-                    if (r == null || r.err != null) {
-                        anyFail = true;
-                        Prefs.setStatus(ctx, f.id, r == null ? "Zeitüberschreitung" : r.err);
-                    } else if (r.items.isEmpty()) {
-                        anyFail = true;
-                        Prefs.setStatus(ctx, f.id, "Feed ist leer");
-                    } else {
-                        Prefs.setStatus(ctx, f.id, "");
-                        FeedCache.put(ctx, f.id, r.xml, r.items);
-                        anyOk = true;
-                        parsed = r.items;
-                    }
-                }
-                if (parsed == null) parsed = FeedCache.items(ctx, f.id, f.name);
-                long newest = 0;
-                for (FeedItem it : parsed) newest = Math.max(newest, it.time);
-                if (newest > 0 && nowMs - newest > 24L * 3600000) {
-                    if (stale.length() > 0) stale.append(", ");
-                    stale.append(f.name).append(" ohne Neues seit ").append((nowMs - newest) / 3600000L).append(" Std.");
-                }
-                boolean plusFeed = Prefs.showPlusFeed(ctx, widgetId, f.id);
-                for (FeedItem it : parsed) {
-                    if (it.plus && !plusFeed) continue;
-                    if (isMuted(it, muted, topic)) continue;
-                    if (online && Keywords.matches(kw, it)) Notifier.keyword(ctx, it);
-                    if (!topic.isEmpty() && !it.inTopic(topic)) continue;
-                    merged.add(it);
-                }
-            }
-            if (online) Prefs.setNews(ctx, anyOk || !anyFail);
-            if (online && merged.isEmpty()) showEmptyReason(all, selected, topic);
-            // Gleiche Zeit (z. B. erster Lauf): Reihenfolge innerhalb des Feeds bleibt erhalten
-            Collections.sort(merged, (a, b) -> Long.compare(b.time, a.time));
-            Prefs.setSrcWarn(ctx, stale.toString());
-            return dedupe(merged);
-        }
-
-        /** Gleiche Meldung aus zwei Quellen nur einmal zeigen (aehnlicher Titel, ueber 60 % gleiche Woerter). */
-        private List<FeedItem> dedupe(List<FeedItem> in) {
-            List<FeedItem> out = new ArrayList<>();
-            List<Set<String>> sets = new ArrayList<>();
-            for (FeedItem it : in) {
-                Set<String> w = words(it.title);
-                boolean dup = false;
-                for (int i = 0; i < out.size() && !dup; i++) {
-                    if (out.get(i).feedName.equals(it.feedName)) continue;
-                    Set<String> o = sets.get(i);
-                    if (w.size() < 3 || o.size() < 3) continue;
-                    int common = 0;
-                    for (String x : w) if (o.contains(x)) common++;
-                    int union = w.size() + o.size() - common;
-                    if (union > 0 && common / (double) union >= 0.6) dup = true;
-                }
-                if (dup) continue;
-                out.add(it);
-                sets.add(w);
-            }
-            return out;
-        }
-
-        private Set<String> words(String t) {
-            Set<String> r = new java.util.HashSet<>();
-            for (String x : t.toLowerCase(java.util.Locale.GERMANY).split("[^\\p{L}\\p{N}]+")) if (x.length() >= 4) r.add(x);
-            return r;
-        }
-
-        /** Ausgeblendetes Thema – es sei denn, genau dieses Thema ist gerade gewaehlt. */
-        private boolean isMuted(FeedItem it, Set<String> muted, String selTopic) {
-            for (String m : muted) {
-                if (!it.inTopic(m)) continue;
-                boolean selected = !selTopic.isEmpty() && (selTopic.equals(m) || selTopic.startsWith(m + "/"));
-                if (!selected) return true;
-            }
-            return false;
-        }
-
-        private void showEmptyReason(List<Catalog.Feed> all, Set<String> selected, String topic) {
-            StringBuilder sb = new StringBuilder();
-            for (Catalog.Feed f : all) {
-                if (!selected.contains(f.id)) continue;
-                String st = Prefs.status(ctx, f.id);
-                if (!st.isEmpty()) sb.append(f.name).append(": ").append(st).append("\n");
-            }
-            if (sb.length() == 0) {
-                sb.append(topic.isEmpty() ? "Keine Artikel gefunden"
-                        : "Keine Artikel im Thema „" + topic.substring(topic.indexOf('/') + 1) + "“");
-            }
-            RemoteViews rv = new RemoteViews(ctx.getPackageName(), R.layout.widget);
-            rv.setTextViewText(R.id.empty, sb.toString().trim());
-            android.appwidget.AppWidgetManager.getInstance(ctx).partiallyUpdateAppWidget(widgetId, rv);
+            return loadItems(ctx, widgetId, online, res);
         }
 
         @Override

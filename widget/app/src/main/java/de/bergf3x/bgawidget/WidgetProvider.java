@@ -308,6 +308,7 @@ public class WidgetProvider extends AppWidgetProvider {
 
     /** Nur die Kopfzeile (Wetter, Chips, Farben) neu zeichnen, ohne die Liste neu zu laden. */
     static void refreshHeader(Context ctx, int id) {
+        if (id <= 0) return;
         if (isWeatherWidget(ctx, id)) {
             WeatherWidgetProvider.refresh(ctx, id);
             return;
@@ -328,6 +329,7 @@ public class WidgetProvider extends AppWidgetProvider {
 
     /** Nach Aenderung der Einstellungen: das richtige Widget komplett neu zeichnen. */
     static void updateAny(Context ctx, int id) {
+        if (id <= 0) return;
         if (isWeatherWidget(ctx, id)) {
             WeatherWidgetProvider.update(ctx, AppWidgetManager.getInstance(ctx), id);
         } else {
@@ -338,6 +340,7 @@ public class WidgetProvider extends AppWidgetProvider {
 
     /** Weiche Aktualisierung nur der Kopfzeile + Liste, ohne das ganze Widget neu aufzubauen. */
     static void refresh(Context ctx, int id) {
+        if (id <= 0) return;
         refreshHeader(ctx, id);
         AppWidgetManager.getInstance(ctx).notifyAppWidgetViewDataChanged(id, R.id.list);
     }

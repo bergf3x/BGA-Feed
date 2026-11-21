@@ -11,6 +11,9 @@ final class Prefs {
     static final int DEFAULT_TEXT = 100;
     static final int DEFAULT_COLOR = 0xFFFFFF;
 
+    /** Kennung fuer die Einstellungen der Vollbild-App (echte Widget-Kennungen sind immer groesser als 0). */
+    static final int APP = -1;
+
     private Prefs() {}
 
     static SharedPreferences sp(Context c) {

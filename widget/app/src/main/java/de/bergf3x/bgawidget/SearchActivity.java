@@ -88,6 +88,7 @@ public class SearchActivity extends Activity {
         in.putExtra(PreviewActivity.EXTRA_META, meta);
         in.putExtra(PreviewActivity.EXTRA_TEXT, text);
         in.putExtra(PreviewActivity.EXTRA_LINK, link);
+        in.putExtra(android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID, Bubble.widgetId(this));
         in.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(in);
     }
