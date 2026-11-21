@@ -264,7 +264,10 @@ def bg_topic(url):
 
     def nice(x):
         x = re.sub(r"^(region|landkreis)-", "", x)
-        return " ".join(w.capitalize() for w in x.split("-"))
+        out = " ".join(w.capitalize() for w in x.split("-"))
+        for a, b in (("Muehldorf", "Mühldorf"), ("Altoetting", "Altötting"), ("Tv Kino", "TV & Kino")):
+            out = out.replace(a, b)
+        return out
 
     if not seg:
         return "Region"
