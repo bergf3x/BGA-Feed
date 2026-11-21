@@ -50,6 +50,10 @@ final class Prefs {
         return sp(c).getInt("tcw2_" + id, -1);
     }
 
+    static void setSubWx(Context c, int id, int sub, int wx) {
+        sp(c).edit().putInt("tcs_" + id, sub).putInt("tcw_" + id, wx).apply();
+    }
+
     static void setColors2(Context c, int id, int sub2, int wx2) {
         sp(c).edit().putInt("tcs2_" + id, sub2).putInt("tcw2_" + id, wx2).apply();
     }

@@ -45,29 +45,19 @@ final class Bubble {
         d = act.getResources().getDisplayMetrics().density;
         int wid = widgetId(act);
         light = wid != 0 && Prefs.isLight(act, wid);
-        if (light) {
-            tx = 0xFF1F3B57; soft = 0xB31B1F22; title = 0xFF1B1F22;
-            hi = 0xFF1B1F22; hiTx = 0xFFFFFFFF; ripple = 0x33000000; line = 0x331B1F22;
-        } else {
-            tx = 0xFFB5D4F4; soft = 0x99FFFFFF; title = 0xFFFFFFFF;
-            hi = 0xFFF2F2F2; hiTx = 0xFF1B1F22; ripple = 0x40FFFFFF; line = 0x2EFFFFFF;
-        }
+        // Farben wie im Widget: Schriftfarbe und -deckkraft, Auswahl wie die aktive Chip-Markierung
+        int rgb = wid != 0 ? Prefs.color(act, wid) : (light ? 0x1B1F22 : 0xFFFFFF);
+        int txPct = wid != 0 ? Prefs.text(act, wid) : 90;
+        tx = Prefs.argb(rgb, txPct, 1f);
+        title = tx;
+        soft = Prefs.argb(rgb, txPct, 0.65f);
+        hi = light ? 0xFF2A2F36 : 0xFFF2F2F2;
+        hiTx = light ? 0xFFFFFFFF : 0xFF1B1F22;
+        ripple = light ? 0x33000000 : 0x40FFFFFF;
+        line = light ? 0x331B1F22 : 0x2EFFFFFF;
+        int bgPct = Math.max(wid != 0 ? Prefs.bg(act, wid) : 80, 70);
         act.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-        act.getWindow().setDimAmount(light ? 0.12f : 0.3f);
-        boolean blur = false;
-        if (android.os.Build.VERSION.SDK_INT >= 31) {
-            try {
-                WindowManager wm = (WindowManager) act.getSystemService(Activity.WINDOW_SERVICE);
-                if (wm.isCrossWindowBlurEnabled()) {
-                    act.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
-                    WindowManager.LayoutParams wlp = act.getWindow().getAttributes();
-                    wlp.setBlurBehindRadius(Math.round(20 * d));
-                    act.getWindow().setAttributes(wlp);
-                    blur = true;
-                }
-            } catch (Throwable ignored) {
-            }
-        }
+        act.getWindow().setDimAmount(light ? 0.10f : 0.25f);
 
         FrameLayout root = new FrameLayout(act);
         root.setOnClickListener(v -> close());
@@ -76,15 +66,7 @@ final class Bubble {
         box.setOrientation(LinearLayout.VERTICAL);
         int pad = px(padDp);
         box.setPadding(pad, pad, pad, pad);
-        // Glas: halbtransparent mit Lichtverlauf von links oben und feinem hellen Rand
-        int a1 = blur ? 0xB0 : 0xE6, a2 = blur ? 0x98 : 0xD8;
-        int[] cols = light
-                ? new int[]{(a1 << 24) | 0xFFFFFF, (a2 << 24) | 0xE4E9F1}
-                : new int[]{(a1 << 24) | 0x343846, (a2 << 24) | 0x1A1B24};
-        GradientDrawable bg = new GradientDrawable(GradientDrawable.Orientation.TL_BR, cols);
-        bg.setCornerRadius(px(28));
-        bg.setStroke(Math.max(1, px(1)), light ? 0x99FFFFFF : 0x40FFFFFF);
-        box.setBackground(bg);
+        box.setBackground(new Glass(light, bgPct, d));
         box.setClickable(true);
 
         int screenW = act.getResources().getDisplayMetrics().widthPixels;
@@ -104,6 +86,61 @@ final class Bubble {
         box.setPivotY(0f);
         box.animate().alpha(1f).scaleX(1f).scaleY(1f).setDuration(190)
                 .setInterpolator(new DecelerateInterpolator()).start();
+    }
+
+    /** Glas-Flaeche wie der Widget-Hintergrund: Fuellung, Lichtreflex links oben, feiner heller Rand. */
+    private static final class Glass extends android.graphics.drawable.Drawable {
+        private final boolean light;
+        private final int bgPct;
+        private final float r;
+        private final float stroke;
+        private final android.graphics.Paint fill = new android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG);
+        private final android.graphics.Paint gloss = new android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG);
+        private final android.graphics.Paint edge = new android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG);
+        private final android.graphics.RectF rect = new android.graphics.RectF();
+
+        Glass(boolean light, int bgPct, float density) {
+            this.light = light;
+            this.bgPct = bgPct;
+            r = 28 * density;
+            stroke = Math.max(1.2f, 1.2f * density);
+            fill.setColor(light ? 0xFFEEF1F6 : 0xFF1E1E26);
+            fill.setAlpha(Prefs.alpha(bgPct));
+            edge.setStyle(android.graphics.Paint.Style.STROKE);
+            edge.setStrokeWidth(stroke);
+        }
+
+        @Override
+        protected void onBoundsChange(android.graphics.Rect b) {
+            float w = b.width(), h = b.height();
+            rect.set(b.left + stroke / 2, b.top + stroke / 2, b.right - stroke / 2, b.bottom - stroke / 2);
+            int top = light ? 0x70FFFFFF : 0x2EFFFFFF;
+            gloss.setShader(new android.graphics.LinearGradient(b.left, b.top, b.left + w * .75f, b.top + h * .45f,
+                    top, 0x00FFFFFF, android.graphics.Shader.TileMode.CLAMP));
+            int a = Math.round(Math.max(bgPct, 25) * 255f / 100f);
+            int hi = ((int) (a * (light ? .9f : .7f)) << 24) | 0xFFFFFF;
+            int lo = ((int) (a * (light ? .35f : .22f)) << 24) | (light ? 0x8890A0 : 0xFFFFFF);
+            edge.setShader(new android.graphics.LinearGradient(b.left, b.top, b.right, b.bottom,
+                    new int[]{hi, lo, lo}, new float[]{0f, .5f, 1f}, android.graphics.Shader.TileMode.CLAMP));
+        }
+
+        @Override
+        public void draw(android.graphics.Canvas c) {
+            c.drawRoundRect(rect, r, r, fill);
+            c.drawRoundRect(rect, r, r, gloss);
+            c.drawRoundRect(rect, r, r, edge);
+        }
+
+        @Override
+        public void setAlpha(int alpha) {}
+
+        @Override
+        public void setColorFilter(android.graphics.ColorFilter cf) {}
+
+        @Override
+        public int getOpacity() {
+            return android.graphics.PixelFormat.TRANSLUCENT;
+        }
     }
 
     int px(float dp) {
