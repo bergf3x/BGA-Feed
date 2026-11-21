@@ -95,6 +95,8 @@ public class WebcamActivity extends Activity {
             }, false);
             decorate(body, 0, "↗");
         }
+        b.space(4);
+        b.pill("Schließen", false, true, () -> { });
     }
 
     /** Abschnittskopf: farbiger Balken, fette Ueberschrift und eine Zeile Erklaerung auf eigener Flaeche. */
@@ -207,6 +209,7 @@ public class WebcamActivity extends Activity {
             } catch (Exception ignored) {
             }
         });
+        b.pill("Schließen", false, true, () -> { });
         load();
     }
 
