@@ -40,6 +40,7 @@ public class MainActivity extends Activity {
     private ScrollView scroll;
     /** Wetterkarte gross / als schmale Zeile (beim Scrollen der Nachrichten). */
     private static boolean wxSmall;
+    private long wxChanged;
     private View wxFull, wxMini, hintCard;
     private LinearLayout page;
     private LinearLayout top;
@@ -268,8 +269,14 @@ public class MainActivity extends Activity {
             scroll.setVerticalScrollBarEnabled(false);
             // Wetterkarte beim Scrollen zur schmalen Zeile, ganz oben wieder gross
             scroll.setOnScrollChangeListener((v, x, y, ox, oy) -> {
-                if (!wxSmall && y > px(56) && y > oy) setWxSmall(true);
-                else if (wxSmall && y <= 0) setWxSmall(false);
+                long now = android.os.SystemClock.uptimeMillis();
+                if (!wxSmall && y > px(56) && y > oy) {
+                    wxChanged = now;
+                    setWxSmall(true);
+                } else if (wxSmall && y <= 0 && now - wxChanged > 450) {
+                    // kurze Sperre: kein Hin- und Herspringen, wenn die Liste nach dem Einklappen kaum noch scrollt
+                    setWxSmall(false);
+                }
             });
             page = new LinearLayout(this);
             page.setOrientation(LinearLayout.VERTICAL);
