@@ -1,6 +1,10 @@
 name: apptest
 on:
   workflow_dispatch:
+    inputs:
+      app:
+        description: "Emulator-Test mitlaufen lassen"
+        default: "true"
 permissions:
   contents: write
 jobs:
@@ -19,6 +23,7 @@ jobs:
           name: quellen
           path: quellen.txt
   app:
+    if: inputs.app != 'false'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

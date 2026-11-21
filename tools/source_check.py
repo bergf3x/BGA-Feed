@@ -91,7 +91,28 @@ def date_format_probe():
         print(f"{name}: Wurzel {re.search(r'<(rss|rdf:RDF|feed)', t).group(1) if re.search(r'<(rss|rdf:RDF|feed)', t) else '?'} | Item-Tags {tags} | Datum {dates}")
 
 
+def paywall_probe():
+    """Abo-Kennzeichen eines bekannten Abo-Artikels mit App- und Feed-Kennung (nur Ja/Nein, kein Inhalt)."""
+    url = ("https://www.bgland24.de/bgland/region-berchtesgaden/bischofswiesen-ort28409/"
+           "bundeswehr-bischofswiesen-so-viele-millionen-kostet-die-schiessanlage-was-ist-mit-dem-laerm-94593039.html")
+    pats = {
+        "isAccessibleForFree=false": r'"isAccessibleForFree"\s*:\s*"?false"?',
+        "paid:1": r'"paid"\s*:\s*1\b',
+        "paywall:hard": r'"paywall"\s*:\s*"hard"',
+    }
+    for ua in (UA, scrape.UA):
+        try:
+            r = requests.get(url, headers={"User-Agent": ua, "Accept-Language": "de-DE,de;q=0.9",
+                                           "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"}, timeout=25)
+            hits = {k: bool(re.search(v, r.text, re.I)) for k, v in pats.items()}
+            extra = sorted(set(re.findall(r'"(paid|paywall|isAccessibleForFree|accessLevel|plus)"\s*:\s*("[^"]{0,12}"|[^,}\s]{1,8})', r.text)))[:8]
+            print(f"Abo-Probe UA={ua[:20]}: HTTP {r.status_code}, {len(r.content)//1024} KB, {hits}, Felder {extra}")
+        except Exception as e:
+            print(f"Abo-Probe UA={ua[:20]}: Fehler {e}")
+
+
 def main():
+    paywall_probe()
     date_format_probe()
     rows = []
     print("== Erreichbarkeit und Ladezeit (vom GitHub-Server aus) ==")
