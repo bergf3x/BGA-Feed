@@ -35,7 +35,8 @@ public class PreviewActivity extends Activity {
         b.text(meta, 12, b.soft, false);
         b.text(title, 18, b.title, true).setPadding(0, b.px(6), 0, b.px(10));
         b.scrollText(text.isEmpty() ? "Für diesen Artikel gibt es keinen Anrisstext." : text, 14, b.tx);
-        b.text("Nur der Anrisstext – der ganze Artikel steht auf der Webseite.", 11, b.soft, false)
+        String src = FeedItem.source(link);
+        b.text("Nur der Anrisstext – der ganze Artikel steht auf der Webseite." + (src.isEmpty() ? "" : "\nQuelle: " + src), 11, b.soft, false)
                 .setPadding(0, b.px(10), 0, b.px(4));
         b.pill("Artikel öffnen", true, isWeb(link), () -> {
             try {

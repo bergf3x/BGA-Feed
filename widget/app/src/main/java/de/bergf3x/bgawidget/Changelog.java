@@ -5,6 +5,9 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.04",
+                    "+ Quelle in Klammern unter jeder Nachricht (App, Widget, Vorschau, Gemerkt)",
+                    "~ Gemerkte Artikel als getrennte Karten mit fetter Überschrift"},
             {"1.03",
                     "~ Änderungsliste im Info-Menü ergänzt (aufklappbar)"},
             {"1.02",

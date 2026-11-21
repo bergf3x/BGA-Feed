@@ -31,6 +31,19 @@ final class FeedItem {
         return t.isEmpty() ? leaf : leaf + " · " + t;
     }
 
+    /** "(berchtesgadener-anzeiger.de)": woher der Artikel stammt, aus dem Link; leer wenn kein Web-Link. */
+    static String source(String link) {
+        try {
+            if (link == null || !(link.startsWith("http://") || link.startsWith("https://"))) return "";
+            String h = android.net.Uri.parse(link).getHost();
+            if (h == null || h.isEmpty()) return "";
+            if (h.startsWith("www.")) h = h.substring(4);
+            return "(" + h + ")";
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
     int accentColor() {
         String parent = topic.isEmpty() ? "Region" : topic.split("/")[0];
         switch (parent) {

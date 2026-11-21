@@ -493,6 +493,8 @@ public class MainActivity extends Activity {
         title.setAlpha(dim);
         col.addView(title);
         String meta = it.meta() + (it.plus ? " · Plus" : "");
+        String src = FeedItem.source(it.link);
+        if (!src.isEmpty()) meta += "\n" + src;
         TextView m = text((!isRead && it.isFresh() ? "● " : "") + meta, Style.metaSp(sizeIdx) + 1f, soft, false);
         m.setPadding(0, px(4), 0, 0);
         m.setAlpha(dim);
