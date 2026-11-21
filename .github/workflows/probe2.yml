@@ -1,0 +1,12 @@
+name: probe2
+on:
+  workflow_dispatch:
+    inputs:
+      urls:
+        description: "URLs"
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install -q requests && python tools/probe2.py ${{ inputs.urls }}
