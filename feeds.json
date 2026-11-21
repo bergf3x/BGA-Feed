@@ -50,6 +50,15 @@
     "Nachrichten/Wirtschaft",
     "Tv Kino"
    ]
+  },
+  {
+   "id": "orf_salzburg",
+   "name": "ORF Salzburg",
+   "url": "https://raw.githubusercontent.com/bergf3x/BGA-Feed/main/feed_orf_salzburg.xml",
+   "topics": [
+    "Region",
+    "Region/Salzburg"
+   ]
   }
  ]
 }
