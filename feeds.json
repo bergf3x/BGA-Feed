@@ -21,6 +21,14 @@
     "Sport/Wintersport",
     "Kultur"
    ]
+  },
+  {
+   "id": "bgland24",
+   "name": "BGLand24",
+   "url": "https://raw.githubusercontent.com/bergf3x/BGA-Feed/main/feed_bgland24.xml",
+   "topics": [
+    "Region"
+   ]
   }
  ]
 }

@@ -1,5 +1,45 @@
 {
  "items": {
+  "1027787": {
+   "sid": 1027787,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-festnahmen-und-fliegende-flaschen-nach-jugendprotesten-_arid,1027787.html",
+   "title": "Festnahmen und fliegende Flaschen nach Jugendprotesten",
+   "teaser": "",
+   "category": "",
+   "plus": false,
+   "topic": "Nachrichten/Boulevard",
+   "first_seen": "2026-11-21T01:02:47+00:00"
+  },
+  "1027786": {
+   "sid": 1027786,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-prozess-um-palisadesfeuer-in-la-mann-schuldig-gesprochen-_arid,1027786.html",
+   "title": "Prozess um Palisades-Feuer in LA: Mann schuldig gesprochen",
+   "teaser": "",
+   "category": "",
+   "plus": false,
+   "topic": "Nachrichten/Boulevard",
+   "first_seen": "2026-11-21T01:02:47+00:00"
+  },
+  "1027785": {
+   "sid": 1027785,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-ausfuhrstopp-fuer-plastikmuell-aus-der-eu-in-viele-laender-_arid,1027785.html",
+   "title": "Ausfuhrstopp für Plastikmüll aus der EU in viele Länder",
+   "teaser": "Brüssel (dpa) - Plastik ist im Alltag überall. Wohin, wenn es nicht gebraucht wird? Nun gelten strengere Regeln.",
+   "category": "Wirtschaft",
+   "plus": false,
+   "topic": "Nachrichten/Wirtschaft",
+   "first_seen": "2026-11-21T01:02:47+00:00"
+  },
+  "1027784": {
+   "sid": 1027784,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-staedtetagspraesident-kritisiert-tokio-hotel-scharf-_arid,1027784.html",
+   "title": "Städtetags-Präsident kritisiert Tokio Hotel scharf",
+   "teaser": "",
+   "category": "",
+   "plus": false,
+   "topic": "Nachrichten/Boulevard",
+   "first_seen": "2026-11-21T01:02:47+00:00"
+  },
   "1027781": {
    "sid": 1027781,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-hackerangriff-auf-immobilienverwaltung-der-bundesagentur-_arid,1027781.html",
@@ -174,7 +214,7 @@
    "sid": 1027724,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-klingbeil-regulierung-der-finanzmaerkte-ist-zu-kompliziert-_arid,1027724.html",
    "title": "Klingbeil: Regulierung der Finanzmärkte ist zu kompliziert",
-   "teaser": "Frankfurt/Main (dpa) - Der Bundesfinanzminister will Banken von Berichtspflichten entlasten – aber keine pauschale Deregulierung. Er richtet Forderungen nach Brüssel.",
+   "teaser": "",
    "category": "Wirtschaft",
    "plus": false,
    "topic": "Nachrichten/Wirtschaft",
@@ -234,8 +274,8 @@
    "sid": 1027697,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-komische-oper-intendanten-draengen-auf-schnelle-sanierung-_arid,1027697.html",
    "title": "Komische Oper: Intendanten drängen auf schnelle Sanierung",
-   "teaser": "",
-   "category": "",
+   "teaser": "Berlin (dpa) - Der Stuck rieselte schon von der Decke: Eines der drei großen Opernhäuser Berlins wird für eine halbe Milliarde Euro saniert. Die Leitung hofft auf eine Rückkehr ins ...",
+   "category": "Boulevard",
    "plus": false,
    "topic": "Nachrichten/Boulevard",
    "first_seen": "2026-11-20T17:45:57+00:00"
@@ -274,18 +314,18 @@
    "sid": 1027680,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-neuer-notfallwegweiser-fuer-patienten-in-dringenden-faellen-_arid,1027680.html",
    "title": "Neuer »Notfallwegweiser« für Patienten in dringenden Fällen",
-   "teaser": "",
-   "category": "",
+   "teaser": "Berlin (dpa) - Wenn abends plötzlich Beschwerden auftreten, gehen viele direkt ins Krankenhaus, stundenlanges Warten meistens inklusive. Nun sollen effizientere Abläufe kommen und auch ...",
+   "category": "Brennpunkt",
    "plus": false,
-   "topic": "Nachrichten/Boulevard",
+   "topic": "Nachrichten/Deutschland & Welt",
    "first_seen": "2026-11-20T17:32:48+00:00"
   },
   "1027679": {
    "sid": 1027679,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-silbereisen-trauert-um-seine-kostuembildnerin-_arid,1027679.html",
    "title": "Silbereisen trauert um seine Kostümbildnerin",
-   "teaser": "",
-   "category": "",
+   "teaser": "Suhl (dpa) - Viele Jahre lang hat sie den Look des Schlagerstars geprägt. Nun ist Kostümbildnerin Elke Schleuß-Gillmeister gestorben – kurz vor der wichtigen Adventsshow mit ...",
+   "category": "Boulevard",
    "plus": false,
    "topic": "Nachrichten/Boulevard",
    "first_seen": "2026-11-20T17:45:57+00:00"
@@ -480,6 +520,16 @@
    "topic": "Nachrichten/Deutschland & Welt",
    "first_seen": "2026-11-20T17:32:48+00:00"
   },
+  "1027615": {
+   "sid": 1027615,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-zartmann-singt-ueber-politische-konflikte-in-der-familie-_arid,1027615.html",
+   "title": "Zartmann singt über politische Konflikte in der Familie",
+   "teaser": "Berlin (dpa) - »Bad Düren« heißt die neue Single von Zartmann. Sie beschäftigt sich mit einer Frage, die viele umtreiben dürfte: Was, wenn ausgerechnet die eigene Familie ...",
+   "category": "Boulevard",
+   "plus": false,
+   "topic": "Nachrichten/Boulevard",
+   "first_seen": "2026-11-21T01:02:47+00:00"
+  },
   "1027612": {
    "sid": 1027612,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-trumpregierung-will-wahl-in-alaska-nicht-weiter-anfechten-_arid,1027612.html",
@@ -544,7 +594,7 @@
    "sid": 1027597,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-tarifstreit-bei-vw-was-auf-beschaeftigte-zukommen-koennte-_arid,1027597.html",
    "title": "Tarifstreit bei VW: Was auf Beschäftigte zukommen könnte",
-   "teaser": "",
+   "teaser": "Wolfsburg (dpa) - Nullrunden, längere Arbeitszeiten und gestrichene Zulagen: VW verlangt von seiner Belegschaft deutliche Zugeständnisse in der anstehenden Tarifrunde. Was steckt ...",
    "category": "Wirtschaft",
    "plus": false,
    "topic": "Nachrichten/Wirtschaft",
@@ -1094,7 +1144,7 @@
    "sid": 1027463,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-ella-langley-raeumt-bei-den-cmaawards-ab-swift-tritt-auf-_arid,1027463.html",
    "title": "Ella Langley räumt bei den CMA-Awards ab - Swift tritt auf",
-   "teaser": "Nashville (dpa) - Erstmals seit 13 Jahren ist Pop-Star Taylor Swift wieder bei den CMA-Awards in der Country-Hochburg Nashville aufgetreten. Doch der Star des Abends ist Newcomerin ...",
+   "teaser": "",
    "category": "Boulevard",
    "plus": false,
    "topic": "Nachrichten/Boulevard",
@@ -1404,7 +1454,7 @@
    "sid": 1027392,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-prinz-harry-zu-100-prozent-bereit-meinem-land-zu-dienen-_arid,1027392.html",
    "title": "Prinz Harry: Zu 100 Prozent bereit, meinem Land zu dienen",
-   "teaser": "",
+   "teaser": "London (dpa) - Prinz Harry diente zehn Jahre bei den Streitkräften. Nun zeigt er sich bereit, im Ernstfall ins Militär zurückzukehren.",
    "category": "Boulevard",
    "plus": false,
    "topic": "Nachrichten/Boulevard",
@@ -1840,6 +1890,16 @@
    "topic": "Nachrichten/Wissenschaft",
    "first_seen": "2026-11-20T17:45:57+00:00"
   },
+  "1027209": {
+   "sid": 1027209,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-cambridge-dictionary-kuert-human-zum-wort-des-jahres-_arid,1027209.html",
+   "title": "Cambridge Dictionary kürt »human« zum Wort des Jahres",
+   "teaser": "Cambridge (dpa) - Die Entwicklungen im Feld der Künstlichen Intelligenz lassen die Menschen über eine jahrtausendealte Frage grübeln: Wer sind wir und was macht uns aus? Das schlägt ...",
+   "category": "Boulevard",
+   "plus": false,
+   "topic": "Nachrichten/Boulevard",
+   "first_seen": "2026-11-21T01:02:47+00:00"
+  },
   "1027207": {
    "sid": 1027207,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-boom-um-ki-gelder-fuer-deutsche-startups-fast-verdoppelt-_arid,1027207.html",
@@ -2270,6 +2330,16 @@
    "topic": "Nachrichten/Digital",
    "first_seen": "2026-11-20T17:50:08+00:00"
   },
+  "1026876": {
+   "sid": 1026876,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-fan-stirbt-vor-konzert-elisa-singt-fuer-sie-in-tvshow-_arid,1026876.html",
+   "title": "Fan stirbt vor Konzert: Elisa singt für sie in TV-Show",
+   "teaser": "Mailand (dpa) - Kurz vor dem Konzert in Bologna bricht eine Besucherin zusammen und stirbt später im Krankenhaus. Die Sängerin Elisa sagt den Auftritt ab - und widmet ihrem Fan am Tag ...",
+   "category": "Boulevard",
+   "plus": false,
+   "topic": "Nachrichten/Boulevard",
+   "first_seen": "2026-11-21T01:02:47+00:00"
+  },
   "1026874": {
    "sid": 1026874,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-grundlegende-wende-depardieu-akzeptiert-belaestigungsurteil-_arid,1026874.html",
@@ -2414,7 +2484,7 @@
    "sid": 1026765,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-sollte-selbstverstaendlich-sein-basler-rettet-unfallopfer-_arid,1026765.html",
    "title": "»Sollte selbstverständlich sein« - Basler rettet Unfallopfer",
-   "teaser": "Kirchheimbolanden (dpa) - Der ehemalige Fußballprofi beobachtet auf der Fahrt zu einem Termin einen schweren Autounfall und zögert nicht, zu helfen. Wie er die Extremsituation erlebt ...",
+   "teaser": "",
    "category": "Boulevard",
    "plus": false,
    "topic": "Nachrichten/Boulevard",
@@ -3464,16 +3534,6 @@
    "sid": 629536,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-bund-plant-lockerungen-fuer-geimpfte-bayern-prescht-schon-vor-_arid,629536.html",
    "title": "Bund plant Lockerungen für Geimpfte - Bayern prescht schon vor",
-   "teaser": "",
-   "category": "",
-   "plus": false,
-   "topic": "Nachrichten/Deutschland & Welt",
-   "first_seen": "2026-11-20T17:50:08+00:00"
-  },
-  "629346": {
-   "sid": 629346,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-soeder-rueckgabe-von-grundrechten-durch-impfungen-moeglich-_arid,629346.html",
-   "title": "Söder: Rückgabe von Grundrechten durch Impfungen möglich",
    "teaser": "",
    "category": "",
    "plus": false,
