@@ -11,6 +11,7 @@ for u in sys.argv[1:]:
         for x in titles: print("  T:", x[:110])
         for x in links: print("  L:", x[:140])
         if u.endswith("robots.txt"): print(t[:1600])
+        for x in sorted(set(re.findall(r'(?:href|src)="([^"]*(?:rss|feed|\.xml|atom)[^"]*)"', t, re.I)))[:15]: print("  F:", x)
         if "LINKS" in u or u.endswith("/lokales/"):
             print("  Bereiche:", sorted(set(re.findall(r'href="(?:https:)?//www\.merkur\.de(/lokales/[a-z0-9-]+/)"', t)))[:60])
         if "rss" in u or "feed" in u:
