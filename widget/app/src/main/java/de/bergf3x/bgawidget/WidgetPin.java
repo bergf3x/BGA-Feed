@@ -31,7 +31,7 @@ final class WidgetPin {
                         act.startActivity(new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
                                 android.net.Uri.parse("package:" + act.getPackageName())));
                     } catch (Exception e) {
-                        android.widget.Toast.makeText(act, "App-Info nicht erreichbar", Toast.LENGTH_SHORT).show();
+                        android.widget.Toast.makeText(act, "App-Info nicht erreichbar", android.widget.Toast.LENGTH_SHORT).show();
                     }
                 })
                 .show();
