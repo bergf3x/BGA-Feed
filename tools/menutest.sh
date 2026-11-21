@@ -17,7 +17,7 @@ log "== alle Quellen einschalten =="
 $UI tap "Einstellungen"; sleep 2; $UI tap "Quellen & Themen"; sleep 2
 for n in "BGLand24" "chiemgau24" "ORF Salzburg" "Traunsteiner Tagblatt" "Landratsamt BGL"; do $UI tap "$n" | tee -a $R; sleep 1; done
 adb shell input swipe 540 1800 540 900 300; sleep 1
-for n in "Nationalpark Berchtesgaden" "BR24"; do $UI tap "$n" | tee -a $R; sleep 1; done
+for n in "Nationalpark Berchtesgaden" "BR24" "Merkur" "alpin.de"; do $UI tap "$n" | tee -a $R; sleep 1; done
 $UI texts > $OUT/quellen_texts.txt
 $UI tap "Fertig"; sleep 1; $UI tap "Speichern"; sleep 2
 adb shell am start -n $ACT >/dev/null; sleep 2
@@ -26,7 +26,7 @@ for i in $(seq 1 30); do sleep 3; $UI has "Lade Nachrichten" | grep -q gefunden 
 sleep 15; shot 01_alle
 $UI texts > $OUT/01_alle.txt
 
-for chip in "BGL ▾" "Außerhalb ▾" "Deutschland & Welt ▾"; do
+for chip in "Zeitungen ▾" "BGL ▾" "Deutschland & Welt ▾"; do
   tag=$(echo "$chip" | tr -cd 'A-Za-z')
   log "== Reiter $chip =="
   $UI tap "$chip" | tee -a $R; sleep 2; shot "m_${tag}_0"
@@ -50,20 +50,8 @@ for chip in "BGL ▾" "Außerhalb ▾" "Deutschland & Welt ▾"; do
   shot "m_${tag}_liste"
 done
 
-log "== Alle: Klappbereiche =="
-$UI tap "Alle" | tee -a $R; sleep 2
-for area in "Außerhalb" "Deutschland & Welt"; do
-  for k in $(seq 1 80); do
-    $UI texts | grep -q "$area, aufklappen" && break
-    adb shell input swipe 540 2000 540 1700 400; sleep 0.8
-  done
-  $UI tap "$area, aufklappen" | tee -a $R; sleep 2
-  if $UI texts | grep -q "$area, zuklappen"; then log "  $area: öffnet OK"; else log "  $area: ÖFFNET NICHT"; fi
-  shot "f_$(echo $area | tr -cd 'A-Za-z')_offen"
-  $UI tap "$area, zuklappen" | tee -a $R; sleep 2
-  if $UI texts | grep -q "$area, aufklappen"; then log "  $area: schließt OK"; else log "  $area: SCHLIESST NICHT"; fi
-done
-
+log "== Direktabruf-Protokoll =="
+adb shell run-as $PKG cat shared_prefs/direct.xml | sed 's/&#10;/\n/g;s/&quot;/"/g' | grep -iE "merkur|alpin|br24" | tail -12 | tee -a $R
 log "== Abstürze =="
 adb logcat -d > $OUT/logcat.txt
 grep -nE "FATAL EXCEPTION|ANR in $PKG" -A12 $OUT/logcat.txt | head -30 | tee -a $R
