@@ -20,7 +20,7 @@ public class PlaceActivity extends Activity {
             return;
         }
         final Bubble b = new Bubble(this, 300, 12);
-        b.text("Wetter-Ort im Berchtesgadener Land", 12, b.soft, false).setPadding(b.px(10), b.px(4), b.px(10), b.px(8));
+        b.header("Wetter-Ort", b::close);
         int cur = Prefs.place(this, id);
         Integer[] order = new Integer[Weather.PLACES.length];
         for (int i = 0; i < order.length; i++) order[i] = i;

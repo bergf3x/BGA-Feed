@@ -51,7 +51,7 @@ public class ColorsActivity extends Activity {
         txPct = Prefs.text(this, widgetId);
         theme = Prefs.theme(this, widgetId);
         b = new Bubble(this, 360, 16);
-        b.text("Farben", 18, b.title, true).setPadding(0, 0, 0, b.px(10));
+        b.header("Farben", b::close);
 
         FrameLayout backdrop = new FrameLayout(this);
         GradientDrawable bd = new GradientDrawable(GradientDrawable.Orientation.TL_BR,

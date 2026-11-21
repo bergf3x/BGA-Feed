@@ -21,7 +21,7 @@ public class UpdateActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         b = new Bubble(this, 340, 12);
-        b.text("Aktualisierung", 11, b.soft, false).setPadding(b.px(10), b.px(4), b.px(10), b.px(6));
+        b.header("Aktualisierung", b::close);
         LinearLayout body = b.scrollBox(0.5f);
         final int[] iv = {Prefs.wxIdx(this), Prefs.newsIdx(this)};
         b.label(body, "Wetter alle …");
