@@ -5,6 +5,9 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.25",
+                    "~ Test: Wetterkarte wird beim Scrollen der Nachrichten zur schmalen Zeile, ganz oben wieder groß",
+                    "~ Antippen der Wetterzeile klappt die Karte auf und springt nach oben"},
             {"1.24",
                     "+ Neuer Reiter „Zeitungen“: jede Zeitung mit ihren eigenen Rubriken, beliebig kombinierbar",
                     "+ Neue Quelle Merkur (Bayern, München, Oberbayern)",
