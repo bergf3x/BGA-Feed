@@ -11,6 +11,7 @@ final class Changelog {
                     "+ Außerhalb: Chiemgau & Traunstein, Salzburg, Bayern (inkl. München über BR24)",
                     "+ Deutschland & Welt: Politik & Gesellschaft, Wirtschaft, Wissen & Digital, Leute, Sport, Kultur",
                     "~ Menü zeigt nur Rubriken mit Meldungen, mit Anzahl; Regionen aufklappbar, immer nur eine offen",
+                    "~ Aufgeklappter Bereich unter „Alle“ springt an den Anfang statt halb verdeckt zu bleiben",
                     "! BGLand24: falsches Thema „Www.bgland24.de“ und doppelte Meldungen behoben"},
             {"1.22",
                     "~ Test: BGL zuerst – Meldungen aus Traunstein/Chiemgau, Salzburg und Bayern stehen zugeklappt unter „Mehr aus Oberbayern & Salzburg“",

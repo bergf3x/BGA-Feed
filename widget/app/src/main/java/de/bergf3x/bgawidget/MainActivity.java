@@ -617,10 +617,19 @@ public class MainActivity extends Activity {
         more.setOnClickListener(v -> {
             if (open) OPEN_FOLDS.remove(area);
             else OPEN_FOLDS.add(area);
-            int y = scroll == null ? 0 : scroll.getScrollY();
             build();
-            restore(y);
+            // Überschrift ganz oben in der Liste zeigen, nicht halb verdeckt
+            final View h = page.findViewWithTag("fold:" + area);
+            if (h != null && scroll != null) scroll.getViewTreeObserver().addOnPreDrawListener(new android.view.ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    scroll.getViewTreeObserver().removeOnPreDrawListener(this);
+                    scroll.scrollTo(0, Math.max(0, h.getTop() - px(4)));
+                    return true;
+                }
+            });
         });
+        more.setTag("fold:" + area);
         page.addView(more);
         if (open) for (int i = 0; i < Math.min(list.size(), 40); i++) page.addView(newsCard(list.get(i), read, kw));
     }
