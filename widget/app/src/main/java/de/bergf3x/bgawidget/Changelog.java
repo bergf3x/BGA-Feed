@@ -7,7 +7,8 @@ final class Changelog {
     static final String[][] LOG = {
             {"1.29",
                     "~ Ziehen zum Aktualisieren deutlich flüssiger: kein Neuaufbau mehr während Ziehen, Laden und Zurückfahren",
-                    "~ Weichere Rückfahr-Animation"},
+                    "~ Weichere Rückfahr-Animation",
+                    "! Oben stehende Wetterzeile: Nachrichten schimmern an den runden Ecken nicht mehr durch"},
             {"1.28",
                     "+ Ziehen zum Aktualisieren: ganz oben nach unten ziehen lädt Nachrichten und Wetter neu",
                     "+ Animierter Glas-Kreis mit „Zum Aktualisieren ziehen“ → „Loslassen zum Aktualisieren“ → „Aktualisieren …“ → „Aktualisiert ✓“, kurze Vibration an der Auslöse-Stelle"},

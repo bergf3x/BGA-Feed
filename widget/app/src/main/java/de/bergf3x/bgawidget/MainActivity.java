@@ -39,7 +39,7 @@ public class MainActivity extends Activity {
     private final Handler ui = new Handler(Looper.getMainLooper());
     private ScrollView scroll;
     /** Wetterkarte gross / als schmale Zeile (beim Scrollen der Nachrichten). */
-    private View wxFull, wxMini, wxIn, wxCam, hintCard;
+    private View wxFull, wxMini, wxIn, wxCam, wxShield, hintCard;
     /** Halter der Wetterkarte in der Liste (feste Hoehe = volle Karte) und der Reiter-Streifen. */
     private FrameLayout wxBox;
     private View chipsWrap;
@@ -520,6 +520,7 @@ public class MainActivity extends Activity {
         wxIn = null;
         wxCam = null;
         wxBox = null;
+        wxShield = null;
         wxFullH = 0;
         hintCard = null;
         chipsWrap = null;
@@ -763,9 +764,18 @@ public class MainActivity extends Activity {
         card.addView(under, 0, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         FrameLayout box = new FrameLayout(this);
         box.setClipChildren(false);
+        // volle Breite: deckender Streifen hinter der oben stehenden Zeile, damit an den runden Ecken nichts durchscheint
+        box.setPadding(px(14), 0, px(14), 0);
+        View shield = new View(this);
+        shield.setBackground(windowBg());
+        box.addView(shield, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, Gravity.TOP));
+        wxShield = shield;
         box.setTranslationZ(px(6));
         box.addView(card, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.TOP));
-        page.addView(box, lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 0));
+        LinearLayout.LayoutParams bl = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        bl.leftMargin = -px(14);
+        bl.rightMargin = -px(14);
+        page.addView(box, bl);
         wxBox = box;
         wxFull = card;
         wxIn = in;
@@ -844,6 +854,13 @@ public class MainActivity extends Activity {
                 wxMini.setVisibility(mini > 0.02f ? View.VISIBLE : View.INVISIBLE);
             }
             if (t > 0) pinnedBottom = h;
+            if (wxShield != null) {
+                int sh = t > 0 ? h : 0;
+                if (wxShield.getLayoutParams().height != sh) {
+                    wxShield.getLayoutParams().height = sh;
+                    wxShield.requestLayout();
+                }
+            }
         }
         if (chipsWrap != null) {
             // Reiter: stehen bleiben, sobald sie an die Wetterzeile (bzw. den oberen Rand) stossen
