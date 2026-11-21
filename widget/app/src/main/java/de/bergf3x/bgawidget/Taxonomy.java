@@ -157,7 +157,24 @@ final class Taxonomy {
         return out;
     }
 
+    /** Rubriken einer Zeitung: erst Regionales, dann Sport, Kultur, zuletzt Deutschland & Welt. */
+    static int paperRank(String r) {
+        String l = r.toLowerCase(Locale.GERMANY);
+        if (l.contains("welt") || l.contains("wirtschaft") || l.contains("wissen") || l.contains("digital")
+                || l.contains("boulevard") || l.contains("politik") || l.contains("netzwelt")) return 3;
+        if (l.contains("sport") || l.contains("fußball") || l.contains("ski")) return 1;
+        if (l.contains("kultur")) return 2;
+        return 0;
+    }
+
     static int compare(String a, String b) {
+        if (a.startsWith(PAPERS + "/") && b.startsWith(PAPERS + "/")) {
+            String[] x = a.split("/"), y = b.split("/");
+            if (x.length == 3 && y.length == 3 && x[1].equals(y[1])) {
+                int c = Integer.compare(paperRank(x[2]), paperRank(y[2]));
+                return c != 0 ? c : x[2].compareTo(y[2]);
+            }
+        }
         String[] x = a.split("/"), y = b.split("/");
         for (int i = 0; i < Math.min(x.length, y.length); i++) {
             int c = Integer.compare(rank(x[i]), rank(y[i]));
