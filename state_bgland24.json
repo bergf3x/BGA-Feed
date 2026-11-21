@@ -129,7 +129,8 @@
    "topic": "Bayern",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:06:12+00:00"
+   "first_seen": "2026-11-21T01:06:12+00:00",
+   "pc": true
   },
   "2058025613": {
    "sid": 2058025613,
@@ -140,7 +141,8 @@
    "topic": "Bayern",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:06:12+00:00"
+   "first_seen": "2026-11-21T01:06:12+00:00",
+   "pc": true
   },
   "3836247996": {
    "sid": 3836247996,
@@ -151,7 +153,8 @@
    "topic": "Bayern/Rosenheim",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:06:12+00:00"
+   "first_seen": "2026-11-21T01:06:12+00:00",
+   "pc": true
   },
   "1309230451": {
    "sid": 1309230451,
@@ -162,7 +165,8 @@
    "topic": "Bayern/Rosenheim",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:06:12+00:00"
+   "first_seen": "2026-11-21T01:06:12+00:00",
+   "pc": true
   },
   "3841209079": {
    "sid": 3841209079,
@@ -173,7 +177,8 @@
    "topic": "Sport",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:06:12+00:00"
+   "first_seen": "2026-11-21T01:06:12+00:00",
+   "pc": true
   },
   "89973137": {
    "sid": 89973137,
@@ -184,7 +189,8 @@
    "topic": "Nachrichten/Welt",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:06:12+00:00"
+   "first_seen": "2026-11-21T01:06:12+00:00",
+   "pc": true
   },
   "3727667520": {
    "sid": 3727667520,
@@ -195,7 +201,8 @@
    "topic": "Nachrichten/Welt",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:06:12+00:00"
+   "first_seen": "2026-11-21T01:06:12+00:00",
+   "pc": true
   },
   "979485029": {
    "sid": 979485029,
@@ -206,7 +213,8 @@
    "topic": "Bayern/Rosenheim",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:06:12+00:00"
+   "first_seen": "2026-11-21T01:06:12+00:00",
+   "pc": true
   },
   "2881867436": {
    "sid": 2881867436,
@@ -217,7 +225,8 @@
    "topic": "Sport",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:06:12+00:00"
+   "first_seen": "2026-11-21T01:06:12+00:00",
+   "pc": true
   },
   "3997852015": {
    "sid": 3997852015,
@@ -228,7 +237,8 @@
    "topic": "Sport",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:06:12+00:00"
+   "first_seen": "2026-11-21T01:06:12+00:00",
+   "pc": true
   },
   "2038812255": {
    "sid": 2038812255,
@@ -239,7 +249,8 @@
    "topic": "Sport",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:06:12+00:00"
+   "first_seen": "2026-11-21T01:06:12+00:00",
+   "pc": true
   },
   "1041811989": {
    "sid": 1041811989,
@@ -250,7 +261,8 @@
    "topic": "Bayern",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:06:12+00:00"
+   "first_seen": "2026-11-21T01:06:12+00:00",
+   "pc": true
   },
   "3507412362": {
    "sid": 3507412362,
@@ -261,7 +273,8 @@
    "topic": "Nachrichten/Politik",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:06:12+00:00"
+   "first_seen": "2026-11-21T01:06:12+00:00",
+   "pc": true
   },
   "525732471": {
    "sid": 525732471,
@@ -272,7 +285,8 @@
    "topic": "Nachrichten/Stars",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:06:12+00:00"
+   "first_seen": "2026-11-21T01:06:12+00:00",
+   "pc": true
   },
   "2788798041": {
    "sid": 2788798041,
@@ -283,7 +297,8 @@
    "topic": "Sport/Wintersport",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:06:12+00:00"
+   "first_seen": "2026-11-21T01:06:12+00:00",
+   "pc": true
   },
   "905659525": {
    "sid": 905659525,
@@ -294,7 +309,8 @@
    "topic": "Bayern/Traunstein",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:06:12+00:00"
+   "first_seen": "2026-11-21T01:06:12+00:00",
+   "pc": true
   },
   "3350795823": {
    "sid": 3350795823,
@@ -305,7 +321,8 @@
    "topic": "Sport",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:06:12+00:00"
+   "first_seen": "2026-11-21T01:06:12+00:00",
+   "pc": true
   },
   "4255894695": {
    "sid": 4255894695,
@@ -316,7 +333,8 @@
    "topic": "Nachrichten/Welt",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:06:12+00:00"
+   "first_seen": "2026-11-21T01:06:12+00:00",
+   "pc": true
   },
   "2639607732": {
    "sid": 2639607732,
@@ -327,7 +345,8 @@
    "topic": "Nachrichten/Deutschland",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:06:12+00:00"
+   "first_seen": "2026-11-21T01:06:12+00:00",
+   "pc": true
   },
   "2205077520": {
    "sid": 2205077520,
@@ -338,7 +357,8 @@
    "topic": "Region/Bad Reichenhall",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:06:12+00:00"
+   "first_seen": "2026-11-21T01:06:12+00:00",
+   "pc": true
   },
   "942830292": {
    "sid": 942830292,
@@ -349,7 +369,8 @@
    "topic": "Sport",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:06:12+00:00"
+   "first_seen": "2026-11-21T01:06:12+00:00",
+   "pc": true
   },
   "1019547998": {
    "sid": 1019547998,
@@ -360,7 +381,8 @@
    "topic": "Bayern/Rosenheim",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:06:12+00:00"
+   "first_seen": "2026-11-21T01:06:12+00:00",
+   "pc": true
   },
   "1732761247": {
    "sid": 1732761247,
@@ -371,7 +393,8 @@
    "topic": "Nachrichten/Wirtschaft",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:06:12+00:00"
+   "first_seen": "2026-11-21T01:06:12+00:00",
+   "pc": true
   },
   "3418150829": {
    "sid": 3418150829,
@@ -382,7 +405,8 @@
    "topic": "Nachrichten/Welt",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:06:12+00:00"
+   "first_seen": "2026-11-21T01:06:12+00:00",
+   "pc": true
   },
   "3443601831": {
    "sid": 3443601831,
@@ -393,7 +417,8 @@
    "topic": "Bayern",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:06:12+00:00"
+   "first_seen": "2026-11-21T01:06:12+00:00",
+   "pc": true
   },
   "2613847772": {
    "sid": 2613847772,
