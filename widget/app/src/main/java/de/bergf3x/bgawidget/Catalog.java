@@ -65,7 +65,7 @@ final class Catalog {
 
     /** Quellen, die selten veroeffentlichen (Behoerden, Ortsfilter): keine Warnung "ohne Neues". */
     static boolean lowVolume(String id) {
-        return id.equals("lra_bgl") || id.equals("npv") || id.equals("br24") || id.equals("alpin");
+        return id.equals("lra_bgl") || id.equals("npv") || id.equals("br24");
     }
 
     static Feed find(List<Feed> all, String id) {
@@ -114,7 +114,7 @@ final class Catalog {
 
     /** Quellen, die nur die Test-App direkt vom Handy abruft (kein GitHub-Feed vorhanden). */
     private static void addDirectOnly(List<Feed> list) {
-        String[][] extra = {{"merkur", "Merkur", "Bayern"}, {"alpin", "alpin.de", "Bergsport"}};
+        String[][] extra = {{"merkur", "Merkur", "Bayern"}};
         for (String[] e : extra) {
             if (find(list, e[0]) != null) continue;
             Feed f = new Feed();

@@ -53,6 +53,7 @@ public class PreviewActivity extends Activity {
         save.setOnClickListener(v -> {
             boolean now = Prefs.toggleSaved(this, title, meta, text, link);
             save.setText(now ? "Gemerkt ✓ (tippen zum Entfernen)" : "Merken");
+            Haptic.play(save, now ? Haptic.CONFIRM : Haptic.TICK);
         });
         b.pillKeep("Teilen", false, () -> {
             try {

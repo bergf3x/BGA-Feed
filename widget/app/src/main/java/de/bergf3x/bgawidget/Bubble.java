@@ -339,36 +339,78 @@ final class Bubble {
         box.addView(v, new LinearLayout.LayoutParams(1, px(dp)));
     }
 
-    /** Schalterzeile, die man antippen kann ohne die Blase zu schliessen; an = hell mit Haekchen. */
+    /**
+     * Schalterzeile im iPhone-Stil: Text links, animierter Schalter rechts; die ganze Zeile ist antippbar.
+     * Beginnt der Text mit Leerzeichen, wird die Zeile als Unterpunkt eingerueckt und etwas kleiner dargestellt.
+     */
     void toggle(ViewGroup parent, String label, boolean on, java.util.function.Consumer<Boolean> cb) {
-        final boolean[] state = {on};
+        boolean sub = label.startsWith(" ");
         LinearLayout r = new LinearLayout(act);
         r.setOrientation(LinearLayout.HORIZONTAL);
         r.setGravity(Gravity.CENTER_VERTICAL);
-        r.setPadding(px(12), px(9), px(12), px(9));
+        r.setPadding(px(sub ? 26 : 8), px(8), px(6), px(8));
+        r.setMinimumHeight(px(48));
+        pressable(r, 0, ripple);
         final TextView t = new TextView(act);
-        t.setText(label);
-        t.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+        t.setText(label.trim());
+        t.setTextSize(TypedValue.COMPLEX_UNIT_SP, sub ? 13 : 14.5f);
+        t.setTextColor(sub ? soft : tx);
         r.addView(t, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
-        final TextView c = new TextView(act);
-        c.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-        r.addView(c);
-        Runnable paint = () -> {
-            pressable(r, state[0] ? hi : 0, state[0] ? 0x33000000 : ripple);
-            t.setTextColor(state[0] ? hiTx : tx);
-            c.setTextColor(hiTx);
-            c.setText(state[0] ? "✓" : "");
-        };
-        paint.run();
+        final IosSwitch sw = new IosSwitch(act, on, hi, light ? 0x261B1F22 : 0x33FFFFFF, hiTx, light ? 0xFFFFFFFF : 0xFFB8BCC4);
+        LinearLayout.LayoutParams slp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        slp.leftMargin = px(12);
+        r.addView(sw, slp);
+        r.setContentDescription(label.trim());
+        r.setAccessibilityDelegate(new View.AccessibilityDelegate() {
+            @Override
+            public void onInitializeAccessibilityNodeInfo(View host, android.view.accessibility.AccessibilityNodeInfo info) {
+                super.onInitializeAccessibilityNodeInfo(host, info);
+                info.setCheckable(true);
+                info.setChecked(sw.isOn());
+                info.setClassName("android.widget.Switch");
+            }
+        });
         r.setOnClickListener(v -> {
-            state[0] = !state[0];
-            paint.run();
-            cb.accept(state[0]);
+            boolean now = !sw.isOn();
+            sw.setOn(now, true);
+            Haptic.play(v, now ? Haptic.TOGGLE_ON : Haptic.TOGGLE_OFF);
+            cb.accept(now);
         });
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        lp.topMargin = px(1);
         parent.addView(r, lp);
+        // feine Trennlinie wie in iOS-Listen
+        View line = new View(act);
+        line.setBackgroundColor(this.line);
+        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.max(1, px(0.6f)));
+        llp.leftMargin = px(sub ? 26 : 8);
+        parent.addView(line, llp);
+    }
+
+    /** Erklaerzeile unter dem Titel eines Untermenues. */
+    void hint(String s) {
+        TextView t = text(s, 12.5f, soft, false);
+        t.setPadding(px(4), 0, px(4), px(6));
+        t.setLineSpacing(0, 1.1f);
+    }
+
+    /** Gruppen-Ueberschrift im Hauptmenue ("Inhalte", "Aussehen", "System"). */
+    void group(String s) {
+        TextView t = text(s, 12, soft, false);
+        t.setPadding(px(6), px(12), 0, px(2));
+    }
+
+    /** Kachel mit Symbol. */
+    void tile(int icon, String title, String sub, Runnable onClick) {
+        tile(title, sub, onClick);
+        LinearLayout r = (LinearLayout) box.getChildAt(box.getChildCount() - 1);
+        android.widget.ImageView iv = new android.widget.ImageView(act);
+        iv.setImageResource(icon);
+        iv.setColorFilter(tx);
+        iv.setAlpha(0.9f);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(px(22), px(22));
+        lp.rightMargin = px(14);
+        r.addView(iv, 0, lp);
     }
 
     /** Auswahl nebeneinander (z. B. kompakt / luftig); genau eine ist aktiv. */

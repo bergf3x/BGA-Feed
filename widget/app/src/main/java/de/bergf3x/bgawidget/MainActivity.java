@@ -60,6 +60,8 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         d = getResources().getDisplayMetrics().density;
+        // "Neu seit deinem letzten Besuch": Zeitpunkt, als die App zuletzt verlassen wurde
+        visitMark = getSharedPreferences("bga_widget", MODE_PRIVATE).getLong("last_visit", 0);
         if (!warmed) {
             // gespeicherte Feeds im Hintergrund einlesen, damit der Start nicht ruckelt
             final android.content.Context app = getApplicationContext();
@@ -84,6 +86,7 @@ public class MainActivity extends Activity {
     }
 
     private String shownTopic;
+    private long visitMark;
     private final android.content.BroadcastReceiver dataChanged = new android.content.BroadcastReceiver() {
         @Override
         public void onReceive(android.content.Context c, android.content.Intent i) {
@@ -132,6 +135,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
+        getSharedPreferences("bga_widget", MODE_PRIVATE).edit().putLong("last_visit", System.currentTimeMillis()).apply();
         try {
             unregisterReceiver(dataChanged);
         } catch (Exception ignored) {
@@ -308,7 +312,9 @@ public class MainActivity extends Activity {
         pullSpin.spin = false;
         pullSpin.progress = 1f;
         pullSpin.invalidate();
-        pullText("Aktualisiert ✓");
+        boolean ok = Prefs.newsOk(this);
+        pullText(ok ? "Aktualisiert ✓" : "Keine Verbindung");
+        Haptic.play(pullBox, ok ? Haptic.CONFIRM : Haptic.REJECT);
     }
 
     /** Sanft zurueck nach oben. */
@@ -365,8 +371,7 @@ public class MainActivity extends Activity {
             pullText(ready ? "Loslassen zum Aktualisieren" : "Zum Aktualisieren ziehen");
             if (ready && !pullBuzzed) {
                 pullBuzzed = true;
-                pullBox.performHapticFeedback(android.os.Build.VERSION.SDK_INT >= 30
-                        ? android.view.HapticFeedbackConstants.CONFIRM : android.view.HapticFeedbackConstants.VIRTUAL_KEY);
+                Haptic.play(pullBox, Haptic.CLICK);
             } else if (!ready) {
                 pullBuzzed = false;
             }
@@ -982,9 +987,59 @@ public class MainActivity extends Activity {
             else if (split && it.topic.startsWith(Taxonomy.WORLD)) world.add(it);
             else main.add(it);
         }
-        for (int i = 0; i < Math.min(main.size(), MAX_ITEMS); i++) page.addView(newsCard(main.get(i), read, kw));
+        if (!syncing && !Prefs.newsOk(this)) offlineBanner();
+        boolean marked = false;
+        for (int i = 0; i < Math.min(main.size(), MAX_ITEMS); i++) {
+            FeedItem it = main.get(i);
+            if (!marked && visitMark > 0 && i > 0 && it.time > 0 && it.time <= visitMark) {
+                newSinceDivider();
+                marked = true;
+            }
+            if (it.time > 0 && it.time <= visitMark) marked = true; // Linie nur, wenn oben wirklich Neues steht
+            page.addView(newsCard(it, read, kw));
+        }
         foldSection(Taxonomy.OUT, out, read, kw);
         foldSection(Taxonomy.WORLD, world, read, kw);
+    }
+
+    /** Dezente Linie: alles darueber ist seit dem letzten Besuch neu. */
+    private void newSinceDivider() {
+        LinearLayout row = new LinearLayout(this);
+        row.setOrientation(LinearLayout.HORIZONTAL);
+        row.setGravity(Gravity.CENTER_VERTICAL);
+        row.setPadding(px(2), px(4), px(2), px(12));
+        View l1 = new View(this);
+        l1.setBackgroundColor(line);
+        row.addView(l1, new LinearLayout.LayoutParams(0, Math.max(1, px(1)), 1f));
+        String hh = new java.text.SimpleDateFormat("HH:mm", java.util.Locale.GERMANY).format(new java.util.Date(visitMark));
+        TextView t = text("Bis hier neu seit " + hh, 12, soft, false);
+        t.setPadding(px(10), 0, px(10), 0);
+        row.addView(t);
+        View l2 = new View(this);
+        l2.setBackgroundColor(line);
+        row.addView(l2, new LinearLayout.LayoutParams(0, Math.max(1, px(1)), 1f));
+        page.addView(row);
+    }
+
+    /** Ruhiger Hinweis statt leerer Flaeche, wenn der letzte Abruf ohne Verbindung war. */
+    private void offlineBanner() {
+        LinearLayout box = new LinearLayout(this);
+        box.setOrientation(LinearLayout.HORIZONTAL);
+        box.setGravity(Gravity.CENTER_VERTICAL);
+        box.setPadding(px(14), px(11), px(14), px(11));
+        box.setBackground(shape(light ? 0xFFFFF4DC : 0xFF2A2620, 16, light ? 0xFFE8CF95 : 0xFF4A4030));
+        ImageView ic = new ImageView(this);
+        ic.setImageResource(R.drawable.ic_wifi_off);
+        ic.setColorFilter(light ? 0xFF9A6B12 : 0xFFE8C37A);
+        box.addView(ic, lp(20, 20, 0, 0, 12, 0));
+        LinearLayout col = new LinearLayout(this);
+        col.setOrientation(LinearLayout.VERTICAL);
+        col.addView(text("Keine Verbindung", 13.5f, light ? 0xFF6B4A0C : 0xFFF0DCB0, true));
+        long t = Prefs.newsTime(this);
+        String hh = t == 0 ? "" : "Zuletzt geladen um " + new java.text.SimpleDateFormat("HH:mm", java.util.Locale.GERMANY).format(new java.util.Date(t)) + " · ";
+        col.addView(text(hh + "Ziehen zum erneut Versuchen", 12, light ? 0xFF8A6520 : 0xFFC9B48A, false));
+        box.addView(col, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+        page.addView(box, lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 10));
     }
 
     private static final java.util.Set<String> OPEN_FOLDS = new java.util.HashSet<>();
@@ -1080,7 +1135,10 @@ public class MainActivity extends Activity {
         c.setMinHeight(px(40));
         c.setGravity(Gravity.CENTER);
         press(c, on ? chipOn : cardFill, 18, on ? 0 : line);
-        c.setOnClickListener(v -> click.run());
+        c.setOnClickListener(v -> {
+            Haptic.play(v, Haptic.TICK);
+            click.run();
+        });
         // Bedienungshilfe: Zustand und Funktion vorlesen statt des Pfeil-Zeichens
         String spoken = label.replace(" ▾", "") + (on ? ", ausgewählt" : "") + (label.endsWith("▾") ? ", öffnet Auswahl" : "");
         c.setContentDescription(spoken);

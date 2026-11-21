@@ -60,6 +60,13 @@ public class WeatherWidgetProvider extends AppWidgetProvider {
         WidgetProvider.applyWeather(ctx, rv, id, Prefs.argb(rgb, tx, 1f), Prefs.argb(rgb, tx, 0.7f), true);
         Pal.filter(ctx, id, rv, R.id.btn_refresh, -1);
         Pal.filter(ctx, id, rv, R.id.btn_settings, -1);
+        Pal.filter(ctx, id, rv, R.id.btn_wcam, -1);
+        rv.setInt(R.id.btn_wcam, "setImageAlpha", Prefs.alpha(tx));
+        Intent cam = new Intent(ctx, WebcamActivity.class);
+        cam.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id);
+        cam.setData(Uri.parse("bgawidget://webcam/" + id));
+        rv.setOnClickPendingIntent(R.id.btn_wcam,
+                PendingIntent.getActivity(ctx, 900000 + id, cam, PendingIntent.FLAG_UPDATE_CURRENT | immutable));
         rv.setInt(R.id.btn_refresh, "setImageAlpha", Prefs.alpha(tx));
         rv.setInt(R.id.btn_settings, "setImageAlpha", Prefs.alpha(tx));
         Intent refresh = new Intent(ctx, WeatherWidgetProvider.class).setAction(ACTION_REFRESH);

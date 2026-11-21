@@ -16,6 +16,7 @@ import java.util.Set;
 public class WidgetProvider extends AppWidgetProvider {
     static final String ACTION_REFRESH = "de.bergf3x.bgawidget.REFRESH";
     static final String ACTION_SET_TOPIC = "de.bergf3x.bgawidget.SET_TOPIC";
+    static final String ACTION_PINNED = "de.bergf3x.bgawidget.PINNED";
     private static final int[] P = {R.id.p0, R.id.p1, R.id.p2, R.id.p3, R.id.p4};
     private static final int[] P_ON = {R.id.p0_on, R.id.p1_on, R.id.p2_on, R.id.p3_on, R.id.p4_on};
     private static final int[] P_T = {R.id.p0_t, R.id.p1_t, R.id.p2_t, R.id.p3_t, R.id.p4_t};
@@ -43,6 +44,14 @@ public class WidgetProvider extends AppWidgetProvider {
         if (ACTION_REFRESH.equals(action)) {
             android.widget.Toast.makeText(ctx, "Aktualisiere …", android.widget.Toast.LENGTH_SHORT).show();
             Updater.runAsync(ctx, true, goAsync());
+            return;
+        }
+        if (ACTION_PINNED.equals(action)) {
+            int id = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, 0);
+            if (id != 0) {
+                Prefs.setShowWeather(ctx, id, intent.getBooleanExtra("wx", true));
+                refresh(ctx, id);
+            }
             return;
         }
         if (ACTION_SET_TOPIC.equals(action)) {
@@ -202,6 +211,8 @@ public class WidgetProvider extends AppWidgetProvider {
         }
         rv.setViewVisibility(R.id.btn_search, weatherWidget ? android.view.View.GONE : android.view.View.VISIBLE);
         rv.setViewVisibility(R.id.btn_saved, weatherWidget ? android.view.View.GONE : android.view.View.VISIBLE);
+        // reines Wetter-Widget hat einen eigenen, immer sichtbaren Webcam-Knopf oben rechts
+        rv.setViewVisibility(R.id.btn_cam, weatherWidget ? android.view.View.GONE : android.view.View.VISIBLE);
         Pal.text(ctx, id, rv, R.id.w_desc, cw, 0.7f);
         Pal.text(ctx, id, rv, R.id.w_temp, cw, 1f);
         Pal.text(ctx, id, rv, R.id.w_hi, cw, 1f);

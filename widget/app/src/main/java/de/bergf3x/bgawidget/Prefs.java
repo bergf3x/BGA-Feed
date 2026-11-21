@@ -298,6 +298,10 @@ final class Prefs {
         return sp(c).getBoolean("wx_" + id, true);
     }
 
+    static void setShowWeather(Context c, int id, boolean on) {
+        sp(c).edit().putBoolean("wx_" + id, on).apply();
+    }
+
     static boolean showWarn(Context c, int id) {
         return sp(c).getBoolean("warn_" + id, true);
     }

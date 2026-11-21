@@ -99,9 +99,14 @@ final class Taxonomy {
         return null;
     }
 
+    private static final Pattern P_SPORT = Pattern.compile("Skispring|Skisprung|Biathlon|Ski alpin|Slalom|Abfahrt\\b|Super-G|Langlauf|Rodel|"
+            + "Bundesliga|Fußball|Handball|Eishockey|Basketball|Weltcup|Champions League|Europa League|DFB-Pokal|\\bDFB\\b|"
+            + "Formel 1|Tennis|Olympia|Torjäger|Torwart|\\bTSV\\b|\\bSV\\b|\\bFC\\b|Kreisliga|Bezirksliga|Landesliga|Regionalliga");
+
     private static String rubric(String raw, String category, String title) {
         String l = (raw + " " + category).toLowerCase(Locale.GERMANY);
         if (l.contains("sport") || l.contains("fußball") || l.contains("wintersport")) return "Sport";
+        if (P_SPORT.matcher(title).find()) return "Sport";
         if (l.contains("kultur") || l.contains("tv kino") || l.contains("tv & kino")) return "Kultur";
         if (l.contains("polizei") || P_BLAU.matcher(title).find()) return "Blaulicht";
         return "Nachrichten";
