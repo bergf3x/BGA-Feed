@@ -6,7 +6,7 @@ final class Changelog {
 
     static final String[][] LOG = {
             {"1.15",
-                    "~ Test: Webcams-Knopf größer und oben rechts in der Wetterkarte"},
+                    "~ Test: „Live Webcam“ als schmale Liquid-Glass-Pille oben rechts in der Wetterkarte"},
             {"1.14",
                     "! Test: BGLand24 liest jetzt auch die Regionsseiten (Berchtesgaden, Bad Reichenhall, Rupertiwinkel, Traunstein, Salzburg …), Bezahl-Artikel werden erkannt",
                     "! Test: BGLand24 wieder sichtbar (Zeitlimit beim direkten Abruf), bei Fehler automatisch GitHub-Feed; neueste Artikel bekommen ihre echte Zeit zuerst",
