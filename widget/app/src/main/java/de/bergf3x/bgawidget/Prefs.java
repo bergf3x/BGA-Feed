@@ -250,6 +250,14 @@ final class Prefs {
         sp(c).edit().putInt("acc_" + id, rgb < 0 ? -1 : rgb & 0xFFFFFF).apply();
     }
 
+    static boolean addCardHidden(Context c) {
+        return sp(c).getBoolean("addcard_hidden", false);
+    }
+
+    static void setAddCardHidden(Context c, boolean hidden) {
+        sp(c).edit().putBoolean("addcard_hidden", hidden).apply();
+    }
+
     static boolean showWeather(Context c, int id) {
         return sp(c).getBoolean("wx_" + id, true);
     }

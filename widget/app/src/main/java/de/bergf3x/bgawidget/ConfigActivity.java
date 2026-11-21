@@ -186,6 +186,10 @@ public class ConfigActivity extends Activity {
         clear();
         page = P_MAIN;
         b.text("Einstellungen", 20, b.title, true).setPadding(b.px(4), 0, 0, b.px(4));
+        if (widgetId == Prefs.APP) {
+            b.tile("Widget hinzufügen", "Nachrichten- oder Wetter-Widget auf den Startbildschirm", () ->
+                    startActivity(new Intent(this, AddWidgetActivity.class)));
+        }
         b.tile("Quellen & Themen", selected.size() + (selected.size() == 1 ? " Quelle" : " Quellen") + " · Stichwörter", this::showSources);
         b.tile("Design", (theme == 1 ? "Hell" : "Dunkel") + " · "
                 + Style.FONT_NAMES[Math.max(0, Math.min(Style.FONT_NAMES.length - 1, font))] + " · Farben", this::showDesign);

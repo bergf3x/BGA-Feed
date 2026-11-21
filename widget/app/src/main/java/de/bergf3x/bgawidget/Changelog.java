@@ -5,6 +5,8 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.10",
+                    "+ Hinweis „Widget auf den Startbildschirm“ lässt sich mit ✕ schließen und bleibt in den Einstellungen ganz oben erreichbar"},
             {"1.09",
                     "~ Medien in Hausfarbe: Berchtesgadener Anzeiger blau, BGLand24 gelb (Menü und Liste)"},
             {"1.08",
