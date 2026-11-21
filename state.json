@@ -1,5 +1,15 @@
 {
  "items": {
+  "1027859": {
+   "sid": 1027859,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-doppelter-blitzstart-st-pauli-schlaegt-bochum-20-_arid,1027859.html",
+   "title": "Doppelter Blitzstart: St. Pauli schlägt Bochum 2:0",
+   "teaser": "Hamburg (dpa) - St. Pauli erwischt Bochum am Millerntor gleich zweimal kalt - zwischendurch kommt aber auch der VfL zu guten Chancen. Am Ende jubeln die Hamburger über den dritten ...",
+   "category": "2. Fußball Bundesliga",
+   "plus": false,
+   "topic": "Sport/Fußball",
+   "first_seen": "2026-11-21T22:26:28+00:00"
+  },
   "1027858": {
    "sid": 1027858,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-heimtorflaute-bleibt-schalke-holt-punkt-gegen-stuttgart-_arid,1027858.html",
@@ -1697,7 +1707,7 @@
    "teaser": "Zürich (dpa) - Philippe Diallo und Kozo Tashima wollen Gianni Infantino als FIFA-Präsident ablösen. Offiziell begrüßt Infantino das. Derweil bekommt die FIFA Post von wichtigen ...",
    "category": "Fußball",
    "plus": false,
-   "topic": "Sport/Fußball",
+   "topic": "Sport",
    "first_seen": "2026-11-20T17:45:57+00:00"
   },
   "1027468": {
@@ -3986,16 +3996,6 @@
    "title": "Radeln für Kinder in Not: »Chiemgau King« und der Verein »Radeln und Helfen« veranstalten ein zweitägiges Sommerfest",
    "teaser": "",
    "category": "Landkreis Traunstein",
-   "plus": false,
-   "topic": "Region/Bergsteiger & Naturfreunde",
-   "first_seen": "2026-11-20T17:50:08+00:00"
-  },
-  "715456": {
-   "sid": 715456,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-paulpreusspreis-geht-in-diesem-jahr-an-thomas-huber-_arid,715456.html",
-   "title": "Paul-Preuss-Preis geht in diesem Jahr an Thomas Huber",
-   "teaser": "",
-   "category": "Regional",
    "plus": false,
    "topic": "Region/Bergsteiger & Naturfreunde",
    "first_seen": "2026-11-20T17:50:08+00:00"
