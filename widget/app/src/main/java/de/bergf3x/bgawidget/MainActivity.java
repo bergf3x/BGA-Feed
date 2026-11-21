@@ -594,7 +594,8 @@ public class MainActivity extends Activity {
             int miniH = px(52);
             int t = Math.max(0, y - wxBox.getTop());                 // wie weit die Karte oben "angestossen" ist
             int h = Math.max(miniH, wxFullH - t);
-            wxFull.setTranslationY(t);
+            // den ganzen Halter verschieben (nicht nur die Karte), damit Antippen der oben stehenden Zeile ankommt
+            wxBox.setTranslationY(t);
             if (wxFull.getLayoutParams().height != h) {
                 wxFull.getLayoutParams().height = h;
                 wxFull.requestLayout();
