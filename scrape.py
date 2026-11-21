@@ -428,6 +428,94 @@ def fetch_rss_site(site):
     return items
 
 
+# ---------------------------------------------------------------- Traunsteiner Tagblatt, Landratsamt, Nationalpark, BR24
+def tt_topic(item, source_topic):
+    """Traunsteiner Tagblatt: Thema aus der Adresse (Landkreis Traunstein / Berchtesgadener Land)."""
+    u = item["url"]
+    if "/region/berchtesgadener-land" in u:
+        return "Region/Berchtesgadener Land"
+    if "/region/landkreis-traunstein" in u:
+        return "Region/Landkreis Traunstein"
+    return bga_topic(item, source_topic)
+
+
+DE_MON = {"jan": 1, "feb": 2, "mär": 3, "mae": 3, "mar": 3, "apr": 4, "mai": 5, "jun": 6, "jul": 7,
+          "aug": 8, "sep": 9, "okt": 10, "nov": 11, "dez": 12}
+
+
+def _de_date(d, m, y, hh=12, mm=0):
+    from zoneinfo import ZoneInfo
+    return datetime(int(y), int(m), int(d), int(hh), int(mm), tzinfo=ZoneInfo("Europe/Berlin")).astimezone(timezone.utc).isoformat()
+
+
+def fetch_lra(site):
+    """Pressemitteilungen des Landratsamts BGL (Liste mit Datum, Titel, Anriss)."""
+    import requests
+
+    r = requests.get(site["base"] + "/t/presse/pressemitteilungen/", headers={"User-Agent": UA}, timeout=30)
+    r.raise_for_status()
+    html = r.text
+    out, seen = [], set()
+    for m in re.finditer(r'<a[^>]+href="(/t/presse/pressemitteilungen/detail/news/[^"#?]+)"[^>]*>(.*?)</a>', html, re.S):
+        href, title = m.group(1), _clean(m.group(2))
+        if href in seen or len(title) < 8:
+            continue
+        seen.add(href)
+        before = html[max(0, m.start() - 1500):m.start()]
+        dm = list(re.finditer(r"(\d{1,2})\.\s*([A-Za-zäÄ]{3})[a-zä]*\.?\s*(\d{4})", before))
+        date = ""
+        if dm:
+            d, mon, y = dm[-1].groups()
+            mo = DE_MON.get(mon.lower()[:3])
+            if mo:
+                date = _de_date(d, mo, y)
+        after = html[m.end():m.end() + 1500]
+        pm = re.search(r"<p[^>]*>(.*?)</p>", after, re.S)
+        url = site["base"] + href
+        out.append(dict(sid=zlib.crc32(url.encode()), url=url, title=title, teaser=_clean(pm.group(1))[:300] if pm else "",
+                        category="", topic=site["topic"], plus=False, date=date))
+    print(f"[{site['id']}] Liste -> {len(out)}")
+    return out
+
+
+def fetch_npv(site):
+    """Pressemitteilungen des Nationalparks (Tabelle Datum | Titel)."""
+    import requests
+
+    page = site["base"] + "/service/presse/pressemitteilungen/"
+    r = requests.get(page + "index.htm", headers={"User-Agent": UA}, timeout=30)
+    r.raise_for_status()
+    out = []
+    for m in re.finditer(r"(\d{2})\.(\d{2})\.(\d{4})\s*</td>\s*<td[^>]*>\s*<a[^>]+href=\"([^\"]+)\"[^>]*>(.*?)</a>", r.text, re.S):
+        d, mo, y, href, title = m.groups()
+        url = href if href.startswith("http") else page + href.lstrip("./")
+        url = url.replace("&amp;", "&")
+        out.append(dict(sid=zlib.crc32(url.encode()), url=url, title=_clean(title), teaser="", category="",
+                        topic=site["topic"], plus=False, date=_de_date(d, mo, y)))
+    print(f"[{site['id']}] Tabelle -> {len(out)}")
+    return out
+
+
+BR_PLACES = re.compile(
+    r"Berchtesgaden|Bad Reichenhall|Reichenhall|Freilassing|Laufen|Bischofswiesen|Ramsau|Schönau|Königssee|"
+    r"Marktschellenberg|Piding|Ainring|Teisendorf|Bayerisch Gmain|Schneizlreuth|Saaldorf|Surheim|Anger\b|"
+    r"Traunstein|Traunreut|Trostberg|Ruhpolding|Inzell|Reit im Winkl|Chiemsee|Chiemgau|Rupertiwinkel|Waging|"
+    r"Tittmoning|Siegsdorf|Grassau|Übersee|Watzmann|Untersberg|Kehlstein|Obersalzberg|Jenner|Hochkalter|Salzach")
+
+
+def fetch_br(site):
+    """BR24: offizieller Feed, nur Meldungen mit Ortsbezug Berchtesgadener Land / Chiemgau."""
+    import requests
+
+    r = requests.get(site["rss"], headers={"User-Agent": UA}, timeout=30)
+    r.raise_for_status()
+    items = [it for it in _rss_items(r.content, art=False) if BR_PLACES.search(it["title"] + " " + it["teaser"])]
+    for it in items:
+        it["topic"] = site["topic"]
+    print(f"[{site['id']}] RSS {r.status_code} -> {len(items)} mit Ortsbezug")
+    return items
+
+
 SITES = [
     dict(
         id="bga",
@@ -511,6 +599,70 @@ SITES = [
         parse=None,
         retopic=None,
         fetch=fetch_rss_site,
+        order="seen",
+    ),
+    dict(
+        id="tt",
+        name="Traunsteiner Tagblatt",
+        base="https://www.traunsteiner-tagblatt.de",
+        link="/region/landkreis-traunstein.html",
+        feed="feed_tt.xml",
+        state="state_tt.json",
+        sources=[
+            ("/region/landkreis-traunstein.html", "Region/Landkreis Traunstein", "/region/"),
+            ("/region/berchtesgadener-land.html", "Region/Berchtesgadener Land", "/region/"),
+            ("/sport/sport-aus-der-region.html", "Sport/Sport aus der Region", "/sport/"),
+            ("/region/kultur.html", "Kultur", "/region/kultur"),
+        ],
+        topics=None,
+        parse=parse_bga,
+        retopic=tt_topic,
+        order="id",
+    ),
+    dict(
+        id="lra_bgl",
+        name="Landratsamt BGL",
+        base="https://www.lra-bgl.de",
+        link="/t/presse/pressemitteilungen/",
+        topic="Region/Landratsamt",
+        feed="feed_lra_bgl.xml",
+        state="state_lra_bgl.json",
+        sources=[("/", "Region/Landratsamt")],
+        topics=None,
+        parse=None,
+        retopic=None,
+        fetch=fetch_lra,
+        order="seen",
+    ),
+    dict(
+        id="npv",
+        name="Nationalpark Berchtesgaden",
+        base="https://www.nationalpark-berchtesgaden.bayern.de",
+        link="/service/presse/pressemitteilungen/index.htm",
+        topic="Region/Nationalpark",
+        feed="feed_npv.xml",
+        state="state_npv.json",
+        sources=[("/", "Region/Nationalpark")],
+        topics=None,
+        parse=None,
+        retopic=None,
+        fetch=fetch_npv,
+        order="seen",
+    ),
+    dict(
+        id="br24",
+        name="BR24",
+        base="https://www.br.de",
+        link="/nachrichten/",
+        rss="https://feeds.br24.de/rss/nachrichten",
+        topic="Region/BGL & Chiemgau",
+        feed="feed_br24.xml",
+        state="state_br24.json",
+        sources=[("/", "Region/BGL & Chiemgau")],
+        topics=None,
+        parse=None,
+        retopic=None,
+        fetch=fetch_br,
         order="seen",
     ),
 ]
