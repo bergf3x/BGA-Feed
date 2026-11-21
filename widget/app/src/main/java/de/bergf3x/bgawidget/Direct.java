@@ -74,11 +74,12 @@ final class Direct {
         boolean bga = f.id.equals("bga");
         List<Map<String, Object>> found = bga ? scrapeBga() : scrapeBgland();
         if (found.isEmpty()) throw new IOException("keine Artikel gefunden");
+        int timed = resolveTimes(ctx, f, found);
         String xml;
         synchronized (Direct.class) {
             xml = merge(ctx, f, bga, found);
         }
-        log(ctx, f.name + ": " + found.size() + " Artikel direkt, " + (System.currentTimeMillis() - t0) / 1000 + " s");
+        log(ctx, f.name + ": " + found.size() + " Artikel direkt, " + timed + " Zeiten neu gelesen, " + (System.currentTimeMillis() - t0) / 1000 + " s");
         return xml;
     }
 
@@ -266,6 +267,92 @@ final class Direct {
         }
     }
 
+    // ------------------------------------------------------------------ Echte Veroeffentlichungszeit
+
+    private static final Pattern P_DATUM = Pattern.compile("Datum:?\\s*(?:<[^>]*>\\s*)*(\\d{1,2})\\.(\\d{1,2})\\.(\\d{4})\\s*,?\\s*(\\d{1,2}):(\\d{2})");
+    private static final Pattern P_ISO = Pattern.compile("(?:article:published_time|datePublished|og:article:published_time)[\"']?\\s*(?:content=|:)?\\s*[\"']?(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}(?::\\d{2})?(?:[.,]\\d+)?(?:Z|[+-]\\d{2}:?\\d{2})?)");
+    private static final Pattern P_ISO2 = Pattern.compile("content=[\"'](\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}[^\"']*)[\"'][^>]*(?:published_time)|(?:published_time)[^>]*content=[\"'](\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}[^\"']*)[\"']");
+
+    /** Liest die echte Zeit aus einer Artikelseite; -1 wenn nicht gefunden. */
+    static long parseTime(String html) {
+        try {
+            Matcher m = P_DATUM.matcher(html);
+            if (m.find()) {
+                java.util.Calendar c = java.util.Calendar.getInstance(TimeZone.getTimeZone("Europe/Berlin"));
+                c.clear();
+                c.set(Integer.parseInt(m.group(3)), Integer.parseInt(m.group(2)) - 1, Integer.parseInt(m.group(1)),
+                        Integer.parseInt(m.group(4)), Integer.parseInt(m.group(5)), 0);
+                return c.getTimeInMillis();
+            }
+            Matcher i = P_ISO2.matcher(html);
+            String iso = null;
+            if (i.find()) iso = i.group(1) != null ? i.group(1) : i.group(2);
+            if (iso == null) {
+                Matcher j = P_ISO.matcher(html);
+                if (j.find()) iso = j.group(1);
+            }
+            if (iso != null) {
+                iso = iso.replace(',', '.').replaceAll("\\.\\d+", "");
+                if (iso.length() == 16) iso += ":00";
+                String fmtS = "yyyy-MM-dd'T'HH:mm:ss";
+                boolean hasZone = iso.matches(".*(Z|[+-]\\d{2}:?\\d{2})$");
+                if (iso.endsWith("Z")) iso = iso.substring(0, iso.length() - 1) + "+0000";
+                else if (hasZone) iso = iso.replaceAll("([+-]\\d{2}):(\\d{2})$", "$1$2");
+                SimpleDateFormat f = new SimpleDateFormat(hasZone ? fmtS + "Z" : fmtS, Locale.ENGLISH);
+                if (!hasZone) f.setTimeZone(TimeZone.getTimeZone("Europe/Berlin"));
+                Date d = f.parse(iso);
+                if (d != null) return d.getTime();
+            }
+        } catch (Exception ignored) {
+        }
+        return -1;
+    }
+
+    /** Holt fuer noch nie gesehene Artikel (und alte Eintraege ohne echte Zeit) die echte Zeit von der Artikelseite. */
+    private static int resolveTimes(Context ctx, Catalog.Feed f, List<Map<String, Object>> found) {
+        SharedPreferences sp = ctx.getSharedPreferences("direct", Context.MODE_PRIVATE);
+        java.util.Set<String> done = new java.util.HashSet<>();
+        try {
+            JSONArray a = new JSONArray(sp.getString("state_" + f.id, "[]"));
+            for (int i = 0; i < a.length(); i++) {
+                JSONObject o = a.getJSONObject(i);
+                if (o.optBoolean("tok") || o.optInt("tries") >= 2) done.add(String.valueOf(o.getLong("sid")));
+            }
+        } catch (Exception ignored) {
+        }
+        final List<Map<String, Object>> todo = new ArrayList<>();
+        for (Map<String, Object> it : found) {
+            if (!done.contains(String.valueOf(it.get("sid")))) todo.add(it);
+            if (todo.size() >= 70) break;
+        }
+        if (todo.isEmpty()) return 0;
+        ExecutorService ex = Executors.newFixedThreadPool(6);
+        List<Callable<Boolean>> tasks = new ArrayList<>();
+        for (final Map<String, Object> it : todo) {
+            tasks.add(() -> {
+                try {
+                    long t = parseTime(Net.download((String) it.get("url")));
+                    if (t > 0) it.put("pub", t);
+                } catch (Exception ignored) {
+                }
+                return true;
+            });
+        }
+        int ok = 0;
+        try {
+            ex.invokeAll(tasks, 25, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        } finally {
+            ex.shutdownNow();
+        }
+        for (Map<String, Object> it : todo) {
+            it.put("tried", true);
+            if (it.containsKey("pub")) ok++;
+        }
+        return ok;
+    }
+
     // ------------------------------------------------------------------ Zustand + RSS
 
     private static String merge(Context ctx, Catalog.Feed f, boolean bga, List<Map<String, Object>> found) {
@@ -290,6 +377,12 @@ final class Direct {
                     o.put("url", it.get("url"));
                     o.put("first", now);
                     state.put(key, o);
+                }
+                if (it.containsKey("pub")) {
+                    o.put("first", (Long) it.get("pub"));
+                    o.put("tok", true);
+                } else if (Boolean.TRUE.equals(it.get("tried")) && !o.optBoolean("tok")) {
+                    o.put("tries", o.optInt("tries") + 1);
                 }
                 o.put("title", it.get("title"));
                 o.put("teaser", it.get("teaser"));
