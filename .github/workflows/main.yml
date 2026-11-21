@@ -1,7 +1,7 @@
 name: feed
 on:
   schedule:
-    - cron: "*/30 * * * *"
+    - cron: "17,47 * * * *"  # nicht zur vollen/halben Stunde: GitHub drosselt dort stark
   workflow_dispatch:
 permissions:
   contents: write
