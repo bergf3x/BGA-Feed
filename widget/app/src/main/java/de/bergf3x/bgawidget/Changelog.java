@@ -6,6 +6,8 @@ final class Changelog {
 
     static final String[][] LOG = {
             {"1.20",
+                    "+ Wetter-Hintergrund je Ort: Watzmann, Königssee, Hintersee, Hochstaufen, Thumsee, Untersberg, Laufen … (schwarzweiß, dunkel), weicher Wechsel beim Ortswechsel",
+                    "+ Info: Bildnachweise der Fotos (Wikimedia Commons)",
                     "! Auswahl-Blasen: „Schließen“ bleibt immer sichtbar, auch wenn mehrere Reiter offen sind (Liste scrollt darüber)",
                     "~ „Stand xx:xx“ heißt jetzt „Letzte Aktualisierung xx:xx“"},
             {"1.19",

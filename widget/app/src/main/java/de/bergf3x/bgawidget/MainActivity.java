@@ -87,6 +87,9 @@ public class MainActivity extends Activity {
         }
     };
 
+    private static android.graphics.Bitmap lastSky;
+    private static int lastSkyPlace = -1;
+
     /** Gespeicherte Feeds einmal pro Prozess im Hintergrund eingelesen. */
     private static volatile boolean warmed;
 
@@ -392,7 +395,23 @@ public class MainActivity extends Activity {
             ImageView sky = new ImageView(this);
             sky.setScaleType(ImageView.ScaleType.CENTER_CROP);
             sky.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
-            sky.setImageBitmap(WeatherBg.get(this, w.code, w.day, light));
+            android.graphics.Bitmap bmp = WeatherBg.get(this, w.code, w.day, light, place, 900, 520);
+            if (lastSky != null && lastSkyPlace != place && bmp != null && lastSky != bmp) {
+                // Ortswechsel: altes Motiv weich ins neue ueberblenden
+                android.graphics.drawable.TransitionDrawable td = new android.graphics.drawable.TransitionDrawable(
+                        new android.graphics.drawable.Drawable[]{
+                                new android.graphics.drawable.BitmapDrawable(getResources(), lastSky),
+                                new android.graphics.drawable.BitmapDrawable(getResources(), bmp)});
+                td.setCrossFadeEnabled(true);
+                sky.setImageDrawable(td);
+                td.startTransition(600);
+            } else {
+                sky.setImageBitmap(bmp);
+            }
+            if (bmp != null) {
+                lastSky = bmp;
+                lastSkyPlace = place;
+            }
             card.addView(sky, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         }
         LinearLayout in = new LinearLayout(this);

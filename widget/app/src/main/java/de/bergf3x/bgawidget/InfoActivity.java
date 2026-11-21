@@ -43,6 +43,29 @@ public class InfoActivity extends Activity {
             sv.setVisibility(open ? android.view.View.VISIBLE : android.view.View.GONE);
             head.setText(open ? "Änderungen  ▴" : "Änderungen  ▾");
         });
+        b.divider();
+        final android.widget.TextView ch = b.text("Bildnachweise  ▾", 15, b.title, true);
+        ch.setPadding(b.px(4), b.px(8), b.px(4), b.px(8));
+        final android.widget.LinearLayout cb = b.scrollBox(0.35f);
+        final android.view.View csv = (android.view.View) cb.getParent();
+        csv.setVisibility(android.view.View.GONE);
+        cb.addView(line(b, "Wetter-Hintergründe: Fotos von Wikimedia Commons, bearbeitet (zugeschnitten, schwarzweiß, abgedunkelt).", 12, b.soft, false, 2));
+        for (final String[] c : Credits.PHOTOS) {
+            cb.addView(line(b, c[0], 13, b.tx, true, 8));
+            android.widget.TextView t = line(b, "Foto: " + c[1] + " · " + c[2] + " · Quelle öffnen", 12, b.soft, false, 1);
+            t.setOnClickListener(x -> {
+                try {
+                    startActivity(new android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(c[3])));
+                } catch (Exception ignored) {
+                }
+            });
+            cb.addView(t);
+        }
+        ch.setOnClickListener(x -> {
+            boolean open = csv.getVisibility() != android.view.View.VISIBLE;
+            csv.setVisibility(open ? android.view.View.VISIBLE : android.view.View.GONE);
+            ch.setText(open ? "Bildnachweise  ▴" : "Bildnachweise  ▾");
+        });
         b.space(4);
         b.pill("Schließen", false, true, () -> { });
     }

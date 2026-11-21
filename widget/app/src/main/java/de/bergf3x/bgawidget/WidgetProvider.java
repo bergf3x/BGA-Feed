@@ -216,8 +216,8 @@ public class WidgetProvider extends AppWidgetProvider {
             rv.setTextViewText(R.id.w_lo, "");
         } else {
             int th = Prefs.theme(ctx, id);
-            android.graphics.Bitmap bgD = on && th != 1 ? WeatherBg.get(ctx, w.code, w.day, false) : null;
-            android.graphics.Bitmap bgL = on && th != 0 ? WeatherBg.get(ctx, w.code, w.day, true) : null;
+            android.graphics.Bitmap bgD = on && th != 1 ? WeatherBg.get(ctx, w.code, w.day, false, Prefs.place(ctx, id)) : null;
+            android.graphics.Bitmap bgL = on && th != 0 ? WeatherBg.get(ctx, w.code, w.day, true, Prefs.place(ctx, id)) : null;
             rv.setInt(R.id.w_tint, "setColorFilter", 0);
             rv.setInt(R.id.w_tint_l, "setColorFilter", 0);
             rv.setFloat(R.id.w_tint, "setAlpha", th == 1 ? 0f : 1f);
