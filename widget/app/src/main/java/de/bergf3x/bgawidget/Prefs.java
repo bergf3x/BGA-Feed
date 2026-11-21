@@ -362,15 +362,6 @@ final class Prefs {
         sp(c).edit().putLong("news_try", t).apply();
     }
 
-    /** Kurz nach einem Hintergrund-Abruf darf die Liste ohne neuen Abruf aus dem Cache lesen. */
-    static void markFetched(Context c) {
-        sp(c).edit().putLong("fetched_t", System.currentTimeMillis()).apply();
-    }
-
-    static boolean justFetched(Context c) {
-        return System.currentTimeMillis() - sp(c).getLong("fetched_t", 0) < 20000;
-    }
-
     static boolean takeLocalOnly(Context c) {
         boolean v = sp(c).getBoolean("local_only", false);
         if (v) sp(c).edit().putBoolean("local_only", false).apply();
@@ -392,19 +383,13 @@ final class Prefs {
         return sp(c).getLong("news_t", 0);
     }
 
-    static String feedCache(Context c, String feedId) {
-        return sp(c).getString("cache_" + feedId, null);
-    }
-
-    static void setFeedCache(Context c, String feedId, String xml) {
-        sp(c).edit().putString("cache_" + feedId, xml).apply();
-    }
-
     static String status(Context c, String feedId) {
         return sp(c).getString("status_" + feedId, "");
     }
 
     static void setStatus(Context c, String feedId, String s) {
+        if (s == null) s = "";
+        if (s.equals(status(c, feedId))) return;
         sp(c).edit().putString("status_" + feedId, s).apply();
     }
 
@@ -413,7 +398,11 @@ final class Prefs {
     }
 
     static void setCatalogCache(Context c, String json) {
-        sp(c).edit().putString("catalog", json).apply();
+        sp(c).edit().putString("catalog", json).putLong("cat_t", System.currentTimeMillis()).apply();
+    }
+
+    static long catalogTime(Context c) {
+        return sp(c).getLong("cat_t", 0);
     }
 
     static String weather(Context c, int place) {

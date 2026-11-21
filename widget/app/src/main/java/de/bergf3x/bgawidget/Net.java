@@ -22,7 +22,10 @@ final class Net {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             byte[] buf = new byte[8192];
             int n;
-            while ((n = in.read(buf)) > 0) out.write(buf, 0, n);
+            while ((n = in.read(buf)) > 0) {
+                out.write(buf, 0, n);
+                if (out.size() > 4_000_000) throw new IOException("Antwort zu gross");
+            }
             return out.toString("UTF-8");
         } finally {
             c.disconnect();

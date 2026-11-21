@@ -22,13 +22,23 @@ final class Catalog {
 
     private Catalog() {}
 
-    static List<Feed> load(Context c) {
-        List<Feed> list = parse(Prefs.catalogCache(c));
-        return list.isEmpty() ? fallback() : list;
+    private static String lastJson;
+    private static List<Feed> lastList;
+
+    static synchronized List<Feed> load(Context c) {
+        String json = Prefs.catalogCache(c);
+        if (json != null && lastList != null && (json == lastJson || json.equals(lastJson))) return lastList;
+        List<Feed> list = parse(json);
+        if (list.isEmpty()) return fallback();
+        lastJson = json;
+        lastList = list;
+        return list;
     }
 
     /** Im Hintergrund-Thread aufrufen. */
     static void refresh(Context c) {
+        // der Katalog aendert sich selten: hoechstens alle 6 Stunden neu laden
+        if (Prefs.catalogCache(c) != null && System.currentTimeMillis() - Prefs.catalogTime(c) < 6L * 3600000) return;
         refreshStatus(c);
     }
 

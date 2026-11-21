@@ -60,12 +60,8 @@ public class ConfigActivity extends Activity {
     private final java.util.Map<String, Boolean> plusF = new java.util.HashMap<>();
     private EditText etKw;
     private boolean kwNotifyOn;
-    private int colSub = -1;
-    private int colWx = -1;
     private boolean compact;
     private boolean notify;
-    private static final int[] TONES = {-1, 0xFFFFFF, 0x9CC9FF, 0x7CE3BE, 0xFFE08A};
-    private static final String[] TONE_NAMES = {"Wie Titel", "Weiß", "Hellblau", "Mint", "Gelb"};
     private LinearLayout muteBox;
     private LinearLayout swatchBox;
 
@@ -95,8 +91,6 @@ public class ConfigActivity extends Activity {
         theme = Prefs.theme(this, widgetId);
         wxOn = Prefs.showWeather(this, widgetId);
         warnOn = Prefs.showWarn(this, widgetId);
-        colSub = Prefs.colorSub(this, widgetId);
-        colWx = Prefs.colorWx(this, widgetId);
         compact = Prefs.compact(this, widgetId);
         notify = Prefs.warnNotify(this);
         bgMode = BgStyle.mode(this, widgetId);
@@ -128,9 +122,15 @@ public class ConfigActivity extends Activity {
     private int page = P_MAIN;
     private String kwText = "";
 
+    private boolean firstResume = true;
+
     @Override
     protected void onResume() {
         super.onResume();
+        if (firstResume) {
+            firstResume = false;
+            return;
+        }
         if (b != null && page == P_WEATHER) showWeather();
         else if (b != null && page == P_MAIN) showMain();
     }
@@ -525,11 +525,6 @@ public class ConfigActivity extends Activity {
                 });
             }
         }
-    }
-
-    private static int toneIndex(int rgb) {
-        for (int i = 0; i < TONES.length; i++) if (TONES[i] == rgb) return i;
-        return 0;
     }
 
     private boolean lightNow() {

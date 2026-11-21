@@ -82,8 +82,19 @@ final class Weather {
     private Weather() {}
 
     /** Gespeicherten Stand lesen; null, wenn es noch keinen gibt. */
-    static Weather load(Context c, int place) {
-        Weather w = parse(Prefs.weather(c, place));
+    private static final String[] RAW = new String[PLACES.length];
+    private static final Weather[] OBJ = new Weather[PLACES.length];
+
+    static synchronized Weather load(Context c, int place) {
+        String json = Prefs.weather(c, place);
+        Weather w;
+        if (json != null && json.equals(RAW[place])) {
+            w = OBJ[place];
+        } else {
+            w = parse(json);
+            RAW[place] = json;
+            OBJ[place] = w;
+        }
         if (w != null && System.currentTimeMillis() - Prefs.avalTime(c) < 12L * 3600000) w.avalanche = Prefs.avalText(c);
         return w;
     }

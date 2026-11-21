@@ -27,10 +27,8 @@ public class ListService extends RemoteViewsService {
         int n = 0;
         for (Catalog.Feed f : all) {
             if (!selected.contains(f.id)) continue;
-            String xml = Prefs.feedCache(ctx, f.id);
-            if (xml == null) continue;
             boolean plusFeed = Prefs.showPlusFeed(ctx, widgetId, f.id);
-            for (FeedItem it : FeedItem.parse(xml, f.name)) {
+            for (FeedItem it : FeedCache.items(ctx, f.id, f.name)) {
                 if (!it.isFresh() || Prefs.isRead(read, it.link)) continue;
                 if (it.plus && !plusFeed) continue;
                 boolean hide = false;
@@ -39,6 +37,63 @@ public class ListService extends RemoteViewsService {
             }
         }
         return n;
+    }
+
+    private static final Object FETCH_LOCK = new Object();
+    private static volatile long lastFetchEnd = 0;
+
+    static boolean recentlyFetched() {
+        return System.currentTimeMillis() - lastFetchEnd < 20000;
+    }
+
+    /** Ergebnis eines Feed-Abrufs. */
+    static final class Fetched {
+        String xml;
+        List<FeedItem> items;
+        String err;
+    }
+
+    /** Alle gewaehlten Feeds plus Wetter, Warnungen und Lawinenbericht gleichzeitig, mit gemeinsamem Zeitbudget. */
+    static java.util.Map<String, Fetched> fetchAll(final Context ctx, List<Catalog.Feed> all, Set<String> selected, final int place) {
+        java.util.Map<String, Fetched> out = new java.util.HashMap<>();
+        List<java.util.concurrent.Callable<Fetched>> tasks = new ArrayList<>();
+        final List<String> ids = new ArrayList<>();
+        for (final Catalog.Feed f : all) {
+            if (!selected.contains(f.id)) continue;
+            ids.add(f.id);
+            tasks.add(() -> {
+                Fetched r = new Fetched();
+                try {
+                    r.xml = Net.download(Net.fresh(f.url));
+                    r.items = FeedItem.parse(r.xml, f.name);
+                } catch (Exception e) {
+                    r.err = String.valueOf(e.getMessage() != null ? e.getMessage() : e);
+                }
+                return r;
+            });
+        }
+        final int feedCount = tasks.size();
+        tasks.add(() -> { Weather.refreshIfStale(ctx, place); return null; });
+        tasks.add(() -> { Warnings.refreshIfStale(ctx); return null; });
+        tasks.add(() -> { Avalanche.refreshIfStale(ctx); return null; });
+        java.util.concurrent.ExecutorService ex = java.util.concurrent.Executors.newFixedThreadPool(Math.min(5, tasks.size()));
+        try {
+            List<java.util.concurrent.Future<Fetched>> fs = ex.invokeAll(tasks, 25, java.util.concurrent.TimeUnit.SECONDS);
+            for (int i = 0; i < feedCount; i++) {
+                java.util.concurrent.Future<Fetched> fu = fs.get(i);
+                if (fu.isCancelled()) continue;
+                try {
+                    Fetched r = fu.get();
+                    if (r != null) out.put(ids.get(i), r);
+                } catch (Exception ignored) {
+                }
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        } finally {
+            ex.shutdownNow();
+        }
+        return out;
     }
 
     static final class Factory implements RemoteViewsFactory {
@@ -58,26 +113,38 @@ public class ListService extends RemoteViewsService {
 
         @Override
         public void onCreate() {
-            items = load(false);
+            items = load(false, null);
         }
 
         @Override
         public void onDataSetChanged() {
-            if (Prefs.takeLocalOnly(ctx) || Prefs.justFetched(ctx)) {
-                items = load(false);
+            sync(false);
+        }
+
+        /** Abruf nie doppelt: wer zweiter kommt, wartet und nimmt den frischen Cache (ausser force). */
+        void sync(boolean force) {
+            if (Prefs.takeLocalOnly(ctx)) {
+                items = load(false, null);
                 WidgetProvider.refreshHeader(ctx, widgetId);
                 return;
             }
-            Catalog.refresh(ctx);
-            Weather.refreshIfStale(ctx, Prefs.place(ctx, widgetId));
-            Warnings.refreshIfStale(ctx);
-            Avalanche.refreshIfStale(ctx);
-            items = load(true);
+            synchronized (FETCH_LOCK) {
+                if (!force && recentlyFetched()) {
+                    items = load(false, null);
+                } else {
+                    Catalog.refresh(ctx);
+                    List<Catalog.Feed> all = Catalog.load(ctx);
+                    Set<String> selected = Catalog.effective(all, Prefs.feeds(ctx, widgetId));
+                    java.util.Map<String, Fetched> res = fetchAll(ctx, all, selected, Prefs.place(ctx, widgetId));
+                    items = load(true, res);
+                    lastFetchEnd = System.currentTimeMillis();
+                }
+            }
             WidgetProvider.refreshHeader(ctx, widgetId);
         }
 
         /** Gewaehlte Feeds laden (live oder aus dem Cache), mischen, nach Thema filtern. */
-        private List<FeedItem> load(boolean online) {
+        private List<FeedItem> load(boolean online, java.util.Map<String, Fetched> res) {
             readSet = Prefs.readSet(ctx);
             kwList = Keywords.list(ctx);
             airy = Prefs.density(ctx, widgetId) == 1;
@@ -86,7 +153,7 @@ public class ListService extends RemoteViewsService {
             List<Catalog.Feed> all = Catalog.load(ctx);
             Set<String> selected = Catalog.effective(all, Prefs.feeds(ctx, widgetId));
             String topic = Prefs.topic(ctx, widgetId);
-            List<String> kw = Keywords.list(ctx);
+            List<String> kw = kwList;
             Set<String> muted = Prefs.muted(ctx, widgetId);
             boolean anyOk = false;
             boolean anyFail = false;
@@ -95,31 +162,24 @@ public class ListService extends RemoteViewsService {
             long nowMs = System.currentTimeMillis();
             for (Catalog.Feed f : all) {
                 if (!selected.contains(f.id)) continue;
-                String xml = null;
+                List<FeedItem> parsed = null;
                 if (online) {
-                    try {
-                        xml = Net.download(Net.fresh(f.url));
-                        if (FeedItem.parse(xml, f.name).isEmpty()) {
-                            xml = null;
-                            Prefs.setStatus(ctx, f.id, "Feed ist leer");
-                        } else {
-                            Prefs.setStatus(ctx, f.id, "");
-                        }
-                        if (xml != null) {
-                            Prefs.setFeedCache(ctx, f.id, xml);
-                            anyOk = true;
-                        } else {
-                            anyFail = true;
-                        }
-                    } catch (Exception e) {
-                        xml = null;
+                    Fetched r = res == null ? null : res.get(f.id);
+                    if (r == null || r.err != null) {
                         anyFail = true;
-                        Prefs.setStatus(ctx, f.id, String.valueOf(e.getMessage() != null ? e.getMessage() : e));
+                        Prefs.setStatus(ctx, f.id, r == null ? "Zeitüberschreitung" : r.err);
+                    } else if (r.items.isEmpty()) {
+                        anyFail = true;
+                        Prefs.setStatus(ctx, f.id, "Feed ist leer");
+                    } else {
+                        Prefs.setStatus(ctx, f.id, "");
+                        FeedCache.put(ctx, f.id, r.xml, r.items);
+                        anyOk = true;
+                        parsed = r.items;
                     }
                 }
-                if (xml == null) xml = Prefs.feedCache(ctx, f.id);
+                if (parsed == null) parsed = FeedCache.items(ctx, f.id, f.name);
                 long newest = 0;
-                List<FeedItem> parsed = FeedItem.parse(xml, f.name);
                 for (FeedItem it : parsed) newest = Math.max(newest, it.time);
                 if (newest > 0 && nowMs - newest > 24L * 3600000) {
                     if (stale.length() > 0) stale.append(", ");

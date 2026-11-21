@@ -30,8 +30,7 @@ public class SearchActivity extends Activity {
         b = new Bubble(this, 340, 8);
         b.text("Suche", 11, b.soft, false).setPadding(b.px(10), b.px(4), b.px(10), b.px(2));
         for (Catalog.Feed f : Catalog.load(this)) {
-            String xml = Prefs.feedCache(this, f.id);
-            if (xml != null) pool.addAll(FeedItem.parse(xml, f.name));
+            pool.addAll(FeedCache.items(this, f.id, f.name));
         }
         Collections.sort(pool, (x, y) -> Long.compare(y.time, x.time));
 

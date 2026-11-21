@@ -11,12 +11,18 @@ final class Updater {
 
     static void runAsync(final Context ctx, final boolean force, final BroadcastReceiver.PendingResult pr) {
         final Context app = ctx.getApplicationContext();
+        final java.util.concurrent.atomic.AtomicBoolean done = new java.util.concurrent.atomic.AtomicBoolean();
+        final Runnable finish = () -> {
+            if (pr != null && done.compareAndSet(false, true)) pr.finish();
+        };
+        // Sicherung: der Empfaenger darf dem System nicht ewig "laufend" melden
+        if (pr != null) new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(finish, 40000);
         new Thread(() -> {
             try {
                 run(app, force);
             } catch (Exception ignored) {
             } finally {
-                if (pr != null) pr.finish();
+                finish.run();
             }
         }).start();
     }
@@ -36,8 +42,11 @@ final class Updater {
         if (news.length > 0 && newsDue) {
             Prefs.setNewsTry(ctx, now);
             // erstes Widget laedt Feeds, Wetter und Warnungen; die Feeds liegen danach im gemeinsamen Cache
-            new ListService.Factory(ctx, news[0]).onDataSetChanged();
-            for (int i = 1; i < news.length; i++) WidgetProvider.refreshHeader(ctx, news[i]);
+            new ListService.Factory(ctx, news[0]).sync(true);
+            for (int i = 1; i < news.length; i++) {
+                Weather.refreshIfStale(ctx, Prefs.place(ctx, news[i]));
+                WidgetProvider.refreshHeader(ctx, news[i]);
+            }
         } else {
             Warnings.refreshIfStale(ctx);
             Avalanche.refreshIfStale(ctx);
@@ -49,7 +58,6 @@ final class Updater {
         for (int id : wx) Weather.refreshIfStale(ctx, Prefs.place(ctx, id));
         for (int id : wx) WeatherWidgetProvider.update(ctx, mgr, id);
         if (news.length > 0 && newsDue) {
-            Prefs.markFetched(ctx);
             for (int id : news) mgr.notifyAppWidgetViewDataChanged(id, R.id.list);
         }
     }
