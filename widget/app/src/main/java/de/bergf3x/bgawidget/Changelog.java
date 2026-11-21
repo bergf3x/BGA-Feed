@@ -5,6 +5,9 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.21",
+                    "~ Wetter-Hintergrund bei Regen und Gewitter heller, Regen zarter und weniger dicht",
+                    "~ Ortsauswahl springt beim Öffnen zum aktuell gewählten Ort"},
             {"1.20",
                     "+ Wetter-Hintergrund je Ort: Watzmann, Königssee, Hintersee, Hochstaufen, Thumsee, Untersberg, Laufen … (schwarzweiß, dunkel), weicher Wechsel beim Ortswechsel",
                     "+ Info: Bildnachweise der Fotos (Wikimedia Commons)",

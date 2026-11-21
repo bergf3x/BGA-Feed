@@ -127,7 +127,7 @@ final class WeatherBg {
         sat = 0f;
         float lum = (r + g + b) / 3f;
         r = g = b = lum;
-        br *= 0.62f;
+        br = Math.max(br * 0.62f, cat.equals("rain") || cat.equals("storm") ? 0.46f : 0.38f); // Regen/Gewitter: Motiv heller, sonst kaum erkennbar
         ColorMatrix cm = new ColorMatrix();
         cm.setSaturation(sat);
         cm.postConcat(new ColorMatrix(new float[]{
@@ -161,14 +161,14 @@ final class WeatherBg {
             clouds(c, rnd, day ? 0xFFD2D8E4 : 0xFF3A4660, 235, 7, 8, 30);
             clouds(c, rnd, day ? 0xFF96A0B2 : 0xFF2A3350, 200, 40, 5, 34);
         } else if (cat.equals("rain")) {
-            clouds(c, rnd, 0xFF46506A, 245, 4, 9, 22);
-            rain(c, rnd, 300);
+            clouds(c, rnd, 0xFF46506A, H > 200 ? 140 : 245, 4, 9, 22);
+            rain(c, rnd, H > 200 ? 160 : 300);
         } else if (cat.equals("snow")) {
             clouds(c, rnd, day ? 0xFFE2E8F2 : 0xFF8794AC, 230, 6, 8, 26);
             snow(c, rnd, 170);
         } else if (cat.equals("storm")) {
-            clouds(c, rnd, 0xFF32344A, 250, 4, 10, 20);
-            rain(c, rnd, 220);
+            clouds(c, rnd, 0xFF32344A, H > 200 ? 150 : 250, 4, 10, 20);
+            rain(c, rnd, H > 200 ? 130 : 220);
             lightning(c);
         } else if (cat.equals("fog")) {
             clouds(c, rnd, 0xFFE6EAF0, 220, 30, 9, 40);
@@ -246,8 +246,9 @@ final class WeatherBg {
 
     private static void rain(Canvas c, Random rnd, int n) {
         Paint r = p();
-        r.setStrokeWidth(1.5f);
-        r.setColor(0x96D7E8FF);
+        boolean tall = H > 200;
+        r.setStrokeWidth(tall ? 1.2f : 1.5f);
+        r.setColor(tall ? 0x5CD7E8FF : 0x96D7E8FF); // in der grossen App-Karte zarter
         for (int i = 0; i < n; i++) {
             float x = rnd.nextFloat() * (W + 30), y = -10 + rnd.nextFloat() * H, l = 16 + rnd.nextFloat() * 14;
             c.drawLine(x, y, x - l * .32f, y + l, r);
