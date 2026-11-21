@@ -46,6 +46,14 @@ final class FeedItem {
         }
     }
 
+    /** Hausfarbe eines Mediums (nur die Farbe, kein Logo): Anzeiger blau, BGLand24 gelb, sonst Orange. */
+    static int mediumColor(String name) {
+        String low = name.toLowerCase(Locale.GERMANY);
+        if (low.contains("bgland")) return 0xFFF7DD45;
+        if (low.contains("anzeiger")) return 0xFF459BDB;
+        return 0xFFF0997B;
+    }
+
     int accentColor() {
         String parent = topic.isEmpty() ? "Region" : topic.split("/")[0];
         switch (parent) {

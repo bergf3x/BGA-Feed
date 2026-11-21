@@ -5,6 +5,8 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.09",
+                    "~ Medien in Hausfarbe: Berchtesgadener Anzeiger blau, BGLand24 gelb (Menü und Liste)"},
             {"1.08",
                     "+ Einheitlicher „Schließen“-Knopf in allen Blasen (Ort, Thema, Suche, Aktualisierung, Gemerkt, Webcams, Info)",
                     "~ Medien im Themen-Menü hervorgehoben mit kleinem Kennzeichen"},

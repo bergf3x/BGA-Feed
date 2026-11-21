@@ -517,7 +517,7 @@ public class MainActivity extends Activity {
         t.setLetterSpacing(0.08f);
         row.addView(t);
         View rule = new View(this);
-        rule.setBackgroundColor(line);
+        rule.setBackgroundColor(FeedItem.mediumColor(name));
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, Math.max(1, px(1)), 1f);
         lp.leftMargin = px(10);
         row.addView(rule, lp);

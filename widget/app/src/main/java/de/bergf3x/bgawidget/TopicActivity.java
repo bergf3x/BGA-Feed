@@ -82,40 +82,17 @@ public class TopicActivity extends Activity {
         row.setOrientation(android.widget.LinearLayout.HORIZONTAL);
         row.setGravity(android.view.Gravity.CENTER_VERTICAL);
         row.setPadding(b.px(10), b.px(8), b.px(10), b.px(8));
+        int color = FeedItem.mediumColor(name);
         android.graphics.drawable.GradientDrawable bg = new android.graphics.drawable.GradientDrawable();
-        bg.setColor(b.light ? 0x1A000000 : 0x2EFFFFFF);
+        bg.setColor(color);
         bg.setCornerRadius(b.px(12));
         row.setBackground(bg);
-        String low = name.toLowerCase(java.util.Locale.GERMANY);
-        String mark;
-        int color;
-        if (low.contains("bgland")) {
-            mark = "B24";
-            color = 0xFF85B7EB;
-        } else if (low.contains("anzeiger")) {
-            mark = "BA";
-            color = 0xFF5DCAA5;
-        } else {
-            mark = name.substring(0, Math.min(2, name.length())).toUpperCase(java.util.Locale.GERMANY);
-            color = 0xFFF0997B;
-        }
-        android.widget.TextView badge = new android.widget.TextView(this);
-        badge.setText(mark);
-        badge.setGravity(android.view.Gravity.CENTER);
-        badge.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 10);
-        badge.setTypeface(null, android.graphics.Typeface.BOLD);
-        badge.setTextColor(0xFF10151B);
-        android.graphics.drawable.GradientDrawable bb = new android.graphics.drawable.GradientDrawable();
-        bb.setColor(color);
-        bb.setCornerRadius(b.px(7));
-        badge.setBackground(bb);
-        row.addView(badge, new android.widget.LinearLayout.LayoutParams(b.px(32), b.px(24)));
+        boolean darkText = Pal.onColor(color) == (0xFF000000 | Pal.INK);
         android.widget.TextView t = new android.widget.TextView(this);
         t.setText(name);
-        t.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 15);
+        t.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 16);
         t.setTypeface(null, android.graphics.Typeface.BOLD);
-        t.setTextColor(b.title);
-        t.setPadding(b.px(10), 0, 0, 0);
+        t.setTextColor(darkText ? 0xFF10151B : 0xFFFFFFFF);
         row.addView(t);
         android.widget.LinearLayout.LayoutParams lp = new android.widget.LinearLayout.LayoutParams(
                 android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
