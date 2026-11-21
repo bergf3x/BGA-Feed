@@ -211,14 +211,30 @@ def bg_topic(url):
     return nice(top)
 
 
+BG_PROBE = ["https://www.bgland24.de/bayern/berg-brand-in-tiefgarage-13-autos-beschaedigt-schaden-in-millionenhoehe-94453192.html"]
+
+
+def bg_signals(html):
+    """Paywall-Kennzeichen einer Artikelseite."""
+    return dict(
+        free_false=bool(re.search(r'"isAccessibleForFree"\s*:\s*"?false"?', html, re.I)),
+        paywall_cls=bool(re.search(r'class="[^"]*(paywall|premium)[^"]*"', html, re.I)),
+        plus_text=bool(re.search(r"BGLand24\s*Plus|Plus-Artikel|mit Plus|Plus\+", html)),
+    )
+
+
 def bg_enrich(it):
-    """Echte Veroeffentlichungszeit aus der Artikelseite (nur fuer neue Artikel)."""
+    """Echte Veroeffentlichungszeit und Paywall-Kennzeichen aus der Artikelseite."""
     import requests
     from datetime import timezone as _tz
     from zoneinfo import ZoneInfo
 
     r = requests.get(it["url"], headers={"User-Agent": UA}, timeout=15)
     r.raise_for_status()
+    sig = bg_signals(r.text)
+    if sig["free_false"] or sig["paywall_cls"]:
+        it["plus"] = True
+    it["pc"] = True
     m = (re.search(r'article:published_time"\s+content="([^"]+)"', r.text)
          or re.search(r'"datePublished"\s*:\s*"([^"]+)"', r.text)
          or re.search(r'<time[^>]+datetime="([^"]+)"', r.text))
@@ -229,6 +245,18 @@ def bg_enrich(it):
         d = d.replace(tzinfo=ZoneInfo("Europe/Berlin"))
     it["date"] = d.astimezone(_tz.utc).isoformat()
 
+
+def bg_probe():
+    """Diagnose: welche Paywall-Signale zeigen bekannte Bezahl-Artikel? (nur Kennzahlen im Log)"""
+    import requests
+
+    for u in BG_PROBE:
+        try:
+            r = requests.get(u, headers={"User-Agent": UA}, timeout=15)
+            classes = sorted(set(re.findall(r'class="([^"]*(?:plus|paywall|premium|abo|locked)[^"]*)"', r.text, re.I)))[:8]
+            print(f"[bgland24] probe HTTP {r.status_code}, {len(r.text)} Zeichen, Signale {bg_signals(r.text)}, Klassen {classes}")
+        except Exception as e:
+            print(f"[bgland24] probe Fehler: {e}", file=sys.stderr)
 
 def fetch_bgland(site):
     items = _fetch_bgland(site)
@@ -372,6 +400,8 @@ def build(site, items, state, now):
         else:
             state_items[key].update({k: it[k] for k in ("title", "teaser", "category", "topic")})
             state_items[key]["plus"] = bool(state_items[key].get("plus") or it.get("plus"))
+            if it.get("pc"):
+                state_items[key]["pc"] = True
     if site["id"] == "bgland24":  # alte Statedaten auf das aktuelle Themenschema bringen
         for v in state_items.values():
             v["topic"] = bg_topic(v["url"])
@@ -446,13 +476,15 @@ def run_site(site, now, html_file=None, out=None, state_file=None):
         known = state.get("items", {})
         n = 0
         for it in items:
-            if str(it["sid"]) in known or n >= 25:
+            if (str(it["sid"]) in known and known[str(it["sid"])].get("pc")) or n >= 25:
                 continue
             n += 1
             try:
                 site["enrich"](it)
             except Exception as e:  # ohne Zeit: dann gilt "zuerst gesehen"
                 print(f"[{site['id']}] Zeit fuer {it['url']}: {e}", file=sys.stderr)
+    if site["id"] == "bgland24":
+        bg_probe()
     xml, topics = build(site, items, state, now)
     op = Path(out or HERE / site["feed"])
     op.parent.mkdir(parents=True, exist_ok=True)

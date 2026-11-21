@@ -46,4 +46,34 @@ final class Notifier {
         } catch (Exception ignored) {
         }
     }
+
+    /** Neuer Artikel mit einem deiner Stichwoerter (nur frische Artikel, je Artikel einmal). */
+    static void keyword(Context c, FeedItem it) {
+        if (!Prefs.kwNotify(c) || it.link.isEmpty() || !it.isFresh() || Prefs.kwWasNotified(c, it.link)) return;
+        if (Build.VERSION.SDK_INT >= 33
+                && c.checkSelfPermission("android.permission.POST_NOTIFICATIONS") != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        try {
+            NotificationManager nm = (NotificationManager) c.getSystemService(Context.NOTIFICATION_SERVICE);
+            if (nm == null) return;
+            if (Build.VERSION.SDK_INT >= 26) {
+                nm.createNotificationChannel(new NotificationChannel("kw", "Stichwort-Treffer",
+                        NotificationManager.IMPORTANCE_DEFAULT));
+            }
+            Intent open = new Intent(Intent.ACTION_VIEW, Uri.parse(it.link));
+            int imm = Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0;
+            PendingIntent pi = PendingIntent.getActivity(c, 78 + (it.link.hashCode() & 0xFFFF), open,
+                    PendingIntent.FLAG_UPDATE_CURRENT | imm);
+            Notification.Builder b = Build.VERSION.SDK_INT >= 26 ? new Notification.Builder(c, "kw") : new Notification.Builder(c);
+            b.setSmallIcon(R.drawable.ic_warn)
+                    .setContentTitle(it.title)
+                    .setContentText(it.meta())
+                    .setContentIntent(pi)
+                    .setAutoCancel(true);
+            nm.notify(8000 + (it.link.hashCode() & 0xFFF), b.build());
+            Prefs.kwMarkNotified(c, it.link);
+        } catch (Exception ignored) {
+        }
+    }
 }

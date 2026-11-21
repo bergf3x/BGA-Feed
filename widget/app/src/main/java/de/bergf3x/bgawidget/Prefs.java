@@ -130,6 +130,41 @@ final class Prefs {
                 .remove("wx_" + id).remove("warn_" + id).remove("tcs_" + id).remove("tcw_" + id).remove("cmp_" + id).apply();
     }
 
+    /** Bezahlartikel einer Quelle anzeigen; ohne eigene Wahl gilt der fruehere gemeinsame Schalter. */
+    static boolean showPlusFeed(Context c, int id, String feedId) {
+        String k = "plusf_" + id + "_" + feedId;
+        return sp(c).contains(k) ? sp(c).getBoolean(k, true) : showPlus(c, id);
+    }
+
+    static void setPlusFeed(Context c, int id, String feedId, boolean on) {
+        sp(c).edit().putBoolean("plusf_" + id + "_" + feedId, on).apply();
+    }
+
+    // ---- Stichwoerter ----
+    static String keywords(Context c) {
+        return sp(c).getString("kw", "");
+    }
+
+    static boolean kwNotify(Context c) {
+        return sp(c).getBoolean("kw_notify", false);
+    }
+
+    static void setKeywords(Context c, String kw, boolean notify) {
+        sp(c).edit().putString("kw", kw == null ? "" : kw.trim()).putBoolean("kw_notify", notify).apply();
+    }
+
+    static boolean kwWasNotified(Context c, String link) {
+        return ("\n" + sp(c).getString("kwn", "") + "\n").contains("\n" + link + "\n");
+    }
+
+    static synchronized void kwMarkNotified(Context c, String link) {
+        java.util.List<String> list = new java.util.ArrayList<>();
+        for (String l : sp(c).getString("kwn", "").split("\n")) if (!l.isEmpty() && !l.equals(link)) list.add(l);
+        list.add(link);
+        while (list.size() > 200) list.remove(0);
+        sp(c).edit().putString("kwn", android.text.TextUtils.join("\n", list)).apply();
+    }
+
     /** PLUS-Artikel anzeigen (Standard: ja). */
     static boolean showPlus(Context c, int id) {
         return sp(c).getBoolean("plus_" + id, true);

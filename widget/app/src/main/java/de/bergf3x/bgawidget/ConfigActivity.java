@@ -54,6 +54,9 @@ public class ConfigActivity extends Activity {
     private EditText etColor;
     private LinearLayout feedBox;
     private TextView catStatus;
+    private final java.util.Map<String, Boolean> plusF = new java.util.HashMap<>();
+    private EditText etKw;
+    private boolean kwNotifyOn;
     private int colSub = -1;
     private int colWx = -1;
     private boolean compact;
@@ -93,6 +96,7 @@ public class ConfigActivity extends Activity {
         colWx = Prefs.colorWx(this, widgetId);
         compact = Prefs.compact(this, widgetId);
         notify = Prefs.warnNotify(this);
+        kwNotifyOn = Prefs.kwNotify(this);
         selected.addAll(Prefs.feeds(this, widgetId));
         muted.addAll(Prefs.muted(this, widgetId));
 
@@ -177,7 +181,6 @@ public class ConfigActivity extends Activity {
         });
 
         b.label(body, "Artikel");
-        b.toggle(body, "PLUS-Artikel anzeigen", plus, on -> plus = on);
 
         b.label(body, "Dichte der Liste");
         b.segment(body, new String[]{"Kompakt", "Luftig"}, density, i -> density = i);
@@ -207,6 +210,22 @@ public class ConfigActivity extends Activity {
         b.segment(body, TONE_NAMES, toneIndex(colSub), i -> colSub = TONES[i]);
         b.label(body, "Farbe des Wetterbereichs");
         b.segment(body, TONE_NAMES, toneIndex(colWx), i -> colWx = TONES[i]);
+
+        b.label(body, "Stichwörter (mit Komma trennen, z. B. Sperrung, Vermisst, Lawine)");
+        etKw = new EditText(this);
+        etKw.setSingleLine(false);
+        etKw.setText(Prefs.keywords(this));
+        etKw.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+        etKw.setTextColor(Bubble.TEXT);
+        etKw.setBackgroundTintList(ColorStateList.valueOf(0x66FFFFFF));
+        body.addView(etKw, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        b.toggle(body, "Treffer als Benachrichtigung melden", kwNotifyOn, on -> {
+            kwNotifyOn = on;
+            if (on && android.os.Build.VERSION.SDK_INT >= 33
+                    && checkSelfPermission("android.permission.POST_NOTIFICATIONS") != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{"android.permission.POST_NOTIFICATIONS"}, 1);
+            }
+        });
 
         b.label(body, "Anzeige");
         b.toggle(body, "Wetter kompakt (ohne Vorschau und Zusatzzeilen)", compact, on -> compact = on);
@@ -281,6 +300,8 @@ public class ConfigActivity extends Activity {
         Prefs.setExtras(this, widgetId, plus, muted, density);
         Prefs.setLook(this, widgetId, font, size, theme, wxOn, warnOn);
         Prefs.setColors(this, widgetId, colSub, colWx, compact, notify);
+        Prefs.setKeywords(this, etKw.getText().toString(), kwNotifyOn);
+        for (java.util.Map.Entry<String, Boolean> e : plusF.entrySet()) Prefs.setPlusFeed(this, widgetId, e.getKey(), e.getValue());
         WidgetProvider.updateAny(this, widgetId);
         Intent result = new Intent();
         result.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
@@ -326,6 +347,8 @@ public class ConfigActivity extends Activity {
                 if (on) selected.add(f.id);
                 else selected.remove(f.id);
             });
+            if (!plusF.containsKey(f.id)) plusF.put(f.id, Prefs.showPlusFeed(this, widgetId, f.id));
+            b.toggle(feedBox, "      Bezahlartikel anzeigen (🔒)", plusF.get(f.id), on -> plusF.put(f.id, on));
             for (String t : f.topics) {
                 if (!seen.add(t)) continue;
                 int slash = t.indexOf('/');

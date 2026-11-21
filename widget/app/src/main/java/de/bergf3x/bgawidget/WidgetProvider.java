@@ -91,7 +91,8 @@ public class WidgetProvider extends AppWidgetProvider {
             boolean on = value.equals(curParent);
             boolean hasSubs = false;
             for (String t : topics) if (t.startsWith(value + "/") && !value.isEmpty()) hasSubs = true;
-            String label = i == 0 ? "Alle" : value;
+            int fresh = i == 0 ? ListService.freshUnread(ctx, id) : 0;
+            String label = i == 0 ? (fresh > 0 ? "Alle (" + Math.min(fresh, 99) + ")" : "Alle") : value;
             if (on && topic.indexOf('/') >= 0) label = topic.substring(topic.indexOf('/') + 1);
             else if (hasSubs) label = label + " ▾";
             rv.setViewVisibility(P[i], android.view.View.VISIBLE);

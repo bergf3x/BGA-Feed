@@ -18,11 +18,35 @@ public class ListService extends RemoteViewsService {
         return new Factory(getApplicationContext(), id);
     }
 
+    /** Ungelesene Artikel der letzten 12 Stunden (fuer die Zahl neben "Alle"). */
+    static int freshUnread(Context ctx, int widgetId) {
+        List<Catalog.Feed> all = Catalog.load(ctx);
+        Set<String> selected = Catalog.effective(all, Prefs.feeds(ctx, widgetId));
+        Set<String> read = Prefs.readSet(ctx);
+        Set<String> muted = Prefs.muted(ctx, widgetId);
+        int n = 0;
+        for (Catalog.Feed f : all) {
+            if (!selected.contains(f.id)) continue;
+            String xml = Prefs.feedCache(ctx, f.id);
+            if (xml == null) continue;
+            boolean plusFeed = Prefs.showPlusFeed(ctx, widgetId, f.id);
+            for (FeedItem it : FeedItem.parse(xml, f.name)) {
+                if (!it.isFresh() || Prefs.isRead(read, it.link)) continue;
+                if (it.plus && !plusFeed) continue;
+                boolean hide = false;
+                for (String m : muted) if (it.inTopic(m)) hide = true;
+                if (!hide) n++;
+            }
+        }
+        return n;
+    }
+
     static final class Factory implements RemoteViewsFactory {
         private final Context ctx;
         private final int widgetId;
         private List<FeedItem> items = new ArrayList<>();
         private Set<String> readSet = new java.util.HashSet<>();
+        private List<String> kwList = new ArrayList<>();
         private boolean airy;
         private int sizeIdx = 1;
         private boolean lightTheme;
@@ -41,6 +65,7 @@ public class ListService extends RemoteViewsService {
         public void onDataSetChanged() {
             if (Prefs.takeLocalOnly(ctx)) {
                 items = load(false);
+                WidgetProvider.refreshHeader(ctx, widgetId);
                 return;
             }
             Catalog.refresh(ctx);
@@ -54,13 +79,14 @@ public class ListService extends RemoteViewsService {
         /** Gewaehlte Feeds laden (live oder aus dem Cache), mischen, nach Thema filtern. */
         private List<FeedItem> load(boolean online) {
             readSet = Prefs.readSet(ctx);
+            kwList = Keywords.list(ctx);
             airy = Prefs.density(ctx, widgetId) == 1;
             sizeIdx = Prefs.size(ctx, widgetId);
             lightTheme = Prefs.isLight(ctx, widgetId);
             List<Catalog.Feed> all = Catalog.load(ctx);
             Set<String> selected = Catalog.effective(all, Prefs.feeds(ctx, widgetId));
             String topic = Prefs.topic(ctx, widgetId);
-            boolean plusOn = Prefs.showPlus(ctx, widgetId);
+            List<String> kw = Keywords.list(ctx);
             Set<String> muted = Prefs.muted(ctx, widgetId);
             boolean anyOk = false;
             boolean anyFail = false;
@@ -99,10 +125,12 @@ public class ListService extends RemoteViewsService {
                     if (stale.length() > 0) stale.append(", ");
                     stale.append(f.name).append(" ohne Neues seit ").append((nowMs - newest) / 3600000L).append(" Std.");
                 }
+                boolean plusFeed = Prefs.showPlusFeed(ctx, widgetId, f.id);
                 for (FeedItem it : parsed) {
-                    if (!topic.isEmpty() && !it.inTopic(topic)) continue;
-                    if (it.plus && !plusOn) continue;
+                    if (it.plus && !plusFeed) continue;
                     if (isMuted(it, muted, topic)) continue;
+                    if (online && Keywords.matches(kw, it)) Notifier.keyword(ctx, it);
+                    if (!topic.isEmpty() && !it.inTopic(topic)) continue;
                     merged.add(it);
                 }
             }
@@ -189,12 +217,13 @@ public class ListService extends RemoteViewsService {
             boolean read = Prefs.isRead(readSet, it.link);
             float dim = read ? 0.55f : 1f;
             String meta = it.meta();
-            rv.setTextViewText(R.id.item_title, Style.font(ctx, widgetId, it.title));
+            boolean hit = Keywords.matches(kwList, it);
+            rv.setTextViewText(R.id.item_title, Style.font(ctx, widgetId, hit ? "★ " + it.title : it.title));
             rv.setTextViewText(R.id.item_meta, Style.font(ctx, widgetId, meta));
             rv.setTextViewTextSize(R.id.item_title, android.util.TypedValue.COMPLEX_UNIT_SP, Style.titleSp(sizeIdx));
             rv.setTextViewTextSize(R.id.item_meta, android.util.TypedValue.COMPLEX_UNIT_SP, Style.metaSp(sizeIdx));
             rv.setInt(R.id.item_card, "setBackgroundResource", lightTheme ? R.drawable.card_bg_light : R.drawable.card_bg);
-            rv.setTextColor(R.id.item_title, Prefs.argb(rgb, tx, dim));
+            rv.setTextColor(R.id.item_title, hit ? Prefs.argb(0xFFD166, tx, dim) : Prefs.argb(rgb, tx, dim));
             int sub = Prefs.colorSub(ctx, widgetId);
             rv.setTextColor(R.id.item_meta, Prefs.argb(sub >= 0 ? sub : rgb, tx, 0.7f * dim));
             rv.setInt(R.id.item_accent, "setColorFilter", it.accentColor());
