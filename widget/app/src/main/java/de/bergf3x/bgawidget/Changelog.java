@@ -5,6 +5,8 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.06",
+                    "+ Themen-Menü getrennt nach Medium (Berchtesgadener Anzeiger / BGLand24), Auswahl gilt nur für das gewählte Medium"},
             {"1.05",
                     "~ App flackert beim Tippen und Bestätigen nicht mehr: Seite wird ohne Neuaufbau des Fensters aktualisiert, Scrollposition bleibt"},
             {"1.04",

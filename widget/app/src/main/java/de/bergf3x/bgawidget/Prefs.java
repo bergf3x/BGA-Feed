@@ -130,7 +130,21 @@ final class Prefs {
 
     /** Aktuell gewaehltes Thema, leer = alle. */
     static String topic(Context c, int id) {
+        String t = topicRaw(c, id);
+        int i = t.indexOf('|');
+        return i < 0 ? t : t.substring(0, i);
+    }
+
+    /** Gewaehltes Thema inkl. Medium ("Region/Berchtesgaden|BGLand24"); ohne Medium nur das Thema. */
+    static String topicRaw(Context c, int id) {
         return sp(c).getString("tp_" + id, "");
+    }
+
+    /** Medium, auf das das Thema beschraenkt ist; leer = alle Medien. */
+    static String topicFeed(Context c, int id) {
+        String t = topicRaw(c, id);
+        int i = t.indexOf('|');
+        return i < 0 ? "" : t.substring(i + 1);
     }
 
     static void setTopic(Context c, int id, String topic) {

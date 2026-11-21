@@ -103,6 +103,7 @@ public class ListService extends RemoteViewsService {
         List<Catalog.Feed> all = Catalog.load(ctx);
         Set<String> selected = Catalog.effective(all, Prefs.feeds(ctx, id));
         String topic = Prefs.topic(ctx, id);
+        String topicFeed = Prefs.topicFeed(ctx, id);
         List<String> kw = Keywords.list(ctx);
         Set<String> muted = Prefs.muted(ctx, id);
         boolean anyOk = false;
@@ -141,6 +142,7 @@ public class ListService extends RemoteViewsService {
                 if (isMuted(it, muted, topic)) continue;
                 if (online && Keywords.matches(kw, it)) Notifier.keyword(ctx, it);
                 if (!topic.isEmpty() && !it.inTopic(topic)) continue;
+                if (!topicFeed.isEmpty() && !topicFeed.equals(f.name)) continue;
                 merged.add(it);
             }
         }
