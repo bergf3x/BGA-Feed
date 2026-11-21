@@ -1,0 +1,18 @@
+name: commons
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install -q requests && python tools/commons_fetch.py
+      - name: Ergebnis als Zweig
+        run: |
+          cd cand
+          git init -q -b bg-candidates
+          git config user.name bot; git config user.email bot@users.noreply.github.com
+          git add -A && git commit -qm "Kandidaten"
+          git push -q -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" bg-candidates
