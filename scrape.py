@@ -206,6 +206,8 @@ def bg_topic(url):
         return "Sport/Wintersport" if top == "wintersport" else "Sport"
     if top == "bayern" and len(seg) > 2:
         return "Bayern/" + nice(seg[1]) if seg[1].startswith("landkreis") else "Bayern"
+    if top in ("leben", "stars"):
+        return "Nachrichten/" + nice(top)
     return nice(top)
 
 
@@ -385,8 +387,13 @@ def build(site, items, state, now):
         + "\n  </channel>\n</rss>\n"
     )
     present = {it.get("topic") or "Region" for it in ordered}
+    rank = ["Region", "Bayern", "Sport", "Nachrichten"]
+    dyn = sorted(
+        present | {p.split("/")[0] for p in present},
+        key=lambda t: (rank.index(t.split("/")[0]) if t.split("/")[0] in rank else 99, t),
+    )
     topics = [
-        t for t in (site["topics"] or sorted(present | {p.split("/")[0] for p in present}))
+        t for t in (site["topics"] or dyn)
         if t in present or any(p.startswith(t + "/") for p in present)
     ]
     return xml, topics
