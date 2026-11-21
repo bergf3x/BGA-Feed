@@ -138,14 +138,14 @@ public class TopicActivity extends Activity {
         row.setOrientation(LinearLayout.HORIZONTAL);
         row.setGravity(Gravity.CENTER_VERTICAL);
         row.setPadding(b.px(12), b.px(10), b.px(12), b.px(10));
-        int color = FeedItem.mediumColor(name);
+        // neutral im Glas-Stil der App (keine Markenfarben)
         android.graphics.drawable.GradientDrawable bg = new android.graphics.drawable.GradientDrawable();
-        bg.setColor(color);
+        bg.setColor(b.light ? 0x14000000 : 0x1FFFFFFF);
         bg.setCornerRadius(b.px(12));
+        bg.setStroke(Math.max(1, b.px(1)), b.line);
         row.setBackground(new android.graphics.drawable.RippleDrawable(
-                android.content.res.ColorStateList.valueOf(0x33000000), bg, null));
-        boolean darkText = Pal.onColor(color) == (0xFF000000 | Pal.INK);
-        int fg = darkText ? 0xFF10151B : 0xFFFFFFFF;
+                android.content.res.ColorStateList.valueOf(b.light ? 0x22000000 : 0x33FFFFFF), bg, null));
+        int fg = b.tx;
         TextView t = new TextView(this);
         t.setText(name);
         t.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 16);

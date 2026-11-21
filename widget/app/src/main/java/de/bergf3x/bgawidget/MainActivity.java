@@ -87,6 +87,7 @@ public class MainActivity extends Activity {
         }
     };
 
+    private static boolean umlandOpen;
     private static android.graphics.Bitmap lastSky;
     private static int lastSkyPlace = -1;
 
@@ -279,7 +280,6 @@ public class MainActivity extends Activity {
         header();
         if (widgetCount() == 0 && !Prefs.addCardHidden(this)) addWidgetCard(true);
         if (Prefs.showWeather(this, ID)) weatherCard();
-        tools();
         newsChips();
         page = list;
         news();
@@ -589,9 +589,26 @@ public class MainActivity extends Activity {
             }
             return;
         }
-        int n = Math.min(items.size(), MAX_ITEMS);
-        items = ListService.grouped(this, new java.util.ArrayList<>(items.subList(0, n)));
-        for (FeedItem it : items) page.addView(it.header ? mediumHeader(it.title) : newsCard(it, read, kw));
+        List<FeedItem> main = new ArrayList<>(), umland = new ArrayList<>();
+        boolean split = Prefs.topic(this, ID).isEmpty();
+        for (FeedItem it : items) (split && it.isUmland() ? umland : main).add(it);
+        for (int i = 0; i < Math.min(main.size(), MAX_ITEMS); i++) page.addView(newsCard(main.get(i), read, kw));
+        if (!umland.isEmpty()) {
+            int fresh = 0;
+            for (FeedItem it : umland) if (it.isFresh() && !Prefs.isRead(read, it.link)) fresh++;
+            TextView more = text("Mehr aus Oberbayern & Salzburg (" + (fresh > 0 ? fresh + " neu" : String.valueOf(umland.size())) + ")  "
+                    + (umlandOpen ? "▴" : "▾"), 14, soft, true);
+            more.setPadding(px(6), px(14), px(6), px(14));
+            more.setContentDescription("Mehr aus Oberbayern und Salzburg, " + (umlandOpen ? "zuklappen" : "aufklappen"));
+            more.setOnClickListener(v -> {
+                umlandOpen = !umlandOpen;
+                int y = scroll == null ? 0 : scroll.getScrollY();
+                build();
+                restore(y);
+            });
+            page.addView(more);
+            if (umlandOpen) for (int i = 0; i < Math.min(umland.size(), 40); i++) page.addView(newsCard(umland.get(i), read, kw));
+        }
     }
 
     private void chips(List<String> topics, final String topic) {
@@ -623,10 +640,22 @@ public class MainActivity extends Activity {
                 }
             }));
         }
+        View saved = chip("Gemerkt", false, () -> open(SavedActivity.class));
+        ((TextView) saved).setCompoundDrawablesRelativeWithIntrinsicBounds(tinted(R.drawable.ic_bookmark, 16), null, null, null);
+        ((TextView) saved).setCompoundDrawablePadding(px(6));
+        saved.setContentDescription("Gemerkte Artikel");
+        row.addView(saved);
         HorizontalScrollView hs = new HorizontalScrollView(this);
         hs.setHorizontalScrollBarEnabled(false);
         hs.addView(row);
         page.addView(hs, lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 10));
+    }
+
+    private android.graphics.drawable.Drawable tinted(int res, int dp) {
+        android.graphics.drawable.Drawable d = getResources().getDrawable(res, getTheme()).mutate();
+        d.setTint(tx);
+        d.setBounds(0, 0, px(dp), px(dp));
+        return d;
     }
 
     private void setTopic(String t) {
@@ -689,9 +718,7 @@ public class MainActivity extends Activity {
                 hit ? 0xFFFFD166 : tx, !isRead);
         title.setAlpha(dim);
         col.addView(title);
-        String meta = it.meta() + (it.plus ? " · Plus" : "");
-        String src = FeedItem.source(it.link);
-        if (!src.isEmpty()) meta += "\n" + src;
+        String meta = it.meta() + " · " + FeedItem.shortSource(it.feedName) + (it.plus ? " · Plus" : "");
         TextView m = text((!isRead && it.isFresh() ? "● " : "") + meta, Style.metaSp(sizeIdx) + 1f, soft, false);
         m.setPadding(0, px(4), 0, 0);
         m.setAlpha(dim);

@@ -56,6 +56,36 @@ final class FeedItem {
     }
 
     /** Hausfarbe eines Mediums (nur die Farbe, kein Logo): Anzeiger blau, BGLand24 gelb, sonst Orange. */
+    /** Kurzname der Quelle fuer die Meta-Zeile. */
+    static String shortSource(String feedName) {
+        String low = feedName.toLowerCase(Locale.GERMANY);
+        if (low.contains("anzeiger")) return "Anzeiger";
+        if (low.contains("traunsteiner")) return "Tagblatt";
+        if (low.contains("bgland")) return "BGLand24";
+        if (low.contains("chiemgau")) return "chiemgau24";
+        if (low.contains("orf")) return "ORF";
+        if (low.contains("landratsamt")) return "Landratsamt";
+        if (low.contains("nationalpark")) return "Nationalpark";
+        if (low.contains("br24")) return "BR24";
+        return feedName;
+    }
+
+    private static final java.util.regex.Pattern BGL_PLACES = java.util.regex.Pattern.compile(
+            "Berchtesgaden|Reichenhall|Freilassing|Laufen|Bischofswiesen|Ramsau|Schönau|Königssee|Marktschellenberg|"
+            + "Piding|Ainring|Teisendorf|Bayerisch Gmain|Schneizlreuth|Saaldorf|Surheim|Anger\\b|Watzmann|Untersberg|"
+            + "Kehlstein|Obersalzberg|Jenner|Hochkalter|Hintersee|Predigtstuhl|Hochstaufen|Rupertiwinkel|BGL\\b");
+
+    /** Gehoert die Meldung ins Umland (Traunstein/Chiemgau, Salzburg, Bayern) statt ins Berchtesgadener Land? */
+    boolean isUmland() {
+        String t = topic.isEmpty() ? "Region" : topic;
+        boolean umland = t.startsWith("Bayern") || t.equals("Region/Traunstein") || t.equals("Region/Landkreis Traunstein")
+                || t.equals("Region/Salzburg") || t.equals("Region/Chiemsee") || t.equals("Region/Trostberg")
+                || t.equals("Region/Achental") || t.equals("Region/BGL & Chiemgau")
+                || ((feedName.toLowerCase(Locale.GERMANY).contains("chiemgau") || feedName.toLowerCase(Locale.GERMANY).contains("orf"))
+                && !t.equals("Region/Rupertiwinkel"));
+        return umland && !BGL_PLACES.matcher(title).find();
+    }
+
     static int mediumColor(String name) {
         String low = name.toLowerCase(Locale.GERMANY);
         if (low.contains("bgland")) return 0xFFF7DD45;

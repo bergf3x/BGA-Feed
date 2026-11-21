@@ -5,6 +5,11 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.22",
+                    "~ Test: BGL zuerst – Meldungen aus Traunstein/Chiemgau, Salzburg und Bayern stehen zugeklappt unter „Mehr aus Oberbayern & Salzburg“",
+                    "~ Liste ruhiger: keine Medien-Überschriften, Quelle steht klein in der Infozeile",
+                    "- Suche entfernt; „Gemerkt“ ist jetzt ein Reiter bei den Themen",
+                    "~ Themenmenü: Quellen neutral im App-Stil statt bunter Markenfarben"},
             {"1.21",
                     "~ Wetter-Hintergrund bei Regen und Gewitter heller, Regen zarter und weniger dicht",
                     "~ Ortsauswahl springt beim Öffnen zum aktuell gewählten Ort"},
