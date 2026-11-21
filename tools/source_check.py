@@ -76,7 +76,23 @@ def newest_ba(r):
     return max(ids) if ids else None
 
 
+def date_format_probe():
+    """Nur Format der Datumsfelder (kein Inhalt): welche Tags, wie sieht ein Datum aus."""
+    for name, url in (("BGLand24", "https://www.bgland24.de/bgland/region-berchtesgaden/rssfeed.rdf"),
+                      ("chiemgau24", "https://www.chiemgau24.de/chiemgau/rssfeed.rdf"),
+                      ("ORF", "https://rss.orf.at/salzburg.xml"), ("BR24", "https://feeds.br24.de/rss/nachrichten")):
+        st, ms, size, r = get(url)
+        if r is None or not r.ok:
+            continue
+        t = r.text
+        blk = re.search(r"<(item|entry)\b[^>]*>(.*?)</\1>", t, re.S)
+        tags = sorted(set(re.findall(r"<([a-zA-Z:]+)[\s>]", blk.group(2)))) if blk else []
+        dates = [m.group(0)[:80] for m in re.finditer(r"<(pubDate|dc:date|published|updated)[^>]*>[^<]*</\1>", blk.group(2) if blk else "")]
+        print(f"{name}: Wurzel {re.search(r'<(rss|rdf:RDF|feed)', t).group(1) if re.search(r'<(rss|rdf:RDF|feed)', t) else '?'} | Item-Tags {tags} | Datum {dates}")
+
+
 def main():
+    date_format_probe()
     rows = []
     print("== Erreichbarkeit und Ladezeit (vom GitHub-Server aus) ==")
     for name, url in PROBES:
