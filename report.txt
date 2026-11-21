@@ -1,0 +1,235 @@
+== Installation ==
+Success
+== Kaltstart (erster Start, ohne Daten) ==
+TotalTime: 4866
+WaitTime: 4942
+Screenshot 01_erststart
+Warte 75 s auf ersten Abruf aller Quellen ...
+Screenshot 02_nach_abruf
+Speicher nach Abruf:  TOTAL PSS: 48825 TOTAL RSS: 137988 TOTAL SWAP PSS: 1999
+ Native Heap 27717 27704 4 23 28776 96220 25309 66637
+ Java Heap: 9036 30708
+ Native Heap: 27704 28776
+ Graphics: 0 0
+ Views: 374 ViewRootImpl: 1
+ AppContexts: 5 Activities: 1
+ Death Recipients: 0 WebViews: 0
+== Quellen einschalten (alle) über Einstellungen -> Quellen & Themen ==
+getippt: Einstellungen @ 990,222
+Screenshot 03_einstellungen
+getippt: Quellen & Themen @ 532,910
+Screenshot 04_quellen
+getippt: BGLand24 @ 539,1081
+getippt: chiemgau24 @ 539,1291
+getippt: ORF Salzburg @ 539,1501
+getippt: Traunsteiner Tagblatt @ 539,1606
+getippt: Landratsamt BGL @ 539,1816
+getippt: Nationalpark Berchtesgaden @ 539,1710
+Screenshot 05_quellen_an
+getippt: Fertig @ 539,2166
+getippt: Speichern @ 539,2019
+    <set name="fd_-1">
+        <string>tt</string>
+        <string>npv</string>
+        <string>bgland24</string>
+        <string>orf_salzburg</string>
+        <string>bga</string>
+        <string>lra_bgl</string>
+        <string>chiemgau24</string>
+    </set>
+    <string name="src_warn"></string>
+    <boolean name="cmp_-1" value="false" />
+    <string name="weather_0">{&quot;latitude&quot;:47.621567,&quot;longitude&quot;:12.975852,&quot;generationtime_ms&quot;:1.5326738357543945,&quot;utc_offset_seconds&quot;:3600,&quot;timezone&quot;:&quot;Europe\/Berlin&quot;,&quot;timezone_abbreviation&quot;:&quot;GMT+1&quot;,&quot;elevation&quot;:561,&quot;current_units&quot;:{&quot;time&quot;:&quot;iso8601&quot;,&quot;interval&quot;:&quot;seconds&quot;,&quot;temperature_2m&quot;:&quot;°C&quot;,&quot;weather_code&quot;:&quot;wmo code&quot;,&quot;is_day&quot;:&quot;&quot;,&quot;wind_speed_10m&quot;:&quot;km\/h&quot;,&quot;wind_gusts_10m&quot;:&quot;km\/h&quot;},&quot;current&quot;:{&quot;time&quot;:&quot;2026-11-21T19:15&quot;,&quot;interval&quot;:900,&quot;temperature_2m&quot;:4,&quot;weather_code&quot;:80,&quot;is_day&quot;:0,&quot;wind_speed_10m&quot;:1.6,&quot;wind_gusts_10m&quot;:3.6},&quot;hourly_units&quot;:{&quot;time&quot;:&quot;iso8601&quot;,&quot;freezing_level_height&quot;:&quot;m&quot;,&quot;temperature_2m&quot;:&quot;°C&quot;,&quot;precipitation_probability&quot;:&quot;%&quot;,&quot;weather_code&quot;:&quot;wmo code&quot;},&quot;hourly&quot;:{&quot;time&quot;:[&quot;2026-11-21T00:00&quot;,&quot;2026-11-21T01:00&quot;,&quot;2026-11-21T02:00&quot;,&quot;2026-11-21T03:00&quot;,&quot;2026-11-21T04:00&quot;,&quot;2026-11-21T05:00&quot;,&quot;2026-11-21T06:00&quot;,&quot;2026-11-21T07:00&quot;,&quot;2026-11-21T08:00&quot;,&quot;2026-11-21T09:00&quot;,&quot;2026-11-21T10:00&quot;,&quot;2026-11-21T11:00&quot;,&quot;2026-11-21T12:00&quot;,&quot;2026-11-21T13:00&quot;,&quot;2026-11-21T14:00&quot;,&quot;2026-11-21T15:00&quot;,&quot;2026-11-21T16:00&quot;,&quot;2026-11-21T17:00&quot;,&quot;2026-11-21T18:00&quot;,&quot;2026-11-21T19:00&quot;,&quot;2026-11-21T20:00&quot;,&quot;2026-11-21T21:00&quot;,&quot;2026-11-21T22:00&quot;,&quot;2026-11-21T23:00&quot;,&quot;2026-11-22T00:00&quot;,&quot;2026-11-22T01:00&quot;,&quot;2026-11-22T02:00&quot;,&quot;2026-11-22T03:00&quot;,&quot;2026-11-22T04:00&quot;,&quot;2026-11-22T05:00&quot;,&quot;2026-11-22T06:00&quot;,&quot;2026-11-22T07:00&quot;,&quot;2026-11-22T08:00&quot;,&quot;2026-11-22T09:00&quot;,&quot;2026-11-22T10:00&quot;,&quot;2026-11-22T11:00&quot;,&quot;2026-11-22T12:00&quot;,&quot;2026-11-22T13:00&quot;,&quot;2026-11-22T14:00&quot;,&quot;2026-11-22T15:00&quot;,&quot;2026-11-22T16:00&quot;,&quot;2026-11-22T17:00&quot;,&quot;2026-11-22T18:00&quot;,&quot;2026-11-22T19:00&quot;,&quot;2026-11-22T20:00&quot;,&quot;2026-11-22T21:00&quot;,&quot;2026-11-22T22:00&quot;,&quot;2026-11-22T23:00&quot;,&quot;2026-11-23T00:00&quot;,&quot;2026-11-23T01:00&quot;,&quot;2026-11-23T02:00&quot;,&quot;2026-11-23T03:00&quot;,&quot;2026-11-23T04:00&quot;,&quot;2026-11-23T05:00&quot;,&quot;2026-11-23T06:00&quot;,&quot;2026-11-23T07:00&quot;,&quot;2026-11-23T08:00&quot;,&quot;2026-11-23T09:00&quot;,&quot;2026-11-23T10:00&quot;,&quot;2026-11-23T11:00&quot;,&quot;2026-11-23T12:00&quot;,&quot;2026-11-23T13:00&quot;,&quot;2026-11-23T14:00&quot;,&quot;2026-11-23T15:00&quot;,&quot;2026-11-23T16:00&quot;,&quot;2026-11-23T17:00&quot;,&quot;2026-11-23T18:00&quot;,&quot;2026-11-23T19:00&quot;,&quot;2026-11-23T20:00&quot;,&quot;2026-11-23T21:00&quot;,&quot;2026-11-23T22:00&quot;,&quot;2026-11-23T23:00&quot;,&quot;2026-11-24T00:00&quot;,&quot;2026-11-24T01:00&quot;,&quot;2026-11-24T02:00&quot;,&quot;2026-11-24T03:00&quot;,&quot;2026-11-24T04:00&quot;,&quot;2026-11-24T05:00&quot;,&quot;2026-11-24T06:00&quot;,&quot;2026-11-24T07:00&quot;,&quot;2026-11-24T08:00&quot;,&quot;2026-11-24T09:00&quot;,&quot;2026-11-24T10:00&quot;,&quot;2026-11-24T11:00&quot;,&quot;2026-11-24T12:00&quot;,&quot;2026-11-24T13:00&quot;,&quot;2026-11-24T14:00&quot;,&quot;2026-11-24T15:00&quot;,&quot;2026-11-24T16:00&quot;,&quot;2026-11-24T17:00&quot;,&quot;2026-11-24T18:00&quot;,&quot;2026-11-24T19:00&quot;,&quot;2026-11-24T20:00&quot;,&quot;2026-11-24T21:00&quot;,&quot;2026-11-24T22:00&quot;,&quot;2026-11-24T23:00&quot;],&quot;freezing_level_height&quot;:[1740,1790,1730,1650,1550,1480,1420,1380,1360,1290,1260,1320,1290,1280,1310,1330,1200,1280,1380,1410,1380,1460,1500,1550,1590,1610,1630,1710,1760,1790,1820,1880,1940,1990,2040,2100,2160,2210,2190,2110,2000,1860,1710,1510,1280,1152.5,1060,990,940,890,830,680,640,650,650,720,780,740,710,710,690,600,660,600,635,610,540,490,500,510,500,500,490,480,470,470,450,440,430,400,370,430,550,580,560,570,660,640,840,880,1310,1430,1550,1680,1800,1860],&quot;temperature_2m&quot;:[3,3.9,3.2,4.7,6.8,6.9,5.4,5.1,4.1,4.8,5,5.6,5.8,6,6.3,6.1,4.8,4.6,4.3,4.1,3.8,3.6,3.1,2.6,2.3,1.9,1.7,1.3,1.4,1.5,1.5,1.2,1.2,1.7,2.5,3.1,4.2,5.1,5.6,5.5,4.9,3.7,3.3,3.2,3.1,3.2,3.2,3,2.8,2.5,1.8,0.9,0.5,0.3,0.4,0.5,0.9,1.4,1.4,1.4,1.3,1.4,1.1,0.4,0.4,0.2,-0.5,-1.2,-1.1,-1,-1.1,-1.1,-1.2,-1.4,-1.5,-1.6,-1.7,-1.9,-2.1,-2.4,-2.9,-2,-0.3,0.3,0.6,1,1.1,0.8,0,-0.1,-0.1,-1.1,-1.3,-1.5,-1.7,-1.9],&quot;precipitation_probability&quot;:[95,100,63,63,95,100,98,98,98,95,85,95,95,93,93,98,98,98,88,98,90,85,45,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,8,15,43,55,70,83,95,95,98,95,93,90,88,83,88,80,88,93,93,88,89,91,88,78,65,53,44,37,30,22,15,10,10,12,13,11,8,5,4,4,3,1,1,0,0,0,0,0,0,0,0,0,0,0],&quot;weather_code&quot;:[80,80,61,61,61,80,80,80,80,80,80,80,80,80,3,80,80,80,80,3,80,80,2,1,1,0,0,0,1,1,3,3,3,3,3,3,3,3,3,3,3,3,45,61,61,61,55,55,53,53,55,61,71,71,77,71,71,3,3,3,3,3,3,71,2,1,1,2,3,85,2,2,2,2,2,2,2,2,2,2,1,0,0,0,0,1,0,1,2,2,0,1,3,3,3,3]},&quot;daily_units&quot;:{&quot;time&quot;:&quot;iso8601&quot;,&quot;weather_code&quot;:&quot;wmo code&quot;,&quot;temperature_2m_max&quot;:&quot;°C&quot;,&quot;temperature_2m_min&quot;:&quot;°C&quot;,&quot;precipitation_probability_max&quot;:&quot;%&quot;,&quot;sunrise&quot;:&quot;iso8601&quot;,&quot;sunset&quot;:&quot;iso8601&quot;},&quot;daily&quot;:{&quot;time&quot;:[&quot;2026-11-21&quot;,&quot;2026-11-22&quot;,&quot;2026-11-23&quot;,&quot;2026-11-24&quot;],&quot;weather_code&quot;:[80,61,85,3],&quot;temperature_2m_max&quot;:[7.1,5.7,2.8,1.1],&quot;temperature_2m_min&quot;:[2.3,1.1,-1.3,-2.9],&quot;precipitation_probability_max&quot;:[100,83,98,15],&quot;sunrise&quot;:[&quot;2026-11-21T07:21&quot;,&quot;2026-11-22T07:23&quot;,&quot;2026-11-23T07:24&quot;,&quot;2026-11-24T07:25&quot;],&quot;sunset&quot;:[&quot;2026-11-21T16:25&quot;,&quot;2026-11-22T16:24&quot;,&quot;2026-11-23T16:24&quot;,&quot;2026-11-24T16:23&quot;]},&quot;mtn&quot;:-9.3,&quot;peak&quot;:0}</string>
+    <int name="tx_-1" value="100" />
+== Aktualisieren (alle Quellen direkt) ==
+getippt: Aktualisieren @ 864,222
+Aktualisierung sichtbar fertig nach ca. 9 s
+Screenshot 06_nach_aktualisieren
+Speicher:  TOTAL PSS: 72304 TOTAL RSS: 160120 TOTAL SWAP PSS: 3457
+== Direktabruf-Protokoll der App ==
+    <string name="log">21.11. 18:30:56  chiemgau24: 60 Artikel auf Abo geprüft (Hintergrund)
+21.11. 18:30:56  BGLand24: 60 Artikel auf Abo geprüft (Hintergrund)
+21.11. 18:30:54  Berchtesgadener Anzeiger: 344 Artikel direkt (davon Region 59), 60 Zeiten, 12 s
+21.11. 18:30:53  chiemgau24: 205 Artikel direkt (davon Region 205), 0 Zeiten, 12 s | Gesamt-RSS: RSS 40; chiemsee: RSS 40; rupertiwinkel: RSS 34; traunstein: RSS 40; trostberg: RSS 25; achental: RSS 26; polizeimeldungen: RSS 40; 
+21.11. 18:30:52  BGLand24: 276 Artikel direkt (davon Region 164), 0 Zeiten, 10 s | berchtesgaden: RSS 40; bad-reichenhall: RSS 28; rupertiwinkel: RSS 40; traunstein: RSS 40; salzburg: RSS 11; Gesamt-RSS: RSS 40; Start-RSS: RSS 40; Startseite: Seite 79; 
+21.11. 18:30:51  Traunsteiner Tagblatt: 89 Artikel direkt (davon Region 37), 60 Zeiten, 9 s
+21.11. 18:30:50  Nationalpark Berchtesgaden: 44 Artikel direkt (davon Region 44), 0 Zeiten, 2 s | Tabelle 44
+21.11. 18:30:47  Landratsamt BGL: 10 Artikel direkt (davon Region 10), 0 Zeiten, 1 s | Liste 10
+21.11. 18:30:46  ORF Salzburg: 18 Artikel direkt (davon Region 18), 0 Zeiten, 4 s | RSS 18
+21.11. 18:29:20  Berchtesgadener Anzeiger: 344 Artikel direkt (davon Region 59), 60 Zeiten, 8 s</string>
+total 596
+-rw------- 1 u0_a192 u0_a192 183003 2026-11-21 18:30 bga.xml
+-rw------- 1 u0_a192 u0_a192 160349 2026-11-21 18:30 bgland24.xml
+-rw------- 1 u0_a192 u0_a192 142028 2026-11-21 18:30 chiemgau24.xml
+-rw------- 1 u0_a192 u0_a192   5261 2026-11-21 18:30 lra_bgl.xml
+-rw------- 1 u0_a192 u0_a192  15800 2026-11-21 18:30 npv.xml
+-rw------- 1 u0_a192 u0_a192  10879 2026-11-21 18:30 orf_salzburg.xml
+-rw------- 1 u0_a192 u0_a192  49627 2026-11-21 18:30 tt.xml
+== App-Daten BGLand24: Region Berchtesgaden/Rupertiwinkel (Datum | Abo | Titelanfang) ==
+Items gesamt 243 davon Abo 29
+Rup 21 Nov 2026 16:16 ABO Verkehr, Bauprojekte und Bahnsanierung: 
+Ber 21 Nov 2026 11:24 ABO So viele Millionen kostet die Bundeswehr
+Rup 21 Nov 2026 06:14 ABO Wohnmobile blockieren Dorfmitte: Neukirc
+Rup 20 Nov 2026 16:16 ABO Großbaustelle A8: Ortsbesuch an Saalachb
+Rup 20 Nov 2026 16:12 ABO „Ein unvergesslicher Nachmittag“: Wie si
+Rup 20 Nov 2026 10:03 ABO Waging am See kann es sich leisten: So s
+Ber 20 Nov 2026 10:02 ABO NS-Erbe holt Berchtesgaden wieder ein: A
+Rup 19 Nov 2026 16:13 ABO Keine Einmalzahlung: Saaldorf-Surheim fi
+Ber 19 Nov 2026 04:19 ABO Etabliert, aber auch erfolgreich? Drei J
+Rup 18 Nov 2026 16:04 ABO Fällt 100-Euro-Zuschuss weg? Eltern in F
+Ber 18 Nov 2026 16:03 ABO „Todesfahrtkommando“ und im Schneesturm 
+Rup 18 Nov 2026 14:07     „Großartige Nachricht“: 2 Millionen Euro
+Rup 18 Nov 2026 10:08 ABO Zuschuss fällt weg: Kita-Gebühren in Saa
+Rup 18 Nov 2026 04:19 ABO Verkehrsfrust in Laufen: „Monstertrasse“
+Rup 17 Nov 2026 16:04     Wasserversorgung in Teisendorf: Brunnen 
+Rup 17 Nov 2026 10:10     Ab 1. Januar: Surgruppe beschließt höher
+Rup 17 Nov 2026 08:58     Hansi Anzenberger begeistert mit „Dunges
+Ber 17 Nov 2026 04:47     Nach Feuer am Kehlsteinhaus: „Die Histor
+Ber 16 Nov 2026 16:04     Von der Villa Schön zum Haus der Forschu
+Rup 16 Nov 2026 04:15     Kokain, Cannabis und Co: Schmuggler steh
+Ber 15 Nov 2026 15:37     Sage vom Königssee: Wie ausgerechnet ein
+Rup 15 Nov 2026 11:15     Selbstbestimmt leben im Alter: Neue Quar
+Rup 15 Nov 2026 11:15     Wie sich Freilassing und die Region für 
+Ber 15 Nov 2026 06:26     Trotz Lindt-Krise auf Erfolgskurs: Bests
+Ber 14 Nov 2026 16:11     „Generationen verloren“ und Olympia-Träu
+Rup 14 Nov 2026 11:15     Schallplatten-Boom in Freilassing: Warum
+Ber 14 Nov 2026 06:30     Mehr als 30 Schockanrufe an einem Tag: E
+Ber 13 Nov 2026 16:10     Noch Brauchtum oder ein Event? Berchtesg
+Ber 13 Nov 2026 16:08     „Einfach etwas Besonderes“: Mädlswerk st
+Ber 13 Nov 2026 10:04     Aus Liebe zu Berchtesgaden: Urlauber sch
+Rup 13 Nov 2026 10:03     Kita-Gebühren und 100-Euro-Wegfall: Elte
+Rup 12 Nov 2026 16:15     Von der Not- zur Dauerlösung? Pro und Co
+Rup 12 Nov 2026 11:08     Lkw prallt bei Laufen in Polo: Mutter un
+Ber 12 Nov 2026 10:08     „Enttäuscht“: Investigativjournalist spr
+Ber 12 Nov 2026 04:25     Kehlsteinhaus abgefackelt: Muss der Bran
+Ber 11 Nov 2026 18:00     Autos stoßen zusammen: Drei Leichtverlet
+Ber 11 Nov 2026 16:15     Ein Tag voller Glücksgefühle: So emotion
+Rup 11 Nov 2026 15:00     Drogen im Fußraum und Geld im Schuh – Be
+Ber 11 Nov 2026 14:00     „Noch besser als vorher“: Warum Söder be
+Ber 11 Nov 2026 10:06     Kehlsteinhaus nach dem Brand: Debatte um
+Ber 11 Nov 2026 04:47     „Auch uns passieren Fehler“: Gruppe ents
+Ber 10 Nov 2026 16:13     „Endlich“ und „steht für Heimat“: Königs
+Rup 10 Nov 2026 16:00     Stadt Freilassing fällt mehrere Bäume – 
+Ber 10 Nov 2026 10:04     Rassistische Netz-Hetze: Fake-Profil bri
+Ber 10 Nov 2026 04:07     24.000 Eier am Hintersee? Was es mit ein
+Rup 09 Nov 2026 16:11     Kita-Gebühren: Teisendorf übernimmt 100 
+Ber 09 Nov 2026 10:06     „Noch nie beobachtet“: Große Sorgen im F
+Ber 09 Nov 2026 10:03     Härtetest am Watzmann mit 20 Kilo schwer
+Ber 09 Nov 2026 04:11     Fiese Betrugsmasche entdeckt: Mann aus B
+Rup 08 Nov 2026 16:08     Endspurt vor Winterpause: Nächster Absch
+Ber 08 Nov 2026 11:38     „Der richtige Mann“: Gleich 19 Olympia-S
+Ber 08 Nov 2026 06:37     Mehr als 60 neue Wohnungen in Berchtesga
+Rup 08 Nov 2026 06:28     „Hätte niemals passieren dürfen“: Andach
+Ber 07 Nov 2026 16:34     Senioren-WG statt Pflegeheim? Große Sorg
+Ber 07 Nov 2026 11:07     Gänsehaut am Königssee: Kult-Eisbahn fei
+Rup 06 Nov 2026 16:08     Geduldsprobe für Autofahrer in Freilassi
+Rup 06 Nov 2026 16:03     Bauarbeiten an der A8 in Richtung Salzbu
+Rup 06 Nov 2026 10:03     „Fassungslos“: Rufbus-Bezahlung beschäft
+Ber 05 Nov 2026 15:52     Zwei Autos stoßen auf B305 bei Berchtesg
+Ber 05 Nov 2026 10:42     Spektakulärer Einsatz am Kehlsteinhaus: 
+Ber 05 Nov 2026 10:07     Erst Totholz, jetzt tote Tiere: Warum de
+Ber 05 Nov 2026 04:20     Psychothriller aus dem BGL: Bestseller-A
+Ber 04 Nov 2026 16:12     „Millionen“-Entscheid gefallen: Zahlt Ve
+Rup 04 Nov 2026 16:02     Neue Hauptwasserleitung: Sperrungen in A
+Ber 04 Nov 2026 10:07     Neue Boote am Königssee: Warum jetzt Alu
+Rup 04 Nov 2026 04:19     „Tue ich mir nicht an“: Bahnsperre verun
+Ber 03 Nov 2026 13:55     Bub (2) verletzt sich am Kopf: BRK-Wasse
+Ber 03 Nov 2026 10:11     „Es war unglaublich“ – Erste Fahrten auf
+Ber 03 Nov 2026 04:20     Panne beim Brand-Kampf am Kehlsteinhaus:
+Ber 02 Nov 2026 16:12     „Rekordzeit“: Bob- und Rodelbahn am Köni
+Rup 02 Nov 2026 10:05     Wie in „Stranger Things“: Neuer Rollensp
+Rup 31 Oct 2026 16:18     „Arg in Zeitnot“: Baustopp beim Einkaufs
+Rup 30 Oct 2026 04:25     Unfälle in Freilassing und Ainring: Tota
+Rup 28 Oct 2026 18:58     Schutzengel auf der BGL12: Fiat-Fahrer (
+Rup 28 Oct 2026 04:25     Erste Gemeinderätin in Teisendorf: Gisel
+Rup 25 Oct 2026 11:58     Flammen in Waginger Friseursalon: Feuerw
+Rup 24 Oct 2026 15:10     Verkehrsärger und klamme Kassen: Das bew
+Rup 24 Oct 2026 05:33     „Die Crew, die den Laden am Laufen gehal
+Rup 23 Oct 2026 11:32     „Wenn viele Begeisterte an einem Strang 
+Rup 22 Oct 2026 11:46     Unfall in Waging am See: Feuerwehr befre
+    <boolean name="plusf_-1_chiemgau24" value="true" />
+    <boolean name="plus_-1" value="true" />
+    <boolean name="plusf_-1_bgland24" value="true" />
+    <boolean name="plusf_-1_bga" value="true" />
+    <boolean name="plusf_-1_tt" value="true" />
+== Scroll-Flüssigkeit (Nachrichtenliste) ==
+Total frames rendered: 103
+Janky frames: 95 (92.23%)
+Janky frames (legacy): 103 (100.00%)
+50th percentile: 101ms
+90th percentile: 133ms
+99th percentile: 150ms
+== Themenmenü: Region ==
+getippt: Region @ 368,1741
+Screenshot 07_menue_region
+getippt: BGLand24 @ 532,987
+Screenshot 08_menue_bgland_offen
+getippt: Berchtesgaden @ 540,1347
+getippt: Rupertiwinkel @ 540,1585
+Screenshot 09_menue_zwei_gewaehlt
+getippt: chiemgau24 @ 532,1956
+Screenshot 10_menue_chiemgau_offen
+getippt: Schließen @ 540,2273
+Screenshot 11_liste_mehrfachauswahl
+== Themenmenü: Sport ==
+getippt: Sport @ 1007,1741
+Screenshot 12_menue_sport
+getippt: Alle @ 140,1741
+== Unterseiten ==
+getippt: Live Webcams @ 838,832
+Screenshot 13_Live_Webcams
+getippt: Suche @ 312,1607
+Screenshot 13_Suche
+getippt: Gemerkt @ 830,1607
+Screenshot 13_Gemerkt
+getippt: Info @ 532,1820
+Screenshot 14_info
+== Drehen (Neuaufbau der Ansicht) ==
+Screenshot 15_quer
+== Offline (WLAN + Daten aus) ==
+getippt: Aktualisieren @ 864,222
+Screenshot 16_offline
+== Hintergrund / Planung ==
+  TopAppTimer{<0>de.bergf3x.bgawidget.test} started at 264171 (49422ms ago)
+    de.bergf3x.bgawidget.MainActivity
+  TopAppTimer{<0>com.google.android.apps.nexuslauncher} NOT active
+  TopAppTimer{<0>com.google.android.googlesdksetup} NOT active
+--
+    <0>de.bergf3x.bgawidget.test: ShrinkableDebits { debit tally: 0, bucket: 0 }
+    <0>com.android.imsserviceentitlement: ShrinkableDebits { debit tally: 0, bucket: 6 }
+    <0>com.android.settings: ShrinkableDebits { debit tally: 0, bucket: 6 }
+    <0>com.google.android.settings.intelligence: ShrinkableDebits { debit tally: 0, bucket: 0 }
+--
+  10192: {de.bergf3x.bgawidget.test}
+
+Current stats at 2026-11-21-18-28-44 (-4m38s656ms) over +4m38s656ms:
+  Max concurrency: 12 total, 0 foreground
+== Belastungstest (Monkey, 2500 zufällige Eingaben) ==
+Events injected: 2500
+Speicher nach Monkey:  TOTAL PSS: 110133 TOTAL RSS: 201120 TOTAL SWAP PSS: 3016
+ Native Heap 59066 58808 248 815 60072 209480 40122 165594
+ Java Heap: 12448 33900
+ Native Heap: 58808 60072
+ Graphics: 0 0
+ Views: 600 ViewRootImpl: 5
+ AppContexts: 16 Activities: 5
+ Death Recipients: 0 WebViews: 0
+== Reihenfolge der obersten Meldungen (Zeitangaben) ==
+ 1501 | Fußball · vor 45 Min.
+ 1774 | Berchtesgadener Land · heute 17:00
+ 2048 | ● Fußball · heute 16:36
+ 2306 | ● Fußball · heute 16:35
+== Kaltstart mit vorhandenen Daten (3x) ==
+TotalTime: 2533
+TotalTime: 1802
+TotalTime: 1673
+== Abstürze / ANR / Fehler im Log ==
+Crash-Puffer Einträge der App: 0
+App-Prozess: 9071
+11-21 18:36:03.489  9071  9071 I Choreographer: Skipped 67 frames!  The application may be doing too much work on its main thread.
+11-21 18:36:05.461  9071  9071 I Choreographer: Skipped 47 frames!  The application may be doing too much work on its main thread.
+11-21 18:36:06.382  9071  9071 I Choreographer: Skipped 46 frames!  The application may be doing too much work on its main thread.
+Skipped-Frames-Meldungen der App (letzter Prozess): 3
+11-21 18:36:03.356  9071  9122 E SurfaceSyncGroup: Failed to receive transaction ready in 1000ms. Marking SurfaceSyncGroup(wmsSync-VRI[MainActivity]#0) as ready
+11-21 18:36:03.361  9071  9122 E SurfaceSyncGroup: Failed to receive transaction ready in 1000ms. Marking SurfaceSyncGroup(VRI[MainActivity]#1) as ready
+== Ende ==

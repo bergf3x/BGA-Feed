@@ -1,0 +1,25 @@
+  605 | ‹  Zurück | 
+  685 | Quellen & Themen | 
+  765 |       Bezahlartikel anzeigen (🔒) | 
+  766 | ✓ | 
+  870 | BGLand24 | 
+  871 | ✓ | 
+  975 |       Bezahlartikel anzeigen (🔒) | 
+  976 | ✓ | 
+ 1080 | chiemgau24 | 
+ 1081 | ✓ | 
+ 1185 |       Bezahlartikel anzeigen (🔒) | 
+ 1186 | ✓ | 
+ 1290 | ORF Salzburg | 
+ 1291 | ✓ | 
+ 1395 | Traunsteiner Tagblatt | 
+ 1396 | ✓ | 
+ 1500 |       Bezahlartikel anzeigen (🔒) | 
+ 1501 | ✓ | 
+ 1605 | Landratsamt BGL | 
+ 1606 | ✓ | 
+ 1710 | Nationalpark Berchtesgaden | 
+ 1711 | ✓ | 
+ 1826 | Stichwörter (mit Komma trennen, z. B. Sperrung, Vermisst, Lawine) | 
+ 2047 | Treffer als Benachrichtigung melden | 
+ 2166 | Fertig | 
