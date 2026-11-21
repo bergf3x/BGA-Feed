@@ -5,6 +5,13 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.23",
+                    "+ Neue Themenordnung: BGL · Außerhalb · Deutschland & Welt – gleich für alle Quellen",
+                    "+ BGL: Berchtesgaden & Talkessel, Bad Reichenhall & Umgebung, Freilassing & Rupertiwinkel, Ganzer Landkreis, Amtliches – je mit Nachrichten, Sport, Kultur, Blaulicht",
+                    "+ Außerhalb: Chiemgau & Traunstein, Salzburg, Bayern (inkl. München über BR24)",
+                    "+ Deutschland & Welt: Politik & Gesellschaft, Wirtschaft, Wissen & Digital, Leute, Sport, Kultur",
+                    "~ Menü zeigt nur Rubriken mit Meldungen, mit Anzahl; Regionen aufklappbar, immer nur eine offen",
+                    "! BGLand24: falsches Thema „Www.bgland24.de“ und doppelte Meldungen behoben"},
             {"1.22",
                     "~ Test: BGL zuerst – Meldungen aus Traunstein/Chiemgau, Salzburg und Bayern stehen zugeklappt unter „Mehr aus Oberbayern & Salzburg“",
                     "~ Liste ruhiger: keine Medien-Überschriften, Quelle steht klein in der Infozeile",

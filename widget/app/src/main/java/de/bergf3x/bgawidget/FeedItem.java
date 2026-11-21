@@ -26,6 +26,8 @@ final class FeedItem {
     String link = "";
     String category = "";
     String topic = "";
+    /** Rubrik, wie die Quelle sie liefert (vor der Einordnung). */
+    String rawTopic = "";
     String description = "";
     String pubDate = "";
     String feedName = "";
@@ -36,8 +38,8 @@ final class FeedItem {
 
     /** "Region · vor 12 Min." fuer die Zeile unter dem Titel. */
     String meta() {
-        String leaf = topic.isEmpty() ? category.trim() : topic.substring(topic.lastIndexOf('/') + 1);
-        if (leaf.isEmpty()) leaf = topic.isEmpty() ? "Region" : leaf;
+        String leaf = Taxonomy.label(topic);
+        if (leaf.isEmpty()) leaf = category.trim();
         String t = timeText();
         return t.isEmpty() ? leaf : leaf + " · " + t;
     }
@@ -100,14 +102,13 @@ final class FeedItem {
     }
 
     int accentColor() {
-        String parent = topic.isEmpty() ? "Region" : topic.split("/")[0];
-        switch (parent) {
-            case "Region": return 0xFF5DCAA5;
-            case "Nachrichten": return 0xFF85B7EB;
-            case "Sport": return 0xFFF0997B;
-            case "Kultur": return 0xFFED93B1;
-            default: return 0xFFAFA9EC;
-        }
+        String leaf = topic.substring(topic.lastIndexOf('/') + 1);
+        if (leaf.equals("Sport")) return 0xFFF0997B;
+        if (leaf.equals("Kultur")) return 0xFFED93B1;
+        if (leaf.equals("Blaulicht")) return 0xFFE57373;
+        if (topic.startsWith(Taxonomy.BGL)) return 0xFF5DCAA5;
+        if (topic.startsWith(Taxonomy.OUT)) return 0xFFAFA9EC;
+        return 0xFF85B7EB;
     }
 
     String timeText() {
@@ -171,6 +172,8 @@ final class FeedItem {
                         cur.topic = cur.topic.trim();
                         cur.description = cur.description.trim();
                         cur.feedName = feedName;
+                        cur.rawTopic = cur.topic;
+                        cur.topic = Taxonomy.classify(cur);
                         try {
                             Date d = in.parse(cur.pubDate.trim());
                             if (d != null) cur.time = d.getTime();

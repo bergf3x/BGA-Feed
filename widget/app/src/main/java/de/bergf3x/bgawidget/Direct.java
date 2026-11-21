@@ -460,17 +460,23 @@ final class Direct {
             + "Traunstein|Traunreut|Trostberg|Ruhpolding|Inzell|Reit im Winkl|Chiemsee|Chiemgau|Rupertiwinkel|Waging|"
             + "Tittmoning|Siegsdorf|Grassau|Übersee|Watzmann|Untersberg|Kehlstein|Obersalzberg|Jenner|Hochkalter|Salzach");
 
-    /** BR24: offizieller Feed, nur Meldungen mit Ortsbezug BGL/Chiemgau. */
+    /** BR24: offizieller Feed, alle Rubriken; Bayern-Meldungen landen unter Außerhalb/Bayern (oder BGL bei Ortsbezug). */
     private static List<Map<String, Object>> scrapeBr(StringBuilder rep) throws IOException {
-        List<Map<String, Object>> out = new ArrayList<>();
-        for (Map<String, Object> it : parseRss(Net.download(BR24), false)) {
-            if (!BR_PLACES.matcher(it.get("title") + " " + it.get("teaser")).find()) continue;
-            it.put("topic", "Region/BGL & Chiemgau");
-            out.add(it);
-        }
-        rep.append("RSS mit Ortsbezug ").append(out.size());
-        if (out.isEmpty()) throw new IOException("gerade keine Meldung mit Ortsbezug");
+        List<Map<String, Object>> out = parseRss(Net.download(BR24), false);
+        for (Map<String, Object> it : out) it.put("topic", brTopic(String.valueOf(it.get("category"))));
+        rep.append("RSS ").append(out.size());
         return out;
+    }
+
+    static String brTopic(String cat) {
+        String c = cat.toLowerCase(Locale.GERMANY);
+        if (c.contains("bayern")) return "Bayern";
+        if (c.contains("sport")) return "Sport";
+        if (c.contains("wirtschaft")) return "Nachrichten/Wirtschaft";
+        if (c.contains("kultur")) return "Kultur";
+        if (c.contains("wissen")) return "Nachrichten/Wissenschaft";
+        if (c.contains("netzwelt")) return "Nachrichten/Digital";
+        return "Nachrichten/Deutschland & Welt";
     }
 
     private static final Pattern RSS_ITEM = Pattern.compile("<(item|entry)\\b[^>]*>(.*?)</\\1>", Pattern.DOTALL);
@@ -540,6 +546,7 @@ final class Direct {
             if (href.isEmpty()) continue;
             String url;
             if (href.startsWith("http")) url = href;
+            else if (href.startsWith("//")) url = "https:" + href; // protokoll-relativer Link
             else if (href.startsWith("/")) url = base + href;
             else continue;
             java.net.URI u;

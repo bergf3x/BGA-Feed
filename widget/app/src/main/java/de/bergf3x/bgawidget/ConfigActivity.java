@@ -572,17 +572,14 @@ public class ConfigActivity extends Activity {
     private void buildMutes() {
         if (muteBox == null) return;
         muteBox.removeAllViews();
-        Set<String> seen = new HashSet<>();
-        for (Catalog.Feed f : Catalog.load(this)) {
-            for (String t : f.topics) {
-                if (!seen.add(t)) continue;
-                int slash = t.indexOf('/');
-                String label = slash < 0 ? t : "      " + t.substring(t.lastIndexOf('/') + 1);
-                b.toggle(muteBox, label, muted.contains(t), on -> {
-                    if (on) muted.add(t);
-                    else muted.remove(t);
-                });
-            }
+        for (String t : Taxonomy.topics(this, widgetId)) {
+            int depth = t.split("/").length - 1;
+            if (depth > 1) continue; // Bereiche und Regionen reichen zum Ausblenden
+            String label = depth == 0 ? t : "      " + t.substring(t.lastIndexOf('/') + 1);
+            b.toggle(muteBox, label, muted.contains(t), on -> {
+                if (on) muted.add(t);
+                else muted.remove(t);
+            });
         }
     }
 

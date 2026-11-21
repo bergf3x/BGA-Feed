@@ -170,7 +170,7 @@ final class Prefs {
         List<String[]> sel = topicSel(c, id);
         if (sel.isEmpty()) return "";
         String t = sel.get(0)[0];
-        String first = t.indexOf('/') >= 0 ? t.substring(t.indexOf('/') + 1) : t;
+        String first = t.indexOf('/') >= 0 ? Taxonomy.label(t) : t;
         return sel.size() == 1 ? first : first + " +" + (sel.size() - 1);
     }
 

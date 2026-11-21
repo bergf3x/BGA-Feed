@@ -11,19 +11,19 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
- * Chip-Tipp: Thema direkt setzen oder (bei Oberthemen mit Unterthemen) die Auswahl-Blase zeigen.
- * Gleiche Blase fuer alle Oberthemen (Region, Nachrichten, Sport ...) in App und Widget:
- * je Medium ein aufklappbarer Reiter (immer nur einer offen), darin Mehrfachauswahl der Unterthemen.
+ * Themen-Blase fuer einen Bereich (BGL, Außerhalb, Deutschland & Welt), gleich in App und Widget:
+ * Regionen als aufklappbare Reiter (immer nur einer offen), darin Rubriken (Nachrichten, Sport, Kultur, Blaulicht);
+ * Mehrfachauswahl, leere Rubriken werden nicht gezeigt, Anzahl in Klammern.
  */
 public class TopicActivity extends Activity {
     private int id;
     private String parent;
     private Bubble b;
     private LinearLayout body;
-    private final List<Catalog.Feed> media = new ArrayList<>();
-    /** Auswahl als "Thema|Medium" (Medium leer = alle Medien). */
+    private Map<String, Integer> counts;
     private final List<String> sel = new ArrayList<>();
     private String open = "";
 
@@ -44,28 +44,17 @@ public class TopicActivity extends Activity {
             return;
         }
         parent = topic;
-        List<Catalog.Feed> all = Catalog.load(this);
-        java.util.Set<String> on = Catalog.effective(all, Prefs.feeds(this, id));
-        for (Catalog.Feed f : all) {
-            if (!on.contains(f.id)) continue;
-            for (String t : f.topics) if (t.startsWith(parent + "/")) {
-                media.add(f);
-                break;
-            }
-        }
-        // bisherige Auswahl uebernehmen, soweit sie zu diesem Oberthema gehoert
+        counts = Taxonomy.counts(this, id);
         for (String[] e : Prefs.topicSel(this, id)) {
-            if (e[0].equals(parent) || e[0].startsWith(parent + "/")) sel.add(e[1].isEmpty() ? e[0] : e[0] + "|" + e[1]);
+            if (e[0].equals(parent) || e[0].startsWith(parent + "/")) sel.add(e[0]);
         }
         for (String s : sel) {
-            int i = s.indexOf('|');
-            if (i > 0) {
-                open = s.substring(i + 1);
+            String[] p = s.split("/");
+            if (p.length > 2) {
+                open = p[0] + "/" + p[1];
                 break;
             }
         }
-        if (open.isEmpty() && media.size() == 1) open = media.get(0).name;
-
         b = new Bubble(this, 300, 8);
         b.text(parent, 11, b.soft, false).setPadding(b.px(10), b.px(4), b.px(10), b.px(2));
         b.text("Mehrere Themen wählbar", 11, b.soft, false).setPadding(b.px(10), 0, b.px(10), b.px(6));
@@ -75,46 +64,64 @@ public class TopicActivity extends Activity {
         b.pill("Schließen", false, true, () -> { });
     }
 
+    private List<String> children(String path) {
+        List<String> out = new ArrayList<>();
+        int depth = path.split("/").length;
+        for (String k : counts.keySet()) {
+            if (k.startsWith(path + "/") && k.split("/").length == depth + 1) out.add(k);
+        }
+        java.util.Collections.sort(out, Taxonomy::compare);
+        return out;
+    }
+
+    private String name(String path) {
+        return path.substring(path.lastIndexOf('/') + 1);
+    }
+
+    private int count(String path) {
+        Integer c = counts.get(path);
+        return c == null ? 0 : c;
+    }
+
     private void render() {
         body.removeAllViews();
-        boolean allMedia = sel.isEmpty() || sel.contains(parent);
-        b.row(body, "Alles in „" + parent + "“ (alle Medien)", allMedia && !sel.isEmpty(), () -> {
+        b.row(body, "Alles in „" + parent + "“ (" + count(parent) + ")", sel.contains(parent), () -> {
             sel.clear();
             sel.add(parent);
             save(sel);
         }, true);
-        for (final Catalog.Feed f : media) {
-            final String tag = "|" + f.name;
-            int count = 0;
-            for (String s : sel) if (s.endsWith(tag)) count++;
-            boolean expanded = f.name.equals(open);
-            body.addView(mediumHeader(f.name, count, expanded, () -> {
-                open = f.name.equals(open) ? "" : f.name; // nur ein Reiter offen
+        for (final String region : children(parent)) {
+            final List<String> subs = children(region);
+            if (subs.size() <= 1) {
+                // keine Untergliederung: direkt waehlbar
+                b.row(body, name(region) + " (" + count(region) + ")", sel.contains(region), () -> toggle(region), false);
+                continue;
+            }
+            int picked = 0;
+            for (String s : sel) if (s.equals(region) || s.startsWith(region + "/")) picked++;
+            final boolean expanded = region.equals(open);
+            body.addView(header(name(region), count(region), picked, expanded, () -> {
+                open = expanded ? "" : region; // nur ein Reiter offen
                 render();
             }));
             if (!expanded) continue;
-            final String whole = parent + tag;
-            b.row(body, "Alle von " + f.name, sel.contains(whole), () -> toggle(whole, f.name), false);
-            for (String t : f.topics) {
-                if (!t.startsWith(parent + "/")) continue;
-                final String value = t + tag;
-                b.row(body, "   " + t.substring(t.indexOf('/') + 1), sel.contains(value), () -> toggle(value, f.name), false);
+            b.row(body, "Alles aus „" + name(region) + "“", sel.contains(region), () -> toggle(region), false);
+            for (final String sub : subs) {
+                b.row(body, "   " + name(sub) + " (" + count(sub) + ")", sel.contains(sub), () -> toggle(sub), false);
             }
         }
     }
 
-    /** Eintrag an- oder abwaehlen; "Alle von X" und einzelne Themen von X schliessen sich gegenseitig aus. */
-    private void toggle(String value, String medium) {
-        String whole = parent + "|" + medium;
+    /** An-/abwaehlen; ein Oberpunkt und seine Unterpunkte schliessen sich gegenseitig aus. */
+    private void toggle(String value) {
         if (sel.contains(value)) {
             sel.remove(value);
         } else {
             sel.remove(parent);
-            if (value.equals(whole)) {
-                java.util.Iterator<String> it = sel.iterator();
-                while (it.hasNext()) if (it.next().endsWith("|" + medium)) it.remove();
-            } else {
-                sel.remove(whole);
+            java.util.Iterator<String> it = sel.iterator();
+            while (it.hasNext()) {
+                String s = it.next();
+                if (s.startsWith(value + "/") || value.startsWith(s + "/")) it.remove();
             }
             sel.add(value);
         }
@@ -132,45 +139,42 @@ public class TopicActivity extends Activity {
         WidgetProvider.refresh(this, id);
     }
 
-    /** Aufklappbarer Medien-Reiter: Markenfarbe, Name, Anzahl gewaehlter Themen, Pfeil. */
-    private View mediumHeader(String name, int count, boolean expanded, Runnable click) {
+    /** Aufklappbarer Regions-Reiter im Glas-Stil: Name, Anzahl bzw. Auswahl, Pfeil. */
+    private View header(String name, int n, int picked, boolean expanded, Runnable click) {
         LinearLayout row = new LinearLayout(this);
         row.setOrientation(LinearLayout.HORIZONTAL);
         row.setGravity(Gravity.CENTER_VERTICAL);
         row.setPadding(b.px(12), b.px(10), b.px(12), b.px(10));
-        // neutral im Glas-Stil der App (keine Markenfarben)
+        row.setMinimumHeight(b.px(44));
         android.graphics.drawable.GradientDrawable bg = new android.graphics.drawable.GradientDrawable();
         bg.setColor(b.light ? 0x14000000 : 0x1FFFFFFF);
         bg.setCornerRadius(b.px(12));
         bg.setStroke(Math.max(1, b.px(1)), b.line);
         row.setBackground(new android.graphics.drawable.RippleDrawable(
                 android.content.res.ColorStateList.valueOf(b.light ? 0x22000000 : 0x33FFFFFF), bg, null));
-        int fg = b.tx;
         TextView t = new TextView(this);
         t.setText(name);
-        t.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 16);
+        t.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 15);
         t.setTypeface(null, android.graphics.Typeface.BOLD);
-        t.setTextColor(fg);
+        t.setTextColor(b.tx);
         row.addView(t, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
-        if (count > 0) {
-            TextView c = new TextView(this);
-            c.setText(count + " gewählt");
-            c.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 12);
-            c.setTextColor(fg);
-            c.setPadding(0, 0, b.px(8), 0);
-            row.addView(c);
-        }
+        TextView c = new TextView(this);
+        c.setText(picked > 0 ? picked + " gewählt" : String.valueOf(n));
+        c.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 12);
+        c.setTextColor(b.soft);
+        c.setPadding(0, 0, b.px(8), 0);
+        row.addView(c);
         TextView arrow = new TextView(this);
         arrow.setText(expanded ? "▴" : "▾");
-        arrow.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 16);
-        arrow.setTextColor(fg);
+        arrow.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 15);
+        arrow.setTextColor(b.tx);
         row.addView(arrow);
         row.setClickable(true);
         row.setOnClickListener(v -> click.run());
-        row.setContentDescription(name + (expanded ? ", zuklappen" : ", aufklappen"));
+        row.setContentDescription(name + ", " + n + " Meldungen, " + (expanded ? "zuklappen" : "aufklappen"));
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        lp.topMargin = b.px(8);
+        lp.topMargin = b.px(6);
         lp.bottomMargin = b.px(2);
         row.setLayoutParams(lp);
         return row;

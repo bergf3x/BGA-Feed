@@ -72,7 +72,7 @@ public class WidgetProvider extends AppWidgetProvider {
 
         List<Catalog.Feed> all = Catalog.load(ctx);
         Set<String> selected = Catalog.effective(all, Prefs.feeds(ctx, id));
-        List<String> topics = Catalog.topicsFor(all, selected);
+        List<String> topics = Taxonomy.topics(ctx, id);
         String topic = Prefs.topic(ctx, id);
         if (!topic.isEmpty() && !topics.contains(topic)) {
             topic = "";

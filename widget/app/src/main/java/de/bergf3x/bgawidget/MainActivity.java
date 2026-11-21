@@ -87,7 +87,6 @@ public class MainActivity extends Activity {
         }
     };
 
-    private static boolean umlandOpen;
     private static android.graphics.Bitmap lastSky;
     private static int lastSkyPlace = -1;
 
@@ -539,7 +538,7 @@ public class MainActivity extends Activity {
     private void newsChips() {
         List<Catalog.Feed> all = Catalog.load(this);
         Set<String> selected = Catalog.effective(all, Prefs.feeds(this, ID));
-        List<String> topics = Catalog.topicsFor(all, selected);
+        List<String> topics = Taxonomy.topics(this, ID);
         String topic = Prefs.topic(this, ID);
         if (!topic.isEmpty() && !topics.contains(topic)) {
             topic = "";
@@ -589,26 +588,41 @@ public class MainActivity extends Activity {
             }
             return;
         }
-        List<FeedItem> main = new ArrayList<>(), umland = new ArrayList<>();
+        // "Alle": BGL oben, Außerhalb und Deutschland & Welt jeweils zugeklappt darunter
         boolean split = Prefs.topic(this, ID).isEmpty();
-        for (FeedItem it : items) (split && it.isUmland() ? umland : main).add(it);
-        for (int i = 0; i < Math.min(main.size(), MAX_ITEMS); i++) page.addView(newsCard(main.get(i), read, kw));
-        if (!umland.isEmpty()) {
-            int fresh = 0;
-            for (FeedItem it : umland) if (it.isFresh() && !Prefs.isRead(read, it.link)) fresh++;
-            TextView more = text("Mehr aus Oberbayern & Salzburg (" + (fresh > 0 ? fresh + " neu" : String.valueOf(umland.size())) + ")  "
-                    + (umlandOpen ? "▴" : "▾"), 14, soft, true);
-            more.setPadding(px(6), px(14), px(6), px(14));
-            more.setContentDescription("Mehr aus Oberbayern und Salzburg, " + (umlandOpen ? "zuklappen" : "aufklappen"));
-            more.setOnClickListener(v -> {
-                umlandOpen = !umlandOpen;
-                int y = scroll == null ? 0 : scroll.getScrollY();
-                build();
-                restore(y);
-            });
-            page.addView(more);
-            if (umlandOpen) for (int i = 0; i < Math.min(umland.size(), 40); i++) page.addView(newsCard(umland.get(i), read, kw));
+        List<FeedItem> main = new ArrayList<>(), out = new ArrayList<>(), world = new ArrayList<>();
+        for (FeedItem it : items) {
+            if (split && it.topic.startsWith(Taxonomy.OUT)) out.add(it);
+            else if (split && it.topic.startsWith(Taxonomy.WORLD)) world.add(it);
+            else main.add(it);
         }
+        for (int i = 0; i < Math.min(main.size(), MAX_ITEMS); i++) page.addView(newsCard(main.get(i), read, kw));
+        foldSection(Taxonomy.OUT, out, read, kw);
+        foldSection(Taxonomy.WORLD, world, read, kw);
+    }
+
+    private static final java.util.Set<String> OPEN_FOLDS = new java.util.HashSet<>();
+
+    /** Zugeklappter Bereich unter der BGL-Liste ("Außerhalb (12 neu) ▾"). */
+    private void foldSection(final String area, List<FeedItem> list, Set<String> read, List<String> kw) {
+        if (list.isEmpty()) return;
+        int fresh = 0;
+        for (FeedItem it : list) if (it.isFresh() && !Prefs.isRead(read, it.link)) fresh++;
+        final boolean open = OPEN_FOLDS.contains(area);
+        TextView more = text(area + " (" + (fresh > 0 ? fresh + " neu" : String.valueOf(list.size())) + ")  " + (open ? "▴" : "▾"),
+                14, soft, true);
+        more.setPadding(px(6), px(14), px(6), px(14));
+        more.setMinHeight(px(44));
+        more.setContentDescription(area + ", " + (open ? "zuklappen" : "aufklappen"));
+        more.setOnClickListener(v -> {
+            if (open) OPEN_FOLDS.remove(area);
+            else OPEN_FOLDS.add(area);
+            int y = scroll == null ? 0 : scroll.getScrollY();
+            build();
+            restore(y);
+        });
+        page.addView(more);
+        if (open) for (int i = 0; i < Math.min(list.size(), 40); i++) page.addView(newsCard(list.get(i), read, kw));
     }
 
     private void chips(List<String> topics, final String topic) {
