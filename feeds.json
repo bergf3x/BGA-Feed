@@ -119,6 +119,16 @@
     "Nachrichten/Wissenschaft",
     "Kultur"
    ]
+  },
+  {
+   "id": "merkur",
+   "name": "Merkur",
+   "url": "https://raw.githubusercontent.com/bergf3x/BGA-Feed/main/feed_merkur.xml",
+   "topics": [
+    "Bayern",
+    "Bayern/München",
+    "Bayern/Oberbayern"
+   ]
   }
  ]
 }

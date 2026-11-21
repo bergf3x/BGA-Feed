@@ -773,9 +773,9 @@
   "1027705": {
    "sid": 1027705,
    "url": "https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land/schoenau-am-koenigssee_artikel,-ein-tourismusjahr-das-sich-sehen-lassen-kann-bergerlebnis-berchtesgaden-zieht-bilanz-_arid,1027705.html",
-   "title": "Ein Tourismusjahr, das sich sehen lassen kann – Bergerlebnis Berchtesgaden zieht Bilanz",
+   "title": "Ein Tourismusjahr, das sich sehen lassen kann – Bergerlebnis Berchtesgaden zieht Bilanz",
    "teaser": "",
-   "category": "",
+   "category": "Schönau am Königssee",
    "plus": true,
    "topic": "Region/Berchtesgadener Land",
    "first_seen": "2026-11-21T12:07:46+00:00"
@@ -813,8 +813,8 @@
   "1027693": {
    "url": "https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land/bayerisch-gmain_artikel,-bergwacht-rettet-verletzte-wanderin-im-lattengebirge-_arid,1027693.html",
    "title": "Bergwacht rettet verletzte Wanderin im Lattengebirge",
-   "teaser": "",
-   "category": "",
+   "teaser": "Bayrisch Gmain – Bei einem Bergunfall im nördlichen Lattengebirge ist am Freitagvormittag eine 44-jährige Frau aus dem nördlichen Landkreis verletzt worden. Die Bergwachten Bad ...",
+   "category": "Bayerisch Gmain",
    "plus": false,
    "first_seen": "2026-11-20T16:52:20+00:00",
    "sid": 1027693,
@@ -1412,9 +1412,9 @@
   },
   "1027550": {
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-weihnachtszauber-in-historischer-altstadtkulisse-salzburger-christkindlmarkt-hat-noch-bis-1-januar-g-_arid,1027550.html",
-   "title": "Weihnachtszauber in historischer Altstadtkulisse: Salzburger Christkindlmarkt hat noch bis 1. Januar geöffnet",
-   "teaser": "",
-   "category": "",
+   "title": "Weihnachtszauber in historischer Altstadtkulisse: Salzburger Christkindlmarkt hat noch bis 1. Januar geöffnet",
+   "teaser": "Salzburg – Der Salzburger Christkindlmarkt am Dom- und Residenzplatz zählt zu den bekanntesten und traditionsreichsten Christkindlmärkten Europas. Während seine Wurzeln bis ins Jahr ...",
+   "category": "Salzburg",
    "plus": false,
    "first_seen": "2026-11-20T16:52:20+00:00",
    "sid": 1027550,
