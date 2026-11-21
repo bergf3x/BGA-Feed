@@ -2,6 +2,7 @@
 # Alltagstest der Test-App im Emulator. Ergebnisse in out/ (Screenshots, Logs, report.txt).
 set +e
 PKG=de.bergf3x.bgawidget.test
+ACT=$PKG/de.bergf3x.bgawidget.MainActivity
 OUT=out
 mkdir -p $OUT
 R=$OUT/report.txt
@@ -20,7 +21,7 @@ adb logcat -c
 
 log "== Kaltstart (erster Start, ohne Daten) =="
 adb shell am force-stop $PKG
-adb shell am start -W -n $PKG/.MainActivity | grep -E "TotalTime|WaitTime" | tee -a $R
+adb shell am start -W -n $ACT | grep -E "TotalTime|WaitTime" | tee -a $R
 sleep 3; shot 01_erststart
 log "Warte 75 s auf ersten Abruf aller Quellen ..."
 for i in $(seq 1 15); do sleep 5; if $UI has "Lade Nachrichten" | grep -q gefunden; then :; else break; fi; done
@@ -37,7 +38,7 @@ done
 shot 05_quellen_an
 adb shell input keyevent KEYCODE_BACK; sleep 1; adb shell input keyevent KEYCODE_BACK; sleep 1
 adb shell input keyevent KEYCODE_BACK; sleep 1
-adb shell am start -n $PKG/.MainActivity >/dev/null; sleep 2
+adb shell am start -n $ACT >/dev/null; sleep 2
 
 log "== Aktualisieren (alle Quellen direkt) =="
 T0=$(date +%s)
@@ -97,7 +98,7 @@ adb shell dumpsys jobscheduler | grep -A3 "$PKG" | head -20 | tee -a $R
 adb shell dumpsys alarm | grep -B1 -A2 "$PKG" | head -20 | tee -a $R
 
 log "== Belastungstest (Monkey, 2500 zufällige Eingaben) =="
-adb shell am start -n $PKG/.MainActivity >/dev/null; sleep 2
+adb shell am start -n $ACT >/dev/null; sleep 2
 adb shell monkey -p $PKG --throttle 120 --pct-syskeys 0 --pct-appswitch 5 -s 4242 -v 2500 > $OUT/monkey.txt 2>&1
 grep -E "Events injected|CRASH|ANR|Monkey aborted" $OUT/monkey.txt | tee -a $R
 sleep 3
@@ -106,7 +107,7 @@ log "Speicher nach Monkey: $(appmem)"
 log "== Kaltstart mit vorhandenen Daten (3x) =="
 for i in 1 2 3; do
   adb shell am force-stop $PKG; sleep 1
-  adb shell am start -W -n $PKG/.MainActivity | grep -E "TotalTime" | tee -a $R
+  adb shell am start -W -n $ACT | grep -E "TotalTime" | tee -a $R
   sleep 3
 done
 
@@ -115,6 +116,9 @@ adb logcat -d > $OUT/logcat.txt
 log "Crash-Puffer Einträge der App: $(crashes)"
 grep -nE "FATAL EXCEPTION|ANR in $PKG|Process: $PKG" $OUT/logcat.txt | head -20 | tee -a $R
 grep -nE "AndroidRuntime" -A12 $OUT/logcat.txt | grep -m1 -A12 "FATAL" | tee -a $R
-grep -cE "StrictMode|Skipped [0-9]+ frames" $OUT/logcat.txt | sed 's/^/StrictMode\/Skipped-Frames Meldungen: /' | tee -a $R
-grep -E "Skipped [0-9]+ frames" $OUT/logcat.txt | head -5 | tee -a $R
+APID=$(adb shell pidof $PKG | tr -d '\r')
+log "App-Prozess: $APID"
+grep -E "Skipped [0-9]+ frames" $OUT/logcat.txt | awk -v p="$APID" '$3==p' | tee $OUT/skipped_app.txt | tail -8 | tee -a $R
+log "Skipped-Frames-Meldungen der App (letzter Prozess): $(wc -l < $OUT/skipped_app.txt)"
+grep -E " E [A-Za-z]*: | W System.err" $OUT/logcat.txt | awk -v p="$APID" '$3==p' | head -15 | tee -a $R
 log "== Ende =="
