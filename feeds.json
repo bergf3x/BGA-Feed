@@ -52,6 +52,26 @@
    ]
   },
   {
+   "id": "chiemgau24",
+   "name": "chiemgau24",
+   "url": "https://raw.githubusercontent.com/bergf3x/BGA-Feed/main/feed_chiemgau24.xml",
+   "topics": [
+    "Bayern",
+    "Bayern/Altoetting",
+    "Bayern/Berchtesgadener Land",
+    "Bayern/Muehldorf",
+    "Bayern/Rosenheim",
+    "Sport",
+    "Sport/Wintersport",
+    "Nachrichten",
+    "Nachrichten/Deutschland",
+    "Nachrichten/Stars",
+    "Nachrichten/Welt",
+    "Nachrichten/Wirtschaft",
+    "Chiemgau"
+   ]
+  },
+  {
    "id": "orf_salzburg",
    "name": "ORF Salzburg",
    "url": "https://raw.githubusercontent.com/bergf3x/BGA-Feed/main/feed_orf_salzburg.xml",
