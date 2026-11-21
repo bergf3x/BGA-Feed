@@ -437,7 +437,7 @@ public class MainActivity extends Activity {
             boolean on = p.equals(curParent);
             String label = p;
             if (on && topic.indexOf('/') >= 0) label = topic.substring(topic.indexOf('/') + 1);
-            else if (hasSubs) label = label + " ▾";
+            if (hasSubs) label = label + " ▾";
             final boolean subs = hasSubs;
             row.addView(chip(label, on, () -> {
                 if (subs) {

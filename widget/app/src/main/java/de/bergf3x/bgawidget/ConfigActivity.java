@@ -239,7 +239,7 @@ public class ConfigActivity extends Activity {
     private void showWeather() {
         LinearLayout body = subPage("Wetter", P_WEATHER, 0.62f, false);
         b.label(body, "Ort");
-        b.pillKeep(Weather.PLACES[Prefs.place(this, widgetId)] + "  ›", false, () -> {
+        b.pillKeep(Weather.PLACES[Prefs.place(this, widgetId)] + "  ▾", false, () -> {
             Intent in = new Intent(this, PlaceActivity.class);
             in.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
             startActivity(in);

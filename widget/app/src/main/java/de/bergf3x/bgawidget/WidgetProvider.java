@@ -106,7 +106,7 @@ public class WidgetProvider extends AppWidgetProvider {
             int fresh = i == 0 ? ListService.freshUnread(ctx, id) : 0;
             String label = i == 0 ? (fresh > 0 ? "Alle (" + Math.min(fresh, 99) + ")" : "Alle") : value;
             if (on && topic.indexOf('/') >= 0) label = topic.substring(topic.indexOf('/') + 1);
-            else if (hasSubs) label = label + " ▾";
+            if (hasSubs) label = label + " ▾";
             rv.setViewVisibility(P[i], android.view.View.VISIBLE);
             rv.setTextViewText(P_T[i], Style.font(ctx, id, label));
             rv.setInt(P[i], "setBackgroundResource", Pal.chipBg(ctx, id));
