@@ -6,6 +6,8 @@ final class Changelog {
 
     static final String[][] LOG = {
             {"1.19",
+                    "! Nach einem Themenwechsel springt die Liste nach oben (stand vorher an der alten Stelle, neueste Meldungen wirkten „verschwunden“)",
+                    "! Abo-Kennzeichen von BGLand24/chiemgau24 wurden vom laufenden Abruf überschrieben; jetzt sofort sichtbar",
                     "! Meldungen ohne bekannte Uhrzeit stehen nicht mehr als „vor 1 Min.“ ganz oben (Zeit wird geschätzt, echte Zeit ersetzt sie)",
                     "! BGLand24-Startseite wurde wegen eines leeren Links („#“) nicht gelesen",
                     "~ Schnellerer Start: gespeicherte Nachrichten werden im Hintergrund eingelesen",

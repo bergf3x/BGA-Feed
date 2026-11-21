@@ -83,6 +83,9 @@ final class Direct {
             {"/sport/sport-aus-der-region.html", "Sport/Sport aus der Region", ""},
     };
 
+    /** Nachricht an die offene App: Daten im Hintergrund ergaenzt (z. B. Abo-Kennzeichen). */
+    static final String DATA_CHANGED = "de.bergf3x.bgawidget.DATA_CHANGED";
+
     static boolean enabled(Context ctx) {
         return ctx.getResources().getBoolean(R.bool.direct_fetch);
     }
@@ -132,11 +135,15 @@ final class Direct {
                 Thread th = new Thread(() -> {
                     try {
                         int n = resolveTimes(app, ff, fl);
-                        String x2;
-                        synchronized (Direct.class) {
-                            x2 = merge(app, ff, false, fl);
+                        // warten, bis der laufende Abruf seine Ergebnisse gespeichert hat, sonst ueberschreibt er unsere
+                        synchronized (ListService.FETCH_LOCK) {
+                            String x2;
+                            synchronized (Direct.class) {
+                                x2 = merge(app, ff, false, fl);
+                            }
+                            if (n > 0) FeedCache.put(app, ff.id, x2, FeedItem.parse(x2, ff.name)); // Abo-Kennzeichen sofort wirksam
                         }
-                        if (n > 0) FeedCache.put(app, ff.id, x2, FeedItem.parse(x2, ff.name)); // Abo-Kennzeichen sofort wirksam
+                        if (n > 0) app.sendBroadcast(new android.content.Intent(DATA_CHANGED).setPackage(app.getPackageName()));
                         log(app, ff.name + ": " + n + " Artikel auf Abo geprüft (Hintergrund)");
                     } catch (Throwable ignored) {
                     }

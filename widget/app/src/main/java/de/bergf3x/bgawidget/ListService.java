@@ -39,7 +39,7 @@ public class ListService extends RemoteViewsService {
         return n;
     }
 
-    private static final Object FETCH_LOCK = new Object();
+    static final Object FETCH_LOCK = new Object();
     /** Grund, warum die letzte Abfrage keine Artikel ergab (fuer die Vollbild-App). */
     static volatile String emptyReason = "";
     private static volatile long lastFetchEnd = 0;

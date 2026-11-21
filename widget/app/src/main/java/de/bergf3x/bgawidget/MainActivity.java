@@ -76,13 +76,31 @@ public class MainActivity extends Activity {
         }
     }
 
+    private String shownTopic;
+    private final android.content.BroadcastReceiver dataChanged = new android.content.BroadcastReceiver() {
+        @Override
+        public void onReceive(android.content.Context c, android.content.Intent i) {
+            if (syncing || isFinishing() || isDestroyed()) return;
+            int y = scroll == null ? 0 : scroll.getScrollY();
+            build();
+            restore(y);
+        }
+    };
+
     /** Gespeicherte Feeds einmal pro Prozess im Hintergrund eingelesen. */
     private static volatile boolean warmed;
 
     @Override
     protected void onResume() {
         super.onResume();
+        android.content.IntentFilter flt = new android.content.IntentFilter(Direct.DATA_CHANGED);
+        if (android.os.Build.VERSION.SDK_INT >= 33) registerReceiver(dataChanged, flt, android.content.Context.RECEIVER_NOT_EXPORTED);
+        else registerReceiver(dataChanged, flt);
         int y = scroll == null ? 0 : scroll.getScrollY();
+        // anderes Thema gewaehlt (Auswahl-Blase): Liste von oben zeigen, nicht an der alten Stelle
+        String tp = Prefs.topicRaw(this, ID);
+        if (shownTopic != null && !shownTopic.equals(tp)) y = 0;
+        shownTopic = tp;
         boolean stale = System.currentTimeMillis() - Math.max(lastSync, Prefs.newsTime(this)) > STALE_MS;
         // eigene Quellen der App, die das Widget nie geladen hat: einmal gezielt holen
         boolean missing = warmed && !triedMissing && feedsMissing();
@@ -95,6 +113,15 @@ public class MainActivity extends Activity {
             restore(y);
         }
         ensureWeather();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        try {
+            unregisterReceiver(dataChanged);
+        } catch (Exception ignored) {
+        }
     }
 
     private void restore(final int y) {
@@ -585,7 +612,9 @@ public class MainActivity extends Activity {
 
     private void setTopic(String t) {
         Prefs.setTopic(this, ID, t);
+        shownTopic = Prefs.topicRaw(this, ID);
         build();
+        if (scroll != null) scroll.post(() -> scroll.scrollTo(0, 0));
     }
 
     private View chip(String label, boolean on, final Runnable click) {
