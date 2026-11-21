@@ -159,6 +159,76 @@ def _bg_rss(base, html):
     return out
 
 
+BG_ART = re.compile(r"-\d{6,}\.html$")
+BG_SECTIONS = [
+    "/bgland/region-berchtesgaden/", "/bgland/region-bad-reichenhall/", "/bgland/rupertiwinkel/",
+    "/bgland/region-traunstein/", "/bgland/region-salzburg/", "/bgland/", "/",
+]
+
+
+def _rss_items(xml_bytes):
+    """RSS 2.0 / RDF / Atom tolerant lesen: Titel, Link, Datum, Anriss."""
+    from email.utils import parsedate_to_datetime
+
+    txt = xml_bytes.decode("utf-8", "replace")
+    out = []
+    for blk in re.findall(r"<(?:item|entry)\b[^>]*>(.*?)</(?:item|entry)>", txt, re.S):
+        def tag(name):
+            m = re.search(rf"<{name}\b[^>]*>(.*?)</{name}>", blk, re.S)
+            v = m.group(1) if m else ""
+            v = re.sub(r"^\s*<!\[CDATA\[(.*?)\]\]>\s*$", r"\1", v, flags=re.S)
+            return v.strip()
+        link = tag("link") or (re.search(r'<link[^>]+href="([^"]+)"', blk) or [None, ""])[1]
+        link = link.split("#")[0].strip()
+        if not link or not BG_ART.search(link.split("?")[0]):
+            continue
+        date = ""
+        raw = tag("pubDate") or tag("dc:date") or tag("published") or tag("updated")
+        if raw:
+            try:
+                d = parsedate_to_datetime(raw) if "," in raw or raw[:3].isalpha() else datetime.fromisoformat(raw.replace("Z", "+00:00"))
+                if d.tzinfo is None:
+                    d = d.replace(tzinfo=timezone.utc)
+                date = d.astimezone(timezone.utc).isoformat()
+            except Exception:
+                pass
+        out.append(dict(
+            sid=zlib.crc32(link.encode()), url=link, title=_clean(tag("title")),
+            teaser=_clean(tag("description") or tag("summary"))[:300], category=_clean(tag("category")),
+            topic="Region", plus=False, date=date,
+        ))
+    return [x for x in out if len(x["title"]) >= 10]
+
+
+def _bg_sections(base):
+    """Rubrik-Feeds und -Seiten der Region; je Rubrik nur Kennzahlen ins Protokoll."""
+    import requests
+
+    found = {}
+    for sec in BG_SECTIONS:
+        n_rss = n_html = 0
+        try:
+            r = requests.get(base + sec + "rssfeed.rdf", headers={"User-Agent": UA}, timeout=20)
+            st = r.status_code
+            if r.ok:
+                for it in _rss_items(r.content):
+                    found.setdefault(it["url"], it)
+                    n_rss += 1
+        except Exception as e:
+            st = f"Fehler {type(e).__name__}"
+        if n_rss == 0 and sec != "/":
+            try:
+                h = requests.get(base + sec, headers={"User-Agent": UA}, timeout=20)
+                if h.ok:
+                    for it in _bg_html(base, h.text):
+                        found.setdefault(it["url"], it)
+                        n_html += 1
+            except Exception:
+                pass
+        print(f"[bgland24] Rubrik {sec}: RSS {st} -> {n_rss}, Seite -> {n_html}")
+    return list(found.values())
+
+
 def _bg_html(base, html):
     """Notnagel: Artikellinks der Startseite."""
     from bs4 import BeautifulSoup
@@ -178,7 +248,7 @@ def _bg_html(base, html):
         h = a.find(["h1", "h2", "h3", "h4"])
         if h:
             title = _clean(h.get_text(" "))
-        if url in seen or len(slug) < 15 or "-" not in slug or len(title) < 20:
+        if url in seen or len(slug) < 15 or "-" not in slug or len(title) < 20 or not BG_ART.search(pu.path):
             continue
         seen.add(url)
         out.append(dict(sid=zlib.crc32(url.encode()), url=url, title=title, teaser="", category="", topic="Region", plus=False, date=""))
@@ -290,21 +360,27 @@ def _fetch_bgland(site):
                 return items
         except Exception as e:
             print(f"[{site['id']}] {name}: {e}", file=sys.stderr)
+    class _Empty:
+        text = ""
     try:
         r = requests.get(base + "/", headers={"User-Agent": UA}, timeout=30)
         r.raise_for_status()
     except Exception as e:
         print(f"[{site['id']}] Startseite: {e}", file=sys.stderr)
-        return []
-    for name, fn in (("rss", lambda: _bg_rss(base, r.text)), ("startseite", lambda: _bg_html(base, r.text))):
-        try:
-            items = fn()
-            if items:
-                print(f"[{site['id']}] Quelle: {name}")
-                return items
-        except Exception as e:
-            print(f"[{site['id']}] {name}: {e}", file=sys.stderr)
-    return []
+        r = _Empty()
+    items = {}
+    try:
+        for it in _bg_sections(base):
+            items[it["url"]] = it
+    except Exception as e:
+        print(f"[{site['id']}] Rubriken: {e}", file=sys.stderr)
+    try:
+        for it in _bg_html(base, r.text):
+            items.setdefault(it["url"], it)
+    except Exception as e:
+        print(f"[{site['id']}] startseite: {e}", file=sys.stderr)
+    print(f"[{site['id']}] Quelle: Rubriken + Startseite, {len(items)} Artikel")
+    return list(items.values())
 
 
 # ---------------------------------------------------------------- Seiten-Konfiguration
@@ -416,6 +492,8 @@ def build(site, items, state, now):
             if it.get("pc"):
                 state_items[key]["pc"] = it["pc"]
     if site["id"] == "bgland24":  # alte Statedaten auf das aktuelle Themenschema bringen
+        for k in [k for k, v in state_items.items() if not BG_ART.search(v["url"].split("?")[0])]:
+            del state_items[k]  # Menue-/Rubrik-Links sind keine Artikel
         for v in state_items.values():
             v["topic"] = bg_topic(v["url"])
     ordered, per_topic = [], {}
@@ -492,7 +570,7 @@ def run_site(site, now, html_file=None, out=None, state_file=None):
                 v["plus"] = False  # frueher falsch/ungeprueft erkannt: neu pruefen
         n = 0
         for it in items:
-            if not it["url"].endswith(".html") or (str(it["sid"]) in known and known[str(it["sid"])].get("pc") == 2) or n >= 25:
+            if not it["url"].endswith(".html") or (str(it["sid"]) in known and known[str(it["sid"])].get("pc") == 2) or n >= 40:
                 continue
             n += 1
             try:
