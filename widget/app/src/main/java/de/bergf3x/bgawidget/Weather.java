@@ -19,8 +19,17 @@ final class Weather {
         return "https://api.open-meteo.com/v1/forecast?latitude=" + COORDS[place][0]
                 + "&longitude=" + COORDS[place][1]
                 + "&current=temperature_2m,weather_code,is_day,wind_speed_10m,wind_gusts_10m"
-                + "&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max"
-                + "&hourly=freezing_level_height"
+                + "&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,sunrise,sunset"
+                + "&hourly=freezing_level_height,temperature_2m,precipitation_probability,weather_code"
+                + "&timezone=Europe%2FBerlin&forecast_days=4";
+    }
+
+    /** Notfall-Abruf ohne Zusatzfelder. */
+    private static String basicUrl(int place) {
+        return "https://api.open-meteo.com/v1/forecast?latitude=" + COORDS[place][0]
+                + "&longitude=" + COORDS[place][1]
+                + "&current=temperature_2m,weather_code,is_day"
+                + "&daily=weather_code,temperature_2m_max,temperature_2m_min"
                 + "&timezone=Europe%2FBerlin&forecast_days=4";
     }
 
@@ -47,6 +56,12 @@ final class Weather {
     int precip = NONE;   // Niederschlagswahrscheinlichkeit heute in %
     int wind = NONE;     // km/h
     int gust = NONE;     // km/h
+    String sunrise = "";
+    String sunset = "";
+    int hourStart = 0;
+    int[] hrTemp = new int[0];
+    int[] hrProb = new int[0];
+    int[] hrCode = new int[0];
     final int[] hi = new int[4];
     final int[] lo = new int[4];
     final int[] dayCode = new int[4];
@@ -63,7 +78,7 @@ final class Weather {
     static boolean refreshIfStale(Context c, int place) {
         String cached = Prefs.weather(c, place);
         // Alter Stand ohne die neuen Felder (Wind/Regenrisiko) gilt als veraltet
-        boolean fresh = cached != null && cached.contains("wind_speed_10m")
+        boolean fresh = cached != null && cached.contains("sunrise")
                 && System.currentTimeMillis() - Prefs.weatherTime(c, place) < MAX_AGE;
         if (fresh) return false;
         try {
@@ -72,8 +87,7 @@ final class Weather {
                 json = Net.download(url(place));
             } catch (Exception ex) {
                 // Notfall: Grundversion ohne Zusatzfelder
-                json = Net.download(url(place).replace(",wind_speed_10m,wind_gusts_10m", "")
-                        .replace(",precipitation_probability_max", "").replace("&hourly=freezing_level_height", ""));
+                json = Net.download(basicUrl(place));
             }
             if (parse(json) == null) return false;
             try {
@@ -113,6 +127,32 @@ final class Weather {
             }
             JSONObject d = o.getJSONObject("daily");
             try {
+                String sr = d.getJSONArray("sunrise").optString(0, "");
+                String ss = d.getJSONArray("sunset").optString(0, "");
+                if (sr.length() >= 16) w.sunrise = sr.substring(11, 16);
+                if (ss.length() >= 16) w.sunset = ss.substring(11, 16);
+            } catch (Exception ignored) {
+            }
+            try {
+                String ct2 = cur.optString("time", "");
+                w.hourStart = ct2.length() >= 13 ? Integer.parseInt(ct2.substring(11, 13)) : 0;
+                JSONObject h = o.getJSONObject("hourly");
+                JSONArray ht = h.getJSONArray("temperature_2m");
+                JSONArray hp = h.optJSONArray("precipitation_probability");
+                JSONArray hc = h.optJSONArray("weather_code");
+                int n2 = ht.length();
+                w.hrTemp = new int[n2];
+                w.hrProb = new int[n2];
+                w.hrCode = new int[n2];
+                for (int i = 0; i < n2; i++) {
+                    w.hrTemp[i] = (int) Math.round(ht.optDouble(i, 0));
+                    w.hrProb[i] = hp != null && !hp.isNull(i) ? hp.optInt(i, NONE) : NONE;
+                    w.hrCode[i] = hc != null && !hc.isNull(i) ? hc.optInt(i, 3) : 3;
+                }
+            } catch (Exception ignored) {
+                w.hrTemp = new int[0];
+            }
+            try {
                 JSONArray pp = d.getJSONArray("precipitation_probability_max");
                 if (pp.length() > 0 && !pp.isNull(0)) w.precip = pp.getInt(0);
             } catch (Exception ignored) {
@@ -148,6 +188,10 @@ final class Weather {
             if (gust != NONE && gust > wind + 5) sb.append(" (Böen ").append(gust).append(")");
             sb.append(" km/h");
         }
+        if (!sunrise.isEmpty() && !sunset.isEmpty()) {
+            if (sb.length() > 0) sb.append("\n");
+            sb.append("Sonne ").append(sunrise).append(" – ").append(sunset);
+        }
         if (mtn != NONE) {
             if (sb.length() > 0) sb.append("\n");
             sb.append(MOUNTAIN_M).append(" m: ").append(deg(mtn));
@@ -157,6 +201,22 @@ final class Weather {
             sb.append("0°-Grenze ").append(freeze).append(" m");
         }
         return sb.toString();
+    }
+
+    /** Zeilen "14 Uhr · 5° · Regen 40 % · Bewölkt" fuer die naechsten Stunden. */
+    java.util.List<String> hourlyLines(int count) {
+        java.util.List<String> out = new java.util.ArrayList<>();
+        for (int i = hourStart; i < hrTemp.length && out.size() < count; i++) {
+            int h = i % 24;
+            boolean dayTime = h >= 7 && h <= 18;
+            StringBuilder sb = new StringBuilder();
+            sb.append(String.format(java.util.Locale.GERMANY, "%02d Uhr", h)).append("   ")
+                    .append(deg(hrTemp[i]));
+            if (hrProb[i] != NONE && hrProb[i] > 0) sb.append("   Regen ").append(hrProb[i]).append(" %");
+            sb.append("   ").append(text(hrCode[i], dayTime));
+            out.add(sb.toString());
+        }
+        return out;
     }
 
     /** Hintergrundfarbe (opak) fuer die Wetter-Zeile. */

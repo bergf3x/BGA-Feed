@@ -276,4 +276,21 @@ final class Bubble {
         parent.addView(t);
         return t;
     }
+
+    /** Knopf, der die Blase offen laesst (z. B. Merken); liefert die TextView zum Umbeschriften. */
+    TextView pillKeep(String label, boolean primary, Runnable onClick) {
+        TextView t = new TextView(act);
+        t.setText(label);
+        t.setGravity(Gravity.CENTER);
+        t.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+        t.setTextColor(primary ? DARK : TEXT);
+        t.setPadding(px(12), px(11), px(12), px(11));
+        pressable(t, primary ? LIGHT : 0, primary ? 0x33000000 : 0x40FFFFFF);
+        t.setOnClickListener(v -> onClick.run());
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        lp.topMargin = px(6);
+        box.addView(t, lp);
+        return t;
+    }
 }

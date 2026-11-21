@@ -37,6 +37,11 @@ public class ConfigActivity extends Activity {
     private int color;
     private boolean plus;
     private int density;
+    private int font;
+    private int size;
+    private int theme;
+    private boolean wxOn;
+    private boolean warnOn;
     private boolean settingHex = false;
     private final Set<String> selected = new HashSet<>();
     private final Set<String> muted = new HashSet<>();
@@ -72,6 +77,11 @@ public class ConfigActivity extends Activity {
         color = Prefs.color(this, widgetId);
         plus = Prefs.showPlus(this, widgetId);
         density = Prefs.density(this, widgetId);
+        font = Prefs.font(this, widgetId);
+        size = Prefs.size(this, widgetId);
+        theme = Prefs.theme(this, widgetId);
+        wxOn = Prefs.showWeather(this, widgetId);
+        warnOn = Prefs.showWarn(this, widgetId);
         selected.addAll(Prefs.feeds(this, widgetId));
         muted.addAll(Prefs.muted(this, widgetId));
 
@@ -161,6 +171,32 @@ public class ConfigActivity extends Activity {
         b.label(body, "Dichte der Liste");
         b.segment(body, new String[]{"Kompakt", "Luftig"}, density, i -> density = i);
 
+        b.label(body, "Schriftart");
+        b.segment(body, Style.FONT_NAMES, font, i -> {
+            font = i;
+            refreshPreview();
+        });
+        b.label(body, "Schriftgröße");
+        b.segment(body, new String[]{"Klein", "Normal", "Groß"}, size, i -> {
+            size = i;
+            refreshPreview();
+        });
+        b.label(body, "Design");
+        b.segment(body, new String[]{"Dunkel", "Hell"}, theme, i -> {
+            theme = i;
+            if (i == 1 && color == 0xFFFFFF) color = 0x1B1F22;
+            if (i == 0 && color == 0x1B1F22) color = 0xFFFFFF;
+            setHex(color);
+            buildSwatches();
+            refreshPreview();
+        });
+
+        b.label(body, "Anzeige");
+        b.toggle(body, "Wetterbereich anzeigen", wxOn, on -> wxOn = on);
+        b.toggle(body, "Unwetterwarnungen anzeigen", warnOn, on -> warnOn = on);
+        b.pillKeep("Gemerkte Artikel ansehen", false,
+                () -> startActivity(new Intent(this, SavedActivity.class)));
+
         b.label(body, "Quellen");
         feedBox = new LinearLayout(this);
         feedBox.setOrientation(LinearLayout.VERTICAL);
@@ -214,8 +250,8 @@ public class ConfigActivity extends Activity {
         if (selected.isEmpty()) selected.add("bga");
         Prefs.set(this, widgetId, bgPct, txPct, color, selected);
         Prefs.setExtras(this, widgetId, plus, muted, density);
-        WidgetProvider.update(this, AppWidgetManager.getInstance(this), widgetId);
-        WidgetProvider.refresh(this, widgetId);
+        Prefs.setLook(this, widgetId, font, size, theme, wxOn, warnOn);
+        WidgetProvider.updateAny(this, widgetId);
         Intent result = new Intent();
         result.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
         setResult(RESULT_OK, result);
@@ -275,8 +311,12 @@ public class ConfigActivity extends Activity {
     private void refreshPreview() {
         lblBg.setText("Hintergrund-Deckkraft: " + bgPct + " %");
         lblTx.setText("Schrift-Deckkraft: " + txPct + " %");
-        prevFill.setColor(Prefs.argb(0x1E1E26, bgPct, 1f));
+        prevFill.setColor(Prefs.argb(theme == 1 ? 0xEEF1F6 : 0x1E1E26, bgPct, 1f));
         prevTitle.setTextColor(Prefs.argb(color, txPct, 1f));
         prevMeta.setTextColor(Prefs.argb(color, txPct, 0.7f));
+        prevTitle.setTypeface(Style.typeface(font), android.graphics.Typeface.BOLD);
+        prevMeta.setTypeface(Style.typeface(font));
+        prevTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, Style.titleSp(size));
+        prevMeta.setTextSize(TypedValue.COMPLEX_UNIT_SP, Style.metaSp(size));
     }
 }

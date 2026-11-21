@@ -4,5 +4,6 @@
     <string name="config_title">Widget-Einstellungen</string>
     <string name="widget_title">Nachrichten</string>
     <string name="widget_desc">Nachrichten aus Berchtesgaden und den Bergen</string>
+    <string name="widget_weather_desc">Wetter für Berchtesgaden und Umgebung</string>
     <string name="empty_text">Lade Nachrichten …</string>
 </resources>

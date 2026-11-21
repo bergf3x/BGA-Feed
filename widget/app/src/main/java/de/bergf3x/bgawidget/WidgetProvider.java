@@ -30,6 +30,7 @@ public class WidgetProvider extends AppWidgetProvider {
         String action = intent.getAction();
         if (ACTION_REFRESH.equals(action)) {
             Prefs.invalidateWeather(ctx);
+            Prefs.invalidateWarn(ctx);
             AppWidgetManager mgr = AppWidgetManager.getInstance(ctx);
             int[] ids = mgr.getAppWidgetIds(new ComponentName(ctx, WidgetProvider.class));
             for (int id : ids) mgr.notifyAppWidgetViewDataChanged(id, R.id.list);
@@ -72,11 +73,11 @@ public class WidgetProvider extends AppWidgetProvider {
         int fg = Prefs.argb(rgb, tx, 1f);
         int dark = 0xFF1B1F22;
 
-        rv.setInt(R.id.bg_fill, "setImageAlpha", Prefs.alpha(bg));
-        rv.setInt(R.id.bg_border, "setImageAlpha", Math.round(Prefs.alpha(Math.max(bg, 20)) * 0.45f));
+        applyGlass(ctx, rv, id);
         rv.setTextColor(R.id.empty, fg);
+        boolean light = Prefs.theme(ctx, id) == 1;
 
-        applyWeather(ctx, rv, id, fg, Prefs.argb(rgb, tx, 0.7f));
+        applyWeather(ctx, rv, id, fg, Prefs.argb(rgb, tx, 0.7f), false);
 
         List<String> parents = new java.util.ArrayList<>();
         for (String t : topics) if (t.indexOf('/') < 0) parents.add(t);
@@ -94,9 +95,11 @@ public class WidgetProvider extends AppWidgetProvider {
             if (on && topic.indexOf('/') >= 0) label = topic.substring(topic.indexOf('/') + 1);
             else if (hasSubs) label = label + " ▾";
             rv.setViewVisibility(P[i], android.view.View.VISIBLE);
-            rv.setTextViewText(P_T[i], label);
+            rv.setTextViewText(P_T[i], Style.font(ctx, id, label));
+            rv.setInt(P[i], "setBackgroundResource", light ? R.drawable.chip_bg_light : R.drawable.chip_bg);
+            rv.setInt(P_ON[i], "setColorFilter", light ? 0xFF2A2F36 : 0xFFF2F2F2);
             rv.setViewVisibility(P_ON[i], on ? android.view.View.VISIBLE : android.view.View.GONE);
-            rv.setTextColor(P_T[i], on ? dark : fg);
+            rv.setTextColor(P_T[i], on ? (light ? 0xFFFFFFFF : dark) : fg);
             rv.setOnClickPendingIntent(P[i], hasSubs
                     ? topicPending(ctx, id, 100 + i, value, true, immutable)
                     : topicBroadcast(ctx, id, 100 + i, value, immutable));
@@ -107,23 +110,60 @@ public class WidgetProvider extends AppWidgetProvider {
         rv.setInt(R.id.btn_settings, "setImageAlpha", textAlpha);
     }
 
-    private static final int[] FC_D = {R.id.fc1_d, R.id.fc2_d, R.id.fc3_d};
-    private static final int[] FC_I = {R.id.fc1_i, R.id.fc2_i, R.id.fc3_i};
-    private static final int[] FC_T = {R.id.fc1_t, R.id.fc2_t, R.id.fc3_t};
-    private static final int[] FC_BAR = {R.id.fc1_bar, R.id.fc2_bar, R.id.fc3_bar};
-    private static final int BAR_DP = 56;
+    static final int[] FC_D = {R.id.fc1_d, R.id.fc2_d, R.id.fc3_d};
+    static final int[] FC_I = {R.id.fc1_i, R.id.fc2_i, R.id.fc3_i};
+    static final int[] FC_T = {R.id.fc1_t, R.id.fc2_t, R.id.fc3_t};
+    static final int[] FC_BAR = {R.id.fc1_bar, R.id.fc2_bar, R.id.fc3_bar};
+    static final int BAR_DP = 56;
 
-    /** Wetterbereich oben: aktueller Stand, Hoechst/Tiefst, Vorhersage (nur bei genug Hoehe). */
-    private static void applyWeather(Context ctx, RemoteViews rv, int id, int fg, int fgSoft) {
+    /** Glas-Hintergrund passend zur aktuellen Widget-Groesse zeichnen. */
+    static void applyGlass(Context ctx, RemoteViews rv, int id) {
+        int bg = Prefs.bg(ctx, id);
+        boolean light = Prefs.theme(ctx, id) == 1;
+        android.os.Bundle o = AppWidgetManager.getInstance(ctx).getAppWidgetOptions(id);
+        float d = ctx.getResources().getDisplayMetrics().density;
+        float sc = 0.55f;
+        int wDp = o.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, 0);
+        int hDp = o.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT, 0);
+        android.graphics.Bitmap b = GlassBg.get(Math.round(wDp * d * sc), Math.round(hDp * d * sc), bg, light, d * sc);
+        if (b != null) {
+            rv.setImageViewBitmap(R.id.bg_fill, b);
+            rv.setInt(R.id.bg_fill, "setImageAlpha", 255);
+            rv.setInt(R.id.bg_border, "setImageAlpha", 0);
+        } else {
+            rv.setInt(R.id.bg_fill, "setImageAlpha", Prefs.alpha(bg));
+            rv.setInt(R.id.bg_border, "setImageAlpha", Math.round(Prefs.alpha(Math.max(bg, 20)) * 0.45f));
+        }
+    }
+
+    private static PendingIntent activity(Context ctx, Class<?> cls, int id, int slot, String path) {
+        Intent i = new Intent(ctx, cls);
+        i.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id);
+        i.setData(Uri.parse("bgawidget://" + path + "/" + id));
+        return PendingIntent.getActivity(ctx, id * 1000 + slot, i,
+                PendingIntent.FLAG_UPDATE_CURRENT | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
+    }
+
+    /** Wetterbereich: aktueller Stand, Hoechst/Tiefst, Zusatzzeile, Warnung, Vorschau. weatherWidget = eigenes Wetter-Widget. */
+    static void applyWeather(Context ctx, RemoteViews rv, int id, int fg, int fgSoft, boolean weatherWidget) {
         int place = Prefs.place(ctx, id);
         Weather w = Weather.load(ctx, place);
-        rv.setTextViewText(R.id.w_place, Weather.PLACES[place] + " ▾");
+        boolean light = Prefs.theme(ctx, id) == 1;
+        boolean on = weatherWidget || Prefs.showWeather(ctx, id);
+        int visOn = on ? android.view.View.VISIBLE : android.view.View.GONE;
+        rv.setViewVisibility(R.id.w_icon, visOn);
+        rv.setViewVisibility(R.id.w_temp, visOn);
+        rv.setViewVisibility(R.id.w_hilo, visOn);
+        rv.setViewVisibility(R.id.w_box, on ? android.view.View.VISIBLE : android.view.View.INVISIBLE);
+
+        rv.setTextViewText(R.id.w_place, Style.font(ctx, id, Weather.PLACES[place] + " ▾"));
         rv.setTextColor(R.id.w_place, fg);
-        Intent pi = new Intent(ctx, PlaceActivity.class);
-        pi.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id);
-        pi.setData(Uri.parse("bgawidget://place/" + id));
-        rv.setOnClickPendingIntent(R.id.w_box, PendingIntent.getActivity(ctx, id * 1000 + 900, pi,
-                PendingIntent.FLAG_UPDATE_CURRENT | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0)));
+        rv.setOnClickPendingIntent(R.id.w_box, activity(ctx, PlaceActivity.class, id, 900, "place"));
+        PendingIntent hourly = activity(ctx, HourlyActivity.class, id, 902, "hourly");
+        rv.setOnClickPendingIntent(R.id.w_temp, hourly);
+        rv.setOnClickPendingIntent(R.id.w_hi, hourly);
+        rv.setOnClickPendingIntent(R.id.w_lo, hourly);
+        rv.setOnClickPendingIntent(R.id.w_icon, activity(ctx, WebcamActivity.class, id, 903, "webcam"));
         rv.setTextColor(R.id.w_desc, fgSoft);
         rv.setTextColor(R.id.w_temp, fg);
         rv.setTextColor(R.id.w_hi, fg);
@@ -136,7 +176,7 @@ public class WidgetProvider extends AppWidgetProvider {
             rv.setTextViewText(R.id.w_hi, "");
             rv.setTextViewText(R.id.w_lo, "");
         } else {
-            android.graphics.Bitmap bg = WeatherBg.get(ctx, w.code, w.day);
+            android.graphics.Bitmap bg = on ? WeatherBg.get(ctx, w.code, w.day, light) : null;
             rv.setInt(R.id.w_tint, "setColorFilter", 0);
             if (bg != null) {
                 rv.setImageViewBitmap(R.id.w_tint, bg);
@@ -145,7 +185,7 @@ public class WidgetProvider extends AppWidgetProvider {
                 rv.setInt(R.id.w_tint, "setImageAlpha", 0);
             }
             rv.setImageViewResource(R.id.w_icon, Weather.icon(w.code, w.day));
-            rv.setTextViewText(R.id.w_desc, Weather.text(w.code, w.day));
+            rv.setTextViewText(R.id.w_desc, Style.font(ctx, id, Weather.text(w.code, w.day)));
             rv.setTextViewText(R.id.w_temp, Weather.deg(w.temp));
             rv.setTextViewText(R.id.w_hi, w.days > 0 ? "↑ " + Weather.deg(w.hi[0]) : "");
             rv.setTextViewText(R.id.w_lo, w.days > 0 ? "↓ " + Weather.deg(w.lo[0]) : "");
@@ -183,16 +223,28 @@ public class WidgetProvider extends AppWidgetProvider {
         }
         int minH = AppWidgetManager.getInstance(ctx).getAppWidgetOptions(id)
                 .getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, 300);
-        rv.setViewVisibility(R.id.fc_box, minH >= 260 ? android.view.View.VISIBLE : android.view.View.GONE);
+        int infoH = weatherWidget ? 120 : 190;
+        int fcH = weatherWidget ? 200 : 260;
+        int warnH = weatherWidget ? 90 : 150;
+        rv.setViewVisibility(R.id.fc_box, on && minH >= fcH ? android.view.View.VISIBLE : android.view.View.GONE);
         String info = w == null ? "" : w.info();
-        rv.setTextViewText(R.id.w_info, info);
+        rv.setTextViewText(R.id.w_info, Style.font(ctx, id, info));
         rv.setTextColor(R.id.w_info, fgSoft);
-        rv.setViewVisibility(R.id.w_info, minH >= 190 && !info.isEmpty() ? android.view.View.VISIBLE : android.view.View.GONE);
+        rv.setViewVisibility(R.id.w_info, on && minH >= infoH && !info.isEmpty() ? android.view.View.VISIBLE : android.view.View.GONE);
 
-        // Stand der Nachrichten + Offline-Hinweis
-        long t = Prefs.newsTime(ctx);
+        // amtliche DWD-Warnung (nur wenn aktuell)
+        int wl = Prefs.warnLevel(ctx);
+        String wt = Prefs.warnText(ctx);
+        boolean showWarn = on && Prefs.showWarn(ctx, id) && wl >= 2 && !wt.isEmpty() && minH >= warnH
+                && System.currentTimeMillis() - Prefs.warnTime(ctx) < 6L * 3600000;
+        rv.setTextViewText(R.id.w_warn, "⚠ " + wt);
+        rv.setTextColor(R.id.w_warn, Warnings.color(wl));
+        rv.setViewVisibility(R.id.w_warn, showWarn ? android.view.View.VISIBLE : android.view.View.GONE);
+
+        // Stand + Offline-Hinweis
+        long t = weatherWidget ? Prefs.weatherTime(ctx, place) : Prefs.newsTime(ctx);
         String stand = t == 0 ? "" : new java.text.SimpleDateFormat("HH:mm", java.util.Locale.GERMANY).format(new java.util.Date(t));
-        boolean ok = Prefs.newsOk(ctx);
+        boolean ok = weatherWidget || Prefs.newsOk(ctx);
         String line;
         if (ok) line = stand.isEmpty() ? "" : "Stand " + stand;
         else line = "Offline – " + (stand.isEmpty() ? "keine Daten" : "Stand " + stand);
@@ -208,9 +260,32 @@ public class WidgetProvider extends AppWidgetProvider {
 
     /** Nur die Kopfzeile (Wetter, Chips, Farben) neu zeichnen, ohne die Liste neu zu laden. */
     static void refreshHeader(Context ctx, int id) {
+        if (isWeatherWidget(ctx, id)) {
+            WeatherWidgetProvider.refresh(ctx, id);
+            return;
+        }
         RemoteViews rv = new RemoteViews(ctx.getPackageName(), R.layout.widget);
         applyHeader(ctx, rv, id);
         AppWidgetManager.getInstance(ctx).partiallyUpdateAppWidget(id, rv);
+    }
+
+    static boolean isWeatherWidget(Context ctx, int id) {
+        try {
+            android.appwidget.AppWidgetProviderInfo info = AppWidgetManager.getInstance(ctx).getAppWidgetInfo(id);
+            return info != null && WeatherWidgetProvider.class.getName().equals(info.provider.getClassName());
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /** Nach Aenderung der Einstellungen: das richtige Widget komplett neu zeichnen. */
+    static void updateAny(Context ctx, int id) {
+        if (isWeatherWidget(ctx, id)) {
+            WeatherWidgetProvider.update(ctx, AppWidgetManager.getInstance(ctx), id);
+        } else {
+            update(ctx, AppWidgetManager.getInstance(ctx), id);
+            refresh(ctx, id);
+        }
     }
 
     /** Weiche Aktualisierung nur der Kopfzeile + Liste, ohne das ganze Widget neu aufzubauen. */

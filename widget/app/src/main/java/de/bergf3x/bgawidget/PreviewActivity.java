@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.widget.TextView;
 
 /** Vorschau eines Artikels (Titel, Rubrik, Zeit, Anrisstext) als Glas-Blase mit Knopf zur Webseite. */
 public class PreviewActivity extends Activity {
@@ -39,6 +40,21 @@ public class PreviewActivity extends Activity {
         b.pill("Artikel öffnen", true, isWeb(link), () -> {
             try {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(link)));
+            } catch (Exception ignored) {
+            }
+        });
+        final TextView save = b.pillKeep(Prefs.isSaved(this, link) ? "Gemerkt ✓ (tippen zum Entfernen)" : "Merken", false, () -> { });
+        save.setOnClickListener(v -> {
+            boolean now = Prefs.toggleSaved(this, title, meta, text, link);
+            save.setText(now ? "Gemerkt ✓ (tippen zum Entfernen)" : "Merken");
+        });
+        b.pillKeep("Teilen", false, () -> {
+            try {
+                Intent send = new Intent(Intent.ACTION_SEND);
+                send.setType("text/plain");
+                send.putExtra(Intent.EXTRA_SUBJECT, title);
+                send.putExtra(Intent.EXTRA_TEXT, title + "\n" + link);
+                startActivity(Intent.createChooser(send, "Teilen"));
             } catch (Exception ignored) {
             }
         });

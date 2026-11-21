@@ -38,8 +38,8 @@ final class WeatherBg {
         return c + (day ? "_d" : "_n");
     }
 
-    static synchronized Bitmap get(Context ctx, int code, boolean day) {
-        String key = category(code, day);
+    static synchronized Bitmap get(Context ctx, int code, boolean day, boolean light) {
+        String key = category(code, day) + (light ? "L" : "");
         if (cache != null && key.equals(cacheKey)) return cache;
         Bitmap b = null;
         try {
@@ -59,7 +59,9 @@ final class WeatherBg {
         return p;
     }
 
-    private static Bitmap render(Context ctx, String key) {
+    private static Bitmap render(Context ctx, String key0) {
+        boolean light = key0.endsWith("L");
+        String key = light ? key0.substring(0, key0.length() - 1) : key0;
         boolean day = key.endsWith("_d");
         String cat = key.substring(0, key.indexOf('_'));
         Bitmap src = BitmapFactory.decodeResource(ctx.getResources(), R.drawable.watzmann);
@@ -120,6 +122,7 @@ final class WeatherBg {
         }
 
         // Weich ausblenden: links hinter dem Text fast weg, unten auslaufend; insgesamt dezent
+        if (light) alpha *= 0.55f;
         Paint m = new Paint();
         m.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
         int a0 = Math.round(255 * alpha * .3f);

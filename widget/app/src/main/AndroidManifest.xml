@@ -20,6 +20,18 @@
                 android:resource="@xml/widget_info" />
         </receiver>
 
+        <receiver
+            android:name=".WeatherWidgetProvider"
+            android:exported="true"
+            android:label="BGA Wetter">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_weather_info" />
+        </receiver>
+
         <service
             android:name=".ListService"
             android:exported="false"
@@ -48,6 +60,26 @@
             android:exported="false"
             android:excludeFromRecents="true"
             android:noHistory="true"
+            android:theme="@style/BubbleTheme" />
+
+        <activity
+            android:name=".HourlyActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:theme="@style/BubbleTheme" />
+
+        <activity
+            android:name=".WebcamActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:theme="@style/BubbleTheme" />
+
+        <activity
+            android:name=".SavedActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
             android:theme="@style/BubbleTheme" />
 
         <activity

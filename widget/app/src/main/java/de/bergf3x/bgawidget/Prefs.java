@@ -62,7 +62,9 @@ final class Prefs {
     static void remove(Context c, int id) {
         sp(c).edit().remove("bg_" + id).remove("tx_" + id).remove("tc_" + id)
                 .remove("fd_" + id).remove("tp_" + id).remove("pl_" + id)
-                .remove("plus_" + id).remove("mute_" + id).remove("dens_" + id).apply();
+                .remove("plus_" + id).remove("mute_" + id).remove("dens_" + id)
+                .remove("font_" + id).remove("size_" + id).remove("theme_" + id)
+                .remove("wx_" + id).remove("warn_" + id).apply();
     }
 
     /** PLUS-Artikel anzeigen (Standard: ja). */
@@ -85,6 +87,102 @@ final class Prefs {
         sp(c).edit().putBoolean("plus_" + id, plus)
                 .putStringSet("mute_" + id, new HashSet<>(muted))
                 .putInt("dens_" + id, density == 1 ? 1 : 0).apply();
+    }
+
+    // ---- Aussehen ----
+    /** 0 Standard, 1 Serif, 2 Schmal, 3 Monospace, 4 Handschrift. */
+    static int font(Context c, int id) {
+        int f = sp(c).getInt("font_" + id, 0);
+        return f >= 0 && f <= 4 ? f : 0;
+    }
+
+    /** 0 klein, 1 normal, 2 gross. */
+    static int size(Context c, int id) {
+        int f = sp(c).getInt("size_" + id, 1);
+        return f >= 0 && f <= 2 ? f : 1;
+    }
+
+    /** 0 dunkel, 1 hell. */
+    static int theme(Context c, int id) {
+        return sp(c).getInt("theme_" + id, 0) == 1 ? 1 : 0;
+    }
+
+    static boolean showWeather(Context c, int id) {
+        return sp(c).getBoolean("wx_" + id, true);
+    }
+
+    static boolean showWarn(Context c, int id) {
+        return sp(c).getBoolean("warn_" + id, true);
+    }
+
+    static void setLook(Context c, int id, int font, int size, int theme, boolean weather, boolean warn) {
+        sp(c).edit().putInt("font_" + id, font).putInt("size_" + id, size).putInt("theme_" + id, theme)
+                .putBoolean("wx_" + id, weather).putBoolean("warn_" + id, warn).apply();
+    }
+
+    // ---- DWD-Warnung (zuletzt berechnet) ----
+    static void setWarn(Context c, int level, String text) {
+        sp(c).edit().putInt("warn_level", level).putString("warn_text", text == null ? "" : text)
+                .putLong("warn_t", System.currentTimeMillis()).apply();
+    }
+
+    static int warnLevel(Context c) {
+        return sp(c).getInt("warn_level", 0);
+    }
+
+    static String warnText(Context c) {
+        return sp(c).getString("warn_text", "");
+    }
+
+    static void invalidateWarn(Context c) {
+        sp(c).edit().putLong("warn_t", 0).apply();
+    }
+
+    static long warnTime(Context c) {
+        return sp(c).getLong("warn_t", 0);
+    }
+
+    // ---- gemerkte Artikel (JSON-Liste, neueste zuerst, max. 100) ----
+    static org.json.JSONArray saved(Context c) {
+        try {
+            return new org.json.JSONArray(sp(c).getString("saved", "[]"));
+        } catch (Exception e) {
+            return new org.json.JSONArray();
+        }
+    }
+
+    static boolean isSaved(Context c, String link) {
+        org.json.JSONArray a = saved(c);
+        for (int i = 0; i < a.length(); i++) {
+            if (link.equals(a.optJSONObject(i) == null ? "" : a.optJSONObject(i).optString("l"))) return true;
+        }
+        return false;
+    }
+
+    /** Merken oder wieder entfernen; liefert den neuen Zustand. */
+    static synchronized boolean toggleSaved(Context c, String title, String meta, String text, String link) {
+        org.json.JSONArray a = saved(c);
+        org.json.JSONArray out = new org.json.JSONArray();
+        boolean had = false;
+        for (int i = 0; i < a.length(); i++) {
+            org.json.JSONObject o = a.optJSONObject(i);
+            if (o == null) continue;
+            if (link.equals(o.optString("l"))) had = true;
+            else out.put(o);
+        }
+        if (!had) {
+            try {
+                org.json.JSONObject n = new org.json.JSONObject();
+                n.put("t", title).put("m", meta).put("x", text).put("l", link);
+                org.json.JSONArray res = new org.json.JSONArray();
+                res.put(n);
+                for (int i = 0; i < out.length() && res.length() < 100; i++) res.put(out.get(i));
+                out = res;
+            } catch (Exception ignored) {
+            }
+        }
+        sp(c).edit().putString("saved", out.toString()).apply();
+        return !had;
     }
 
     // ---- gelesene Artikel (global, die letzten 400 Links) ----

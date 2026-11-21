@@ -27,6 +27,7 @@
         android:paddingBottom="14dp">
 
         <FrameLayout
+            android:id="@+id/w_frame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -98,6 +99,7 @@
                 android:textStyle="bold" />
 
             <LinearLayout
+                android:id="@+id/w_hilo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
@@ -146,12 +148,26 @@
         </FrameLayout>
 
         <TextView
-            android:id="@+id/w_info"
+            android:id="@+id/w_warn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:ellipsize="end"
             android:maxLines="2"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp"
+            android:textColor="#FFFFB74D"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/w_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:ellipsize="end"
+            android:maxLines="3"
             android:paddingLeft="6dp"
             android:paddingRight="6dp"
             android:textColor="#B3FFFFFF"

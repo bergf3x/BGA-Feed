@@ -24,6 +24,8 @@ public class ListService extends RemoteViewsService {
         private List<FeedItem> items = new ArrayList<>();
         private Set<String> readSet = new java.util.HashSet<>();
         private boolean airy;
+        private int sizeIdx = 1;
+        private boolean lightTheme;
 
         Factory(Context ctx, int widgetId) {
             this.ctx = ctx;
@@ -43,6 +45,7 @@ public class ListService extends RemoteViewsService {
             }
             Catalog.refresh(ctx);
             Weather.refreshIfStale(ctx, Prefs.place(ctx, widgetId));
+            Warnings.refreshIfStale(ctx);
             items = load(true);
             WidgetProvider.refreshHeader(ctx, widgetId);
         }
@@ -51,6 +54,8 @@ public class ListService extends RemoteViewsService {
         private List<FeedItem> load(boolean online) {
             readSet = Prefs.readSet(ctx);
             airy = Prefs.density(ctx, widgetId) == 1;
+            sizeIdx = Prefs.size(ctx, widgetId);
+            lightTheme = Prefs.theme(ctx, widgetId) == 1;
             List<Catalog.Feed> all = Catalog.load(ctx);
             Set<String> selected = Catalog.effective(all, Prefs.feeds(ctx, widgetId));
             String topic = Prefs.topic(ctx, widgetId);
@@ -144,8 +149,11 @@ public class ListService extends RemoteViewsService {
             boolean read = Prefs.isRead(readSet, it.link);
             float dim = read ? 0.55f : 1f;
             String meta = it.meta();
-            rv.setTextViewText(R.id.item_title, it.title);
-            rv.setTextViewText(R.id.item_meta, meta);
+            rv.setTextViewText(R.id.item_title, Style.font(ctx, widgetId, it.title));
+            rv.setTextViewText(R.id.item_meta, Style.font(ctx, widgetId, meta));
+            rv.setTextViewTextSize(R.id.item_title, android.util.TypedValue.COMPLEX_UNIT_SP, Style.titleSp(sizeIdx));
+            rv.setTextViewTextSize(R.id.item_meta, android.util.TypedValue.COMPLEX_UNIT_SP, Style.metaSp(sizeIdx));
+            rv.setInt(R.id.item_card, "setBackgroundResource", lightTheme ? R.drawable.card_bg_light : R.drawable.card_bg);
             rv.setTextColor(R.id.item_title, Prefs.argb(rgb, tx, dim));
             rv.setTextColor(R.id.item_meta, Prefs.argb(rgb, tx, 0.7f * dim));
             rv.setInt(R.id.item_accent, "setColorFilter", it.accentColor());
