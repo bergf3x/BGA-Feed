@@ -5,7 +5,9 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
-            {"1.01",
+            {"1.03",
+                    "~ Änderungsliste im Info-Menü ergänzt (aufklappbar)"},
+            {"1.02",
                     "+ Info-Menü mit Version und Datum",
                     "+ Versionsnummer wird bei jedem Build hochgezählt, APK-Name enthält die Version",
                     "+ Pfeil ▾ an jedem Themen-Reiter mit Untermenü, in App und Widget",
