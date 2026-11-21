@@ -29,10 +29,21 @@ final class Catalog {
 
     /** Im Hintergrund-Thread aufrufen. */
     static void refresh(Context c) {
+        refreshStatus(c);
+    }
+
+    /** Wie refresh, liefert aber eine Statuszeile (Erfolg oder Fehlergrund). */
+    static String refreshStatus(Context c) {
         try {
             String json = Net.download(Net.fresh(URL));
-            if (!parse(json).isEmpty()) Prefs.setCatalogCache(c, json);
-        } catch (Exception ignored) {
+            List<Feed> list = parse(json);
+            if (list.isEmpty()) return "Katalog unlesbar (" + json.length() + " Zeichen)";
+            Prefs.setCatalogCache(c, json);
+            int n = 0;
+            for (Feed f : list) n += f.topics.size();
+            return "Katalog geladen: " + list.size() + " Quellen, " + n + " Themen";
+        } catch (Exception e) {
+            return "Katalog-Fehler: " + e;
         }
     }
 

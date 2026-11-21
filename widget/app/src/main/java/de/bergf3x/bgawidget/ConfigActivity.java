@@ -53,6 +53,7 @@ public class ConfigActivity extends Activity {
     private TextView lblTx;
     private EditText etColor;
     private LinearLayout feedBox;
+    private TextView catStatus;
     private LinearLayout muteBox;
     private LinearLayout swatchBox;
 
@@ -198,6 +199,7 @@ public class ConfigActivity extends Activity {
                 () -> startActivity(new Intent(this, SavedActivity.class)));
 
         b.label(body, "Quellen");
+        catStatus = b.label(body, "Katalog wird geladen ...");
         feedBox = new LinearLayout(this);
         feedBox.setOrientation(LinearLayout.VERTICAL);
         body.addView(feedBox);
@@ -212,8 +214,11 @@ public class ConfigActivity extends Activity {
 
         // Katalog im Hintergrund aktualisieren (neue Feeds erscheinen ohne App-Update)
         new Thread(() -> {
-            Catalog.refresh(getApplicationContext());
-            runOnUiThread(this::buildLists);
+            String st = Catalog.refreshStatus(getApplicationContext());
+            runOnUiThread(() -> {
+                catStatus.setText(st);
+                buildLists();
+            });
         }).start();
 
         b.space(6);
