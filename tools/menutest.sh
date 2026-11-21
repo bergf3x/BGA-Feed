@@ -46,7 +46,7 @@ for chip in "BGL ▾" "Außerhalb ▾" "Deutschland & Welt ▾"; do
   first=$(head -1 $OUT/regions.txt)
   if [ -n "$first" ]; then $UI tap "$first" >/dev/null; sleep 1; fi
   $UI tap "Schließen" | tee -a $R; sleep 2
-  if $UI has "Schließen" | grep -q gefunden; then log "  Blase bleibt offen!"; else log "  Blase geschlossen OK"; fi
+  if $UI texts | grep -q "| Schließen |"; then log "  Blase bleibt offen!"; else log "  Blase geschlossen OK"; fi
   shot "m_${tag}_liste"
 done
 
@@ -55,7 +55,7 @@ $UI tap "Alle" | tee -a $R; sleep 2
 for area in "Außerhalb" "Deutschland & Welt"; do
   for k in $(seq 1 25); do
     $UI texts | grep -q "$area, aufklappen" && break
-    adb shell input swipe 540 1800 540 700 250; sleep 0.6
+    adb shell input swipe 540 2000 540 1700 400; sleep 0.8
   done
   $UI tap "$area, aufklappen" | tee -a $R; sleep 2
   if $UI texts | grep -q "$area, zuklappen"; then log "  $area: öffnet OK"; else log "  $area: ÖFFNET NICHT"; fi

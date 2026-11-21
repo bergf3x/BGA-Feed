@@ -32,7 +32,7 @@ def main():
     if cmd == "texts":
         for t, d, x, y in nodes():
             if t or d:
-                print(f"{y:5} | {t[:70]} | {d[:50]}")
+                print(f"{y:5} | {t[:70]} | {d[:100]}")
         return
     ns = list(nodes())
     exact = [n for n in ns if arg and (n[0] == arg or n[1] == arg)]
