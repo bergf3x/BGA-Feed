@@ -34,14 +34,14 @@ for chip in "BGL ▾" "Außerhalb ▾" "Deutschland & Welt ▾"; do
   # jede aufklappbare Region öffnen, prüfen, wieder schließen
   grep "aufklappen" "$OUT/m_${tag}_0.txt" | awk -F'|' '{print $3}' | sed 's/^ *//;s/ *$//' | sed 's/, .*//' > $OUT/regions.txt
   i=0
-  while read -r reg; do
+  IFS=$'\n'; for reg in $(cat $OUT/regions.txt); do unset IFS
     [ -z "$reg" ] && continue; i=$((i+1))
     $UI tap "$reg" >/dev/null; sleep 1
     if $UI texts | grep -q "$reg.*zuklappen"; then log "  $reg: öffnet OK"; else log "  $reg: ÖFFNET NICHT"; fi
     shot "m_${tag}_${i}"; $UI texts > "$OUT/m_${tag}_${i}.txt"
     $UI tap "$reg" >/dev/null; sleep 1
     if $UI texts | grep -q "$reg.*aufklappen"; then log "  $reg: schließt OK"; else log "  $reg: SCHLIESST NICHT"; fi
-  done < $OUT/regions.txt
+  done; unset IFS
   # Einzeleintrag wählen (erste Rubrik der ersten Region) und Schließen
   first=$(head -1 $OUT/regions.txt)
   if [ -n "$first" ]; then $UI tap "$first" >/dev/null; sleep 1; fi
@@ -53,7 +53,7 @@ done
 log "== Alle: Klappbereiche =="
 $UI tap "Alle" | tee -a $R; sleep 2
 for area in "Außerhalb" "Deutschland & Welt"; do
-  for k in $(seq 1 25); do
+  for k in $(seq 1 80); do
     $UI texts | grep -q "$area, aufklappen" && break
     adb shell input swipe 540 2000 540 1700 400; sleep 0.8
   done
