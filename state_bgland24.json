@@ -526,10 +526,10 @@
    "teaser": "",
    "category": "",
    "topic": "Region/Rupertiwinkel",
-   "plus": false,
+   "plus": true,
    "date": "",
    "first_seen": "2026-11-21T01:02:47+00:00",
-   "pc": true
+   "pc": 2
   },
   "2869682255": {
    "sid": 2869682255,
@@ -541,7 +541,7 @@
    "plus": false,
    "date": "",
    "first_seen": "2026-11-21T01:02:47+00:00",
-   "pc": true
+   "pc": 2
   },
   "4100726518": {
    "sid": 4100726518,
@@ -550,10 +550,10 @@
    "teaser": "",
    "category": "",
    "topic": "Region/Rupertiwinkel",
-   "plus": false,
+   "plus": true,
    "date": "",
    "first_seen": "2026-11-21T01:02:47+00:00",
-   "pc": true
+   "pc": 2
   },
   "3861608990": {
    "sid": 3861608990,
@@ -565,7 +565,7 @@
    "plus": false,
    "date": "",
    "first_seen": "2026-11-21T01:02:47+00:00",
-   "pc": true
+   "pc": 2
   },
   "247774297": {
    "sid": 247774297,
@@ -574,10 +574,10 @@
    "teaser": "",
    "category": "",
    "topic": "Bayern/Rosenheim",
-   "plus": false,
+   "plus": true,
    "date": "",
    "first_seen": "2026-11-21T01:02:47+00:00",
-   "pc": true
+   "pc": 2
   },
   "357173783": {
    "sid": 357173783,
@@ -589,7 +589,7 @@
    "plus": false,
    "date": "",
    "first_seen": "2026-11-21T01:02:47+00:00",
-   "pc": true
+   "pc": 2
   },
   "2792976479": {
    "sid": 2792976479,
@@ -601,7 +601,7 @@
    "plus": false,
    "date": "",
    "first_seen": "2026-11-21T01:02:47+00:00",
-   "pc": true
+   "pc": 2
   },
   "2768877257": {
    "sid": 2768877257,
@@ -610,10 +610,10 @@
    "teaser": "",
    "category": "",
    "topic": "Region/Traunstein",
-   "plus": false,
+   "plus": true,
    "date": "",
    "first_seen": "2026-11-21T01:02:47+00:00",
-   "pc": true
+   "pc": 2
   },
   "4073011318": {
    "sid": 4073011318,
@@ -622,10 +622,10 @@
    "teaser": "",
    "category": "",
    "topic": "Region/Berchtesgaden",
-   "plus": false,
+   "plus": true,
    "date": "",
    "first_seen": "2026-11-21T01:02:47+00:00",
-   "pc": true
+   "pc": 2
   },
   "2747862570": {
    "sid": 2747862570,
@@ -634,10 +634,10 @@
    "teaser": "",
    "category": "",
    "topic": "Region/Berchtesgaden",
-   "plus": false,
+   "plus": true,
    "date": "",
    "first_seen": "2026-11-21T01:02:47+00:00",
-   "pc": true
+   "pc": 2
   },
   "2202387239": {
    "sid": 2202387239,
@@ -649,7 +649,7 @@
    "plus": false,
    "date": "",
    "first_seen": "2026-11-21T01:02:47+00:00",
-   "pc": true
+   "pc": 2
   },
   "2276270801": {
    "sid": 2276270801,
@@ -661,7 +661,7 @@
    "plus": false,
    "date": "",
    "first_seen": "2026-11-21T01:02:47+00:00",
-   "pc": true
+   "pc": 2
   },
   "1786586750": {
    "sid": 1786586750,
@@ -673,7 +673,7 @@
    "plus": false,
    "date": "",
    "first_seen": "2026-11-21T01:02:47+00:00",
-   "pc": true
+   "pc": 2
   },
   "3913733406": {
    "sid": 3913733406,
@@ -685,7 +685,7 @@
    "plus": false,
    "date": "",
    "first_seen": "2026-11-21T01:02:47+00:00",
-   "pc": true
+   "pc": 2
   },
   "848144652": {
    "sid": 848144652,
@@ -694,10 +694,10 @@
    "teaser": "",
    "category": "",
    "topic": "Bayern/Muehldorf",
-   "plus": false,
+   "plus": true,
    "date": "",
    "first_seen": "2026-11-21T01:02:47+00:00",
-   "pc": true
+   "pc": 2
   },
   "3158405121": {
    "sid": 3158405121,
@@ -706,10 +706,10 @@
    "teaser": "",
    "category": "",
    "topic": "Bayern/Rosenheim",
-   "plus": false,
+   "plus": true,
    "date": "",
    "first_seen": "2026-11-21T01:02:47+00:00",
-   "pc": true
+   "pc": 2
   },
   "4084488612": {
    "sid": 4084488612,
@@ -718,10 +718,10 @@
    "teaser": "",
    "category": "",
    "topic": "Bayern/Rosenheim",
-   "plus": false,
+   "plus": true,
    "date": "",
    "first_seen": "2026-11-21T01:02:47+00:00",
-   "pc": true
+   "pc": 2
   },
   "2704230439": {
    "sid": 2704230439,
@@ -730,10 +730,10 @@
    "teaser": "",
    "category": "",
    "topic": "Bayern/Rosenheim",
-   "plus": false,
+   "plus": true,
    "date": "",
    "first_seen": "2026-11-21T01:02:47+00:00",
-   "pc": true
+   "pc": 2
   },
   "1816736295": {
    "sid": 1816736295,
@@ -742,7 +742,7 @@
    "teaser": "",
    "category": "",
    "topic": "Region",
-   "plus": true,
+   "plus": false,
    "date": "",
    "first_seen": "2026-11-21T01:02:47+00:00",
    "pc": true
@@ -757,7 +757,7 @@
    "plus": false,
    "date": "",
    "first_seen": "2026-11-21T01:02:47+00:00",
-   "pc": true
+   "pc": 2
   },
   "609367740": {
    "sid": 609367740,
@@ -769,7 +769,7 @@
    "plus": false,
    "date": "",
    "first_seen": "2026-11-21T01:02:47+00:00",
-   "pc": true
+   "pc": 2
   },
   "3811091599": {
    "sid": 3811091599,
@@ -781,7 +781,7 @@
    "plus": false,
    "date": "",
    "first_seen": "2026-11-21T01:02:47+00:00",
-   "pc": true
+   "pc": 2
   },
   "403138886": {
    "sid": 403138886,
@@ -793,7 +793,7 @@
    "plus": false,
    "date": "",
    "first_seen": "2026-11-21T01:02:47+00:00",
-   "pc": true
+   "pc": 2
   },
   "1016652123": {
    "sid": 1016652123,
@@ -805,7 +805,7 @@
    "plus": false,
    "date": "",
    "first_seen": "2026-11-21T01:02:47+00:00",
-   "pc": true
+   "pc": 2
   },
   "4106760021": {
    "sid": 4106760021,
@@ -817,7 +817,7 @@
    "plus": false,
    "date": "",
    "first_seen": "2026-11-21T01:02:47+00:00",
-   "pc": true
+   "pc": 2
   },
   "3885596448": {
    "sid": 3885596448,
@@ -829,7 +829,7 @@
    "plus": false,
    "date": "",
    "first_seen": "2026-11-21T01:02:47+00:00",
-   "pc": true
+   "pc": 2
   },
   "3719223249": {
    "sid": 3719223249,
@@ -886,7 +886,7 @@
    "teaser": "",
    "category": "",
    "topic": "Region",
-   "plus": true,
+   "plus": false,
    "date": "",
    "first_seen": "2026-11-21T01:02:47+00:00",
    "pc": true
