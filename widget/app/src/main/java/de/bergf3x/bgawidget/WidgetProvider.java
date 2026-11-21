@@ -232,7 +232,9 @@ public class WidgetProvider extends AppWidgetProvider {
         String info = w == null ? "" : w.info();
         rv.setTextViewText(R.id.w_info, Style.font(ctx, id, info));
         rv.setTextColor(R.id.w_info, fgSoft);
-        rv.setViewVisibility(R.id.w_info, on && minH >= infoH && !info.isEmpty() ? android.view.View.VISIBLE : android.view.View.GONE);
+        int infoVis = on && minH >= infoH && !info.isEmpty() ? android.view.View.VISIBLE : android.view.View.GONE;
+        rv.setViewVisibility(R.id.w_info, infoVis);
+        rv.setViewVisibility(R.id.btn_cam, on && minH >= infoH ? android.view.View.VISIBLE : android.view.View.GONE);
 
         // amtliche DWD-Warnung (nur wenn aktuell)
         int wl = Prefs.warnLevel(ctx);
