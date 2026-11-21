@@ -17,17 +17,25 @@ public class WeatherWidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context ctx, AppWidgetManager mgr, int[] ids) {
         for (int id : ids) update(ctx, mgr, id);
-        loadAndUpdate(ctx, ids, goAsync());
+        Scheduler.schedule(ctx);
+        Updater.runAsync(ctx, false, goAsync());
+    }
+
+    @Override
+    public void onEnabled(Context ctx) {
+        Scheduler.schedule(ctx);
+    }
+
+    @Override
+    public void onDisabled(Context ctx) {
+        Scheduler.schedule(ctx);
     }
 
     @Override
     public void onReceive(Context ctx, Intent intent) {
         if (ACTION_REFRESH.equals(intent.getAction())) {
-            Prefs.invalidateWeather(ctx);
-            Prefs.invalidateWarn(ctx);
-            AppWidgetManager mgr = AppWidgetManager.getInstance(ctx);
-            int[] ids = mgr.getAppWidgetIds(new ComponentName(ctx, WeatherWidgetProvider.class));
-            loadAndUpdate(ctx, ids, goAsync());
+            android.widget.Toast.makeText(ctx, "Aktualisiere …", android.widget.Toast.LENGTH_SHORT).show();
+            Updater.runAsync(ctx, true, goAsync());
             return;
         }
         super.onReceive(ctx, intent);
@@ -41,20 +49,6 @@ public class WeatherWidgetProvider extends AppWidgetProvider {
     @Override
     public void onAppWidgetOptionsChanged(Context ctx, AppWidgetManager mgr, int id, android.os.Bundle opts) {
         update(ctx, mgr, id);
-    }
-
-    private static void loadAndUpdate(final Context ctx, final int[] ids, final PendingResult pr) {
-        new Thread(() -> {
-            try {
-                Warnings.refreshIfStale(ctx);
-                Avalanche.refreshIfStale(ctx);
-                for (int id : ids) Weather.refreshIfStale(ctx, Prefs.place(ctx, id));
-                AppWidgetManager mgr = AppWidgetManager.getInstance(ctx);
-                for (int id : ids) update(ctx, mgr, id);
-            } finally {
-                if (pr != null) pr.finish();
-            }
-        }).start();
     }
 
     private static void apply(Context ctx, RemoteViews rv, int id) {

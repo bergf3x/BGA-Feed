@@ -23,17 +23,26 @@ public class WidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context ctx, AppWidgetManager mgr, int[] ids) {
         for (int id : ids) update(ctx, mgr, id);
+        Scheduler.schedule(ctx);
+        Updater.runAsync(ctx, false, goAsync());
+    }
+
+    @Override
+    public void onEnabled(Context ctx) {
+        Scheduler.schedule(ctx);
+    }
+
+    @Override
+    public void onDisabled(Context ctx) {
+        Scheduler.schedule(ctx);
     }
 
     @Override
     public void onReceive(Context ctx, Intent intent) {
         String action = intent.getAction();
         if (ACTION_REFRESH.equals(action)) {
-            Prefs.invalidateWeather(ctx);
-            Prefs.invalidateWarn(ctx);
-            AppWidgetManager mgr = AppWidgetManager.getInstance(ctx);
-            int[] ids = mgr.getAppWidgetIds(new ComponentName(ctx, WidgetProvider.class));
-            for (int id : ids) mgr.notifyAppWidgetViewDataChanged(id, R.id.list);
+            android.widget.Toast.makeText(ctx, "Aktualisiere …", android.widget.Toast.LENGTH_SHORT).show();
+            Updater.runAsync(ctx, true, goAsync());
             return;
         }
         if (ACTION_SET_TOPIC.equals(action)) {

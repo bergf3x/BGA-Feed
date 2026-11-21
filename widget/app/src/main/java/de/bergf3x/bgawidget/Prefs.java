@@ -328,6 +328,48 @@ final class Prefs {
         sp(c).edit().putBoolean("local_only", true).apply();
     }
 
+    // ---- Aktualisierungs-Intervalle (Minuten) ----
+    static final int[] INTERVALS = {15, 30, 60, 180, 360, 720};
+    static final String[] INTERVAL_NAMES = {"15 Min", "30 Min", "1 Std", "3 Std", "6 Std", "12 Std"};
+
+    static int wxIdx(Context c) {
+        return Math.max(0, Math.min(INTERVALS.length - 1, sp(c).getInt("iv_wx", 1)));
+    }
+
+    static int newsIdx(Context c) {
+        return Math.max(0, Math.min(INTERVALS.length - 1, sp(c).getInt("iv_news", 1)));
+    }
+
+    static void setIntervals(Context c, int wx, int news) {
+        sp(c).edit().putInt("iv_wx", wx).putInt("iv_news", news).apply();
+    }
+
+    /** Ab diesem Alter gilt ein Stand als faellig (85 % des Intervalls, damit ein etwas frueher Wecker nicht ausfaellt). */
+    static long wxMs(Context c) {
+        return INTERVALS[wxIdx(c)] * 60000L * 85 / 100;
+    }
+
+    static long newsMs(Context c) {
+        return INTERVALS[newsIdx(c)] * 60000L * 85 / 100;
+    }
+
+    static long newsTry(Context c) {
+        return sp(c).getLong("news_try", 0);
+    }
+
+    static void setNewsTry(Context c, long t) {
+        sp(c).edit().putLong("news_try", t).apply();
+    }
+
+    /** Kurz nach einem Hintergrund-Abruf darf die Liste ohne neuen Abruf aus dem Cache lesen. */
+    static void markFetched(Context c) {
+        sp(c).edit().putLong("fetched_t", System.currentTimeMillis()).apply();
+    }
+
+    static boolean justFetched(Context c) {
+        return System.currentTimeMillis() - sp(c).getLong("fetched_t", 0) < 20000;
+    }
+
     static boolean takeLocalOnly(Context c) {
         boolean v = sp(c).getBoolean("local_only", false);
         if (v) sp(c).edit().putBoolean("local_only", false).apply();

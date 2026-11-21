@@ -205,6 +205,12 @@ public class ConfigActivity extends Activity {
             refreshPreview();
         });
 
+        b.pillKeep("Aktualisierung (Wetter, Nachrichten) …", false, () -> {
+            Intent in = new Intent(this, UpdateActivity.class);
+            in.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
+            startActivity(in);
+        });
+
         b.pillKeep("Farben für Nebenzeilen und Wetter …", false, () -> {
             Intent in = new Intent(this, ColorsActivity.class);
             in.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);

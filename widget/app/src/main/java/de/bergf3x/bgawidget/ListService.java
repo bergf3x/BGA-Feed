@@ -63,7 +63,7 @@ public class ListService extends RemoteViewsService {
 
         @Override
         public void onDataSetChanged() {
-            if (Prefs.takeLocalOnly(ctx)) {
+            if (Prefs.takeLocalOnly(ctx) || Prefs.justFetched(ctx)) {
                 items = load(false);
                 WidgetProvider.refreshHeader(ctx, widgetId);
                 return;

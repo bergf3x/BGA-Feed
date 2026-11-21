@@ -11,13 +11,12 @@ import java.util.Iterator;
 final class Warnings {
     private static final String URL = "https://www.dwd.de/DWD/warnungen/warnapp/json/warnings.json";
     private static final String AGS = "09172";
-    private static final long MAX_AGE = 10 * 60 * 1000L;
 
     private Warnings() {}
 
     /** Im Hintergrund-Thread aufrufen. Speichert die staerkste aktive Warnung (Stufe 2-4) oder "keine". */
     static void refreshIfStale(Context c) {
-        if (System.currentTimeMillis() - Prefs.warnTime(c) < MAX_AGE) return;
+        if (System.currentTimeMillis() - Prefs.warnTime(c) < Prefs.wxMs(c)) return;
         try {
             String raw = Net.download(URL);
             int a = raw.indexOf('{');

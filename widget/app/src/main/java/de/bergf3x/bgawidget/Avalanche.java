@@ -20,7 +20,7 @@ final class Avalanche {
 
     /** Im Hintergrund-Thread aufrufen. Ausserhalb der Saison (kein Bericht) bleibt der Text leer. */
     static void refreshIfStale(Context c) {
-        if (System.currentTimeMillis() - Prefs.avalTime(c) < MAX_AGE) return;
+        if (System.currentTimeMillis() - Prefs.avalTime(c) < Math.max(MAX_AGE, Prefs.wxMs(c))) return;
         SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd", Locale.GERMANY);
         f.setTimeZone(TimeZone.getTimeZone("Europe/Berlin"));
         String d = f.format(new Date());

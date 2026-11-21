@@ -48,7 +48,6 @@ final class Weather {
 
     static final int NONE = Integer.MIN_VALUE;
 
-    private static final long MAX_AGE = 15 * 60 * 1000L;
 
     int temp;
     int code;
@@ -86,7 +85,7 @@ final class Weather {
         String cached = Prefs.weather(c, place);
         // Alter Stand ohne die neuen Felder (Wind/Regenrisiko) gilt als veraltet
         boolean fresh = cached != null && cached.contains("sunrise") && cached.contains("\"peak\"")
-                && System.currentTimeMillis() - Prefs.weatherTime(c, place) < MAX_AGE;
+                && System.currentTimeMillis() - Prefs.weatherTime(c, place) < Prefs.wxMs(c);
         if (fresh) return false;
         try {
             String json;

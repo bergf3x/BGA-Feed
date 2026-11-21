@@ -4,6 +4,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <application
         android:allowBackup="true"
         android:icon="@android:drawable/sym_def_app_icon"
@@ -31,6 +33,15 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_weather_info" />
+        </receiver>
+
+        <receiver
+            android:name=".UpdateReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
         </receiver>
 
         <service
@@ -86,6 +97,12 @@
 
         <activity
             android:name=".SavedActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:theme="@style/BubbleTheme" />
+
+        <activity
+            android:name=".UpdateActivity"
             android:exported="false"
             android:excludeFromRecents="true"
             android:theme="@style/BubbleTheme" />
