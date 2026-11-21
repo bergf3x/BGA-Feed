@@ -269,7 +269,7 @@ def bg_topic(url):
     if not seg:
         return "Region"
     top = seg[0]
-    if top in ("bgland", "lokal", "lokales"):
+    if top in ("bgland", "lokal", "lokales", "chiemgau"):
         return "Region/" + nice(seg[1]) if len(seg) > 2 else "Region"
     if top in ("welt", "deutschland", "politik", "wirtschaft"):
         return "Nachrichten/" + nice(top)
@@ -389,28 +389,24 @@ LOCAL_RE = re.compile(r'href="(?:https?://(?:www\.)?chiemgau24\.de)?(/(?:lokal|l
 
 
 def fetch_chiemgau(site):
-    """chiemgau24.de (Ippen wie BGLand24): Lokalrubriken von der Startseite finden, je Rubrik RSS. Nur Regionales."""
+    """chiemgau24.de (Ippen wie BGLand24): Lokalteil /chiemgau/, Unterrubriken aus den Artikel-Adressen ableiten,
+    je Unterrubrik RSS. Thema kommt aus der Adresse (unbekannte Rubriken liefern den allgemeinen Feed). Nur Regionales."""
     import requests
 
     base = site["base"]
-    secs = []
+    subs = []
     try:
-        h = requests.get(base + "/", headers={"User-Agent": UA}, timeout=30).text
-        for m in LOCAL_RE.finditer(h):
-            if m.group(1) not in secs:
-                secs.append(m.group(1))
+        r = requests.get(base + "/chiemgau/rssfeed.rdf", headers={"User-Agent": UA}, timeout=20)
+        for it in _rss_items(r.content):
+            seg = [x for x in urlparse_path(it["url"]).split("/") if x]
+            if len(seg) > 2 and seg[0] == "chiemgau" and seg[1] not in subs:
+                subs.append(seg[1])
     except Exception as e:
-        print(f"[{site['id']}] Startseite: {e}", file=sys.stderr)
-    print(f"[{site['id']}] Lokalrubriken auf der Startseite: {len(secs)}")
-    for d in ("/lokal/traunstein/", "/lokal/rupertiwinkel/", "/lokal/chiemsee/"):
-        if d not in secs:
-            secs.append(d)
-    items = _bg_sections(base, secs[:12], site["id"])
-    from collections import Counter
-    print(f"[{site['id']}] Pfadmuster: {Counter('/'.join(urlparse_path(it['url']).split('/')[:2]) for it in items).most_common(6)}")
-    for it in items:  # Thema = Rubrik, aus der die Meldung kam (verlaesslicher als die Adresse)
-        sec = it.get("sec", "")
-        it["topic"] = "Region/" + " ".join(w.capitalize() for w in sec.strip("/").split("/")[-1].split("-")) if sec.startswith("/lokal") else bg_topic(it["url"])
+        print(f"[{site['id']}] /chiemgau/: {e}", file=sys.stderr)
+    secs = ["/chiemgau/"] + ["/chiemgau/" + x + "/" for x in subs[:10]]
+    items = _bg_sections(base, secs, site["id"])
+    for it in items:
+        it["topic"] = bg_topic(it["url"])
     return [it for it in items if it["topic"].startswith("Region")]
 
 
