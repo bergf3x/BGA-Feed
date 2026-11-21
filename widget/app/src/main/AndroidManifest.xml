@@ -97,8 +97,14 @@
             android:name=".WebcamActivity"
             android:exported="false"
             android:excludeFromRecents="true"
-            android:noHistory="true"
             android:theme="@style/BubbleTheme" />
+
+        <activity
+            android:name=".CamFullActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:theme="@android:style/Theme.DeviceDefault.NoActionBar.Fullscreen" />
 
         <activity
             android:name=".SearchActivity"

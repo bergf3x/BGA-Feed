@@ -32,6 +32,47 @@ final class Net {
         }
     }
 
+    /** Ergebnis eines Bildabrufs: Daten, Aufnahmezeit laut Server (0 = unbekannt), notModified = Bild unveraendert. */
+    static final class Img {
+        byte[] data;
+        long modified;
+        boolean notModified;
+    }
+
+    /** Bild laden (max. 8 MB). ifModifiedSince > 0 spart Daten, wenn sich nichts geaendert hat (HTTP 304). */
+    static Img image(String url, long ifModifiedSince) throws IOException {
+        HttpURLConnection c = (HttpURLConnection) new URL(url).openConnection();
+        c.setConnectTimeout(10000);
+        c.setReadTimeout(20000);
+        c.setInstanceFollowRedirects(true);
+        c.setRequestProperty("User-Agent", "BGAWidget/2.3 (privates Nachrichten-Widget, Android)");
+        c.setRequestProperty("Accept", "image/jpeg,image/png,image/*;q=0.8");
+        c.setRequestProperty("Cache-Control", "no-cache");
+        if (ifModifiedSince > 0) c.setIfModifiedSince(ifModifiedSince);
+        try {
+            int code = c.getResponseCode();
+            Img r = new Img();
+            if (code == 304) {
+                r.notModified = true;
+                return r;
+            }
+            if (code != 200) throw new IOException("HTTP " + code);
+            r.modified = c.getLastModified();
+            InputStream in = c.getInputStream();
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            byte[] buf = new byte[16384];
+            int n;
+            while ((n = in.read(buf)) > 0) {
+                out.write(buf, 0, n);
+                if (out.size() > 8_000_000) throw new IOException("Bild zu gross");
+            }
+            r.data = out.toByteArray();
+            return r;
+        } finally {
+            c.disconnect();
+        }
+    }
+
     /** Cache-Buster, damit raw.githubusercontent.com nicht minutenlang Altes liefert. */
     static String fresh(String url) {
         return url + "?t=" + (System.currentTimeMillis() / 60000L);
