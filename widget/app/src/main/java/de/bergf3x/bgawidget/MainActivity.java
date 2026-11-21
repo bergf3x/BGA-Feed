@@ -58,19 +58,51 @@ public class MainActivity extends Activity {
     protected void onResume() {
         super.onResume();
         int y = scroll == null ? 0 : scroll.getScrollY();
-        build();
-        if (y > 0) {
-            final int keep = y;
-            scroll.post(() -> scroll.scrollTo(0, keep));
-        }
-        // beim Oeffnen und bei Rueckkehr nach laengerer Pause neu laden; Einstellungs-Rueckkehr zeichnet nur neu
         boolean stale = System.currentTimeMillis() - Math.max(lastSync, Prefs.newsTime(this)) > STALE_MS;
         // eigene Quellen der App, die das Widget nie geladen hat: einmal gezielt holen
         boolean missing = !triedMissing && feedsMissing();
         if (missing) triedMissing = true;
-        if (firstResume || stale || missing) sync(missing);
+        boolean due = (firstResume || stale || missing) && !syncing;
         firstResume = false;
+        if (due) startSync(missing, y);
+        else {
+            build();
+            restore(y);
+        }
         ensureWeather();
+    }
+
+    private void restore(final int y) {
+        if (y > 0 && scroll != null) scroll.post(() -> scroll.scrollTo(0, y));
+    }
+
+    // ------------------------------------------------------------------ Abruf
+
+    /** Knopf "Aktualisieren": Wetter, Warnungen und Nachrichten sofort neu holen. */
+    private void sync(boolean force) {
+        if (syncing) return;
+        startSync(force, 0);
+    }
+
+    private void startSync(final boolean force, final int keepY) {
+        syncing = true;
+        build();
+        restore(keepY);
+        final android.content.Context app = getApplicationContext();
+        new Thread(() -> {
+            try {
+                ListService.syncApp(app, force);
+            } catch (Exception ignored) {
+            }
+            lastSync = System.currentTimeMillis();
+            ui.post(() -> {
+                syncing = false;
+                if (isFinishing() || isDestroyed()) return;
+                int y = scroll == null ? 0 : scroll.getScrollY();
+                build();
+                restore(force ? 0 : y);
+            });
+        }).start();
     }
 
     private boolean triedMissing;
@@ -100,30 +132,6 @@ public class MainActivity extends Activity {
                     int y = scroll == null ? 0 : scroll.getScrollY();
                     build();
                     if (y > 0) scroll.post(() -> scroll.scrollTo(0, y));
-                }
-            });
-        }).start();
-    }
-
-    // ------------------------------------------------------------------ Abruf
-
-    private void sync(final boolean force) {
-        if (syncing) return;
-        syncing = true;
-        build();
-        final android.content.Context app = getApplicationContext();
-        new Thread(() -> {
-            try {
-                ListService.syncApp(app, force);
-            } catch (Exception ignored) {
-            }
-            lastSync = System.currentTimeMillis();
-            ui.post(() -> {
-                syncing = false;
-                if (!isFinishing() && !isDestroyed()) {
-                    int y = scroll == null ? 0 : scroll.getScrollY();
-                    build();
-                    if (y > 0 && !force) scroll.post(() -> scroll.scrollTo(0, y));
                 }
             });
         }).start();
@@ -228,8 +236,9 @@ public class MainActivity extends Activity {
         return p;
     }
 
-    private ImageView iconButton(int res, final Runnable click) {
+    private ImageView iconButton(int res, String desc, final Runnable click) {
         ImageView v = new ImageView(this);
+        v.setContentDescription(desc);
         v.setImageResource(res);
         v.setColorFilter(tx);
         int p = px(9);
@@ -260,8 +269,8 @@ public class MainActivity extends Activity {
             pb.setIndeterminateTintList(ColorStateList.valueOf(tx));
             row.addView(pb, lp(24, 24, 0, 0, 8, 0));
         }
-        row.addView(iconButton(R.drawable.ic_refresh, () -> sync(true)), lp(40, 40, 0, 0, 8, 0));
-        row.addView(iconButton(R.drawable.ic_tune, () -> open(ConfigActivity.class)), lp(40, 40, 0, 0, 0, 0));
+        row.addView(iconButton(R.drawable.ic_refresh, "Aktualisieren", () -> sync(true)), lp(40, 40, 0, 0, 8, 0));
+        row.addView(iconButton(R.drawable.ic_tune, "Einstellungen", () -> open(ConfigActivity.class)), lp(40, 40, 0, 0, 0, 0));
         page.addView(row, lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 10));
     }
 
