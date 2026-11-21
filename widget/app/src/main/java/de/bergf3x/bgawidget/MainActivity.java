@@ -223,7 +223,7 @@ public class MainActivity extends Activity {
         final LinearLayout list = page;
         page = top;
         header();
-        if (widgetCount() == 0) addWidgetCard(true);
+        if (widgetCount() == 0 && !Prefs.addCardHidden(this)) addWidgetCard(true);
         if (Prefs.showWeather(this, ID)) weatherCard();
         tools();
         newsChips();
@@ -291,7 +291,12 @@ public class MainActivity extends Activity {
         row.setGravity(Gravity.CENTER_VERTICAL);
         LinearLayout titles = new LinearLayout(this);
         titles.setOrientation(LinearLayout.VERTICAL);
-        titles.addView(text("BGL Wetter & News", 21, tx, true));
+        TextView appName = text("BGL Wetter & News", 27, tx, false);
+        try {
+            appName.setTypeface(getResources().getFont(R.font.unifraktur_maguntia));
+        } catch (Exception ignored) {
+        }
+        titles.addView(appName);
         titles.addView(text(statusLine(), 11.5f, soft, false));
         row.addView(titles, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
         if (syncing) {
@@ -586,7 +591,23 @@ public class MainActivity extends Activity {
         box.setOrientation(LinearLayout.VERTICAL);
         box.setPadding(px(16), px(14), px(16), px(14));
         box.setBackground(shape(cardFill, 20, line));
-        box.addView(text(first ? "Widget auf den Startbildschirm" : "Widgets", 16, tx, true));
+        LinearLayout head = new LinearLayout(this);
+        head.setOrientation(LinearLayout.HORIZONTAL);
+        head.setGravity(Gravity.CENTER_VERTICAL);
+        head.addView(text(first ? "Widget auf den Startbildschirm" : "Widgets", 16, tx, true),
+                new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+        if (first) {
+            TextView x = text("✕", 18, soft, false);
+            x.setPadding(px(12), px(4), px(4), px(4));
+            x.setContentDescription("Schließen");
+            x.setOnClickListener(v -> {
+                Prefs.setAddCardHidden(this, true);
+                Toast.makeText(this, "Du findest „Widget hinzufügen“ in den Einstellungen.", Toast.LENGTH_LONG).show();
+                build();
+            });
+            head.addView(x);
+        }
+        box.addView(head);
         TextView sub = text(first
                 ? "Mit einem Widget siehst du Nachrichten und Wetter direkt auf dem Home, ohne die App zu öffnen."
                 : "Weitere Widgets auf den Startbildschirm legen.", 13, soft, false);
@@ -612,32 +633,7 @@ public class MainActivity extends Activity {
 
     /** Fragt den Launcher, das Widget auf dem Startbildschirm abzulegen. */
     private void pin(Class<?> provider) {
-        try {
-            AppWidgetManager m = AppWidgetManager.getInstance(this);
-            if (m.isRequestPinAppWidgetSupported()
-                    && m.requestPinAppWidget(new ComponentName(this, provider), null, null)) {
-                return;
-            }
-        } catch (Exception ignored) {
-        }
-        new android.app.AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Dialog_Alert)
-                .setTitle("Widget manuell hinzufügen")
-                .setMessage("Dein Startbildschirm nimmt das Widget nicht direkt an. So geht es von Hand:\n\n"
-                        + "1. Leere Stelle auf dem Startbildschirm gedrückt halten\n"
-                        + "2. „Widgets“ wählen\n"
-                        + "3. „BGL Wetter & News“ suchen und auf den Startbildschirm ziehen\n\n"
-                        + "Tipp Xiaomi: Unter App-Info > Weitere Berechtigungen kann „Verknüpfungen auf dem Startbildschirm erstellen“ "
-                        + "erlaubt werden, dann klappt der Knopf direkt.")
-                .setPositiveButton("OK", null)
-                .setNeutralButton("App-Info", (dlg, w) -> {
-                    try {
-                        startActivity(new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                                android.net.Uri.parse("package:" + getPackageName())));
-                    } catch (Exception e) {
-                        Toast.makeText(this, "App-Info nicht erreichbar", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .show();
+        WidgetPin.pin(this, provider);
     }
 
     private void footer() {
