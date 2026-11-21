@@ -11,16 +11,22 @@ adb logcat -c
 adb shell am start -W -n $ACT | grep TotalTime | tee -a $R
 sleep 45; shot 1_start
 # langsamer Zug mit Halten (motionevent: down, move, Screenshot, up)
+adb shell dumpsys gfxinfo $PKG reset >/dev/null
 adb shell input motionevent DOWN 540 1500
 for y in 1540 1580 1620 1660 1700; do adb shell input motionevent MOVE 540 $y; done
 sleep 0.5; shot 2_halb_gezogen
 for y in 1760 1820 1900 1980 2060 2140; do adb shell input motionevent MOVE 540 $y; done
 sleep 0.5; shot 3_loslassen_bereit
+log "== Bildrate beim Ziehen =="
+adb shell dumpsys gfxinfo $PKG | grep -E "Total frames|Janky|50th|90th|99th" | tee -a $R
+adb shell dumpsys gfxinfo $PKG reset >/dev/null
 adb shell input motionevent UP 540 2140
 sleep 0.4; shot 4_laedt
 for i in $(seq 1 30); do sleep 2; $UI has "Aktualisiert" | grep -q gefunden && break; done
 shot 5_fertig
 sleep 3; shot 6_zurueck
+log "== Bildrate Loslassen bis zurück =="
+adb shell dumpsys gfxinfo $PKG | grep -E "Total frames|Janky|50th|90th|99th" | tee -a $R
 # kurzer Zug unter der Schwelle
 adb shell input motionevent DOWN 540 1500
 for y in 1530 1560 1590; do adb shell input motionevent MOVE 540 $y; done
