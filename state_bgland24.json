@@ -451,9 +451,10 @@
    "teaser": "",
    "category": "",
    "topic": "Region/Traunstein",
-   "plus": false,
+   "plus": true,
    "date": "",
-   "first_seen": "2026-11-21T01:06:12+00:00"
+   "first_seen": "2026-11-21T01:06:12+00:00",
+   "pc": 2
   },
   "4098104238": {
    "sid": 4098104238,
@@ -464,7 +465,8 @@
    "topic": "Region/Traunstein",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:06:12+00:00"
+   "first_seen": "2026-11-21T01:06:12+00:00",
+   "pc": 2
   },
   "885774887": {
    "sid": 885774887,
@@ -473,9 +475,10 @@
    "teaser": "",
    "category": "",
    "topic": "Region/Rupertiwinkel",
-   "plus": false,
+   "plus": true,
    "date": "",
-   "first_seen": "2026-11-21T01:06:12+00:00"
+   "first_seen": "2026-11-21T01:06:12+00:00",
+   "pc": 2
   },
   "2575510662": {
    "sid": 2575510662,

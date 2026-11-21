@@ -1,5 +1,35 @@
 {
  "items": {
+  "1027794": {
+   "sid": 1027794,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-klimagipfel-verlaengert-nur-trippelschritte-in-sicht-_arid,1027794.html",
+   "title": "Klimagipfel verlängert - nur Trippelschritte in Sicht",
+   "teaser": "",
+   "category": "",
+   "plus": false,
+   "topic": "Nachrichten/Boulevard",
+   "first_seen": "2026-11-21T03:51:40+00:00"
+  },
+  "1027792": {
+   "sid": 1027792,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-sind-vaeter-in-elternzeit-gluecklicher-_arid,1027792.html",
+   "title": "Sind Väter in Elternzeit glücklicher?",
+   "teaser": "Berlin (dpa) - Elternzeit kann die psychische Gesundheit von Männern stärken, wie Studien nahelegen. Doch in Deutschland bleiben viele Väter hinter ihren Wünschen zurück. Woran liegt ...",
+   "category": "Wissenschaft",
+   "plus": false,
+   "topic": "Nachrichten/Wissenschaft",
+   "first_seen": "2026-11-21T03:51:40+00:00"
+  },
+  "1027790": {
+   "sid": 1027790,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-strom-und-gas-wird-fuer-millionen-haushalte-teurer-_arid,1027790.html",
+   "title": "Strom und Gas wird für Millionen Haushalte teurer",
+   "teaser": "Heidelberg (dpa) - Viele Strom- und Gaskunden erhalten derzeit Post oder haben es bereits. Der Inhalt ist wenig erfreulich. Laut Verivox erhöhen Hunderte Grundversorger die Preise, bei ...",
+   "category": "Wirtschaft",
+   "plus": false,
+   "topic": "Nachrichten/Wirtschaft",
+   "first_seen": "2026-11-21T03:51:40+00:00"
+  },
   "1027787": {
    "sid": 1027787,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-festnahmen-und-fliegende-flaschen-nach-jugendprotesten-_arid,1027787.html",
@@ -134,7 +164,7 @@
    "sid": 1027757,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-gericht-verbietet-nachhaltigkeitsangabe-auf-pfanniklossteig-_arid,1027757.html",
    "title": "Gericht verbietet Nachhaltigkeitsangabe auf Pfanni-Kloßteig",
-   "teaser": "Hamburg (dpa) - Klage erhoben hat die Deutsche Umwelthilfe. Unilever kündigt an, die Entscheidung des Hamburger Landgerichts zu akzeptieren.",
+   "teaser": "",
    "category": "Wirtschaft",
    "plus": false,
    "topic": "Nachrichten/Wirtschaft",
@@ -204,10 +234,10 @@
    "sid": 1027725,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-manuela-schwesig-wird-an-der-galle-operiert-_arid,1027725.html",
    "title": "Manuela Schwesig wird an der Galle operiert",
-   "teaser": "",
-   "category": "",
+   "teaser": "Schwerin (dpa) - Keine dienstlichen Termine, die Kabinettssitzung übernimmt ihre Stellvertreterin: Mecklenburg-Vorpommerns Regierungschefin unterzieht sich nächste Woche einem ...",
+   "category": "Brennpunkt",
    "plus": false,
-   "topic": "Nachrichten/Boulevard",
+   "topic": "Nachrichten/Deutschland & Welt",
    "first_seen": "2026-11-20T17:32:48+00:00"
   },
   "1027724": {
@@ -454,7 +484,7 @@
    "sid": 1027631,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-bahn-passt-verkehrskonzept-zwischen-berlin-und-hannover-an-_arid,1027631.html",
    "title": "Bahn passt Verkehrskonzept zwischen Berlin und Hannover an",
-   "teaser": "",
+   "teaser": "Berlin (dpa) - Während der Sanierung zwischen Berlin und Hannover müssen Fahrgäste längere Fahrzeiten und Umleitungen in Kauf nehmen. Zum Fahrplanwechsel soll sich zumindest bei ...",
    "category": "Wirtschaft",
    "plus": false,
    "topic": "Nachrichten/Wirtschaft",
@@ -894,20 +924,20 @@
    "sid": 1027535,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-eubehoerde-schlaegt-neue-regeln-fuer-ewigkeitschemikalien-vor-_arid,1027535.html",
    "title": "EU-Behörde schlägt neue Regeln für Ewigkeitschemikalien vor",
-   "teaser": "Helsinki (dpa) - In Pfannen, Make-up und Jacken: PFAS-Chemikalien begegnen uns im Alltag überall. Allerdings können sie Umwelt und Gesundheit schaden. Eine EU-Behörde meint: mehr ...",
-   "category": "Wissenschaft",
+   "teaser": "",
+   "category": "",
    "plus": false,
-   "topic": "Nachrichten/Wissenschaft",
+   "topic": "Nachrichten/Deutschland & Welt",
    "first_seen": "2026-11-20T17:32:48+00:00"
   },
   "1027533": {
    "sid": 1027533,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-hoechststand-fast-10000-syphilisfaelle-in-einem-jahr-_arid,1027533.html",
    "title": "Höchststand: Fast 10.000 Syphilis-Fälle in einem Jahr",
-   "teaser": "",
-   "category": "",
+   "teaser": "Berlin (dpa) - Seit vielen Jahren steigt die Zahl der registrierten Syphilis-Fälle in Deutschland fast kontinuierlich an. Besonders Männer sind betroffen - aber der Frauenanteil ...",
+   "category": "Wissenschaft",
    "plus": false,
-   "topic": "Nachrichten/Deutschland & Welt",
+   "topic": "Nachrichten/Wissenschaft",
    "first_seen": "2026-11-20T17:32:48+00:00"
   },
   "1027532": {
@@ -1184,7 +1214,7 @@
    "sid": 1027457,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-6-millionen-akute-atemwegserkrankungen-moderates-niveau-_arid,1027457.html",
    "title": "6 Millionen akute Atemwegserkrankungen – »moderates Niveau«",
-   "teaser": "Berlin (dpa) - Jeder kennt vermutlich jemanden, der gerade krank im Bett liegt – oder ist selbst betroffen. Die Erkältungssaison ist in vollem Gange. Aber auch Corona- und Grippe-Fälle ...",
+   "teaser": "",
    "category": "Wissenschaft",
    "plus": false,
    "topic": "Nachrichten/Wissenschaft",
@@ -1814,7 +1844,7 @@
    "sid": 1027267,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-dak-konsum-von-nikotinbeuteln-bei-jugendlichen-nimmt-zu-_arid,1027267.html",
    "title": "DAK: Konsum von Nikotinbeuteln bei Jugendlichen nimmt zu",
-   "teaser": "",
+   "teaser": "Hamburg (dpa) - Fast jeder vierte 16- oder 17-jährige Schüler hat schon Nikotinbeutel probiert. Die DAK sieht darin ein Warnsignal – und fordert mehr Schutz für Jugendliche.",
    "category": "Wissenschaft",
    "plus": false,
    "topic": "Nachrichten/Wissenschaft",
@@ -2530,6 +2560,16 @@
    "topic": "Nachrichten/Boulevard",
    "first_seen": "2026-11-20T17:50:08+00:00"
   },
+  "1026731": {
+   "sid": 1026731,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-usa-verlieren-status-masernfrei-wie-ernst-ist-die-lage-_arid,1026731.html",
+   "title": "USA verlieren Status »masernfrei« - Wie ernst ist die Lage?",
+   "teaser": "Washington (dpa) - Deutschland war noch nie offiziell als frei von Masern eingestuft. Die USA hingegen können sich damit seit mehr als 25 Jahren rühmen. Nun aber wird der Status wohl ...",
+   "category": "Wissenschaft",
+   "plus": false,
+   "topic": "Nachrichten/Wissenschaft",
+   "first_seen": "2026-11-21T03:51:40+00:00"
+  },
   "1026719": {
    "sid": 1026719,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-was-lesen-im-gehirn-bewegt-und-warum-vorlesen-wichtig-ist-_arid,1026719.html",
@@ -2670,6 +2710,16 @@
    "topic": "Nachrichten/Wissenschaft",
    "first_seen": "2026-11-20T17:50:08+00:00"
   },
+  "1026433": {
+   "sid": 1026433,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-wie-diabetes-den-koerper-schaedigt-_arid,1026433.html",
+   "title": "Wie Diabetes den Körper schädigt",
+   "teaser": "Berlin (dpa) - Hohe Blutzuckerwerte bleiben oft lange unbemerkt. Sie können aber Nerven, Augen, Nieren und Blutgefäße schädigen. Warum die Zuckerkrankheit gefährlich ist - und wie sich ...",
+   "category": "Wissenschaft",
+   "plus": false,
+   "topic": "Nachrichten/Wissenschaft",
+   "first_seen": "2026-11-21T03:51:40+00:00"
+  },
   "1026421": {
    "sid": 1026421,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-doppelter-fang-riesenrakete-starship-vor-neuem-testflug-_arid,1026421.html",
@@ -2714,7 +2764,7 @@
    "sid": 1026317,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-aeskulapnatter-ist-reptil-des-jahres-_arid,1026317.html",
    "title": "Äskulapnatter ist »Reptil des Jahres«",
-   "teaser": "Stuttgart (dpa) - Sie kann bis zu 1,80 Meter lang werden, ist völlig harmlos und trotzdem vielen unbekannt: die Äskulapnatter. Warum die größte einheimische Schlange Schutz braucht.",
+   "teaser": "",
    "category": "Wissenschaft",
    "plus": false,
    "topic": "Nachrichten/Wissenschaft",
@@ -3525,16 +3575,6 @@
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-bayern-diese-lockerungen-kommen-am-21-mai-_arid,630810.html",
    "title": "Bayern: Diese Lockerungen kommen am 21. Mai",
    "teaser": "Lockerungen an den Schulen, für Biergärten und Kinos: In Bayern sind am Montag die nächsten Öffnungsschritte möglich.",
-   "category": "",
-   "plus": false,
-   "topic": "Nachrichten/Deutschland & Welt",
-   "first_seen": "2026-11-20T17:50:08+00:00"
-  },
-  "629536": {
-   "sid": 629536,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-bund-plant-lockerungen-fuer-geimpfte-bayern-prescht-schon-vor-_arid,629536.html",
-   "title": "Bund plant Lockerungen für Geimpfte - Bayern prescht schon vor",
-   "teaser": "",
    "category": "",
    "plus": false,
    "topic": "Nachrichten/Deutschland & Welt",
