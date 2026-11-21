@@ -64,8 +64,8 @@ public class WeatherWidgetProvider extends AppWidgetProvider {
         int immutable = Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0;
         WidgetProvider.applyGlass(ctx, rv, id);
         WidgetProvider.applyWeather(ctx, rv, id, Prefs.argb(rgb, tx, 1f), Prefs.argb(rgb, tx, 0.7f), true);
-        rv.setInt(R.id.btn_refresh, "setColorFilter", solid);
-        rv.setInt(R.id.btn_settings, "setColorFilter", solid);
+        Pal.filter(ctx, id, rv, R.id.btn_refresh, -1);
+        Pal.filter(ctx, id, rv, R.id.btn_settings, -1);
         rv.setInt(R.id.btn_refresh, "setImageAlpha", Prefs.alpha(tx));
         rv.setInt(R.id.btn_settings, "setImageAlpha", Prefs.alpha(tx));
         Intent refresh = new Intent(ctx, WeatherWidgetProvider.class).setAction(ACTION_REFRESH);

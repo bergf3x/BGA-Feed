@@ -28,7 +28,7 @@ public class SearchActivity extends Activity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE
                 | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         b = new Bubble(this, 340, 8);
-        b.text("Suche", 11, 0x99FFFFFF, false).setPadding(b.px(10), b.px(4), b.px(10), b.px(2));
+        b.text("Suche", 11, b.soft, false).setPadding(b.px(10), b.px(4), b.px(10), b.px(2));
         for (Catalog.Feed f : Catalog.load(this)) {
             String xml = Prefs.feedCache(this, f.id);
             if (xml != null) pool.addAll(FeedItem.parse(xml, f.name));
@@ -38,8 +38,8 @@ public class SearchActivity extends Activity {
         EditText et = new EditText(this);
         et.setHint("Stichwort eingeben");
         et.setSingleLine(true);
-        et.setTextColor(0xFFFFFFFF);
-        et.setHintTextColor(0x88FFFFFF);
+        et.setTextColor(b.title);
+        et.setHintTextColor(b.soft);
         et.setPadding(b.px(12), b.px(8), b.px(12), b.px(8));
         b.box.addView(et);
         fixed = b.box.getChildCount();
@@ -55,7 +55,7 @@ public class SearchActivity extends Activity {
         b.box.removeViews(fixed, b.box.getChildCount() - fixed);
         if (q.length() < 2) {
             b.text("Mindestens 2 Buchstaben. Gesucht wird in den zuletzt geladenen und in den gemerkten Artikeln.",
-                    13, 0x99FFFFFF, false).setPadding(b.px(10), b.px(6), b.px(10), b.px(8));
+                    13, b.soft, false).setPadding(b.px(10), b.px(6), b.px(10), b.px(8));
             return;
         }
         String[] words = q.toLowerCase(Locale.GERMANY).split("\\s+");
@@ -74,7 +74,7 @@ public class SearchActivity extends Activity {
             n++;
             b.row("★ " + o.optString("t"), false, () -> open(o.optString("t"), o.optString("m"), o.optString("x"), o.optString("l")));
         }
-        if (n == 0) b.text("Nichts gefunden.", 14, Bubble.TEXT, false).setPadding(b.px(10), b.px(6), b.px(10), b.px(8));
+        if (n == 0) b.text("Nichts gefunden.", 14, b.tx, false).setPadding(b.px(10), b.px(6), b.px(10), b.px(8));
     }
 
     private static boolean matches(String[] words, String hay) {

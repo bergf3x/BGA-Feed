@@ -13,10 +13,10 @@ public class SavedActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final Bubble b = new Bubble(this, 340, 8);
-        b.text("Gemerkte Artikel", 11, 0x99FFFFFF, false).setPadding(b.px(10), b.px(4), b.px(10), b.px(6));
+        b.text("Gemerkte Artikel", 11, b.soft, false).setPadding(b.px(10), b.px(4), b.px(10), b.px(6));
         JSONArray a = Prefs.saved(this);
         if (a.length() == 0) {
-            b.text("Noch nichts gemerkt. In der Artikel-Vorschau gibt es den Knopf „Merken“.", 14, Bubble.TEXT, false)
+            b.text("Noch nichts gemerkt. In der Artikel-Vorschau gibt es den Knopf „Merken“.", 14, b.tx, false)
                     .setPadding(b.px(10), b.px(4), b.px(10), b.px(10));
             return;
         }

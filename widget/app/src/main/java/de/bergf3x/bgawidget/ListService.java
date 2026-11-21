@@ -219,13 +219,13 @@ public class ListService extends RemoteViewsService {
             String meta = it.meta();
             boolean hit = Keywords.matches(kwList, it);
             rv.setTextViewText(R.id.item_title, Style.font(ctx, widgetId, hit ? "★ " + it.title : it.title));
-            rv.setTextViewText(R.id.item_meta, Style.font(ctx, widgetId, meta));
+            
             rv.setTextViewTextSize(R.id.item_title, android.util.TypedValue.COMPLEX_UNIT_SP, Style.titleSp(sizeIdx));
             rv.setTextViewTextSize(R.id.item_meta, android.util.TypedValue.COMPLEX_UNIT_SP, Style.metaSp(sizeIdx));
-            rv.setInt(R.id.item_card, "setBackgroundResource", lightTheme ? R.drawable.card_bg_light : R.drawable.card_bg);
-            rv.setTextColor(R.id.item_title, hit ? Prefs.argb(0xFFD166, tx, dim) : Prefs.argb(rgb, tx, dim));
+            rv.setInt(R.id.item_card, "setBackgroundResource", Pal.cardBg(ctx, widgetId));
+            if (hit) rv.setTextColor(R.id.item_title, Prefs.argb(0xFFD166, tx, dim)); else Pal.text(ctx, widgetId, rv, R.id.item_title, -1, dim);
             int sub = Prefs.colorSub(ctx, widgetId);
-            rv.setTextColor(R.id.item_meta, Prefs.argb(sub >= 0 ? sub : rgb, tx, 0.7f * dim));
+            Pal.set(ctx, widgetId, rv, R.id.item_meta, Style.font(ctx, widgetId, meta), sub, Prefs.colorSub2(ctx, widgetId), 0.7f * dim);
             rv.setInt(R.id.item_accent, "setColorFilter", it.accentColor());
             rv.setInt(R.id.item_accent, "setImageAlpha", read ? 90 : 255);
             rv.setViewVisibility(R.id.item_plus, it.plus ? android.view.View.VISIBLE : android.view.View.GONE);

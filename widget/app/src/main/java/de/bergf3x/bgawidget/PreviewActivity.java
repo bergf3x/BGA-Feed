@@ -32,10 +32,10 @@ public class PreviewActivity extends Activity {
         }
 
         final Bubble b = new Bubble(this, 330, 16);
-        b.text(meta, 12, 0xB3B5D4F4, false);
-        b.text(title, 18, 0xFFFFFFFF, true).setPadding(0, b.px(6), 0, b.px(10));
-        b.scrollText(text.isEmpty() ? "Für diesen Artikel gibt es keinen Anrisstext." : text, 14, Bubble.TEXT);
-        b.text("Nur der Anrisstext – der ganze Artikel steht auf der Webseite.", 11, 0x80FFFFFF, false)
+        b.text(meta, 12, b.soft, false);
+        b.text(title, 18, b.title, true).setPadding(0, b.px(6), 0, b.px(10));
+        b.scrollText(text.isEmpty() ? "Für diesen Artikel gibt es keinen Anrisstext." : text, 14, b.tx);
+        b.text("Nur der Anrisstext – der ganze Artikel steht auf der Webseite.", 11, b.soft, false)
                 .setPadding(0, b.px(10), 0, b.px(4));
         b.pill("Artikel öffnen", true, isWeb(link), () -> {
             try {

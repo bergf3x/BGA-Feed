@@ -22,9 +22,14 @@ public class WebcamActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final Bubble b = new Bubble(this, 330, 8);
-        b.text("Webcams", 11, 0x99FFFFFF, false).setPadding(b.px(10), b.px(4), b.px(10), b.px(6));
+        final boolean[] alleDone = {false};
+        b.text("Webcams", 11, b.soft, false).setPadding(b.px(10), b.px(4), b.px(10), b.px(6));
         for (final String[] c : CAMS) {
-            b.row(c[0], false, () -> {
+            if (c[0].startsWith("Alle ") && !alleDone[0]) {
+                b.divider();
+                alleDone[0] = true;
+            }
+            b.rowIcon(R.drawable.ic_cam, c[0], false, () -> {
                 try {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(c[1])).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 } catch (Exception ignored) {

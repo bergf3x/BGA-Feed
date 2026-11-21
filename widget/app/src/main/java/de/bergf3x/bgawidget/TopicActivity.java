@@ -27,7 +27,7 @@ public class TopicActivity extends Activity {
             return;
         }
         final Bubble b = new Bubble(this, 270, 8);
-        b.text(topic, 11, 0x99FFFFFF, false).setPadding(b.px(10), b.px(4), b.px(10), b.px(6));
+        b.text(topic, 11, b.soft, false).setPadding(b.px(10), b.px(4), b.px(10), b.px(6));
         String current = Prefs.topic(this, id);
         final String parent = topic;
         b.row("Alle in „" + topic + "“", current.equals(topic), () -> apply(parent));

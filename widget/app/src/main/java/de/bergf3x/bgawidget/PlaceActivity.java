@@ -15,7 +15,7 @@ public class PlaceActivity extends Activity {
             return;
         }
         final Bubble b = new Bubble(this, 270, 8);
-        b.text("Wetter-Ort", 11, 0x99FFFFFF, false).setPadding(b.px(10), b.px(4), b.px(10), b.px(6));
+        b.text("Wetter-Ort", 11, b.soft, false).setPadding(b.px(10), b.px(4), b.px(10), b.px(6));
         int cur = Prefs.place(this, id);
         for (int i = 0; i < Weather.PLACES.length; i++) {
             final int place = i;

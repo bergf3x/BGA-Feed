@@ -18,12 +18,23 @@ import android.widget.TextView;
 
 /** Glas-Blase im Stil des Widgets: wird fuer Auswahlmenues und die Artikel-Vorschau benutzt. */
 final class Bubble {
-    static final int FILL = 0xFF2A2A34;
-    static final int BORDER = 0x38FFFFFF;
-    static final int TEXT = 0xFFB5D4F4;
-    static final int LIGHT = 0xFFF2F2F2;
-    static final int DARK = 0xFF1B1F22;
+    /** Widget, zu dem das Fenster gehoert (fuer Design und Farben). */
+    static int widgetId(Activity a) {
+        int id = a.getIntent() == null ? 0 : a.getIntent().getIntExtra(android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID, 0);
+        if (id != 0) return id;
+        try {
+            android.appwidget.AppWidgetManager m = android.appwidget.AppWidgetManager.getInstance(a);
+            int[] ids = m.getAppWidgetIds(new android.content.ComponentName(a, WidgetProvider.class));
+            if (ids.length > 0) return ids[0];
+            ids = m.getAppWidgetIds(new android.content.ComponentName(a, WeatherWidgetProvider.class));
+            if (ids.length > 0) return ids[0];
+        } catch (Exception ignored) {
+        }
+        return 0;
+    }
 
+    final boolean light;
+    final int tx, soft, title, hi, hiTx, ripple, line;
     final Activity act;
     final LinearLayout box;
     final float d;
@@ -32,8 +43,31 @@ final class Bubble {
     Bubble(Activity act, int widthDp, int padDp) {
         this.act = act;
         d = act.getResources().getDisplayMetrics().density;
+        int wid = widgetId(act);
+        light = wid != 0 && Prefs.isLight(act, wid);
+        if (light) {
+            tx = 0xFF1F3B57; soft = 0xB31B1F22; title = 0xFF1B1F22;
+            hi = 0xFF1B1F22; hiTx = 0xFFFFFFFF; ripple = 0x33000000; line = 0x331B1F22;
+        } else {
+            tx = 0xFFB5D4F4; soft = 0x99FFFFFF; title = 0xFFFFFFFF;
+            hi = 0xFFF2F2F2; hiTx = 0xFF1B1F22; ripple = 0x40FFFFFF; line = 0x2EFFFFFF;
+        }
         act.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-        act.getWindow().setDimAmount(0.3f);
+        act.getWindow().setDimAmount(light ? 0.12f : 0.3f);
+        boolean blur = false;
+        if (android.os.Build.VERSION.SDK_INT >= 31) {
+            try {
+                WindowManager wm = (WindowManager) act.getSystemService(Activity.WINDOW_SERVICE);
+                if (wm.isCrossWindowBlurEnabled()) {
+                    act.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+                    WindowManager.LayoutParams wlp = act.getWindow().getAttributes();
+                    wlp.setBlurBehindRadius(Math.round(20 * d));
+                    act.getWindow().setAttributes(wlp);
+                    blur = true;
+                }
+            } catch (Throwable ignored) {
+            }
+        }
 
         FrameLayout root = new FrameLayout(act);
         root.setOnClickListener(v -> close());
@@ -42,10 +76,14 @@ final class Bubble {
         box.setOrientation(LinearLayout.VERTICAL);
         int pad = px(padDp);
         box.setPadding(pad, pad, pad, pad);
-        GradientDrawable bg = new GradientDrawable();
-        bg.setColor(FILL);
-        bg.setCornerRadius(px(22));
-        bg.setStroke(Math.max(1, px(1)), BORDER);
+        // Glas: halbtransparent mit Lichtverlauf von links oben und feinem hellen Rand
+        int a1 = blur ? 0xB0 : 0xE6, a2 = blur ? 0x98 : 0xD8;
+        int[] cols = light
+                ? new int[]{(a1 << 24) | 0xFFFFFF, (a2 << 24) | 0xE4E9F1}
+                : new int[]{(a1 << 24) | 0x343846, (a2 << 24) | 0x1A1B24};
+        GradientDrawable bg = new GradientDrawable(GradientDrawable.Orientation.TL_BR, cols);
+        bg.setCornerRadius(px(28));
+        bg.setStroke(Math.max(1, px(1)), light ? 0x99FFFFFF : 0x40FFFFFF);
         box.setBackground(bg);
         box.setClickable(true);
 
@@ -112,17 +150,17 @@ final class Bubble {
         r.setOrientation(LinearLayout.HORIZONTAL);
         r.setGravity(Gravity.CENTER_VERTICAL);
         r.setPadding(px(12), px(10), px(12), px(10));
-        pressable(r, selected ? LIGHT : 0, selected ? 0x33000000 : 0x40FFFFFF);
+        pressable(r, selected ? hi : 0, selected ? 0x33000000 : ripple);
         TextView t = new TextView(act);
         t.setText(label);
         t.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-        t.setTextColor(selected ? DARK : TEXT);
+        t.setTextColor(selected ? hiTx : tx);
         r.addView(t, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
         if (selected) {
             TextView c = new TextView(act);
             c.setText("✓");
             c.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-            c.setTextColor(DARK);
+            c.setTextColor(hiTx);
             r.addView(c);
         }
         r.setOnClickListener(v -> {
@@ -135,15 +173,36 @@ final class Bubble {
         box.addView(r, lp);
     }
 
+    /** Auswahlzeile mit Symbol vor dem Text. */
+    void rowIcon(int iconRes, String label, boolean selected, Runnable onClick) {
+        row(label, selected, onClick);
+        LinearLayout r = (LinearLayout) box.getChildAt(box.getChildCount() - 1);
+        android.widget.ImageView iv = new android.widget.ImageView(act);
+        iv.setImageResource(iconRes);
+        iv.setColorFilter(selected ? hiTx : tx);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(px(20), px(20));
+        lp.rightMargin = px(12);
+        r.addView(iv, 0, lp);
+    }
+
+    /** Duenne Trennlinie zwischen Gruppen. */
+    void divider() {
+        View v = new View(act);
+        v.setBackgroundColor(line);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.max(1, px(1)));
+        lp.setMargins(px(14), px(6), px(14), px(6));
+        box.addView(v, lp);
+    }
+
     /** Knopf in Pillenform; primaer = hell, sonst nur Text. */
     void pill(String label, boolean primary, boolean enabled, Runnable onClick) {
         TextView t = new TextView(act);
         t.setText(label);
         t.setGravity(Gravity.CENTER);
         t.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-        t.setTextColor(primary ? DARK : TEXT);
+        t.setTextColor(primary ? hiTx : tx);
         t.setPadding(px(12), px(11), px(12), px(11));
-        pressable(t, primary ? LIGHT : 0, primary ? 0x33000000 : 0x40FFFFFF);
+        pressable(t, primary ? hi : 0, primary ? 0x33000000 : ripple);
         if (!enabled) {
             t.setAlpha(0.4f);
         } else {
@@ -197,9 +256,9 @@ final class Bubble {
         c.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
         r.addView(c);
         Runnable paint = () -> {
-            pressable(r, state[0] ? LIGHT : 0, state[0] ? 0x33000000 : 0x40FFFFFF);
-            t.setTextColor(state[0] ? DARK : TEXT);
-            c.setTextColor(DARK);
+            pressable(r, state[0] ? hi : 0, state[0] ? 0x33000000 : ripple);
+            t.setTextColor(state[0] ? hiTx : tx);
+            c.setTextColor(hiTx);
             c.setText(state[0] ? "✓" : "");
         };
         paint.run();
@@ -223,8 +282,8 @@ final class Bubble {
         Runnable paint = () -> {
             for (int i = 0; i < tv.length; i++) {
                 boolean on = i == sel[0];
-                pressable(tv[i], on ? LIGHT : 0, on ? 0x33000000 : 0x40FFFFFF);
-                tv[i].setTextColor(on ? DARK : TEXT);
+                pressable(tv[i], on ? hi : 0, on ? 0x33000000 : ripple);
+                tv[i].setTextColor(on ? hiTx : tx);
             }
         };
         for (int i = 0; i < labels.length; i++) {
@@ -271,7 +330,7 @@ final class Bubble {
         TextView t = new TextView(act);
         t.setText(s);
         t.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-        t.setTextColor(0xB3B5D4F4);
+        t.setTextColor(soft);
         t.setPadding(px(4), px(14), 0, px(4));
         parent.addView(t);
         return t;
@@ -283,9 +342,9 @@ final class Bubble {
         t.setText(label);
         t.setGravity(Gravity.CENTER);
         t.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-        t.setTextColor(primary ? DARK : TEXT);
+        t.setTextColor(primary ? hiTx : tx);
         t.setPadding(px(12), px(11), px(12), px(11));
-        pressable(t, primary ? LIGHT : 0, primary ? 0x33000000 : 0x40FFFFFF);
+        pressable(t, primary ? hi : 0, primary ? 0x33000000 : ripple);
         t.setOnClickListener(v -> onClick.run());
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);

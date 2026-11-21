@@ -33,12 +33,25 @@ final class Prefs {
 
     /** Eigene Farbe fuer Nebenzeilen (-1 = wie Titel). */
     static int colorSub(Context c, int id) {
-        return theme(c, id) == 2 ? -1 : sp(c).getInt("tcs_" + id, -1);
+        return sp(c).getInt("tcs_" + id, -1);
     }
 
     /** Eigene Farbe fuer den Wetterbereich (-1 = wie Titel). */
     static int colorWx(Context c, int id) {
-        return theme(c, id) == 2 ? -1 : sp(c).getInt("tcw_" + id, -1);
+        return sp(c).getInt("tcw_" + id, -1);
+    }
+
+    /** Zweite Farbe fuer den Verlauf der Nebenzeilen / des Wetterbereichs (-1 = kein Verlauf). */
+    static int colorSub2(Context c, int id) {
+        return sp(c).getInt("tcs2_" + id, -1);
+    }
+
+    static int colorWx2(Context c, int id) {
+        return sp(c).getInt("tcw2_" + id, -1);
+    }
+
+    static void setColors2(Context c, int id, int sub2, int wx2) {
+        sp(c).edit().putInt("tcs2_" + id, sub2).putInt("tcw2_" + id, wx2).apply();
     }
 
     static boolean compact(Context c, int id) {
@@ -126,7 +139,7 @@ final class Prefs {
         sp(c).edit().remove("bg_" + id).remove("tx_" + id).remove("tc_" + id)
                 .remove("fd_" + id).remove("tp_" + id).remove("pl_" + id)
                 .remove("plus_" + id).remove("mute_" + id).remove("dens_" + id)
-                .remove("font_" + id).remove("size_" + id).remove("theme_" + id)
+                .remove("tcs2_" + id).remove("tcw2_" + id).remove("font_" + id).remove("size_" + id).remove("theme_" + id)
                 .remove("wx_" + id).remove("warn_" + id).remove("tcs_" + id).remove("tcw_" + id).remove("cmp_" + id).apply();
     }
 
