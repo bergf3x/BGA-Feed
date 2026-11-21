@@ -10,8 +10,10 @@ android {
         applicationId 'de.bergf3x.bgawidget'
         minSdk 26
         targetSdk 34
-        versionCode 1
-        versionName '1.0'
+        // CI: VERSION_CODE = Lauf-Nr., VERSION_NAME = 1.NN, BUILD_DATE = Datum; lokal Platzhalter
+        versionCode (System.getenv('VERSION_CODE') ?: '1').toInteger()
+        versionName System.getenv('VERSION_NAME') ?: '1.00'
+        resValue 'string', 'build_date', System.getenv('BUILD_DATE') ?: 'lokal'
     }
 
     signingConfigs {

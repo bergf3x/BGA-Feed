@@ -170,6 +170,14 @@ public class ConfigActivity extends Activity {
         return b.scrollBox(frac);
     }
 
+    private String version() {
+        try {
+            return getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+        } catch (Exception e) {
+            return "?";
+        }
+    }
+
     private static String ivName(int idx) {
         return Prefs.INTERVAL_NAMES[idx];
     }
@@ -188,6 +196,8 @@ public class ConfigActivity extends Activity {
             in.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
             startActivity(in);
         });
+        b.tile("Info", "bergf3x · Version " + version() + " · " + getString(R.string.build_date), () ->
+                startActivity(new Intent(this, InfoActivity.class)));
         b.space(10);
         b.pill("Speichern", true, true, this::save);
         b.pill("Abbrechen", false, true, () -> { });

@@ -126,6 +126,12 @@
             android:theme="@style/BubbleTheme" />
 
         <activity
+            android:name=".InfoActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:theme="@style/BubbleTheme" />
+
+        <activity
             android:name=".ColorsActivity"
             android:exported="false"
             android:excludeFromRecents="true"
