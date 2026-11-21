@@ -24,6 +24,10 @@ public class InfoActivity extends Activity {
         b.text(ver, 15, b.tx, false).setPadding(b.px(4), 0, 0, b.px(8));
         b.text("Letzte Aktualisierung", 12, b.soft, false).setPadding(b.px(4), 0, 0, 0);
         b.text(getString(R.string.build_date), 15, b.tx, false).setPadding(b.px(4), 0, 0, b.px(8));
+        if (Direct.enabled(this)) {
+            b.text("TESTVERSION: direkter Abruf", 13, b.title, true).setPadding(b.px(4), b.px(4), 0, b.px(2));
+            b.text(Direct.logText(this), 11, b.soft, false).setPadding(b.px(4), 0, 0, b.px(6));
+        }
         b.divider();
         final android.widget.TextView head = b.text("Änderungen  ▾", 15, b.title, true);
         head.setPadding(b.px(4), b.px(8), b.px(4), b.px(8));

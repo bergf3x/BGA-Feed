@@ -1,6 +1,7 @@
 name: widget
 on:
   push:
+    branches: ["direct-test"]
     paths:
       - "widget/**"
       - ".github/workflows/widget.yml"
@@ -21,9 +22,9 @@ jobs:
           gradle-version: "8.9"
       - name: Version festlegen
         run: |
-          N=$(( ${{ github.run_number }} - 45 ))
           echo "VERSION_CODE=${{ github.run_number }}" >> "$GITHUB_ENV"
-          echo "VERSION_NAME=1.$(printf '%02d' $N)" >> "$GITHUB_ENV"
+          echo "VERSION_NAME=test-${{ github.run_number }}" >> "$GITHUB_ENV"
+          echo "DIRECT=true" >> "$GITHUB_ENV"
           echo "BUILD_DATE=$(TZ=Europe/Berlin date '+%d.%m.%Y, %H:%M Uhr')" >> "$GITHUB_ENV"
       - name: APK bauen
         working-directory: widget
@@ -32,10 +33,10 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          APK="BGL-Wetter-News-v${VERSION_NAME}.apk"
+          APK="BGL-Test-direkt-${VERSION_NAME}.apk"
           cp widget/app/build/outputs/apk/debug/app-debug.apk "$APK"
-          gh release delete widget-latest --yes --cleanup-tag || true
-          gh release create widget-latest "$APK" \
-            --title "BGL Wetter & News ${VERSION_NAME}" \
+          gh release delete widget-test --yes --cleanup-tag || true
+          gh release create widget-test "$APK" \
+            --title "BGL Test (direkter Abruf) ${VERSION_NAME}" \
             --notes "Version ${VERSION_NAME}, gebaut am ${BUILD_DATE}. ${APK} herunterladen und installieren." \
             --target "${{ github.sha }}"
