@@ -1,5 +1,25 @@
 {
  "items": {
+  "1027858": {
+   "sid": 1027858,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-heimtorflaute-bleibt-schalke-holt-punkt-gegen-stuttgart-_arid,1027858.html",
+   "title": "Heimtor-Flaute bleibt: Schalke holt Punkt gegen Stuttgart",
+   "teaser": "Gelsenkirchen (dpa) - Schalke hält gegen Champions-League-Teilnehmer Stuttgart mutig dagegen, verpasst aber den Befreiungsschlag. In der eigenen Arena wartet S04 damit auch nach fünf ...",
+   "category": "1. Fußball Bundesliga",
+   "plus": false,
+   "topic": "Sport/Fußball",
+   "first_seen": "2026-11-21T19:29:55+00:00"
+  },
+  "1027856": {
+   "sid": 1027856,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-bvbstar-nmecha-will-auch-weiter-bei-torjubel-jesus-danken-_arid,1027856.html",
+   "title": "BVB-Star Nmecha will auch weiter bei Torjubel Jesus danken",
+   "teaser": "Dortmund/Mönchengladbach (dpa) - Felix Nmechas Jubelgeste sorgt seit Wochen für Aufregung. Gegen Borussia Mönchengladbach trifft der 26-Jährige erneut - und passt seinen Jubel an.",
+   "category": "1. Fußball Bundesliga",
+   "plus": false,
+   "topic": "Sport/Fußball",
+   "first_seen": "2026-11-21T19:29:55+00:00"
+  },
   "1027854": {
    "sid": 1027854,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-zwei-freunde-ein-sieger-huetters-eintracht-bezwingt-die-tsg-_arid,1027854.html",
@@ -39,6 +59,16 @@
    "plus": false,
    "topic": "Sport/Fußball",
    "first_seen": "2026-11-21T16:44:06+00:00"
+  },
+  "1027850": {
+   "sid": 1027850,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-bayer-in-torlaune-klarer-sieg-gegen-paderborn-_arid,1027850.html",
+   "title": "Bayer in Torlaune: Klarer Sieg gegen Paderborn",
+   "teaser": "Leverkusen (dpa) - Bayer Leverkusen bleibt in der Bundesliga auf Erfolgskurs. Im Duell mit Neuling SC Paderborn trumpft die Werkself groß auf und holt sich Rückenwind für die Europa ...",
+   "category": "1. Fußball Bundesliga",
+   "plus": false,
+   "topic": "Sport/Fußball",
+   "first_seen": "2026-11-21T19:29:55+00:00"
   },
   "1027849": {
    "sid": 1027849,
@@ -2570,26 +2600,6 @@
    "topic": "Nachrichten/Boulevard",
    "first_seen": "2026-11-20T17:45:57+00:00"
   },
-  "1027103": {
-   "sid": 1027103,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-ohne-gesperrten-ancelotti-brasiliensieg-gegen-singapur-_arid,1027103.html",
-   "title": "Ohne gesperrten Ancelotti: Brasilien-Sieg gegen Singapur",
-   "teaser": "Singapur (dpa) - Gegen Japan verlor Brasilien - in der Nachspielzeit. Zudem sah auch Trainer Carlo Ancelotti Rot. Wie lief es ohne ihn der Seite im letzten Test des Jahres für den ...",
-   "category": "Fußball",
-   "plus": false,
-   "topic": "Sport/Fußball",
-   "first_seen": "2026-11-20T17:45:57+00:00"
-  },
-  "1027096": {
-   "sid": 1027096,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-job-im-nationalteam-argentiniens-trainer-laedt-messi-ein-_arid,1027096.html",
-   "title": "Job im Nationalteam? Argentiniens Trainer lädt Messi ein",
-   "teaser": "Córdoba (dpa) - Noch spielt Lionel Messi weiter für Inter Miami. Aber was ist, wenn er seine Karriere auch dort mal beendet? Argentiniens Nationalcoach macht auf Nachfrage einen ...",
-   "category": "Fußball",
-   "plus": false,
-   "topic": "Sport/Fußball",
-   "first_seen": "2026-11-20T23:02:55+00:00"
-  },
   "1027087": {
    "sid": 1027087,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-biathletin-grotian-fehlt-beim-weltcupauftakt-_arid,1027087.html",
@@ -2669,16 +2679,6 @@
    "plus": false,
    "topic": "Nachrichten/Digital",
    "first_seen": "2026-11-20T17:50:08+00:00"
-  },
-  "1026975": {
-   "sid": 1026975,
-   "url": "https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land/freilassing_artikel,-wie-kommt-die-kirche-zu-den-menschen-der-dekanatsrat-tagt-kirche-vor-ort-als-herausforderung-fuer-di-_arid,1026975.html",
-   "title": "Wie kommt die Kirche zu den Menschen? – Der Dekanatsrat tagt: »Kirche vor Ort« als Herausforderung für die Zukunft",
-   "teaser": "",
-   "category": "",
-   "plus": false,
-   "topic": "Sport/Fußball",
-   "first_seen": "2026-11-20T23:02:55+00:00"
   },
   "1026972": {
    "sid": 1026972,

@@ -556,7 +556,8 @@
    "plus": false,
    "date": "2026-11-17T12:27:00+00:00",
    "sec": "/chiemgau/polizeimeldungen/",
-   "first_seen": "2026-11-17T12:27:00+00:00"
+   "first_seen": "2026-11-17T12:27:00+00:00",
+   "pc": 2
   },
   "1262022950": {
    "sid": 1262022950,
@@ -685,7 +686,8 @@
    "plus": false,
    "date": "2026-11-16T17:00:00+00:00",
    "sec": "/chiemgau/polizeimeldungen/",
-   "first_seen": "2026-11-16T17:00:00+00:00"
+   "first_seen": "2026-11-16T17:00:00+00:00",
+   "pc": 2
   },
   "530447765": {
    "sid": 530447765,
@@ -810,10 +812,11 @@
    "teaser": "Der Trachtenverein „Dö Koasawinkla“ hat bei seiner Jahreshauptversammlung in Reit im Winkl auf arbeitsreiche Monate zurückgeblickt. Neben Berichten aus den Gruppen brachten die Mitglieder dabei auch ein neues Regelwerk für die Zukunft auf den Weg.",
    "category": "",
    "topic": "Region/Achental",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-15T10:25:50+00:00",
    "sec": "/chiemgau/achental/",
-   "first_seen": "2026-11-15T10:25:50+00:00"
+   "first_seen": "2026-11-15T10:25:50+00:00",
+   "pc": 2
   },
   "53023457": {
    "sid": 53023457,
@@ -838,7 +841,8 @@
    "plus": false,
    "date": "2026-11-15T10:04:55+00:00",
    "sec": "/chiemgau/achental/",
-   "first_seen": "2026-11-15T10:04:55+00:00"
+   "first_seen": "2026-11-15T10:04:55+00:00",
+   "pc": 2
   },
   "1977331949": {
    "sid": 1977331949,
@@ -847,10 +851,11 @@
    "teaser": "Hunderte bunte Laternen haben die Ache in Marquartstein erstrahlen lassen: Dank des Einsatzes von 82 freiwilligen Helfern des Stoamandl Vereins ist das gemeinsame Lichterfest zu einem stimmungsvollen Erlebnis für die ganze Gemeinde geworden.",
    "category": "",
    "topic": "Region/Achental",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-15T09:57:06+00:00",
    "sec": "/chiemgau/achental/",
-   "first_seen": "2026-11-15T09:57:06+00:00"
+   "first_seen": "2026-11-15T09:57:06+00:00",
+   "pc": 2
   },
   "1776603398": {
    "sid": 1776603398,
@@ -898,10 +903,11 @@
    "teaser": "„Anfangs habe ich wie ein Hund gejault“: Jodel-Legende Takeo Ischi gehört seit mehr als 50 Jahren fest zu Bayern. Seine Youtube-Videos werden millionenfach geklickt. Im OVB-Interview erzählt er, wie alles begann und wie er mit Frau Henriette und vier Söhnen in Reit im Winkl glücklich wurde.",
    "category": "",
    "topic": "Region/Achental",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-14T16:15:00+00:00",
    "sec": "/chiemgau/achental/",
-   "first_seen": "2026-11-14T16:15:00+00:00"
+   "first_seen": "2026-11-14T16:15:00+00:00",
+   "pc": 2
   },
   "840170295": {
    "sid": 840170295,
@@ -1205,10 +1211,11 @@
    "teaser": "Aufatmen für Fußgänger und Radfahrer in Unterwössen: Die Bauarbeiten an der B305 sind abgeschlossen. Vor allem an der Engstelle unter der Altweger Wand hat sich die Lage für den Schulverkehr entspannt – doch das ist nicht die einzige Neuerung.",
    "category": "",
    "topic": "Region/Achental",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-11T13:05:31+00:00",
    "sec": "/chiemgau/achental/",
-   "first_seen": "2026-11-11T13:05:31+00:00"
+   "first_seen": "2026-11-11T13:05:31+00:00",
+   "pc": 2
   },
   "696365627": {
    "sid": 696365627,
@@ -1396,7 +1403,8 @@
    "plus": false,
    "date": "2026-11-10T06:17:00+00:00",
    "sec": "/chiemgau/achental/",
-   "first_seen": "2026-11-10T06:17:00+00:00"
+   "first_seen": "2026-11-10T06:17:00+00:00",
+   "pc": 2
   },
   "3510285817": {
    "sid": 3510285817,
@@ -1405,10 +1413,11 @@
    "teaser": "Erst der Leukämie-Schock um den kleinen Matteo, jetzt macht ein Brand die Wohnung von Jasmin Thiel und ihrem fünfjährigen Sohn in Grassau unbewohnbar. Dazu ist das Auto der Mutter kaputtgegangen. Wie viel Unglück muss diese kleine Familie noch verkraften? Und wie soll es weitergehen?",
    "category": "",
    "topic": "Region/Achental",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-10T04:45:00+00:00",
    "sec": "/chiemgau/achental/",
-   "first_seen": "2026-11-10T04:45:00+00:00"
+   "first_seen": "2026-11-10T04:45:00+00:00",
+   "pc": 2
   },
   "2680575319": {
    "sid": 2680575319,
@@ -1443,10 +1452,11 @@
    "teaser": "Reichlich Andrang hat beim Skibasar in Grassau geherrscht: Zahlreiche Wintersportfans deckten sich im Heftersaal mit passender Ausrüstung für den Winter ein. Trotzdem wird das Skifahren immer teurer und der Klimawandel tut sein Übriges. Lernen Kinder überhaupt noch das Fahren auf zwei Brettern?",
    "category": "",
    "topic": "Region/Achental",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-09T16:14:00+00:00",
    "sec": "/chiemgau/achental/",
-   "first_seen": "2026-11-09T16:14:00+00:00"
+   "first_seen": "2026-11-09T16:14:00+00:00",
+   "pc": 2
   },
   "2687087425": {
    "sid": 2687087425,
@@ -1557,10 +1567,11 @@
    "teaser": "Delegierte aus aller Welt haben sich im Bergsteigerdorf Schleching versammelt: Beim Besuch des Berggasthofs Streichen tauschten sich Fachleute über den Erhalt historischer Orte aus und zeigten sich von dem bayerischen Vorzeigeprojekt fasziniert.",
    "category": "",
    "topic": "Region/Achental",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-08T15:57:00+00:00",
    "sec": "/chiemgau/achental/",
-   "first_seen": "2026-11-08T15:57:00+00:00"
+   "first_seen": "2026-11-08T15:57:00+00:00",
+   "pc": 2
   },
   "639922371": {
    "sid": 639922371,
@@ -1581,10 +1592,11 @@
    "teaser": "Mit Marlene Holzner hat Obing eine Frau verloren, die das Leben in Pfarrei und Gemeinde über Jahrzehnte geprägt hat. Die 80-Jährige starb an den Folgen eines Schlaganfalls. Ein Rückblick auf ein Leben voller Engagement für Familie, Verwaltung und Ehrenamt.",
    "category": "",
    "topic": "Region/Trostberg",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-08T12:37:00+00:00",
    "sec": "/chiemgau/trostberg/",
-   "first_seen": "2026-11-08T12:37:00+00:00"
+   "first_seen": "2026-11-08T12:37:00+00:00",
+   "pc": 2
   },
   "1496235304": {
    "sid": 1496235304,
@@ -1606,10 +1618,11 @@
    "teaser": "Begehbare Hecke, Unterwasserwelt, Forscherteich: Auf 1,3 Hektar zeigt der Umweltgarten Wiesmühl bei Engelsberg die heimische Natur. Leiterin Martina Mitterer erzählt, was Schulklassen dort entdecken – und welcher ungewöhnliche Feind die Fische bedroht.",
    "category": "",
    "topic": "Region/Trostberg",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-08T11:33:00+00:00",
    "sec": "/chiemgau/trostberg/",
-   "first_seen": "2026-11-08T11:33:00+00:00"
+   "first_seen": "2026-11-08T11:33:00+00:00",
+   "pc": 2
   },
   "3025464594": {
    "sid": 3025464594,
@@ -1621,7 +1634,8 @@
    "plus": false,
    "date": "2026-11-08T11:26:00+00:00",
    "sec": "/chiemgau/trostberg/",
-   "first_seen": "2026-11-08T11:26:00+00:00"
+   "first_seen": "2026-11-08T11:26:00+00:00",
+   "pc": 2
   },
   "637906403": {
    "sid": 637906403,
@@ -1718,10 +1732,11 @@
    "teaser": "Die Mitglieder der Ortsgruppe Achental des Bund Naturschutz haben bei ihrer Jahresversammlung in Marquartstein Bilanz gezogen: Neben dem entschiedenen Widerstand gegen den Ausbau der B307 standen konkrete Artenschutzprojekte im Mittelpunkt.",
    "category": "",
    "topic": "Region/Achental",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-07T08:27:00+00:00",
    "sec": "/chiemgau/achental/",
-   "first_seen": "2026-11-07T08:27:00+00:00"
+   "first_seen": "2026-11-07T08:27:00+00:00",
+   "pc": 2
   },
   "3747481823": {
    "sid": 3747481823,
@@ -1756,10 +1771,11 @@
    "teaser": "Einst lebte sie als Vollwaise in den Slums von Manila (Philippinen). Heute holt Jermabelle Westner (31) aus Schnaitsee Kinder in ihrer alten Heimat von der Straße. Wieso sie die Kinder aus den Elendsvierteln nicht vergisst und warum sie dafür sogar einen Preis bekam.",
    "category": "",
    "topic": "Region/Trostberg",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-07T06:32:00+00:00",
    "sec": "/chiemgau/trostberg/",
-   "first_seen": "2026-11-07T06:32:00+00:00"
+   "first_seen": "2026-11-07T06:32:00+00:00",
+   "pc": 2
   },
   "653475541": {
    "sid": 653475541,
@@ -1823,7 +1839,8 @@
    "plus": false,
    "date": "2026-11-06T12:04:56+00:00",
    "sec": "/chiemgau/trostberg/",
-   "first_seen": "2026-11-06T12:04:56+00:00"
+   "first_seen": "2026-11-06T12:04:56+00:00",
+   "pc": 2
   },
   "119593423": {
    "sid": 119593423,
@@ -1832,10 +1849,11 @@
    "teaser": "Der erste Nachtragshaushalt für 2026 in Schnaitsee steht. Trotz eines verringerten Gewerbesteueraufkommens steigt das Gesamtvolumen der Gemeinde. Zu den Gründen und welche Kosten besonders zu Buche schlagen.",
    "category": "",
    "topic": "Region/Trostberg",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-06T11:22:00+00:00",
    "sec": "/chiemgau/trostberg/",
-   "first_seen": "2026-11-06T11:22:00+00:00"
+   "first_seen": "2026-11-06T11:22:00+00:00",
+   "pc": 2
   },
   "2984824436": {
    "sid": 2984824436,
@@ -2097,10 +2115,11 @@
    "teaser": "Auf dem alten Bahngelände in Marquartstein soll ein neues Bildungszentrum entstehen. Der Gemeinderat hat nun einstimmig den Weg für die nächsten Verhandlungsschritte geebnet – vor den Planern liegt allerdings noch ein gutes Stück Arbeit.",
    "category": "",
    "topic": "Region/Achental",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-02T16:03:00+00:00",
    "sec": "/chiemgau/achental/",
-   "first_seen": "2026-11-02T16:03:00+00:00"
+   "first_seen": "2026-11-02T16:03:00+00:00",
+   "pc": 2
   },
   "1086305673": {
    "sid": 1086305673,
@@ -2134,10 +2153,11 @@
    "teaser": "Mit viel Humor und Spielfreude hat der Theaterverein Reit im Winkl die Premiere seines neuen Lustspiels auf die Bühne des Festsaals gebracht. Das Publikum erlebte turbulente Szenen auf einer chaotischen Polizeiwache, die für beste Stimmung sorgten.",
    "category": "",
    "topic": "Region/Achental",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-02T10:37:20+00:00",
    "sec": "/chiemgau/achental/",
-   "first_seen": "2026-11-02T10:37:20+00:00"
+   "first_seen": "2026-11-02T10:37:20+00:00",
+   "pc": 2
   },
   "2664717375": {
    "sid": 2664717375,
@@ -2146,10 +2166,11 @@
    "teaser": "Die jahrelange Notlösung mit Containern hat in Unterwössen ein Ende gefunden: Nach umfangreichen Ausbauarbeiten ist der Kindergarten St. Martin feierlich eingeweiht worden. Das Millionenprojekt schafft modernen Raum für mehr als 100 Buben und Mädchen.",
    "category": "",
    "topic": "Region/Achental",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-02T10:32:22+00:00",
    "sec": "/chiemgau/achental/",
-   "first_seen": "2026-11-02T10:32:22+00:00"
+   "first_seen": "2026-11-02T10:32:22+00:00",
+   "pc": 2
   },
   "3465339572": {
    "sid": 3465339572,
@@ -2161,7 +2182,8 @@
    "plus": false,
    "date": "2026-11-02T10:07:47+00:00",
    "sec": "/chiemgau/trostberg/",
-   "first_seen": "2026-11-02T10:07:47+00:00"
+   "first_seen": "2026-11-02T10:07:47+00:00",
+   "pc": 2
   },
   "1691319050": {
    "sid": 1691319050,
@@ -2183,10 +2205,11 @@
    "teaser": "Große Bühne für verdiente Persönlichkeiten: Bei der Bürgerversammlung in Obing hat die Gemeinde sportliche Spitzenleistungen und jahrelanges Ehrenamt gewürdigt. Eine besondere Auszeichnung ging dabei an eine prägende Figur der Kommunalpolitik.",
    "category": "",
    "topic": "Region/Trostberg",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-02T09:27:00+00:00",
    "sec": "/chiemgau/trostberg/",
-   "first_seen": "2026-11-02T09:27:00+00:00"
+   "first_seen": "2026-11-02T09:27:00+00:00",
+   "pc": 2
   },
   "2290663820": {
    "sid": 2290663820,
@@ -2195,10 +2218,11 @@
    "teaser": "Zwei schwere Unfälle, in denen Traktoren involviert waren, haben am Freitag (30. Oktober) die Retter in der Region gefordert. Die Polizei sieht derzeit zwar keine erhöhte Gefahr durch landwirtschaftliche Fahrzeuge, hat aber dennoch Tipps für Verkehrsteilnehmer parat.",
    "category": "",
    "topic": "Region/Trostberg",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-01T16:15:00+00:00",
    "sec": "/chiemgau/trostberg/",
-   "first_seen": "2026-11-01T16:15:00+00:00"
+   "first_seen": "2026-11-01T16:15:00+00:00",
+   "pc": 2
   },
   "651979849": {
    "sid": 651979849,
@@ -2210,7 +2234,8 @@
    "plus": false,
    "date": "2026-11-01T10:58:44+00:00",
    "sec": "/chiemgau/trostberg/",
-   "first_seen": "2026-11-01T10:58:44+00:00"
+   "first_seen": "2026-11-01T10:58:44+00:00",
+   "pc": 2
   },
   "3682521723": {
    "sid": 3682521723,
@@ -2219,10 +2244,11 @@
    "teaser": "Wichtiger Schritt für Unterwössen: Für den Hochwasserschutz im Ortsteil Oberwössen hat der Gemeinderat die Vereinbarung mit dem Freistaat Bayern gebilligt. Bei dem Millionenprojekt an zwei Wildbächen trägt das Land den Großteil der Kosten.",
    "category": "",
    "topic": "Region/Achental",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-01T10:53:00+00:00",
    "sec": "/chiemgau/achental/",
-   "first_seen": "2026-11-01T10:53:00+00:00"
+   "first_seen": "2026-11-01T10:53:00+00:00",
+   "pc": 2
   },
   "4249138306": {
    "sid": 4249138306,
@@ -2231,10 +2257,11 @@
    "teaser": "Aus Dankbarkeit für die Rettung vor feindlichen Kriegstruppen im 18. Jahrhundert haben Gläubige aus Reit im Winkl ein jahrhundertealtes Gelübde erneuert: Sie zogen bei ihrer traditionellen Wallfahrt zur Kirche Maria Klobenstein nach Kössen.",
    "category": "",
    "topic": "Region/Achental",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-01T08:32:37+00:00",
    "sec": "/chiemgau/achental/",
-   "first_seen": "2026-11-01T08:32:37+00:00"
+   "first_seen": "2026-11-01T08:32:37+00:00",
+   "pc": 2
   },
   "3715266220": {
    "sid": 3715266220,
@@ -2268,10 +2295,11 @@
    "teaser": "Das historische Schloss Niedernfels in Marquartstein soll zu einem Wohnkomplex umgebaut werden. Doch die Pläne für die künftige Nutzung werfen im Gemeinderat noch grundlegende Fragen auf – insbesondere rund um die künftige Verkehrsbelastung.",
    "category": "",
    "topic": "Region/Achental",
-   "plus": false,
+   "plus": true,
    "date": "2026-10-31T06:26:00+00:00",
    "sec": "/chiemgau/achental/",
-   "first_seen": "2026-10-31T06:26:00+00:00"
+   "first_seen": "2026-10-31T06:26:00+00:00",
+   "pc": 2
   },
   "559863649": {
    "sid": 559863649,
@@ -2292,10 +2320,11 @@
    "teaser": "Ein ganz besonderes Erlebnis hat die Andreasbläser aus Engelsberg nach Südtirol geführt: Beim traditionsreichen Traubenfest in Meran durften die Musiker als eine von wenigen deutschen Gruppen tausende Besucher begeistern.",
    "category": "",
    "topic": "Region/Trostberg",
-   "plus": false,
+   "plus": true,
    "date": "2026-10-30T10:13:00+00:00",
    "sec": "/chiemgau/trostberg/",
-   "first_seen": "2026-10-30T10:13:00+00:00"
+   "first_seen": "2026-10-30T10:13:00+00:00",
+   "pc": 2
   },
   "3361141243": {
    "sid": 3361141243,
@@ -2316,10 +2345,11 @@
    "teaser": "Gemeinsam für einen nachhaltigen Tourismus: In Schleching haben sich Vertreter bayerischer Bergsteigerdörfer mit dem Alpenverein getroffen, um über den Schutz des alpinen Raums zu beraten. Dabei richtete sich der Blick bereits auf ein großes Vorhaben.",
    "category": "",
    "topic": "Region/Achental",
-   "plus": false,
+   "plus": true,
    "date": "2026-10-29T10:05:00+00:00",
    "sec": "/chiemgau/achental/",
-   "first_seen": "2026-10-29T10:05:00+00:00"
+   "first_seen": "2026-10-29T10:05:00+00:00",
+   "pc": 2
   },
   "4139096740": {
    "sid": 4139096740,
@@ -2401,10 +2431,11 @@
    "teaser": "Nach dem geglückten Start in die Kommunalpolitik hat die Wählergemeinschaft „Wössen Mitnand“ in Unterwössen Bilanz gezogen. Bei der ersten Hauptversammlung stand neben dem Wahlerfolg allerdings auch deutliche interne Kritik zur Debatte.",
    "category": "",
    "topic": "Region/Achental",
-   "plus": false,
+   "plus": true,
    "date": "2026-10-27T10:05:00+00:00",
    "sec": "/chiemgau/achental/",
-   "first_seen": "2026-10-27T10:05:00+00:00"
+   "first_seen": "2026-10-27T10:05:00+00:00",
+   "pc": 2
   },
   "940587242": {
    "sid": 940587242,
@@ -2416,7 +2447,8 @@
    "plus": false,
    "date": "2026-10-26T12:00:00+00:00",
    "sec": "/chiemgau/achental/",
-   "first_seen": "2026-10-26T12:00:00+00:00"
+   "first_seen": "2026-10-26T12:00:00+00:00",
+   "pc": 2
   },
   "3091759079": {
    "sid": 3091759079,
@@ -2428,7 +2460,8 @@
    "plus": false,
    "date": "2026-10-26T11:45:46+00:00",
    "sec": "/chiemgau/achental/",
-   "first_seen": "2026-10-26T11:45:46+00:00"
+   "first_seen": "2026-10-26T11:45:46+00:00",
+   "pc": 2
   },
   "3306236107": {
    "sid": 3306236107,
@@ -2453,7 +2486,8 @@
    "plus": false,
    "date": "2026-10-25T11:10:00+00:00",
    "sec": "/chiemgau/trostberg/",
-   "first_seen": "2026-10-25T11:10:00+00:00"
+   "first_seen": "2026-10-25T11:10:00+00:00",
+   "pc": 2
   },
   "1075743912": {
    "sid": 1075743912,
@@ -2465,7 +2499,8 @@
    "plus": false,
    "date": "2026-10-25T06:30:00+00:00",
    "sec": "/chiemgau/trostberg/",
-   "first_seen": "2026-10-25T06:30:00+00:00"
+   "first_seen": "2026-10-25T06:30:00+00:00",
+   "pc": 2
   },
   "688147913": {
    "sid": 688147913,
@@ -2487,10 +2522,11 @@
    "teaser": "Ob Ausflüge, Theater oder Kurse: Der Förderverein für Kinder in Engelsberg hat viele Aktionen ermöglicht. Bei der Versammlung zogen die Verantwortlichen eine erfreuliche Bilanz und schmiedeten bereits neue Pläne für den Nachwuchs.",
    "category": "",
    "topic": "Region/Trostberg",
-   "plus": false,
+   "plus": true,
    "date": "2026-10-24T13:25:00+00:00",
    "sec": "/chiemgau/trostberg/",
-   "first_seen": "2026-10-24T13:25:00+00:00"
+   "first_seen": "2026-10-24T13:25:00+00:00",
+   "pc": 2
   },
   "3100937739": {
    "sid": 3100937739,
@@ -2512,10 +2548,11 @@
    "teaser": "Ein anonymer Brief hat das Jugendamt auf den Plan gerufen: Jetzt informierte der Pittenharter Bürgermeister Sebastian Unterhuber über Vorwürfe gegen seine Familie, die Reaktion der Behörde – und darüber, welche Konsequenzen er daraus gezogen hat.",
    "category": "",
    "topic": "Region/Trostberg",
-   "plus": false,
+   "plus": true,
    "date": "2026-10-24T05:30:00+00:00",
    "sec": "/chiemgau/trostberg/",
-   "first_seen": "2026-10-24T05:30:00+00:00"
+   "first_seen": "2026-10-24T05:30:00+00:00",
+   "pc": 2
   },
   "2039502125": {
    "sid": 2039502125,
@@ -2524,10 +2561,11 @@
    "teaser": "In Albertaich nimmt eine große Trauergemeinde Abschied von Sebastian Unterhuber, der kürzlich im Alter von 97 Jahren verstorben ist. Über eine Persönlichkeit, die das nicht immer leichte Leben mit viel Humor bewältigte.",
    "category": "",
    "topic": "Region/Trostberg",
-   "plus": false,
+   "plus": true,
    "date": "2026-10-23T12:45:00+00:00",
    "sec": "/chiemgau/trostberg/",
-   "first_seen": "2026-10-23T12:45:00+00:00"
+   "first_seen": "2026-10-23T12:45:00+00:00",
+   "pc": 2
   },
   "3829349256": {
    "sid": 3829349256,
@@ -2549,10 +2587,11 @@
    "teaser": "Eigentlich sollte der ausgediente Sendemast des Bayerischen Rundfunks in Grassau kontrolliert gesprengt werden. Doch bei den Vorbereitungen ist das 35 Meter hohe Betonbauwerk plötzlich ganz ohne Knall umgekippt – und stellte die Beteiligten vor ein Rätsel.",
    "category": "",
    "topic": "Region/Achental",
-   "plus": false,
+   "plus": true,
    "date": "2026-10-23T09:15:00+00:00",
    "sec": "/chiemgau/achental/",
-   "first_seen": "2026-10-23T09:15:00+00:00"
+   "first_seen": "2026-10-23T09:15:00+00:00",
+   "pc": 2
   },
   "3879211083": {
    "sid": 3879211083,
@@ -2587,10 +2626,11 @@
    "teaser": "Am Mittwochabend (21. Oktober) ereignete sich im Kreuzungsbereich der Schwarzauer Straße und der B299 in Trostberg ein Unfall.",
    "category": "",
    "topic": "Region/Trostberg",
-   "plus": false,
+   "plus": true,
    "date": "2026-10-22T03:30:00+00:00",
    "sec": "/chiemgau/trostberg/",
-   "first_seen": "2026-10-22T03:30:00+00:00"
+   "first_seen": "2026-10-22T03:30:00+00:00",
+   "pc": 2
   }
  }
 }

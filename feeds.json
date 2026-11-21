@@ -35,8 +35,8 @@
     "Region/Salzburg",
     "Region/Traunstein",
     "Bayern",
-    "Bayern/Altoetting",
-    "Bayern/Muehldorf",
+    "Bayern/Altötting",
+    "Bayern/Mühldorf",
     "Bayern/Rosenheim",
     "Bayern/Traunstein",
     "Sport",
@@ -48,7 +48,7 @@
     "Nachrichten/Stars",
     "Nachrichten/Welt",
     "Nachrichten/Wirtschaft",
-    "Tv Kino"
+    "TV & Kino"
    ]
   },
   {
@@ -103,6 +103,21 @@
    "topics": [
     "Region",
     "Region/Nationalpark"
+   ]
+  },
+  {
+   "id": "br24",
+   "name": "BR24",
+   "url": "https://raw.githubusercontent.com/bergf3x/BGA-Feed/main/feed_br24.xml",
+   "topics": [
+    "Bayern",
+    "Sport",
+    "Nachrichten",
+    "Nachrichten/Deutschland & Welt",
+    "Nachrichten/Digital",
+    "Nachrichten/Wirtschaft",
+    "Nachrichten/Wissenschaft",
+    "Kultur"
    ]
   }
  ]
