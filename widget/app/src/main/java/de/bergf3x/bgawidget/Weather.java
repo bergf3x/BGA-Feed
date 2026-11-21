@@ -12,8 +12,8 @@ import java.util.Locale;
 /** Wetter fuer Berchtesgaden von Open-Meteo (kostenlos, ohne Schluessel). */
 final class Weather {
     /** Orte zur Auswahl: Name, Breite, Laenge. */
-    static final String[] PLACES = {"Berchtesgaden", "Ramsau bei Berchtesgaden", "Bischofswiesen"};
-    private static final double[][] COORDS = {{47.6297, 13.0036}, {47.6333, 12.8833}, {47.6417, 12.9833}};
+    static final String[] PLACES = {"Berchtesgaden", "Ramsau bei Berchtesgaden", "Bischofswiesen", "Schönau am Königssee"};
+    private static final double[][] COORDS = {{47.6297, 13.0036}, {47.6333, 12.8833}, {47.6417, 12.9833}, {47.6050, 12.9870}};
 
     private static String url(int place) {
         return "https://api.open-meteo.com/v1/forecast?latitude=" + COORDS[place][0]

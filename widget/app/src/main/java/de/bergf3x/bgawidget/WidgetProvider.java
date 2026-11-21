@@ -136,8 +136,14 @@ public class WidgetProvider extends AppWidgetProvider {
             rv.setTextViewText(R.id.w_hi, "");
             rv.setTextViewText(R.id.w_lo, "");
         } else {
-            rv.setInt(R.id.w_tint, "setColorFilter", Weather.tint(w.code, w.day));
-            rv.setInt(R.id.w_tint, "setImageAlpha", 58);
+            android.graphics.Bitmap bg = WeatherBg.get(ctx, w.code, w.day);
+            rv.setInt(R.id.w_tint, "setColorFilter", 0);
+            if (bg != null) {
+                rv.setImageViewBitmap(R.id.w_tint, bg);
+                rv.setInt(R.id.w_tint, "setImageAlpha", 255);
+            } else {
+                rv.setInt(R.id.w_tint, "setImageAlpha", 0);
+            }
             rv.setImageViewResource(R.id.w_icon, Weather.icon(w.code, w.day));
             rv.setTextViewText(R.id.w_desc, Weather.text(w.code, w.day));
             rv.setTextViewText(R.id.w_temp, Weather.deg(w.temp));
