@@ -495,6 +495,7 @@ SITES = [
         enrich=bg_enrich,
         order="seen",
         ippen=True,
+        only_region=True,
     ),
     dict(
         id="orf_salzburg",
@@ -572,6 +573,9 @@ def build(site, items, state, now):
             del state_items[k]  # Menue-/Rubrik-Links sind keine Artikel
         for v in state_items.values():
             v["topic"] = bg_topic(v["url"])
+        if site.get("only_region"):
+            for k in [k for k, v in state_items.items() if not v["topic"].startswith("Region")]:
+                del state_items[k]
     ordered, per_topic = [], {}
     for x in sorted(state_items.values(), key=sort_key(site), reverse=True):
         t = x.get("topic") or "Region"
