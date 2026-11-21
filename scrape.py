@@ -185,7 +185,38 @@ def _bg_html(base, html):
     return out
 
 
+def bg_topic(url):
+    """Thema aus dem Adresspfad ableiten, z. B. /bgland/region-berchtesgaden/... -> Region/Berchtesgaden."""
+    from urllib.parse import urlparse
+
+    seg = [x for x in urlparse(url).path.split("/") if x]
+
+    def nice(x):
+        x = re.sub(r"^(region|landkreis)-", "", x)
+        return " ".join(w.capitalize() for w in x.split("-"))
+
+    if not seg:
+        return "Region"
+    top = seg[0]
+    if top == "bgland":
+        return "Region/" + nice(seg[1]) if len(seg) > 2 else "Region"
+    if top in ("welt", "deutschland", "politik", "wirtschaft"):
+        return "Nachrichten/" + nice(top)
+    if top in ("sport", "wintersport"):
+        return "Sport/Wintersport" if top == "wintersport" else "Sport"
+    if top == "bayern" and len(seg) > 2:
+        return "Bayern/" + nice(seg[1]) if seg[1].startswith("landkreis") else "Bayern"
+    return nice(top)
+
+
 def fetch_bgland(site):
+    items = _fetch_bgland(site)
+    for it in items:
+        it["topic"] = bg_topic(it["url"])
+    return items
+
+
+def _fetch_bgland(site):
     import requests
 
     base = site["base"]
@@ -355,7 +386,7 @@ def build(site, items, state, now):
     )
     present = {it.get("topic") or "Region" for it in ordered}
     topics = [
-        t for t in (site["topics"] or sorted(present))
+        t for t in (site["topics"] or sorted(present | {p.split("/")[0] for p in present}))
         if t in present or any(p.startswith(t + "/") for p in present)
     ]
     return xml, topics
