@@ -216,6 +216,26 @@ public class ListService extends RemoteViewsService {
         return false;
     }
 
+    /** Abo-Artikel, die im gewaehlten Thema nur wegen "Abo ausblenden" fehlen; ids = betroffene Quellen. */
+    static int hiddenPlus(Context ctx, int id, List<String> ids) {
+        List<Catalog.Feed> all = Catalog.load(ctx);
+        Set<String> selected = Catalog.effective(all, Prefs.feeds(ctx, id));
+        String topic = Prefs.topic(ctx, id);
+        String topicFeed = Prefs.topicFeed(ctx, id);
+        int n = 0;
+        for (Catalog.Feed f : all) {
+            if (!selected.contains(f.id) || Prefs.showPlusFeed(ctx, id, f.id)) continue;
+            if (!topicFeed.isEmpty() && !topicFeed.equals(f.name)) continue;
+            int k = 0;
+            for (FeedItem it : FeedCache.items(ctx, f.id, f.name)) {
+                if (it.plus && (topic.isEmpty() || it.inTopic(topic))) k++;
+            }
+            if (k > 0 && ids != null) ids.add(f.id);
+            n += k;
+        }
+        return n;
+    }
+
     private static void showEmptyReason(Context ctx, int id, List<Catalog.Feed> all, Set<String> selected, String topic) {
         StringBuilder sb = new StringBuilder();
         for (Catalog.Feed f : all) {
@@ -226,6 +246,8 @@ public class ListService extends RemoteViewsService {
         if (sb.length() == 0) {
             sb.append(topic.isEmpty() ? "Keine Artikel gefunden"
                     : "Keine Artikel im Thema „" + topic.substring(topic.indexOf('/') + 1) + "“");
+            int hp = hiddenPlus(ctx, id, null);
+            if (hp > 0) sb.append("\n").append(hp).append(" Abo-Artikel ausgeblendet");
         }
         emptyReason = sb.toString().trim();
         if (id <= 0) return;

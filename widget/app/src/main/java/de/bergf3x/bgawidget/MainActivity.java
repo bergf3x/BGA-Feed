@@ -484,10 +484,30 @@ public class MainActivity extends Activity {
         if (items.isEmpty()) {
             String msg = syncing ? "Lade Nachrichten …"
                     : (ListService.emptyReason.isEmpty() ? "Keine Artikel gefunden" : ListService.emptyReason);
+            final List<String> plusIds = new ArrayList<>();
+            int hp = syncing ? 0 : ListService.hiddenPlus(this, ID, plusIds);
+            if (hp > 0) {
+                String tp = Prefs.topic(this, ID);
+                msg = "Keine frei lesbaren Artikel" + (tp.isEmpty() ? "" : " in „" + tp.substring(tp.indexOf('/') + 1) + "“")
+                        + ".\n" + hp + (hp == 1 ? " Abo-Artikel ist" : " Abo-Artikel sind") + " ausgeblendet.";
+            }
             TextView t = text(msg, 14, soft, false);
-            t.setPadding(px(6), px(18), px(6), px(18));
+            t.setPadding(px(6), px(18), px(6), hp > 0 ? px(10) : px(18));
             t.setGravity(Gravity.CENTER);
             page.addView(t);
+            if (hp > 0) {
+                TextView b = text("Abo-Artikel anzeigen", 14, tx, true);
+                b.setGravity(Gravity.CENTER);
+                b.setPadding(px(16), px(10), px(16), px(10));
+                press(b, cardFill, 18, line);
+                b.setOnClickListener(v -> {
+                    for (String fid : plusIds) Prefs.setPlusFeed(this, ID, fid, true);
+                    build();
+                });
+                LinearLayout.LayoutParams blp = lp(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 18);
+                blp.gravity = Gravity.CENTER_HORIZONTAL;
+                page.addView(b, blp);
+            }
             return;
         }
         int n = Math.min(items.size(), MAX_ITEMS);

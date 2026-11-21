@@ -5,6 +5,11 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.16",
+                    "! Test: BGLand24 über die offiziellen RSS-Feeds je Region (Berchtesgaden, Bad Reichenhall, Rupertiwinkel, Traunstein, Salzburg) mit echter Uhrzeit",
+                    "! Menü- und Rubrik-Links erscheinen nicht mehr als Meldung",
+                    "+ Leerer Reiter zeigt, wie viele Abo-Artikel ausgeblendet sind, mit Knopf „Abo-Artikel anzeigen“",
+                    "! Test: Abo-Prüfung bei BGLand24 im Hintergrund, neueste zuerst"},
             {"1.15",
                     "~ Test: „Live Webcam“ als dezente waagerechte Glas-Pille oben rechts in der Wetterkarte"},
             {"1.14",

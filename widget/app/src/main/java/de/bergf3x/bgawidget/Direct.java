@@ -94,10 +94,12 @@ final class Direct {
                 Thread th = new Thread(() -> {
                     try {
                         int n = resolveTimes(app, ff, fl);
+                        String x2;
                         synchronized (Direct.class) {
-                            merge(app, ff, false, fl);
+                            x2 = merge(app, ff, false, fl);
                         }
-                        log(app, ff.name + ": " + n + " Zeiten im Hintergrund gelesen");
+                        if (n > 0) FeedCache.put(app, ff.id, x2, FeedItem.parse(x2, ff.name)); // Abo-Kennzeichen sofort wirksam
+                        log(app, ff.name + ": " + n + " Artikel auf Abo geprüft (Hintergrund)");
                     } catch (Throwable ignored) {
                     }
                 });
@@ -107,7 +109,7 @@ final class Direct {
             int regionN = 0;
             for (Map<String, Object> it : found) if (String.valueOf(it.get("topic")).startsWith("Region")) regionN++;
             log(ctx, f.name + ": " + found.size() + " Artikel direkt (davon Region " + regionN + "), " + timed + " Zeiten, "
-                    + (System.currentTimeMillis() - t0) / 1000 + " s");
+                    + (System.currentTimeMillis() - t0) / 1000 + " s" + (bga ? "" : " | " + bgReport));
             return xml;
         } catch (Exception e) {
             log(ctx, f.name + ": FEHLER direkt (" + e + ") - nehme GitHub-Feed");
@@ -225,36 +227,65 @@ final class Direct {
 
     private static final Pattern BG_ART = Pattern.compile("-\\d{6,}\\.html$");
 
+    /** Rubriken von BGLand24; jede hat einen eigenen RSS-Feed (Ippen-Muster: <rubrik>rssfeed.rdf). */
+    private static final String[] BG_SECTIONS = {
+            "/bgland/region-berchtesgaden/", "/bgland/region-bad-reichenhall/", "/bgland/rupertiwinkel/",
+            "/bgland/region-traunstein/", "/bgland/region-salzburg/", "/bgland/", "/",
+    };
+    static volatile String bgReport = "";
+
     private static List<Map<String, Object>> scrapeBgland() throws IOException {
-        String home = Net.download(BGL + "/");
-        // Rubrikseiten der Region (z. B. /bgland/region-berchtesgaden/) selbst auf der Startseite finden
-        java.util.Set<String> cats = new java.util.LinkedHashSet<>();
-        Matcher cm = A_ANY.matcher(home);
-        while (cm.find()) {
-            String h = cm.group(1).split("#")[0].split("\\?")[0];
-            if (h.startsWith(BGL)) h = h.substring(BGL.length());
-            else if (h.startsWith("https://bgland24.de")) h = h.substring("https://bgland24.de".length());
-            if (h.matches("/bgland/[a-z0-9-]+/?")) cats.add(h.endsWith("/") ? h : h + "/");
-        }
-        for (String c : new String[]{"/bgland/region-bad-reichenhall/", "/bgland/region-berchtesgaden/", "/bgland/rupertiwinkel/",
-                "/bgland/region-traunstein/", "/bgland/region-salzburg/"}) cats.add(c);
-        List<String> pages = new ArrayList<>(cats);
-        if (pages.size() > 14) pages = pages.subList(0, 14);
         ExecutorService ex = Executors.newFixedThreadPool(5);
-        List<Callable<List<Map<String, Object>>>> tasks = new ArrayList<>();
-        for (final String pg : pages) {
-            tasks.add(() -> parseBgland(Net.download(BGL + pg)));
-        }
-        Map<String, Map<String, Object>> byUrl = new java.util.LinkedHashMap<>();
-        for (Map<String, Object> it : parseBgland(home)) byUrl.put((String) it.get("url"), it);
-        try {
-            for (Future<List<Map<String, Object>>> fu : ex.invokeAll(tasks, 18, TimeUnit.SECONDS)) {
-                if (fu.isCancelled()) continue;
+        List<Callable<Object[]>> tasks = new ArrayList<>();
+        for (final String sec : BG_SECTIONS) {
+            tasks.add(() -> {
+                List<Map<String, Object>> got = new ArrayList<>();
+                String how;
                 try {
-                    for (Map<String, Object> it : fu.get()) {
-                        Map<String, Object> old = byUrl.get((String) it.get("url"));
-                        // Region-Rubrik hat Vorrang vor dem allgemeinen Thema der Startseite
-                        if (old == null || ((String) it.get("topic")).startsWith("Region")) byUrl.put((String) it.get("url"), it);
+                    got = parseRss(Net.download(BGL + sec + "rssfeed.rdf"));
+                    how = "RSS " + got.size();
+                } catch (Exception e) {
+                    how = "RSS-Fehler " + e.getMessage();
+                }
+                if (got.isEmpty() && !sec.equals("/")) {
+                    try {
+                        got = parseBgland(Net.download(BGL + sec));
+                        how += ", Seite " + got.size();
+                    } catch (Exception e) {
+                        how += ", Seiten-Fehler " + e.getMessage();
+                    }
+                }
+                return new Object[]{sec, how, got};
+            });
+        }
+        // Startseite ergaenzt Themen ausserhalb der Region (Bayern, Sport ...)
+        tasks.add(() -> {
+            try {
+                List<Map<String, Object>> got = parseBgland(Net.download(BGL + "/"));
+                return new Object[]{"Startseite", "Seite " + got.size(), got};
+            } catch (Exception e) {
+                return new Object[]{"Startseite", "Fehler " + e.getMessage(), new ArrayList<Map<String, Object>>()};
+            }
+        });
+        Map<String, Map<String, Object>> byUrl = new java.util.LinkedHashMap<>();
+        StringBuilder rep = new StringBuilder();
+        try {
+            for (Future<Object[]> fu : ex.invokeAll(tasks, 20, TimeUnit.SECONDS)) {
+                if (fu.isCancelled()) {
+                    rep.append("Zeitlimit; ");
+                    continue;
+                }
+                try {
+                    Object[] r = fu.get();
+                    String sec = (String) r[0];
+                    rep.append(sec.replace("/bgland/", "").replace("region-", "").replace("/", "")).append(": ").append(r[1]).append("; ");
+                    @SuppressWarnings("unchecked")
+                    List<Map<String, Object>> got = (List<Map<String, Object>>) r[2];
+                    for (Map<String, Object> it : got) {
+                        String u = (String) it.get("url");
+                        Map<String, Object> old = byUrl.get(u);
+                        if (old == null) byUrl.put(u, it);
+                        else if (!old.containsKey("pub") && it.containsKey("pub")) old.put("pub", it.get("pub"));
                     }
                 } catch (Exception ignored) {
                 }
@@ -264,7 +295,64 @@ final class Direct {
         } finally {
             ex.shutdownNow();
         }
+        bgReport = rep.toString();
         return new ArrayList<>(byUrl.values());
+    }
+
+    private static final Pattern RSS_ITEM = Pattern.compile("<(item|entry)\\b[^>]*>(.*?)</\\1>", Pattern.DOTALL);
+
+    private static String rssTag(String blk, String name) {
+        Matcher m = Pattern.compile("<" + name + "\\b[^>]*>(.*?)</" + name + ">", Pattern.DOTALL).matcher(blk);
+        if (!m.find()) return "";
+        String v = m.group(1).trim();
+        if (v.startsWith("<![CDATA[") && v.endsWith("]]>")) v = v.substring(9, v.length() - 3);
+        return v.trim();
+    }
+
+    /** RSS 2.0 / RDF / Atom tolerant lesen (nur echte Artikel-Links). */
+    static List<Map<String, Object>> parseRss(String xml) throws IOException {
+        List<Map<String, Object>> out = new ArrayList<>();
+        SimpleDateFormat rfc = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH);
+        Matcher m = RSS_ITEM.matcher(xml);
+        while (m.find()) {
+            String blk = m.group(2);
+            String link = rssTag(blk, "link");
+            if (link.isEmpty()) {
+                Matcher h = Pattern.compile("<link[^>]+href=\"([^\"]+)\"").matcher(blk);
+                if (h.find()) link = h.group(1);
+            }
+            link = FeedItem.unescape(link.split("#")[0]).trim();
+            if (link.isEmpty() || !BG_ART.matcher(link.split("\\?")[0]).find()) continue;
+            String title = clean(rssTag(blk, "title"));
+            if (title.length() < 10) continue;
+            Map<String, Object> it = new HashMap<>();
+            CRC32 c = new CRC32();
+            c.update(link.getBytes("UTF-8"));
+            it.put("sid", c.getValue());
+            it.put("url", link);
+            it.put("title", title);
+            String teaser = clean(rssTag(blk, "description"));
+            it.put("teaser", teaser.length() > 300 ? teaser.substring(0, 300) : teaser);
+            it.put("category", clean(rssTag(blk, "category")));
+            it.put("topic", bgTopic(link));
+            it.put("plus", false);
+            String raw = rssTag(blk, "pubDate");
+            long t = -1;
+            try {
+                if (!raw.isEmpty()) {
+                    Date d = rfc.parse(raw);
+                    if (d != null) t = d.getTime();
+                } else {
+                    raw = rssTag(blk, "dc:date");
+                    if (raw.isEmpty()) raw = rssTag(blk, "published");
+                    if (!raw.isEmpty()) t = parseTime("\"datePublished\":\"" + raw + "\"");
+                }
+            } catch (Exception ignored) {
+            }
+            if (t > 0) it.put("pub", t);
+            out.add(it);
+        }
+        return out;
     }
 
     private static List<Map<String, Object>> parseBgland(String html) throws IOException {
@@ -393,26 +481,37 @@ final class Direct {
             JSONArray a = new JSONArray(sp.getString("state_" + f.id, "[]"));
             for (int i = 0; i < a.length(); i++) {
                 JSONObject o = a.getJSONObject(i);
-                if (o.optBoolean("tok") || o.optInt("tries") >= 2) done.add(String.valueOf(o.getLong("sid")));
+                boolean ok = f.id.equals("bga") ? o.optBoolean("tok") : o.optBoolean("pc");
+                if (ok || o.optInt("tries") >= 2) done.add(String.valueOf(o.getLong("sid")));
             }
         } catch (Exception ignored) {
         }
+        // neueste zuerst: BGA nach Artikel-ID, BGLand24 nach Veroeffentlichung
+        List<Map<String, Object>> cand = new ArrayList<>(found);
+        if (f.id.equals("bga")) Collections.sort(cand, (x, y) -> Long.compare((Long) y.get("sid"), (Long) x.get("sid")));
+        else Collections.sort(cand, (x, y) -> Long.compare(x.containsKey("pub") ? 0 : 1, y.containsKey("pub") ? 0 : 1) != 0
+                ? Long.compare(x.containsKey("pub") ? 0 : 1, y.containsKey("pub") ? 0 : 1)
+                : Long.compare(y.containsKey("pub") ? (Long) y.get("pub") : 0L, x.containsKey("pub") ? (Long) x.get("pub") : 0L));
         final List<Map<String, Object>> todo = new ArrayList<>();
-        for (Map<String, Object> it : found) {
+        for (Map<String, Object> it : cand) {
             if (!done.contains(String.valueOf(it.get("sid")))) todo.add(it);
             if (todo.size() >= 60) break;
         }
         if (todo.isEmpty()) return 0;
-        if (f.id.equals("bga")) Collections.sort(todo, (x, y) -> Long.compare((Long) y.get("sid"), (Long) x.get("sid")));
         ExecutorService ex = Executors.newFixedThreadPool(8);
         List<Callable<Boolean>> tasks = new ArrayList<>();
         for (final Map<String, Object> it : todo) {
             tasks.add(() -> {
                 try {
                     String page = Net.download((String) it.get("url"));
-                    long t = parseTime(page);
-                    if (t > 0) it.put("pub", t);
-                    if (!f.id.equals("bga") && PAID.matcher(page).find()) it.put("plus", true);
+                    if (!it.containsKey("pub")) {
+                        long t = parseTime(page);
+                        if (t > 0) it.put("pub", t);
+                    }
+                    if (!f.id.equals("bga")) {
+                        if (PAID.matcher(page).find()) it.put("plus", true);
+                        it.put("pc", true);
+                    }
                 } catch (Exception ignored) {
                 }
                 return true;
@@ -428,7 +527,7 @@ final class Direct {
         }
         for (Map<String, Object> it : todo) {
             it.put("tried", true);
-            if (it.containsKey("pub")) ok++;
+            if (f.id.equals("bga") ? it.containsKey("pub") : it.containsKey("pc")) ok++;
         }
         return ok;
     }
@@ -446,6 +545,13 @@ final class Direct {
             }
         } catch (Exception ignored) {
         }
+        if (!bga) {
+            java.util.Iterator<Map.Entry<String, JSONObject>> iter = state.entrySet().iterator();
+            while (iter.hasNext()) {
+                String u = iter.next().getValue().optString("url").split("\\?")[0];
+                if (!BG_ART.matcher(u).find()) iter.remove();
+            }
+        }
         long now = System.currentTimeMillis();
         try {
             for (Map<String, Object> it : found) {
@@ -461,9 +567,10 @@ final class Direct {
                 if (it.containsKey("pub")) {
                     o.put("first", (Long) it.get("pub"));
                     o.put("tok", true);
-                } else if (Boolean.TRUE.equals(it.get("tried")) && !o.optBoolean("tok")) {
-                    o.put("tries", o.optInt("tries") + 1);
                 }
+                if (it.containsKey("pc")) o.put("pc", true);
+                boolean done = bga ? o.optBoolean("tok") : o.optBoolean("pc");
+                if (Boolean.TRUE.equals(it.get("tried")) && !done) o.put("tries", o.optInt("tries") + 1);
                 o.put("title", it.get("title"));
                 o.put("teaser", it.get("teaser"));
                 o.put("category", it.get("category"));
