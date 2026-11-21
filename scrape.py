@@ -352,6 +352,9 @@ def build(site, items, state, now):
         else:
             state_items[key].update({k: it[k] for k in ("title", "teaser", "category", "topic")})
             state_items[key]["plus"] = bool(state_items[key].get("plus") or it.get("plus"))
+    if site["id"] == "bgland24":  # alte Statedaten auf das aktuelle Themenschema bringen
+        for v in state_items.values():
+            v["topic"] = bg_topic(v["url"])
     ordered, per_topic = [], {}
     for x in sorted(state_items.values(), key=sort_key(site), reverse=True):
         t = x.get("topic") or "Region"
