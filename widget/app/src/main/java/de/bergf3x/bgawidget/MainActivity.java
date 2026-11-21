@@ -529,7 +529,7 @@ public class MainActivity extends Activity {
             for (String t : topics) if (t.startsWith(p + "/")) hasSubs = true;
             boolean on = p.equals(curParent);
             String label = p;
-            if (on && topic.indexOf('/') >= 0) label = topic.substring(topic.indexOf('/') + 1);
+            if (on && (topic.indexOf('/') >= 0 || Prefs.topicSel(this, ID).size() > 1)) label = Prefs.topicLabel(this, ID);
             if (hasSubs) label = label + " ▾";
             final boolean subs = hasSubs;
             row.addView(chip(label, on, () -> {

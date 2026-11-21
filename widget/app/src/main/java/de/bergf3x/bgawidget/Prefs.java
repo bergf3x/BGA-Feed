@@ -1,6 +1,9 @@
 package de.bergf3x.bgawidget;
 
 import android.content.Context;
+
+import java.util.ArrayList;
+import java.util.List;
 import android.content.SharedPreferences;
 
 import java.util.HashSet;
@@ -129,10 +132,26 @@ final class Prefs {
     }
 
     /** Aktuell gewaehltes Thema, leer = alle. */
+    /**
+     * Gewaehlte Themen. Gespeichert als "Thema|Medium;Thema|Medium" (Medium leer = alle Medien).
+     * Ein einzelner Eintrag entspricht dem frueheren Format.
+     */
+    static List<String[]> topicSel(Context c, int id) {
+        List<String[]> out = new ArrayList<>();
+        for (String e : topicRaw(c, id).split(";")) {
+            if (e.trim().isEmpty()) continue;
+            int i = e.indexOf('|');
+            out.add(i < 0 ? new String[]{e, ""} : new String[]{e.substring(0, i), e.substring(i + 1)});
+        }
+        return out;
+    }
+
+    /** Haupt-Thema fuer Reiter und Leer-Hinweise: bei mehreren Eintraegen das gemeinsame Oberthema. */
     static String topic(Context c, int id) {
-        String t = topicRaw(c, id);
-        int i = t.indexOf('|');
-        return i < 0 ? t : t.substring(0, i);
+        List<String[]> sel = topicSel(c, id);
+        if (sel.isEmpty()) return "";
+        if (sel.size() == 1) return sel.get(0)[0];
+        return sel.get(0)[0].split("/")[0];
     }
 
     /** Gewaehltes Thema inkl. Medium ("Region/Berchtesgaden|BGLand24"); ohne Medium nur das Thema. */
@@ -140,11 +159,28 @@ final class Prefs {
         return sp(c).getString("tp_" + id, "");
     }
 
-    /** Medium, auf das das Thema beschraenkt ist; leer = alle Medien. */
+    /** Medium, auf das das Thema beschraenkt ist; leer = alle Medien (bei Mehrfachauswahl immer leer). */
     static String topicFeed(Context c, int id) {
-        String t = topicRaw(c, id);
-        int i = t.indexOf('|');
-        return i < 0 ? "" : t.substring(i + 1);
+        List<String[]> sel = topicSel(c, id);
+        return sel.size() == 1 ? sel.get(0)[1] : "";
+    }
+
+    /** Beschriftung des aktiven Reiters, z. B. "Berchtesgaden" oder "Berchtesgaden +2". */
+    static String topicLabel(Context c, int id) {
+        List<String[]> sel = topicSel(c, id);
+        if (sel.isEmpty()) return "";
+        String t = sel.get(0)[0];
+        String first = t.indexOf('/') >= 0 ? t.substring(t.indexOf('/') + 1) : t;
+        return sel.size() == 1 ? first : first + " +" + (sel.size() - 1);
+    }
+
+    /** Passt ein Artikel (aus Medium feedName) zur Themenauswahl? Leere Auswahl = alles. */
+    static boolean matchTopic(FeedItem it, String feedName, List<String[]> sel) {
+        if (sel.isEmpty()) return true;
+        for (String[] e : sel) {
+            if (it.inTopic(e[0]) && (e[1].isEmpty() || e[1].equals(feedName))) return true;
+        }
+        return false;
     }
 
     static void setTopic(Context c, int id, String topic) {

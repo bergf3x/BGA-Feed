@@ -103,7 +103,7 @@ public class ListService extends RemoteViewsService {
         List<Catalog.Feed> all = Catalog.load(ctx);
         Set<String> selected = Catalog.effective(all, Prefs.feeds(ctx, id));
         String topic = Prefs.topic(ctx, id);
-        String topicFeed = Prefs.topicFeed(ctx, id);
+        List<String[]> sel = Prefs.topicSel(ctx, id);
         List<String> kw = Keywords.list(ctx);
         Set<String> muted = Prefs.muted(ctx, id);
         boolean anyOk = false;
@@ -141,8 +141,7 @@ public class ListService extends RemoteViewsService {
                 if (it.plus && !plusFeed) continue;
                 if (isMuted(it, muted, topic)) continue;
                 if (online && Keywords.matches(kw, it)) Notifier.keyword(ctx, it);
-                if (!topic.isEmpty() && !it.inTopic(topic)) continue;
-                if (!topicFeed.isEmpty() && !topicFeed.equals(f.name)) continue;
+                if (!Prefs.matchTopic(it, f.name, sel)) continue;
                 merged.add(it);
             }
         }
@@ -220,15 +219,13 @@ public class ListService extends RemoteViewsService {
     static int hiddenPlus(Context ctx, int id, List<String> ids) {
         List<Catalog.Feed> all = Catalog.load(ctx);
         Set<String> selected = Catalog.effective(all, Prefs.feeds(ctx, id));
-        String topic = Prefs.topic(ctx, id);
-        String topicFeed = Prefs.topicFeed(ctx, id);
+        List<String[]> sel = Prefs.topicSel(ctx, id);
         int n = 0;
         for (Catalog.Feed f : all) {
             if (!selected.contains(f.id) || Prefs.showPlusFeed(ctx, id, f.id)) continue;
-            if (!topicFeed.isEmpty() && !topicFeed.equals(f.name)) continue;
             int k = 0;
             for (FeedItem it : FeedCache.items(ctx, f.id, f.name)) {
-                if (it.plus && (topic.isEmpty() || it.inTopic(topic))) k++;
+                if (it.plus && Prefs.matchTopic(it, f.name, sel)) k++;
             }
             if (k > 0 && ids != null) ids.add(f.id);
             n += k;
