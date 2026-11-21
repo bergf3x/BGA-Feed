@@ -27,7 +27,26 @@
    "name": "BGLand24",
    "url": "https://raw.githubusercontent.com/bergf3x/BGA-Feed/main/feed_bgland24.xml",
    "topics": [
-    "Region"
+    "Bayern",
+    "Bayern/Altoetting",
+    "Bayern/Muehldorf",
+    "Bayern/Rosenheim",
+    "Bayern/Traunstein",
+    "Leben",
+    "Nachrichten",
+    "Nachrichten/Deutschland",
+    "Nachrichten/Politik",
+    "Nachrichten/Welt",
+    "Nachrichten/Wirtschaft",
+    "Region",
+    "Region/Bad Reichenhall",
+    "Region/Berchtesgaden",
+    "Region/Rupertiwinkel",
+    "Region/Salzburg",
+    "Region/Traunstein",
+    "Sport",
+    "Sport/Wintersport",
+    "Stars"
    ]
   }
  ]
