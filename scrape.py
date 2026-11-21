@@ -166,7 +166,11 @@ BG_SECTIONS = [
 ]
 
 
+<<<<<<< HEAD
 def _rss_items(xml_bytes):
+=======
+def _rss_items(xml_bytes, art=True):
+>>>>>>> main
     """RSS 2.0 / RDF / Atom tolerant lesen: Titel, Link, Datum, Anriss."""
     from email.utils import parsedate_to_datetime
 
@@ -180,7 +184,11 @@ def _rss_items(xml_bytes):
             return v.strip()
         link = tag("link") or (re.search(r'<link[^>]+href="([^"]+)"', blk) or [None, ""])[1]
         link = link.split("#")[0].strip()
+<<<<<<< HEAD
         if not link or not BG_ART.search(link.split("?")[0]):
+=======
+        if not link or (art and not BG_ART.search(link.split("?")[0])):
+>>>>>>> main
             continue
         date = ""
         raw = tag("pubDate") or tag("dc:date") or tag("published") or tag("updated")
@@ -200,18 +208,30 @@ def _rss_items(xml_bytes):
     return [x for x in out if len(x["title"]) >= 10]
 
 
+<<<<<<< HEAD
 def _bg_sections(base):
+=======
+def _bg_sections(base, sections=None, tag="bgland24"):
+>>>>>>> main
     """Rubrik-Feeds und -Seiten der Region; je Rubrik nur Kennzahlen ins Protokoll."""
     import requests
 
     found = {}
+<<<<<<< HEAD
     for sec in BG_SECTIONS:
+=======
+    for sec in sections or BG_SECTIONS:
+>>>>>>> main
         n_rss = n_html = 0
         try:
             r = requests.get(base + sec + "rssfeed.rdf", headers={"User-Agent": UA}, timeout=20)
             st = r.status_code
             if r.ok:
                 for it in _rss_items(r.content):
+<<<<<<< HEAD
+=======
+                    it.setdefault("sec", sec)
+>>>>>>> main
                     found.setdefault(it["url"], it)
                     n_rss += 1
         except Exception as e:
@@ -225,7 +245,11 @@ def _bg_sections(base):
                         n_html += 1
             except Exception:
                 pass
+<<<<<<< HEAD
         print(f"[bgland24] Rubrik {sec}: RSS {st} -> {n_rss}, Seite -> {n_html}")
+=======
+        print(f"[{tag}] Rubrik {sec}: RSS {st} -> {n_rss}, Seite -> {n_html}")
+>>>>>>> main
     return list(found.values())
 
 
@@ -268,7 +292,7 @@ def bg_topic(url):
     if not seg:
         return "Region"
     top = seg[0]
-    if top == "bgland":
+    if top in ("bgland", "lokal", "lokales", "chiemgau"):
         return "Region/" + nice(seg[1]) if len(seg) > 2 else "Region"
     if top in ("welt", "deutschland", "politik", "wirtschaft"):
         return "Nachrichten/" + nice(top)
@@ -384,6 +408,49 @@ def _fetch_bgland(site):
 
 
 # ---------------------------------------------------------------- Seiten-Konfiguration
+LOCAL_RE = re.compile(r'href="(?:https?://(?:www\.)?chiemgau24\.de)?(/(?:lokal|lokales)/[a-z0-9-]+/)"')
+
+
+def fetch_chiemgau(site):
+    """chiemgau24.de (Ippen wie BGLand24): Lokalteil /chiemgau/, Unterrubriken aus den Artikel-Adressen ableiten,
+    je Unterrubrik RSS. Thema kommt aus der Adresse (unbekannte Rubriken liefern den allgemeinen Feed). Nur Regionales."""
+    import requests
+
+    base = site["base"]
+    subs = []
+    try:
+        r = requests.get(base + "/chiemgau/rssfeed.rdf", headers={"User-Agent": UA}, timeout=20)
+        for it in _rss_items(r.content):
+            seg = [x for x in urlparse_path(it["url"]).split("/") if x]
+            if len(seg) > 2 and seg[0] == "chiemgau" and seg[1] not in subs:
+                subs.append(seg[1])
+    except Exception as e:
+        print(f"[{site['id']}] /chiemgau/: {e}", file=sys.stderr)
+    secs = ["/chiemgau/"] + ["/chiemgau/" + x + "/" for x in subs[:10]]
+    items = _bg_sections(base, secs, site["id"])
+    for it in items:
+        it["topic"] = bg_topic(it["url"])
+    return [it for it in items if it["topic"].startswith("Region")]
+
+
+def urlparse_path(u):
+    from urllib.parse import urlparse
+    return urlparse(u).path
+
+
+def fetch_rss_site(site):
+    """Reiner RSS-Feed (z. B. ORF Salzburg): alle Meldungen in ein festes Thema."""
+    import requests
+
+    r = requests.get(site["rss"], headers={"User-Agent": UA}, timeout=30)
+    r.raise_for_status()
+    items = _rss_items(r.content, art=False)
+    for it in items:
+        it["topic"] = site["topic"]
+    print(f"[{site['id']}] RSS {r.status_code} -> {len(items)}")
+    return items
+
+
 SITES = [
     dict(
         id="bga",
@@ -434,6 +501,39 @@ SITES = [
         retopic=None,
         fetch=fetch_bgland,
         enrich=bg_enrich,
+        order="seen",
+    ),
+    dict(
+        id="chiemgau24",
+        name="chiemgau24",
+        base="https://www.chiemgau24.de",
+        link="/",
+        feed="feed_chiemgau24.xml",
+        state="state_chiemgau24.json",
+        sources=[("/", "Region")],
+        topics=None,
+        parse=None,
+        retopic=None,
+        fetch=fetch_chiemgau,
+        enrich=bg_enrich,
+        order="seen",
+        ippen=True,
+        only_region=True,
+    ),
+    dict(
+        id="orf_salzburg",
+        name="ORF Salzburg",
+        base="https://salzburg.orf.at",
+        link="/",
+        rss="https://rss.orf.at/salzburg.xml",
+        topic="Region/Salzburg",
+        feed="feed_orf_salzburg.xml",
+        state="state_orf_salzburg.json",
+        sources=[("/", "Region/Salzburg")],
+        topics=None,
+        parse=None,
+        retopic=None,
+        fetch=fetch_rss_site,
         order="seen",
     ),
 ]
@@ -491,11 +591,18 @@ def build(site, items, state, now):
             state_items[key]["plus"] = bool(state_items[key].get("plus") or it.get("plus"))
             if it.get("pc"):
                 state_items[key]["pc"] = it["pc"]
+<<<<<<< HEAD
     if site["id"] == "bgland24":  # alte Statedaten auf das aktuelle Themenschema bringen
+=======
+    if site["id"] == "bgland24" or site.get("ippen"):  # alte Statedaten auf das aktuelle Themenschema bringen
+>>>>>>> main
         for k in [k for k, v in state_items.items() if not BG_ART.search(v["url"].split("?")[0])]:
             del state_items[k]  # Menue-/Rubrik-Links sind keine Artikel
         for v in state_items.values():
             v["topic"] = bg_topic(v["url"])
+        if site.get("only_region"):
+            for k in [k for k, v in state_items.items() if not v["topic"].startswith("Region")]:
+                del state_items[k]
     ordered, per_topic = [], {}
     for x in sorted(state_items.values(), key=sort_key(site), reverse=True):
         t = x.get("topic") or "Region"

@@ -50,6 +50,41 @@
     "Nachrichten/Wirtschaft",
     "Tv Kino"
    ]
+  },
+  {
+   "id": "chiemgau24",
+   "name": "chiemgau24",
+   "url": "https://raw.githubusercontent.com/bergf3x/BGA-Feed/main/feed_chiemgau24.xml",
+   "topics": [
+    "Region",
+    "Region/Achental",
+    "Region/Chiemsee",
+    "Region/Polizeimeldungen",
+    "Region/Rupertiwinkel",
+    "Region/Traunstein",
+    "Region/Trostberg",
+    "Bayern",
+    "Bayern/Altoetting",
+    "Bayern/Berchtesgadener Land",
+    "Bayern/Muehldorf",
+    "Bayern/Rosenheim",
+    "Sport",
+    "Sport/Wintersport",
+    "Nachrichten",
+    "Nachrichten/Deutschland",
+    "Nachrichten/Stars",
+    "Nachrichten/Welt",
+    "Nachrichten/Wirtschaft"
+   ]
+  },
+  {
+   "id": "orf_salzburg",
+   "name": "ORF Salzburg",
+   "url": "https://raw.githubusercontent.com/bergf3x/BGA-Feed/main/feed_orf_salzburg.xml",
+   "topics": [
+    "Region",
+    "Region/Salzburg"
+   ]
   }
  ]
 }

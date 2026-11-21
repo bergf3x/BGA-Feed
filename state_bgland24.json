@@ -1496,7 +1496,8 @@
    "topic": "Region/Salzburg",
    "plus": false,
    "date": "2026-11-19T10:00:00+00:00",
-   "first_seen": "2026-11-19T10:00:00+00:00"
+   "first_seen": "2026-11-19T10:00:00+00:00",
+   "pc": 2
   },
   "2433895566": {
    "sid": 2433895566,
@@ -1517,9 +1518,10 @@
    "teaser": "Am 9. Januar 2020 tötete ein Mann (61) in Bergen seine Liebhaberin (59). Danach packte er sie in Einzelteilen in Sporttaschen. Der Fall wühlte auf. Und warf Fragen auf: Hat ein Mörder eine besonders schwere Tat begangen, wenn er die Leiche zerstückelt? Und wie lang dauert eigentlich lebenslänglich?",
    "category": "",
    "topic": "Region/Traunstein",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-18T16:05:00+00:00",
-   "first_seen": "2026-11-18T16:05:00+00:00"
+   "first_seen": "2026-11-18T16:05:00+00:00",
+   "pc": 2
   },
   "1147147217": {
    "sid": 1147147217,
@@ -1528,9 +1530,10 @@
    "teaser": "In Freilassing wächst die Unruhe unter vielen Familien: Weil die Zweckbindung für den bayerischen Betreuungszuschuss wegfällt, drohen ab dem neuen Jahr drastische Mehrkosten. Nun suchen die Elternbeiräte das Gespräch mit dem Bürgermeister.",
    "category": "",
    "topic": "Region/Rupertiwinkel",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-18T16:04:00+00:00",
-   "first_seen": "2026-11-18T16:04:00+00:00"
+   "first_seen": "2026-11-18T16:04:00+00:00",
+   "pc": 2
   },
   "127289329": {
    "sid": 127289329,
@@ -1541,7 +1544,8 @@
    "topic": "Region/Rupertiwinkel",
    "plus": false,
    "date": "2026-11-18T14:07:00+00:00",
-   "first_seen": "2026-11-18T14:07:00+00:00"
+   "first_seen": "2026-11-18T14:07:00+00:00",
+   "pc": 2
   },
   "2396141175": {
    "sid": 2396141175,
@@ -1550,9 +1554,10 @@
    "teaser": "Eine beispiellose Hilfsaktion hat der Verein „Athletes for Ukraine“ auf den Weg gebracht: Im Klinikum Traunstein wurde eine ausgediente Intensivstation abgebaut. Nun hilft die tonnenschwere Fracht einer zerstörten Klinik in Odessa.",
    "category": "",
    "topic": "Region/Traunstein",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-18T10:12:00+00:00",
-   "first_seen": "2026-11-18T10:12:00+00:00"
+   "first_seen": "2026-11-18T10:12:00+00:00",
+   "pc": 2
   },
   "828162503": {
    "sid": 828162503,
@@ -1561,9 +1566,10 @@
    "teaser": "Mit neuen Regelungen versucht der Gemeinderat, die finanziellen Belastungen der Familien für Kindertageseinrichtungen in Saaldorf-Surheim abzufedern. Zum Jahreswechsel entfällt nämlich der 100-Euro-Zuschuss des Freistaats an die Eltern.",
    "category": "",
    "topic": "Region/Rupertiwinkel",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-18T10:08:00+00:00",
-   "first_seen": "2026-11-18T10:08:00+00:00"
+   "first_seen": "2026-11-18T10:08:00+00:00",
+   "pc": 2
   },
   "4243342498": {
    "sid": 4243342498,
@@ -1572,9 +1578,10 @@
    "teaser": "Laufen und der Verkehr, eine ewige Geschichte ohne Happy End für die Anwohner? Die Pläne für die Ortsumfahrung liegen noch immer vor Gericht, doch jetzt bringt Oberndorfs Bürgermeister einen altbekannten Vorschlag wieder ins Spiel: eine zweite Brücke über die Salzach. Ist das die Lösung? Und wie kon",
    "category": "",
    "topic": "Region/Rupertiwinkel",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-18T04:19:00+00:00",
-   "first_seen": "2026-11-18T04:19:00+00:00"
+   "first_seen": "2026-11-18T04:19:00+00:00",
+   "pc": 2
   },
   "3352834399": {
    "sid": 3352834399,
@@ -1583,9 +1590,10 @@
    "teaser": "Schon zum zweiten Mal heuer wurde nun ein 55-Jähriger verurteilt – wieder wegen Kindesmissbrauchs: einmal mehr traf es auch in Siegsdorf einen Buben aus seiner direkten Nachbarschaft. Der Mann trieb bereits seit der Jahrtausendwende sein Unwesen. Jetzt verlängert sich seine Gefängnisstrafe.",
    "category": "",
    "topic": "Region/Traunstein",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-17T16:07:00+00:00",
-   "first_seen": "2026-11-17T16:07:00+00:00"
+   "first_seen": "2026-11-17T16:07:00+00:00",
+   "pc": 2
   },
   "1788693228": {
    "sid": 1788693228,
@@ -1594,9 +1602,10 @@
    "teaser": "In Teisendorf hat die Verbandsversammlung der Surgruppe über anstehende Maßnahmen beraten: Neben aufwendigen Arbeiten an den Hochbehältern bereiteten den Verantwortlichen vor allem die historisch niedrigen Pegelstände der Brunnen große Sorgen.",
    "category": "",
    "topic": "Region/Rupertiwinkel",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-17T16:04:00+00:00",
-   "first_seen": "2026-11-17T16:04:00+00:00"
+   "first_seen": "2026-11-17T16:04:00+00:00",
+   "pc": 2
   },
   "938035371": {
    "sid": 938035371,
@@ -1607,7 +1616,8 @@
    "topic": "Region/Bad Reichenhall",
    "plus": false,
    "date": "2026-11-17T13:39:56+00:00",
-   "first_seen": "2026-11-17T13:39:56+00:00"
+   "first_seen": "2026-11-17T13:39:56+00:00",
+   "pc": 2
   },
   "559419596": {
    "sid": 559419596,
@@ -1618,7 +1628,8 @@
    "topic": "Region/Salzburg",
    "plus": false,
    "date": "2026-11-17T13:33:59+00:00",
-   "first_seen": "2026-11-17T13:33:59+00:00"
+   "first_seen": "2026-11-17T13:33:59+00:00",
+   "pc": 2
   },
   "2016024277": {
    "sid": 2016024277,
@@ -1639,9 +1650,10 @@
    "teaser": "Auf die Bürger im Gebiet der Surgruppe rund um Teisendorf kommen ab 2027 höhere Kosten für das Trinkwasser zu. Die Verbandsversammlung hat neue Gebühren beschlossen – maßgeblich geprägt von Millioneninvestitionen und einer neuen Abgabe.",
    "category": "",
    "topic": "Region/Rupertiwinkel",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-17T10:10:00+00:00",
-   "first_seen": "2026-11-17T10:10:00+00:00"
+   "first_seen": "2026-11-17T10:10:00+00:00",
+   "pc": 2
   },
   "3767123467": {
    "sid": 3767123467,
@@ -1650,9 +1662,10 @@
    "teaser": "Im Ringen um die Grundwasserförderung der Adelholzener Alpenquellen verlangt die Gemeinde Bergen verlässliche Fakten. Bevor das Landratsamt über die künftigen Rechte entscheidet, drängt der Rat auf die Klärung offener Fragen zur Wasserbilanz.",
    "category": "",
    "topic": "Region/Traunstein",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-17T09:27:14+00:00",
-   "first_seen": "2026-11-17T09:27:14+00:00"
+   "first_seen": "2026-11-17T09:27:14+00:00",
+   "pc": 2
   },
   "3753390562": {
    "sid": 3753390562,
@@ -1663,7 +1676,8 @@
    "topic": "Region/Polizeimeldungen",
    "plus": false,
    "date": "2026-11-17T09:00:00+00:00",
-   "first_seen": "2026-11-17T09:00:00+00:00"
+   "first_seen": "2026-11-17T09:00:00+00:00",
+   "pc": 2
   },
   "1288595701": {
    "sid": 1288595701,
@@ -1672,9 +1686,10 @@
    "teaser": "Wie viel Charme in einer vermeintlich unheimlichen Gestalt steckt, zeigte sich in der Waginger Gemeindebücherei. Rund um „S’ Geheimnis vom Dungestäßa“ fanden bayerische Reime, schauspielerisches Können und musikalisches Familienglück aufs Schönste zusammen.",
    "category": "",
    "topic": "Region/Rupertiwinkel",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-17T08:58:36+00:00",
-   "first_seen": "2026-11-17T08:58:36+00:00"
+   "first_seen": "2026-11-17T08:58:36+00:00",
+   "pc": 2
   },
   "3204714347": {
    "sid": 3204714347,
@@ -1685,7 +1700,8 @@
    "topic": "Region/Polizeimeldungen",
    "plus": false,
    "date": "2026-11-17T08:13:52+00:00",
-   "first_seen": "2026-11-17T08:13:52+00:00"
+   "first_seen": "2026-11-17T08:13:52+00:00",
+   "pc": 2
   },
   "492779651": {
    "sid": 492779651,
@@ -1708,7 +1724,8 @@
    "topic": "Region/Polizeimeldungen",
    "plus": false,
    "date": "2026-11-16T17:00:00+00:00",
-   "first_seen": "2026-11-16T17:00:00+00:00"
+   "first_seen": "2026-11-16T17:00:00+00:00",
+   "pc": 2
   },
   "4030523672": {
    "sid": 4030523672,
@@ -1729,9 +1746,10 @@
    "teaser": "Mit einem Patienten in Lebensgefahr an Bord war ein Rettungswagen unterwegs zum Traunsteiner Krankenhaus – doch ein BMW-Fahrer überholte zuerst und machte dem Sanka später keinen Platz: Jetzt stand der 70-jährige Tittmoninger vor Gericht.",
    "category": "",
    "topic": "Region/Traunstein",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-16T16:03:00+00:00",
-   "first_seen": "2026-11-16T16:03:00+00:00"
+   "first_seen": "2026-11-16T16:03:00+00:00",
+   "pc": 2
   },
   "1345414592": {
    "sid": 1345414592,
@@ -1752,9 +1770,10 @@
    "teaser": "Auf mehreren Parkplätzen in Schneizlreuth müssen Autofahrer künftig ein Ticket lösen. Neben neuen Automaten hat der Gemeinderat auch über schärfere Regeln für Wohnmobile diskutiert, um tagelangem Campieren im Gemeindegebiet einen Riegel vorzuschieben.",
    "category": "",
    "topic": "Region/Bad Reichenhall",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-16T10:04:00+00:00",
-   "first_seen": "2026-11-16T10:04:00+00:00"
+   "first_seen": "2026-11-16T10:04:00+00:00",
+   "pc": 2
   },
   "2953451614": {
    "sid": 2953451614,
@@ -1763,9 +1782,10 @@
    "teaser": "Ein offenes Ohr, eine helfende Hand, ein Platz zum Ankommen: Seit 40 Jahren ist das Mütterzentrum Traunstein weit mehr als eine Betreuungseinrichtung. Was einst als Modellprojekt begann, ist zu einem unverzichtbaren Anker für Familien und zu einer bayerischen Erfolgsgeschichte geworden.",
    "category": "",
    "topic": "Region/Traunstein",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-16T10:04:00+00:00",
-   "first_seen": "2026-11-16T10:04:00+00:00"
+   "first_seen": "2026-11-16T10:04:00+00:00",
+   "pc": 2
   },
   "1872814802": {
    "sid": 1872814802,
@@ -1774,9 +1794,10 @@
    "teaser": "Gleich 18 verschiedene Rauschmittel hat die Grenzpolizei bei einer Kontrolle am Walserberg bei Bad Reichenhall im Auto eines 30-Jährigen entdeckt. Nun stand der Mann vor dem Schöffengericht Laufen und verließ den Saal schließlich als freier Mann.",
    "category": "",
    "topic": "Region/Rupertiwinkel",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-16T04:15:00+00:00",
-   "first_seen": "2026-11-16T04:15:00+00:00"
+   "first_seen": "2026-11-16T04:15:00+00:00",
+   "pc": 2
   },
   "2473214531": {
    "sid": 2473214531,
@@ -1797,9 +1818,10 @@
    "teaser": "Weil die bisherige staatliche Unterstützung für Eltern künftig wegfällt, hat die Gemeinde Chieming die Gebühren für ihre Kindertagesstätte neu geregelt. Ab 2027 greifen angepasste Tarife.",
    "category": "",
    "topic": "Region/Traunstein",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-15T15:34:00+00:00",
-   "first_seen": "2026-11-15T15:34:00+00:00"
+   "first_seen": "2026-11-15T15:34:00+00:00",
+   "pc": 2
   },
   "2786154893": {
    "sid": 2786154893,
@@ -1808,9 +1830,10 @@
    "teaser": "Wie lässt sich das Leben im Alter vor Ort gestalten? In Waging am See hat Quartiersmanagerin Andrea Trattler ihre Konzepte vorgestellt und gemeinsam mit Bürgern erste Weichen für ein generationengerechtes Miteinander gestellt.",
    "category": "",
    "topic": "Region/Rupertiwinkel",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-15T11:15:00+00:00",
-   "first_seen": "2026-11-15T11:15:00+00:00"
+   "first_seen": "2026-11-15T11:15:00+00:00",
+   "pc": 2
   },
   "2964059626": {
    "sid": 2964059626,
@@ -1819,9 +1842,10 @@
    "teaser": "Wenn tagelang kein Strom fließt, sind verlässliche Anlaufstellen gefragt: Freilassing und das benachbarte Salzburg bereiten sich mit sogenannten Leuchttürmen auf den Ernstfall vor. Doch im Krisenfall zählt auch die Eigenvorsorge jedes Bürgers.",
    "category": "",
    "topic": "Region/Rupertiwinkel",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-15T11:15:00+00:00",
-   "first_seen": "2026-11-15T11:15:00+00:00"
+   "first_seen": "2026-11-15T11:15:00+00:00",
+   "pc": 2
   },
   "612808893": {
    "sid": 612808893,
@@ -1854,9 +1878,10 @@
    "teaser": "Das Knistern von Vinyl hat nichts von seiner Faszination verloren: Bei der fünften Schallplattenbörse in der Freilassinger Lokwelt haben sich Musikbegeisterte auf die Suche nach musikalischen Raritäten begeben. 18 Händler boten dort ihre Schätze an.",
    "category": "",
    "topic": "Region/Rupertiwinkel",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-14T11:15:00+00:00",
-   "first_seen": "2026-11-14T11:15:00+00:00"
+   "first_seen": "2026-11-14T11:15:00+00:00",
+   "pc": 2
   },
   "1474317532": {
    "sid": 1474317532,
@@ -1865,9 +1890,10 @@
    "teaser": "Großer Erfolg für die heimische Handwerkskunst: Destillateure aus Traunstein und Teisendorf haben bei der renommierten Bayern-Brand-Prämierung geglänzt. Mit feinen Aromen und handwerklichem Geschick sicherten sie sich begehrte Auszeichnungen. Kann Bayern auch Whisky?",
    "category": "",
    "topic": "Region/Traunstein",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-14T11:15:00+00:00",
-   "first_seen": "2026-11-14T11:15:00+00:00"
+   "first_seen": "2026-11-14T11:15:00+00:00",
+   "pc": 2
   },
   "3355598462": {
    "sid": 3355598462,
@@ -1926,7 +1952,8 @@
    "topic": "Region/Rupertiwinkel",
    "plus": false,
    "date": "2026-11-13T10:03:00+00:00",
-   "first_seen": "2026-11-13T10:03:00+00:00"
+   "first_seen": "2026-11-13T10:03:00+00:00",
+   "pc": 2
   },
   "526175735": {
    "sid": 526175735,
@@ -1935,9 +1962,10 @@
    "teaser": "Zweiter Prozesstag gegen einen staatlich geprüften Masseur: Er soll elf Patientinnen bei Behandlungen in Traunstein und Traunreut sexuell missbraucht haben. Sogar eine Vergewaltigung wird dem Mann angelastet – genau diese Betroffene war jetzt als Zeugin vor Gericht geladen.",
    "category": "",
    "topic": "Region/Traunstein",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-13T04:39:00+00:00",
-   "first_seen": "2026-11-13T04:39:00+00:00"
+   "first_seen": "2026-11-13T04:39:00+00:00",
+   "pc": 2
   },
   "2946469193": {
    "sid": 2946469193,
@@ -1946,9 +1974,10 @@
    "teaser": "Der Verkehr in der Teisendorfer Marktstraße sorgt schon lange für Probleme und Diskussionen. Ausgerechnet eine Baustelle ermöglicht einen spannenden Testlauf mit einer Einbahnstraße. Wird aus der Not- eine Dauerlösung? So geht es weiter und so fallen die ersten Reaktionen aus.",
    "category": "",
    "topic": "Region/Rupertiwinkel",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-12T16:15:00+00:00",
-   "first_seen": "2026-11-12T16:15:00+00:00"
+   "first_seen": "2026-11-12T16:15:00+00:00",
+   "pc": 2
   },
   "2919863815": {
    "sid": 2919863815,
@@ -1959,7 +1988,8 @@
    "topic": "Region/Traunstein",
    "plus": false,
    "date": "2026-11-12T12:55:16+00:00",
-   "first_seen": "2026-11-12T12:55:16+00:00"
+   "first_seen": "2026-11-12T12:55:16+00:00",
+   "pc": 2
   },
   "3741044494": {
    "sid": 3741044494,
@@ -1970,7 +2000,8 @@
    "topic": "Region/Rupertiwinkel",
    "plus": false,
    "date": "2026-11-12T11:08:39+00:00",
-   "first_seen": "2026-11-12T11:08:39+00:00"
+   "first_seen": "2026-11-12T11:08:39+00:00",
+   "pc": 2
   },
   "2309444060": {
    "sid": 2309444060,
@@ -2015,9 +2046,10 @@
    "teaser": "Er arbeitete in angesehenen Gesundheitszentren in Traunstein und Traunreut als Masseur – doch jetzt steht er vor Gericht: Elf Frauen sollen während ihrer Behandlungen sexuell missbraucht worden sein. Sogar eine Vergewaltigung steht im Raum. Wir waren beim Prozessauftakt dabei.",
    "category": "",
    "topic": "Region/Traunstein",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-12T04:19:00+00:00",
-   "first_seen": "2026-11-12T04:19:00+00:00"
+   "first_seen": "2026-11-12T04:19:00+00:00",
+   "pc": 2
   },
   "708750677": {
    "sid": 708750677,
@@ -2052,7 +2084,8 @@
    "topic": "Region/Bad Reichenhall",
    "plus": false,
    "date": "2026-11-11T16:07:00+00:00",
-   "first_seen": "2026-11-11T16:07:00+00:00"
+   "first_seen": "2026-11-11T16:07:00+00:00",
+   "pc": 2
   },
   "3705926562": {
    "sid": 3705926562,
@@ -2075,7 +2108,8 @@
    "topic": "Region/Rupertiwinkel",
    "plus": false,
    "date": "2026-11-11T15:00:00+00:00",
-   "first_seen": "2026-11-11T15:00:00+00:00"
+   "first_seen": "2026-11-11T15:00:00+00:00",
+   "pc": 2
   },
   "911037010": {
    "sid": 911037010,
@@ -2110,7 +2144,8 @@
    "topic": "Region/Traunstein",
    "plus": false,
    "date": "2026-11-11T09:12:51+00:00",
-   "first_seen": "2026-11-11T09:12:51+00:00"
+   "first_seen": "2026-11-11T09:12:51+00:00",
+   "pc": 2
   },
   "3389432617": {
    "sid": 3389432617,
@@ -2119,9 +2154,10 @@
    "teaser": "Ein Zeichen gegen das Vergessen haben zahlreiche Menschen in Traunstein gesetzt: Mit einer Gedenkfeier und einer Lichterkette und erinnerten sie am Montag (9. November) an die Gräueltaten der Reichspogromnacht von 1938.",
    "category": "",
    "topic": "Region/Traunstein",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-11T06:29:00+00:00",
-   "first_seen": "2026-11-11T06:29:00+00:00"
+   "first_seen": "2026-11-11T06:29:00+00:00",
+   "pc": 2
   },
   "1182812304": {
    "sid": 1182812304,
@@ -2130,9 +2166,10 @@
    "teaser": "Am zweiten Tag des Prozesses gegen eine 42-jährige Traunsteinerin wollte das Landgericht am Dienstag mehr über die Angeklagte erfahren: Was für ein Mensch war sie vor dem mutmaßlichen Mord an ihrer Tochter? Wie entwickelte sie sich in den letzten Monaten und Jahren?",
    "category": "",
    "topic": "Region/Traunstein",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-11T04:48:00+00:00",
-   "first_seen": "2026-11-11T04:48:00+00:00"
+   "first_seen": "2026-11-11T04:48:00+00:00",
+   "pc": 2
   },
   "1012675747": {
    "sid": 1012675747,
@@ -2153,9 +2190,10 @@
    "teaser": "Vom Rollstuhl auf die große Bühne: Die 18-jährige „Schlangenfrau“ Maria aus dem Chiemgau hat sich ihren Traum erfüllt und schaffte es bei der Fernsehsendung „America’s Got Talent“ bis ins Viertelfinale. Was die junge Frau motiviert, wovor sie Angst hat und was ihre weiteren Ziele sind.",
    "category": "",
    "topic": "Region/Traunstein",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-10T16:11:00+00:00",
-   "first_seen": "2026-11-10T16:11:00+00:00"
+   "first_seen": "2026-11-10T16:11:00+00:00",
+   "pc": 2
   },
   "472716530": {
    "sid": 472716530,
@@ -2166,7 +2204,8 @@
    "topic": "Region/Rupertiwinkel",
    "plus": false,
    "date": "2026-11-10T16:00:53+00:00",
-   "first_seen": "2026-11-10T16:00:53+00:00"
+   "first_seen": "2026-11-10T16:00:53+00:00",
+   "pc": 2
   },
   "126652372": {
    "sid": 126652372,
@@ -2175,9 +2214,10 @@
    "teaser": "Traunstein – Zweiter Tag im Prozess gegen eine 42-jährige Traunsteinerin: Heuer im Februar soll sie ihre Tochter (4) umgebracht haben, die Anklage lautet auf Mord. Die Schuldfrage scheint bereits geklärt – aber warum griff sie zum Messer? Wir berichten ab 13.30 Uhr im Ticker aus dem Landgericht.",
    "category": "",
    "topic": "Region/Traunstein",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-10T10:42:00+00:00",
-   "first_seen": "2026-11-10T10:42:00+00:00"
+   "first_seen": "2026-11-10T10:42:00+00:00",
+   "pc": 2
   },
   "2078498330": {
    "sid": 2078498330,
@@ -2198,9 +2238,10 @@
    "teaser": "Große Anerkennung für einen Betrieb aus Schneizlreuth: Die Rupert Zach GmbH aus Weißbach an der Alpenstraße ist von Innenminister Joachim Herrmann ausgezeichnet worden. Das Unternehmen stellt seit Jahrzehnten ehrenamtlich tätige Mitarbeiter bereitwillig für Einsätze und Fortbildungen frei.",
    "category": "",
    "topic": "Region/Bad Reichenhall",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-10T07:53:00+00:00",
-   "first_seen": "2026-11-10T07:53:00+00:00"
+   "first_seen": "2026-11-10T07:53:00+00:00",
+   "pc": 2
   },
   "679565805": {
    "sid": 679565805,
@@ -2221,9 +2262,10 @@
    "teaser": "Gute Nachrichten für Familien in Teisendorf: Der Marktgemeinderat hat beschlossen, den Wegfall des staatlichen Zuschusses für Kindergartenkinder vorerst auszugleichen. Doch im Gremium gab es vorab hitzige Debatten.",
    "category": "",
    "topic": "Region/Rupertiwinkel",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-09T16:11:00+00:00",
-   "first_seen": "2026-11-09T16:11:00+00:00"
+   "first_seen": "2026-11-09T16:11:00+00:00",
+   "pc": 2
   },
   "1847438453": {
    "sid": 1847438453,
@@ -2234,7 +2276,8 @@
    "topic": "Region/Traunstein",
    "plus": false,
    "date": "2026-11-09T15:45:00+00:00",
-   "first_seen": "2026-11-09T15:45:00+00:00"
+   "first_seen": "2026-11-09T15:45:00+00:00",
+   "pc": 2
   },
   "3822868110": {
    "sid": 3822868110,
@@ -2255,9 +2298,10 @@
    "teaser": "Inzell hat über 100 Neubürger willkommen geheißen im letzten Jahr: Bei einem Empfang im Gastager Haus begrüßte Bürgermeister Michael Lorenz die Zugezogenen persönlich. Doch welche Gründe haben die Menschen dazu bewogen, ihren Wohnort hierher zu verlegen?",
    "category": "",
    "topic": "Region/Traunstein",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-09T10:05:00+00:00",
-   "first_seen": "2026-11-09T10:05:00+00:00"
+   "first_seen": "2026-11-09T10:05:00+00:00",
+   "pc": 2
   },
   "1307235700": {
    "sid": 1307235700,
@@ -2268,7 +2312,8 @@
    "topic": "Region/Salzburg",
    "plus": false,
    "date": "2026-11-09T10:05:00+00:00",
-   "first_seen": "2026-11-09T10:05:00+00:00"
+   "first_seen": "2026-11-09T10:05:00+00:00",
+   "pc": 2
   },
   "2914270223": {
    "sid": 2914270223,
@@ -2291,7 +2336,8 @@
    "topic": "Region/Bad Reichenhall",
    "plus": false,
    "date": "2026-11-09T08:22:53+00:00",
-   "first_seen": "2026-11-09T08:22:53+00:00"
+   "first_seen": "2026-11-09T08:22:53+00:00",
+   "pc": 2
   },
   "452376093": {
    "sid": 452376093,
@@ -2314,7 +2360,8 @@
    "topic": "Region/Salzburg",
    "plus": false,
    "date": "2026-11-08T16:40:55+00:00",
-   "first_seen": "2026-11-08T16:40:55+00:00"
+   "first_seen": "2026-11-08T16:40:55+00:00",
+   "pc": 2
   },
   "3583908472": {
    "sid": 3583908472,
@@ -2323,9 +2370,10 @@
    "teaser": "Auf der Münchener Straße in Freilassing biegen die Sanierungsarbeiten auf die Zielgerade vor der Winterpause ein: Während erste Abschnitte wieder für den Gegenverkehr freigegeben werden, steht Autofahrern noch eine letzte Geduldsprobe bevor.",
    "category": "",
    "topic": "Region/Rupertiwinkel",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-08T16:08:00+00:00",
-   "first_seen": "2026-11-08T16:08:00+00:00"
+   "first_seen": "2026-11-08T16:08:00+00:00",
+   "pc": 2
   },
   "3700044110": {
    "sid": 3700044110,
@@ -2346,9 +2394,10 @@
    "teaser": "Die E-Scooter, meist gelenkt von jungen Leuten, werden auch in Traunstein immer mehr – und sorgen wegen der oft wilden Fahrweise für Ärger: „Wir können nicht auf die Polizei warten“, sagte jetzt Oberbürgermeister Hümmer. Die Stadt schmiedet bereits Pläne, um selbst tätig zu werden.",
    "category": "",
    "topic": "Region/Traunstein",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-08T11:37:00+00:00",
-   "first_seen": "2026-11-08T11:37:00+00:00"
+   "first_seen": "2026-11-08T11:37:00+00:00",
+   "pc": 2
   },
   "1254308067": {
    "sid": 1254308067,
@@ -2369,9 +2418,10 @@
    "teaser": "An ein fast vergessenes Unrecht haben Christen in Teisendorf erinnert: Vor knapp 300 Jahren wurden rund 20.000 Protestanten aus dem Salzburger Land vertrieben. Die Andacht an historischer Stätte schlug dabei eine mahnende Brücke in die Gegenwart.",
    "category": "",
    "topic": "Region/Rupertiwinkel",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-08T06:28:00+00:00",
-   "first_seen": "2026-11-08T06:28:00+00:00"
+   "first_seen": "2026-11-08T06:28:00+00:00",
+   "pc": 2
   },
   "3133502868": {
    "sid": 3133502868,
@@ -2392,9 +2442,10 @@
    "teaser": "In Inzell und Weißbach an der Alpenstraße hat die Nachricht vom Tod von Gottfried Zach tiefe Anteilnahme ausgelöst. Über Jahrzehnte hinweg bereicherte der vielseitige Künstler das Vereinsleben. Zahlreiche Wegbegleiter erwiesen ihm nun die letzte Ehre.",
    "category": "",
    "topic": "Region/Traunstein",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-07T06:30:00+00:00",
-   "first_seen": "2026-11-07T06:30:00+00:00"
+   "first_seen": "2026-11-07T06:30:00+00:00",
+   "pc": 2
   },
   "3144666311": {
    "sid": 3144666311,
@@ -2405,7 +2456,8 @@
    "topic": "Region/Bad Reichenhall",
    "plus": false,
    "date": "2026-11-06T18:53:30+00:00",
-   "first_seen": "2026-11-06T18:53:30+00:00"
+   "first_seen": "2026-11-06T18:53:30+00:00",
+   "pc": 2
   },
   "11872552": {
    "sid": 11872552,
@@ -2414,9 +2466,10 @@
    "teaser": "Geduldsprobe für Autofahrer in Freilassing: Die Sanierung der Münchener Straße hat sich verzögert. Statt des erhofften Endes im November müssen Verkehrsteilnehmer weiter mit Behinderungen rechnen – doch für den Winter kündigt sich eine Übergangslösung an.",
    "category": "",
    "topic": "Region/Rupertiwinkel",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-06T16:08:00+00:00",
-   "first_seen": "2026-11-06T16:08:00+00:00"
+   "first_seen": "2026-11-06T16:08:00+00:00",
+   "pc": 2
   },
   "3482358706": {
    "sid": 3482358706,
@@ -2427,7 +2480,8 @@
    "topic": "Region/Rupertiwinkel",
    "plus": false,
    "date": "2026-11-06T16:03:00+00:00",
-   "first_seen": "2026-11-06T16:03:00+00:00"
+   "first_seen": "2026-11-06T16:03:00+00:00",
+   "pc": 2
   },
   "2195013418": {
    "sid": 2195013418,
@@ -2448,9 +2502,10 @@
    "teaser": "Nicht nur der Baustopp beim Einkaufszentrum beschäftigt die Ainringer, sondern viele weitere Themen. Bei der Bürgerversammlung wird klar: Für die Gemeinde sind aus finanzieller Sicht „die fetten Jahre vorbei“. Was das bedeutet, warum die bargeldlose Bezahlung beim WatzMobil für Ängste sorgt und wora",
    "category": "",
    "topic": "Region/Rupertiwinkel",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-06T10:03:00+00:00",
-   "first_seen": "2026-11-06T10:03:00+00:00"
+   "first_seen": "2026-11-06T10:03:00+00:00",
+   "pc": 2
   },
   "361823547": {
    "sid": 361823547,
@@ -2459,9 +2514,10 @@
    "teaser": "Seltene Filmaufnahmen haben Bad Reichenhalls Wandel nach 1945 festgehalten. Nun lädt das ReichenhallMuseum zu einer filmischen Zeitreise ein, die bewegende Einblicke in den Wiederaufbau und den Alltag der Wirtschaftswunderjahre gewährt.",
    "category": "",
    "topic": "Region/Bad Reichenhall",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-06T09:44:00+00:00",
-   "first_seen": "2026-11-06T09:44:00+00:00"
+   "first_seen": "2026-11-06T09:44:00+00:00",
+   "pc": 2
   },
   "1763757190": {
    "sid": 1763757190,
@@ -2472,7 +2528,8 @@
    "topic": "Region/Traunstein",
    "plus": false,
    "date": "2026-11-06T08:02:30+00:00",
-   "first_seen": "2026-11-06T08:02:30+00:00"
+   "first_seen": "2026-11-06T08:02:30+00:00",
+   "pc": 2
   },
   "2271900646": {
    "sid": 2271900646,
@@ -2481,9 +2538,10 @@
    "teaser": "Für die Tiroler Schützen, die bei einem Grenzübertritt in Bad Reichenhall im Juli ihre Langwaffen abgeben mussten, dürfte es jetzt ein Happy End geben. Die Schützenkompanie hat von der Polizei Rückmeldung zu den Ermittlungen erhalten.",
    "category": "",
    "topic": "Region/Bad Reichenhall",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-06T04:49:00+00:00",
-   "first_seen": "2026-11-06T04:49:00+00:00"
+   "first_seen": "2026-11-06T04:49:00+00:00",
+   "pc": 2
   },
   "4240593548": {
    "sid": 4240593548,
@@ -2492,9 +2550,10 @@
    "teaser": "Sophie war gerade einmal vier Jahre jung – und wurde heuer im Februar von ihrer Mutter getötet: Im Prozessauftakt gegen die 42-jährige Traunsteinerin entfaltete sich das ganze Drama. Und das Gericht sucht vor allem eine Antwort auf die Frage, wie es so weit kommen konnte.",
    "category": "",
    "topic": "Region/Traunstein",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-06T04:45:00+00:00",
-   "first_seen": "2026-11-06T04:45:00+00:00"
+   "first_seen": "2026-11-06T04:45:00+00:00",
+   "pc": 2
   },
   "527422481": {
    "sid": 527422481,
@@ -2503,9 +2562,10 @@
    "teaser": "In ihrer Zeit als Politik-Redakteurin hat OVB-Mitarbeiterin Heidi Geyer Hubert Aiwanger persönlich kennengelernt. Eindrücke von einem Minister und Parteichef, der keine Berührungsängste kannte, viel Humor hatte und sich nie anbiederte.",
    "category": "",
    "topic": "Region/Traunstein",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-05T16:08:00+00:00",
-   "first_seen": "2026-11-05T16:08:00+00:00"
+   "first_seen": "2026-11-05T16:08:00+00:00",
+   "pc": 2
   },
   "3943768038": {
    "sid": 3943768038,
@@ -2514,9 +2574,10 @@
    "teaser": "Drei junge Männer aus Hessen gerieten am Sonntag (1. November) auf dem Hochstaufen in Bergnot. Ihre Rettung beschäftigte die Bergwacht über acht Stunden. Dass der Einsatz noch glimpflich ausging, war Hüttenwirt Daniel Peyerl zu verdanken.",
    "category": "",
    "topic": "Region/Bad Reichenhall",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-05T15:57:00+00:00",
-   "first_seen": "2026-11-05T15:57:00+00:00"
+   "first_seen": "2026-11-05T15:57:00+00:00",
+   "pc": 2
   },
   "1711248554": {
    "sid": 1711248554,
@@ -2537,9 +2598,10 @@
    "teaser": "In Bergen hat die Verwaltungsgemeinschaft eine neue Geschäftsleiterin: Sabrina Stutz entlastet Bürgermeister Andreas Schultes nach Monaten der Doppelfunktion. Welche Erfahrung die 37-Jährige mitbringt und welche Aufgaben sie nun erwarten.",
    "category": "",
    "topic": "Region/Traunstein",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-05T14:00:00+00:00",
-   "first_seen": "2026-11-05T14:00:00+00:00"
+   "first_seen": "2026-11-05T14:00:00+00:00",
+   "pc": 2
   },
   "3037454836": {
    "sid": 3037454836,
@@ -2550,7 +2612,8 @@
    "topic": "Region/Traunstein",
    "plus": false,
    "date": "2026-11-05T12:35:40+00:00",
-   "first_seen": "2026-11-05T12:35:40+00:00"
+   "first_seen": "2026-11-05T12:35:40+00:00",
+   "pc": 2
   },
   "235541767": {
    "sid": 235541767,
@@ -2585,7 +2648,8 @@
    "topic": "Region/Salzburg",
    "plus": false,
    "date": "2026-11-05T10:06:07+00:00",
-   "first_seen": "2026-11-05T10:06:07+00:00"
+   "first_seen": "2026-11-05T10:06:07+00:00",
+   "pc": 2
   },
   "2424922853": {
    "sid": 2424922853,
@@ -2596,7 +2660,8 @@
    "topic": "Region/Salzburg",
    "plus": false,
    "date": "2026-11-05T08:26:42+00:00",
-   "first_seen": "2026-11-05T08:26:42+00:00"
+   "first_seen": "2026-11-05T08:26:42+00:00",
+   "pc": 2
   },
   "964907821": {
    "sid": 964907821,
@@ -2605,9 +2670,10 @@
    "teaser": "Traunstein – Auf den tragischen Fall eines getöteten Mädchens, gerade mal vier Jahre jung, wird ab Donnerstag ein Schlaglicht vor Gericht geworfen: Angeklagt ist die Mutter, ihr wird Mord vorgeworfen. Der Prozesstag vom 5. November zum Nachlesen:",
    "category": "",
    "topic": "Region/Traunstein",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-05T04:55:00+00:00",
-   "first_seen": "2026-11-05T04:55:00+00:00"
+   "first_seen": "2026-11-05T04:55:00+00:00",
+   "pc": 2
   },
   "3317463072": {
    "sid": 3317463072,
@@ -2628,9 +2694,10 @@
    "teaser": "Adelholzener will auch in Zukunft über eine Milliarde Liter Wasser jährlich abzapfen. Die Behörden haben noch nicht darüber entschieden, aber eine Zustimmung zeichnet sich ab. Die Bürgerinitiative „Unser Bergener Wasser“ lud jetzt zum Infoabend. Man fühlt sich übergangen, teilt gegen die Behörden au",
    "category": "",
    "topic": "Region/Traunstein",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-05T04:18:00+00:00",
-   "first_seen": "2026-11-05T04:18:00+00:00"
+   "first_seen": "2026-11-05T04:18:00+00:00",
+   "pc": 2
   },
   "1172778648": {
    "sid": 1172778648,
@@ -2653,7 +2720,8 @@
    "topic": "Region/Rupertiwinkel",
    "plus": false,
    "date": "2026-11-04T16:02:03+00:00",
-   "first_seen": "2026-11-04T16:02:03+00:00"
+   "first_seen": "2026-11-04T16:02:03+00:00",
+   "pc": 2
   },
   "2700707061": {
    "sid": 2700707061,
@@ -2674,9 +2742,10 @@
    "teaser": "Ein vierjähriges Mädchen, vom Vater in der Wohnung tot aufgefunden: Der Fall löste im Februar Schockwellen in Traunstein aus – nun steht der Prozess gegen die Mutter an. Wir haben die ersten Details und mit der Verteidigerin gesprochen.",
    "category": "",
    "topic": "Region/Traunstein",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-04T04:51:00+00:00",
-   "first_seen": "2026-11-04T04:51:00+00:00"
+   "first_seen": "2026-11-04T04:51:00+00:00",
+   "pc": 2
   },
   "2440248195": {
    "sid": 2440248195,
@@ -2685,9 +2754,10 @@
    "teaser": "Die monatelange Vollsperrung der Bahnstrecke Freilassing-Rosenheim hat bei vielen Pendlern große Verunsicherung ausgelöst. Vor dem Bahnhof Freilassing gaben Mitarbeiter der Deutschen Bahn nun erste Antworten auf drängende Fragen zu Ersatzfahrplänen.",
    "category": "",
    "topic": "Region/Rupertiwinkel",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-04T04:19:00+00:00",
-   "first_seen": "2026-11-04T04:19:00+00:00"
+   "first_seen": "2026-11-04T04:19:00+00:00",
+   "pc": 2
   },
   "1510875605": {
    "sid": 1510875605,
@@ -2696,9 +2766,10 @@
    "teaser": "Jetzt auch in Bayern – nach Hackerangriffen auf Supermärkte in einigen europäischen Ländern ist nun eine Edeka-Filiale in Niederbayern betroffen. Dort stiegen die Temperaturen der Kühlanlagen auf bis zu 50 Grad an. Wie die Lage bei Edeka-Filialen in den Landkreisen Rosenheim, Traunstein, Mühldorf un",
    "category": "",
    "topic": "Region/Traunstein",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-03T16:12:00+00:00",
-   "first_seen": "2026-11-03T16:12:00+00:00"
+   "first_seen": "2026-11-03T16:12:00+00:00",
+   "pc": 2
   },
   "2915588757": {
    "sid": 2915588757,
@@ -2721,7 +2792,8 @@
    "topic": "Region/Traunstein",
    "plus": false,
    "date": "2026-11-03T12:28:20+00:00",
-   "first_seen": "2026-11-03T12:28:20+00:00"
+   "first_seen": "2026-11-03T12:28:20+00:00",
+   "pc": 2
   },
   "3210060523": {
    "sid": 3210060523,
@@ -2742,9 +2814,10 @@
    "teaser": "An der Kreuzung von B21 und B305 in Schneizlreuth haben die Arbeiten für den Neubau der Weißbachbrücke begonnen. Trotz der Erweiterung auf vier Spuren müssen die Anwohner vorerst ohne Lärmschutz auskommen – und selbst aktiv werden.",
    "category": "",
    "topic": "Region/Bad Reichenhall",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-03T10:07:00+00:00",
-   "first_seen": "2026-11-03T10:07:00+00:00"
+   "first_seen": "2026-11-03T10:07:00+00:00",
+   "pc": 2
   },
   "3182017215": {
    "sid": 3182017215,
@@ -2755,7 +2828,8 @@
    "topic": "Region/Salzburg",
    "plus": false,
    "date": "2026-11-03T06:51:32+00:00",
-   "first_seen": "2026-11-03T06:51:32+00:00"
+   "first_seen": "2026-11-03T06:51:32+00:00",
+   "pc": 2
   },
   "959166142": {
    "sid": 959166142,
@@ -2764,9 +2838,10 @@
    "teaser": "Geht dem Chiemgau das Wasser aus? Eine emotionale Debatte um das Bergener Wasser beschäftigt viele Bürger. Die Adelholzener Alpenquellen haben einen Antrag gestellt, um auch künftig Wasser entnehmen zu dürfen. Was der Leiter des Traunsteiner Wasserwirtschaftsamtes zum trockenen Sommer und den Vorwür",
    "category": "",
    "topic": "Region/Traunstein",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-03T04:30:00+00:00",
-   "first_seen": "2026-11-03T04:30:00+00:00"
+   "first_seen": "2026-11-03T04:30:00+00:00",
+   "pc": 2
   },
   "3988394067": {
    "sid": 3988394067,
@@ -2789,7 +2864,8 @@
    "topic": "Region/Bad Reichenhall",
    "plus": false,
    "date": "2026-11-02T18:42:45+00:00",
-   "first_seen": "2026-11-02T18:42:45+00:00"
+   "first_seen": "2026-11-02T18:42:45+00:00",
+   "pc": 2
   },
   "490426794": {
    "sid": 490426794,
@@ -2798,9 +2874,10 @@
    "teaser": "Fremde Welten entdecken und gemeinsam Geschichten erfinden: Im Rupertiwinkel haben Rollenspieler einen eigenen Verein ins Leben gerufen. In Freilassing wollen sie Gleichgesinnte zusammenbringen und Neulingen den Einstieg in das Hobby erleichtern.",
    "category": "",
    "topic": "Region/Rupertiwinkel",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-02T10:05:00+00:00",
-   "first_seen": "2026-11-02T10:05:00+00:00"
+   "first_seen": "2026-11-02T10:05:00+00:00",
+   "pc": 2
   },
   "2624858957": {
    "sid": 2624858957,
@@ -2809,9 +2886,10 @@
    "teaser": "Grünes Licht für das Naturprojekt am Chiemsee: Für die geplante Erlebnishütte in der Hirschauer Bucht hat die Gemeinde Grabenstätt eine hohe Fördersumme erhalten. Doch im Gemeinderat gab es wegen der Kosten nicht nur ungeteilte Freude.",
    "category": "",
    "topic": "Region/Traunstein",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-02T04:30:00+00:00",
-   "first_seen": "2026-11-02T04:30:00+00:00"
+   "first_seen": "2026-11-02T04:30:00+00:00",
+   "pc": 2
   },
   "3967647233": {
    "sid": 3967647233,
@@ -2822,7 +2900,8 @@
    "topic": "Region/Salzburg",
    "plus": false,
    "date": "2026-11-01T10:42:00+00:00",
-   "first_seen": "2026-11-01T10:42:00+00:00"
+   "first_seen": "2026-11-01T10:42:00+00:00",
+   "pc": 2
   },
   "3736184897": {
    "sid": 3736184897,
@@ -2831,9 +2910,10 @@
    "teaser": "Die Belastung durch den Schwerlastverkehr sorgt in Schneizlreuth für wachsenden Unmut: Weil behördliche Kontrollen auf der B21 nach Ansicht der Bürgerinitiative kaum stattfinden, fordern die betroffenen Anwohner nun wirksamere Schutzmaßnahmen.",
    "category": "",
    "topic": "Region/Bad Reichenhall",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-01T06:20:00+00:00",
-   "first_seen": "2026-11-01T06:20:00+00:00"
+   "first_seen": "2026-11-01T06:20:00+00:00",
+   "pc": 2
   },
   "4208405324": {
    "sid": 4208405324,
@@ -2842,9 +2922,10 @@
    "teaser": "Rege Diskussionen haben die Bürgerversammlung in Inzell geprägt: Bürgermeister Michael Lorenz hat den Bürgern zu drängenden Themen wie geplanten Windrädern, dem Sommereis oder der Verkehrssicherheit ausführlich Rede und Antwort gestanden.",
    "category": "",
    "topic": "Region/Traunstein",
-   "plus": false,
+   "plus": true,
    "date": "2026-10-31T16:20:00+00:00",
-   "first_seen": "2026-10-31T16:20:00+00:00"
+   "first_seen": "2026-10-31T16:20:00+00:00",
+   "pc": 2
   },
   "2283215115": {
    "sid": 2283215115,
@@ -2853,9 +2934,10 @@
    "teaser": "Der Baustopp des geplanten Einkaufszentrums in Mitterfelden zieht seine Kreise: Bei der Bürgerversammlung am Mittwoch (28. Oktober) wird deutlich, wie sehr die Klagen und die Gerichtsverfahren auch die Mitarbeiter im Rathaus belasten – und dass es Folgen für das Gesundheitshaus und die Freizeitanlag",
    "category": "",
    "topic": "Region/Rupertiwinkel",
-   "plus": false,
+   "plus": true,
    "date": "2026-10-31T16:18:00+00:00",
-   "first_seen": "2026-10-31T16:18:00+00:00"
+   "first_seen": "2026-10-31T16:18:00+00:00",
+   "pc": 2
   },
   "1317136891": {
    "sid": 1317136891,
@@ -2864,9 +2946,10 @@
    "teaser": "Richtungsweisende Jahre für die Kliniken Südostbayern: Die Landkreise Traunstein und Berchtesgadener Land wollen mehr Geld zur Verfügung stellen, doch es gibt klare Bedingungen. In Bad Reichenhall soll ein neues Funktionsgebäude mit Intensivstation das „neue Herzstück“ werden, für Berchtesgaden werd",
    "category": "",
    "topic": "Region/Bad Reichenhall",
-   "plus": false,
+   "plus": true,
    "date": "2026-10-30T16:01:00+00:00",
-   "first_seen": "2026-10-30T16:01:00+00:00"
+   "first_seen": "2026-10-30T16:01:00+00:00",
+   "pc": 2
   },
   "1612557667": {
    "sid": 1612557667,
@@ -2875,9 +2958,10 @@
    "teaser": "Seit Sommer 2025 hat Traunstein seine erste Fahrradstraße mit eigenen Regeln: Sie war erst heiß umstritten, jetzt wurde Bilanz gezogen. Im Stadtrat drehten sich die Diskussionen nun um weitere Fahrradstraßen und ob Autos nicht doch ausgesperrt werden könnten – OB Hümmer stieg dabei jeweils auf die B",
    "category": "",
    "topic": "Region/Traunstein",
-   "plus": false,
+   "plus": true,
    "date": "2026-10-30T16:00:00+00:00",
-   "first_seen": "2026-10-30T16:00:00+00:00"
+   "first_seen": "2026-10-30T16:00:00+00:00",
+   "pc": 2
   },
   "2958969942": {
    "sid": 2958969942,
@@ -2888,7 +2972,8 @@
    "topic": "Region/Salzburg",
    "plus": false,
    "date": "2026-10-30T11:58:54+00:00",
-   "first_seen": "2026-10-30T11:58:54+00:00"
+   "first_seen": "2026-10-30T11:58:54+00:00",
+   "pc": 2
   },
   "1007512094": {
    "sid": 1007512094,
@@ -2899,7 +2984,8 @@
    "topic": "Region/Bad Reichenhall",
    "plus": false,
    "date": "2026-10-30T10:08:00+00:00",
-   "first_seen": "2026-10-30T10:08:00+00:00"
+   "first_seen": "2026-10-30T10:08:00+00:00",
+   "pc": 2
   },
   "3950083561": {
    "sid": 3950083561,
@@ -2908,9 +2994,10 @@
    "teaser": "Jahrelange Umleitungen an der B305 gehören der Vergangenheit an: Mit der Fertigstellung der modernen Galerie am Weinkaser in Schneizlreuth hat eine zentrale Lebensader zwischen Chiemgau und Berchtesgadener Land ihre Sicherheit zurückerhalten.",
    "category": "",
    "topic": "Region/Bad Reichenhall",
-   "plus": false,
+   "plus": true,
    "date": "2026-10-30T04:25:00+00:00",
-   "first_seen": "2026-10-30T04:25:00+00:00"
+   "first_seen": "2026-10-30T04:25:00+00:00",
+   "pc": 2
   },
   "1034880060": {
    "sid": 1034880060,
@@ -2921,7 +3008,8 @@
    "topic": "Region/Rupertiwinkel",
    "plus": false,
    "date": "2026-10-30T04:25:00+00:00",
-   "first_seen": "2026-10-30T04:25:00+00:00"
+   "first_seen": "2026-10-30T04:25:00+00:00",
+   "pc": 2
   },
   "1592416104": {
    "sid": 1592416104,
@@ -2930,9 +3018,10 @@
    "teaser": "In Bad Reichenhall haben die Mitglieder des Kreisjagdverbandes Berchtesgadener Land Bilanz gezogen. Neben Berichten und soliden Finanzen stand bei der Zusammenkunft vor allem eine überraschende persönliche Ankündigung an der Vereinsspitze im Raum.",
    "category": "",
    "topic": "Region/Bad Reichenhall",
-   "plus": false,
+   "plus": true,
    "date": "2026-10-29T10:00:00+00:00",
-   "first_seen": "2026-10-29T10:00:00+00:00"
+   "first_seen": "2026-10-29T10:00:00+00:00",
+   "pc": 2
   },
   "698937094": {
    "sid": 698937094,
@@ -2943,7 +3032,8 @@
    "topic": "Region/Rupertiwinkel",
    "plus": false,
    "date": "2026-10-28T18:58:19+00:00",
-   "first_seen": "2026-10-28T18:58:19+00:00"
+   "first_seen": "2026-10-28T18:58:19+00:00",
+   "pc": 2
   },
   "2980804777": {
    "sid": 2980804777,
@@ -2952,9 +3042,10 @@
    "teaser": "Das lange Warten hat ein Ende: Der Streckenabschnitt der B305 am Weinkaser bei Schneizlreuth ist nach mehr als sechs Jahren wieder für den Verkehr geöffnet worden. Hunderte Bürger feierten die Wiedereröffnung bei einem Begegnungsfest.",
    "category": "",
    "topic": "Region/Bad Reichenhall",
-   "plus": false,
+   "plus": true,
    "date": "2026-10-28T16:10:00+00:00",
-   "first_seen": "2026-10-28T16:10:00+00:00"
+   "first_seen": "2026-10-28T16:10:00+00:00",
+   "pc": 2
   },
   "2281355376": {
    "sid": 2281355376,
@@ -2963,9 +3054,10 @@
    "teaser": "Als erste Frau zog Gisela Meßner 1984 in den Teisendorfer Marktgemeinderat ein und prägte die Kommunalpolitik über Jahre hinweg. Nun hat die rüstige Jubilarin ihren 95. Geburtstag gefeiert und blickte dabei auf ein bewegtes, erfülltes Leben zurück.",
    "category": "",
    "topic": "Region/Rupertiwinkel",
-   "plus": false,
+   "plus": true,
    "date": "2026-10-28T04:25:00+00:00",
-   "first_seen": "2026-10-28T04:25:00+00:00"
+   "first_seen": "2026-10-28T04:25:00+00:00",
+   "pc": 2
   },
   "426404749": {
    "sid": 426404749,
@@ -2976,7 +3068,8 @@
    "topic": "Region/Salzburg",
    "plus": false,
    "date": "2026-10-27T16:11:00+00:00",
-   "first_seen": "2026-10-27T16:11:00+00:00"
+   "first_seen": "2026-10-27T16:11:00+00:00",
+   "pc": 2
   },
   "947285134": {
    "sid": 947285134,
@@ -2985,9 +3078,10 @@
    "teaser": "Beim traditionellen Florianifest in Bad Reichenhall haben die Floriansjünger am Samstag (24. Oktober) nicht nur gefeiert, sondern auch engagierte Kameraden gewürdigt. Zudem gab es von der Stadtverwaltung viel Lob und handfeste Zusagen für die Zukunft.",
    "category": "",
    "topic": "Region/Bad Reichenhall",
-   "plus": false,
+   "plus": true,
    "date": "2026-10-27T04:14:00+00:00",
-   "first_seen": "2026-10-27T04:14:00+00:00"
+   "first_seen": "2026-10-27T04:14:00+00:00",
+   "pc": 2
   },
   "171499423": {
    "sid": 171499423,
@@ -2996,9 +3090,10 @@
    "teaser": "Aufatmen für Autofahrer im Berchtesgadener Land: Am Montag (26. Oktober) ist die B305 am Weinkaser in Schneizlreuth nach sechsjähriger Vollsperrung feierlich freigegeben worden. Damit hat die rund 50 Kilometer lange Umleitung endlich ein Ende.",
    "category": "",
    "topic": "Region/Bad Reichenhall",
-   "plus": false,
+   "plus": true,
    "date": "2026-10-26T16:12:00+00:00",
-   "first_seen": "2026-10-26T16:12:00+00:00"
+   "first_seen": "2026-10-26T16:12:00+00:00",
+   "pc": 2
   },
   "883040747": {
    "sid": 883040747,
@@ -3009,7 +3104,8 @@
    "topic": "Region/Bad Reichenhall",
    "plus": false,
    "date": "2026-10-26T13:57:00+00:00",
-   "first_seen": "2026-10-26T13:57:00+00:00"
+   "first_seen": "2026-10-26T13:57:00+00:00",
+   "pc": 2
   },
   "3269026794": {
    "sid": 3269026794,
@@ -3020,7 +3116,8 @@
    "topic": "Region/Rupertiwinkel",
    "plus": false,
    "date": "2026-10-25T11:58:24+00:00",
-   "first_seen": "2026-10-25T11:58:24+00:00"
+   "first_seen": "2026-10-25T11:58:24+00:00",
+   "pc": 2
   },
   "785123048": {
    "sid": 785123048,
@@ -3029,9 +3126,10 @@
    "teaser": "Hohe Ausgaben und Großprojekte setzen der Salzachstadt zu: Bei der Bürgerversammlung in Laufen hat Bürgermeister Christian Burr Einblicke in die angespannte Kassenlage gegeben. Neben Millionensummen beschäftigte die Bürger vorrangig ein Verkehrsproblem. Spannende Neuigkeiten gibt es aus Oberndorf.",
    "category": "",
    "topic": "Region/Rupertiwinkel",
-   "plus": false,
+   "plus": true,
    "date": "2026-10-24T15:10:00+00:00",
-   "first_seen": "2026-10-24T15:10:00+00:00"
+   "first_seen": "2026-10-24T15:10:00+00:00",
+   "pc": 2
   },
   "1871556666": {
    "sid": 1871556666,
@@ -3040,9 +3138,10 @@
    "teaser": "Bei Vorarbeiten für den Brückenbau an der B21 in Schneizlreuth haben Fachleute gefährliche militärische Hinterlassenschaften freigelegt. Neben Kriegswaffen kamen auf dem Gelände aber auch Spuren eines längst vergessenen Anwesens ans Tageslicht.",
    "category": "",
    "topic": "Region/Bad Reichenhall",
-   "plus": false,
+   "plus": true,
    "date": "2026-10-24T10:10:00+00:00",
-   "first_seen": "2026-10-24T10:10:00+00:00"
+   "first_seen": "2026-10-24T10:10:00+00:00",
+   "pc": 2
   },
   "677910835": {
    "sid": 677910835,
@@ -3051,9 +3150,10 @@
    "teaser": "Das Bergbaumuseum „Eisenreich“ in Achthal hat eine erfolgreiche Saison abgeschlossen: Tausende Besucher zog es nach Teisendorf. Auch in der anstehenden Winterpause kehrt keine Ruhe ein, denn auf Gäste wartet ein abwechslungsreiches Programm.",
    "category": "",
    "topic": "Region/Rupertiwinkel",
-   "plus": false,
+   "plus": true,
    "date": "2026-10-24T05:33:00+00:00",
-   "first_seen": "2026-10-24T05:33:00+00:00"
+   "first_seen": "2026-10-24T05:33:00+00:00",
+   "pc": 2
   },
   "4044486854": {
    "sid": 4044486854,
@@ -3064,7 +3164,8 @@
    "topic": "Region/Bad Reichenhall",
    "plus": false,
    "date": "2026-10-23T14:00:00+00:00",
-   "first_seen": "2026-10-23T14:00:00+00:00"
+   "first_seen": "2026-10-23T14:00:00+00:00",
+   "pc": 2
   },
   "611766252": {
    "sid": 611766252,
@@ -3073,9 +3174,10 @@
    "teaser": "Wie trotzen Bäume künftigen Trockenperioden? Auf dem frisch modernisierten forstgenetischen Lehrpfad Osing bei Laufen können Naturfreunde nach drei Jahren Umbauzeit wieder erleben, wie der Wald von morgen dem Klimawandel begegnet.",
    "category": "",
    "topic": "Region/Rupertiwinkel",
-   "plus": false,
+   "plus": true,
    "date": "2026-10-23T11:32:19+00:00",
-   "first_seen": "2026-10-23T11:32:19+00:00"
+   "first_seen": "2026-10-23T11:32:19+00:00",
+   "pc": 2
   },
   "831997833": {
    "sid": 831997833,
@@ -3084,9 +3186,10 @@
    "teaser": "Landkreis Traunstein – Vier Fahrzeuge und 20 Einsatzkräfte waren am Donnerstag (22. Oktober) bei einem Verkehrsunfall in Waging am See im Einsatz. Zwei Personen kamen anschließend in die Obhut des Rettungsdienstes.",
    "category": "",
    "topic": "Region/Rupertiwinkel",
-   "plus": false,
+   "plus": true,
    "date": "2026-10-22T11:46:04+00:00",
-   "first_seen": "2026-10-22T11:46:04+00:00"
+   "first_seen": "2026-10-22T11:46:04+00:00",
+   "pc": 2
   },
   "2067974776": {
    "sid": 2067974776,
@@ -3095,9 +3198,10 @@
    "teaser": "Am Mittwochabend (21. Oktober) kam es gegen 22.30 Uhr bei Schneizlreuth zu einem Autounfall. Eine 29-Jährige war mit ihrem Auto in eine Leitplanke geprallt.",
    "category": "",
    "topic": "Region/Bad Reichenhall",
-   "plus": false,
+   "plus": true,
    "date": "2026-10-22T11:25:00+00:00",
-   "first_seen": "2026-10-22T11:25:00+00:00"
+   "first_seen": "2026-10-22T11:25:00+00:00",
+   "pc": 2
   }
  }
 }
