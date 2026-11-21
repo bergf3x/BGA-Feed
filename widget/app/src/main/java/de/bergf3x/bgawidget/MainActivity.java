@@ -388,34 +388,32 @@ public class MainActivity extends Activity {
             }
             if (w.days > 1) in.addView(forecast(w));
         }
-        // Live-Webcam: schmale Liquid-Glass-Pille oben rechts (Glasflaeche, Lichtreflex, feiner Rand)
+        // Live-Webcam: waagerechte, dezente Glas-Pille oben rechts auf Hoehe des Ortsnamens
         LinearLayout cam = new LinearLayout(this);
-        cam.setOrientation(LinearLayout.VERTICAL);
-        cam.setGravity(Gravity.CENTER);
-        cam.setPadding(px(4), px(8), px(4), px(8));
-        final float cr = 32;
-        GradientDrawable base = shape(light ? 0x38FFFFFF : 0x24FFFFFF, cr, light ? 0x55FFFFFF : 0x40FFFFFF);
+        cam.setOrientation(LinearLayout.HORIZONTAL);
+        cam.setGravity(Gravity.CENTER_VERTICAL);
+        cam.setPadding(px(12), 0, px(14), 0);
+        final float cr = 20;
+        GradientDrawable base = shape(light ? 0x22FFFFFF : 0x14FFFFFF, cr, light ? 0x40FFFFFF : 0x24FFFFFF);
         GradientDrawable gloss = new GradientDrawable(GradientDrawable.Orientation.TL_BR,
-                new int[]{light ? 0x80FFFFFF : 0x45FFFFFF, 0x00FFFFFF});
+                new int[]{light ? 0x40FFFFFF : 0x1CFFFFFF, 0x00FFFFFF});
         gloss.setCornerRadius(px(cr));
-        cam.setBackground(new RippleDrawable(ColorStateList.valueOf(light ? 0x33000000 : 0x40FFFFFF),
+        cam.setBackground(new RippleDrawable(ColorStateList.valueOf(light ? 0x33000000 : 0x30FFFFFF),
                 new android.graphics.drawable.LayerDrawable(new android.graphics.drawable.Drawable[]{base, gloss}),
                 shape(0xFFFFFFFF, cr, 0)));
         cam.setClickable(true);
         ImageView civ = new ImageView(this);
         civ.setImageResource(R.drawable.ic_cam);
-        civ.setColorFilter(tx);
-        cam.addView(civ, lp(24, 24, 0, 0, 0, 4));
-        TextView ct = text("Live\nWebcam", 10.5f, tx, true);
-        ct.setGravity(Gravity.CENTER);
-        ct.setLineSpacing(0, 0.95f);
+        civ.setColorFilter(soft);
+        cam.addView(civ, lp(18, 18, 0, 0, 7, 0));
+        TextView ct = text("Live Webcam", 13, tx, false);
         ct.setIncludeFontPadding(false);
         cam.addView(ct, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         cam.setContentDescription("Live Webcams");
         cam.setOnClickListener(v -> open(WebcamActivity.class));
-        FrameLayout.LayoutParams clp = new FrameLayout.LayoutParams(px(64), px(84), Gravity.TOP | Gravity.END);
-        clp.topMargin = px(12);
-        clp.rightMargin = px(16);
+        FrameLayout.LayoutParams clp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, px(40), Gravity.TOP | Gravity.END);
+        clp.topMargin = px(10);
+        clp.rightMargin = px(14);
         card.addView(cam, clp);
         page.addView(card, lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 10));
     }
