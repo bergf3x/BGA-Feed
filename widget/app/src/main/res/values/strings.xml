@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">BGL Widg</string>
+    <string name="app_name">BGL Wetter &amp; News</string>
     <string name="config_title">Widget-Einstellungen</string>
     <string name="widget_title">Nachrichten</string>
     <string name="widget_desc">Nachrichten aus Berchtesgaden und den Bergen</string>
