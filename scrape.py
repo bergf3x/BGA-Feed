@@ -166,7 +166,7 @@ BG_SECTIONS = [
 ]
 
 
-def _rss_items(xml_bytes):
+def _rss_items(xml_bytes, art=True):
     """RSS 2.0 / RDF / Atom tolerant lesen: Titel, Link, Datum, Anriss."""
     from email.utils import parsedate_to_datetime
 
@@ -180,7 +180,7 @@ def _rss_items(xml_bytes):
             return v.strip()
         link = tag("link") or (re.search(r'<link[^>]+href="([^"]+)"', blk) or [None, ""])[1]
         link = link.split("#")[0].strip()
-        if not link or not BG_ART.search(link.split("?")[0]):
+        if not link or (art and not BG_ART.search(link.split("?")[0])):
             continue
         date = ""
         raw = tag("pubDate") or tag("dc:date") or tag("published") or tag("updated")
@@ -200,12 +200,12 @@ def _rss_items(xml_bytes):
     return [x for x in out if len(x["title"]) >= 10]
 
 
-def _bg_sections(base):
+def _bg_sections(base, sections=None, tag="bgland24"):
     """Rubrik-Feeds und -Seiten der Region; je Rubrik nur Kennzahlen ins Protokoll."""
     import requests
 
     found = {}
-    for sec in BG_SECTIONS:
+    for sec in sections or BG_SECTIONS:
         n_rss = n_html = 0
         try:
             r = requests.get(base + sec + "rssfeed.rdf", headers={"User-Agent": UA}, timeout=20)
@@ -225,7 +225,7 @@ def _bg_sections(base):
                         n_html += 1
             except Exception:
                 pass
-        print(f"[bgland24] Rubrik {sec}: RSS {st} -> {n_rss}, Seite -> {n_html}")
+        print(f"[{tag}] Rubrik {sec}: RSS {st} -> {n_rss}, Seite -> {n_html}")
     return list(found.values())
 
 
@@ -268,7 +268,7 @@ def bg_topic(url):
     if not seg:
         return "Region"
     top = seg[0]
-    if top == "bgland":
+    if top in ("bgland", "lokal", "lokales"):
         return "Region/" + nice(seg[1]) if len(seg) > 2 else "Region"
     if top in ("welt", "deutschland", "politik", "wirtschaft"):
         return "Nachrichten/" + nice(top)
@@ -384,6 +384,42 @@ def _fetch_bgland(site):
 
 
 # ---------------------------------------------------------------- Seiten-Konfiguration
+LOCAL_RE = re.compile(r'href="(?:https?://(?:www\.)?chiemgau24\.de)?(/(?:lokal|lokales)/[a-z0-9-]+/)"')
+
+
+def fetch_chiemgau(site):
+    """chiemgau24.de (Ippen wie BGLand24): Lokalrubriken von der Startseite finden, je Rubrik RSS. Nur Regionales."""
+    import requests
+
+    base = site["base"]
+    secs = []
+    try:
+        h = requests.get(base + "/", headers={"User-Agent": UA}, timeout=30).text
+        for m in LOCAL_RE.finditer(h):
+            if m.group(1) not in secs:
+                secs.append(m.group(1))
+    except Exception as e:
+        print(f"[{site['id']}] Startseite: {e}", file=sys.stderr)
+    secs = secs[:12] or ["/lokal/traunstein/", "/lokal/rupertiwinkel/", "/lokal/chiemsee/"]
+    items = _bg_sections(base, secs, site["id"])
+    for it in items:
+        it["topic"] = bg_topic(it["url"])
+    return [it for it in items if it["topic"].startswith("Region")]
+
+
+def fetch_rss_site(site):
+    """Reiner RSS-Feed (z. B. ORF Salzburg): alle Meldungen in ein festes Thema."""
+    import requests
+
+    r = requests.get(site["rss"], headers={"User-Agent": UA}, timeout=30)
+    r.raise_for_status()
+    items = _rss_items(r.content, art=False)
+    for it in items:
+        it["topic"] = site["topic"]
+    print(f"[{site['id']}] RSS {r.status_code} -> {len(items)}")
+    return items
+
+
 SITES = [
     dict(
         id="bga",
@@ -434,6 +470,38 @@ SITES = [
         retopic=None,
         fetch=fetch_bgland,
         enrich=bg_enrich,
+        order="seen",
+    ),
+    dict(
+        id="chiemgau24",
+        name="chiemgau24",
+        base="https://www.chiemgau24.de",
+        link="/",
+        feed="feed_chiemgau24.xml",
+        state="state_chiemgau24.json",
+        sources=[("/", "Region")],
+        topics=None,
+        parse=None,
+        retopic=None,
+        fetch=fetch_chiemgau,
+        enrich=bg_enrich,
+        order="seen",
+        ippen=True,
+    ),
+    dict(
+        id="orf_salzburg",
+        name="ORF Salzburg",
+        base="https://salzburg.orf.at",
+        link="/",
+        rss="https://rss.orf.at/salzburg.xml",
+        topic="Region/Salzburg",
+        feed="feed_orf_salzburg.xml",
+        state="state_orf_salzburg.json",
+        sources=[("/", "Region/Salzburg")],
+        topics=None,
+        parse=None,
+        retopic=None,
+        fetch=fetch_rss_site,
         order="seen",
     ),
 ]
@@ -491,7 +559,7 @@ def build(site, items, state, now):
             state_items[key]["plus"] = bool(state_items[key].get("plus") or it.get("plus"))
             if it.get("pc"):
                 state_items[key]["pc"] = it["pc"]
-    if site["id"] == "bgland24":  # alte Statedaten auf das aktuelle Themenschema bringen
+    if site["id"] == "bgland24" or site.get("ippen"):  # alte Statedaten auf das aktuelle Themenschema bringen
         for k in [k for k, v in state_items.items() if not BG_ART.search(v["url"].split("?")[0])]:
             del state_items[k]  # Menue-/Rubrik-Links sind keine Artikel
         for v in state_items.values():
