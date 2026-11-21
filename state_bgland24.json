@@ -1496,7 +1496,8 @@
    "topic": "Region/Salzburg",
    "plus": false,
    "date": "2026-11-19T10:00:00+00:00",
-   "first_seen": "2026-11-19T10:00:00+00:00"
+   "first_seen": "2026-11-19T10:00:00+00:00",
+   "pc": 2
   },
   "2433895566": {
    "sid": 2433895566,
@@ -1615,7 +1616,8 @@
    "topic": "Region/Bad Reichenhall",
    "plus": false,
    "date": "2026-11-17T13:39:56+00:00",
-   "first_seen": "2026-11-17T13:39:56+00:00"
+   "first_seen": "2026-11-17T13:39:56+00:00",
+   "pc": 2
   },
   "559419596": {
    "sid": 559419596,
@@ -1626,7 +1628,8 @@
    "topic": "Region/Salzburg",
    "plus": false,
    "date": "2026-11-17T13:33:59+00:00",
-   "first_seen": "2026-11-17T13:33:59+00:00"
+   "first_seen": "2026-11-17T13:33:59+00:00",
+   "pc": 2
   },
   "2016024277": {
    "sid": 2016024277,
@@ -1673,7 +1676,8 @@
    "topic": "Region/Polizeimeldungen",
    "plus": false,
    "date": "2026-11-17T09:00:00+00:00",
-   "first_seen": "2026-11-17T09:00:00+00:00"
+   "first_seen": "2026-11-17T09:00:00+00:00",
+   "pc": 2
   },
   "1288595701": {
    "sid": 1288595701,
@@ -1696,7 +1700,8 @@
    "topic": "Region/Polizeimeldungen",
    "plus": false,
    "date": "2026-11-17T08:13:52+00:00",
-   "first_seen": "2026-11-17T08:13:52+00:00"
+   "first_seen": "2026-11-17T08:13:52+00:00",
+   "pc": 2
   },
   "492779651": {
    "sid": 492779651,
@@ -1719,7 +1724,8 @@
    "topic": "Region/Polizeimeldungen",
    "plus": false,
    "date": "2026-11-16T17:00:00+00:00",
-   "first_seen": "2026-11-16T17:00:00+00:00"
+   "first_seen": "2026-11-16T17:00:00+00:00",
+   "pc": 2
   },
   "4030523672": {
    "sid": 4030523672,
@@ -2306,7 +2312,8 @@
    "topic": "Region/Salzburg",
    "plus": false,
    "date": "2026-11-09T10:05:00+00:00",
-   "first_seen": "2026-11-09T10:05:00+00:00"
+   "first_seen": "2026-11-09T10:05:00+00:00",
+   "pc": 2
   },
   "2914270223": {
    "sid": 2914270223,
@@ -2353,7 +2360,8 @@
    "topic": "Region/Salzburg",
    "plus": false,
    "date": "2026-11-08T16:40:55+00:00",
-   "first_seen": "2026-11-08T16:40:55+00:00"
+   "first_seen": "2026-11-08T16:40:55+00:00",
+   "pc": 2
   },
   "3583908472": {
    "sid": 3583908472,
@@ -2554,9 +2562,10 @@
    "teaser": "In ihrer Zeit als Politik-Redakteurin hat OVB-Mitarbeiterin Heidi Geyer Hubert Aiwanger persönlich kennengelernt. Eindrücke von einem Minister und Parteichef, der keine Berührungsängste kannte, viel Humor hatte und sich nie anbiederte.",
    "category": "",
    "topic": "Region/Traunstein",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-05T16:08:00+00:00",
-   "first_seen": "2026-11-05T16:08:00+00:00"
+   "first_seen": "2026-11-05T16:08:00+00:00",
+   "pc": 2
   },
   "3943768038": {
    "sid": 3943768038,
@@ -2589,9 +2598,10 @@
    "teaser": "In Bergen hat die Verwaltungsgemeinschaft eine neue Geschäftsleiterin: Sabrina Stutz entlastet Bürgermeister Andreas Schultes nach Monaten der Doppelfunktion. Welche Erfahrung die 37-Jährige mitbringt und welche Aufgaben sie nun erwarten.",
    "category": "",
    "topic": "Region/Traunstein",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-05T14:00:00+00:00",
-   "first_seen": "2026-11-05T14:00:00+00:00"
+   "first_seen": "2026-11-05T14:00:00+00:00",
+   "pc": 2
   },
   "3037454836": {
    "sid": 3037454836,
@@ -2602,7 +2612,8 @@
    "topic": "Region/Traunstein",
    "plus": false,
    "date": "2026-11-05T12:35:40+00:00",
-   "first_seen": "2026-11-05T12:35:40+00:00"
+   "first_seen": "2026-11-05T12:35:40+00:00",
+   "pc": 2
   },
   "235541767": {
    "sid": 235541767,
@@ -2637,7 +2648,8 @@
    "topic": "Region/Salzburg",
    "plus": false,
    "date": "2026-11-05T10:06:07+00:00",
-   "first_seen": "2026-11-05T10:06:07+00:00"
+   "first_seen": "2026-11-05T10:06:07+00:00",
+   "pc": 2
   },
   "2424922853": {
    "sid": 2424922853,
@@ -2648,7 +2660,8 @@
    "topic": "Region/Salzburg",
    "plus": false,
    "date": "2026-11-05T08:26:42+00:00",
-   "first_seen": "2026-11-05T08:26:42+00:00"
+   "first_seen": "2026-11-05T08:26:42+00:00",
+   "pc": 2
   },
   "964907821": {
    "sid": 964907821,
@@ -2657,9 +2670,10 @@
    "teaser": "Traunstein – Auf den tragischen Fall eines getöteten Mädchens, gerade mal vier Jahre jung, wird ab Donnerstag ein Schlaglicht vor Gericht geworfen: Angeklagt ist die Mutter, ihr wird Mord vorgeworfen. Der Prozesstag vom 5. November zum Nachlesen:",
    "category": "",
    "topic": "Region/Traunstein",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-05T04:55:00+00:00",
-   "first_seen": "2026-11-05T04:55:00+00:00"
+   "first_seen": "2026-11-05T04:55:00+00:00",
+   "pc": 2
   },
   "3317463072": {
    "sid": 3317463072,
@@ -2680,9 +2694,10 @@
    "teaser": "Adelholzener will auch in Zukunft über eine Milliarde Liter Wasser jährlich abzapfen. Die Behörden haben noch nicht darüber entschieden, aber eine Zustimmung zeichnet sich ab. Die Bürgerinitiative „Unser Bergener Wasser“ lud jetzt zum Infoabend. Man fühlt sich übergangen, teilt gegen die Behörden au",
    "category": "",
    "topic": "Region/Traunstein",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-05T04:18:00+00:00",
-   "first_seen": "2026-11-05T04:18:00+00:00"
+   "first_seen": "2026-11-05T04:18:00+00:00",
+   "pc": 2
   },
   "1172778648": {
    "sid": 1172778648,
@@ -2727,9 +2742,10 @@
    "teaser": "Ein vierjähriges Mädchen, vom Vater in der Wohnung tot aufgefunden: Der Fall löste im Februar Schockwellen in Traunstein aus – nun steht der Prozess gegen die Mutter an. Wir haben die ersten Details und mit der Verteidigerin gesprochen.",
    "category": "",
    "topic": "Region/Traunstein",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-04T04:51:00+00:00",
-   "first_seen": "2026-11-04T04:51:00+00:00"
+   "first_seen": "2026-11-04T04:51:00+00:00",
+   "pc": 2
   },
   "2440248195": {
    "sid": 2440248195,
@@ -2750,9 +2766,10 @@
    "teaser": "Jetzt auch in Bayern – nach Hackerangriffen auf Supermärkte in einigen europäischen Ländern ist nun eine Edeka-Filiale in Niederbayern betroffen. Dort stiegen die Temperaturen der Kühlanlagen auf bis zu 50 Grad an. Wie die Lage bei Edeka-Filialen in den Landkreisen Rosenheim, Traunstein, Mühldorf un",
    "category": "",
    "topic": "Region/Traunstein",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-03T16:12:00+00:00",
-   "first_seen": "2026-11-03T16:12:00+00:00"
+   "first_seen": "2026-11-03T16:12:00+00:00",
+   "pc": 2
   },
   "2915588757": {
    "sid": 2915588757,
@@ -2775,7 +2792,8 @@
    "topic": "Region/Traunstein",
    "plus": false,
    "date": "2026-11-03T12:28:20+00:00",
-   "first_seen": "2026-11-03T12:28:20+00:00"
+   "first_seen": "2026-11-03T12:28:20+00:00",
+   "pc": 2
   },
   "3210060523": {
    "sid": 3210060523,
@@ -2810,7 +2828,8 @@
    "topic": "Region/Salzburg",
    "plus": false,
    "date": "2026-11-03T06:51:32+00:00",
-   "first_seen": "2026-11-03T06:51:32+00:00"
+   "first_seen": "2026-11-03T06:51:32+00:00",
+   "pc": 2
   },
   "959166142": {
    "sid": 959166142,
@@ -2819,9 +2838,10 @@
    "teaser": "Geht dem Chiemgau das Wasser aus? Eine emotionale Debatte um das Bergener Wasser beschäftigt viele Bürger. Die Adelholzener Alpenquellen haben einen Antrag gestellt, um auch künftig Wasser entnehmen zu dürfen. Was der Leiter des Traunsteiner Wasserwirtschaftsamtes zum trockenen Sommer und den Vorwür",
    "category": "",
    "topic": "Region/Traunstein",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-03T04:30:00+00:00",
-   "first_seen": "2026-11-03T04:30:00+00:00"
+   "first_seen": "2026-11-03T04:30:00+00:00",
+   "pc": 2
   },
   "3988394067": {
    "sid": 3988394067,
@@ -2866,9 +2886,10 @@
    "teaser": "Grünes Licht für das Naturprojekt am Chiemsee: Für die geplante Erlebnishütte in der Hirschauer Bucht hat die Gemeinde Grabenstätt eine hohe Fördersumme erhalten. Doch im Gemeinderat gab es wegen der Kosten nicht nur ungeteilte Freude.",
    "category": "",
    "topic": "Region/Traunstein",
-   "plus": false,
+   "plus": true,
    "date": "2026-11-02T04:30:00+00:00",
-   "first_seen": "2026-11-02T04:30:00+00:00"
+   "first_seen": "2026-11-02T04:30:00+00:00",
+   "pc": 2
   },
   "3967647233": {
    "sid": 3967647233,
@@ -2879,7 +2900,8 @@
    "topic": "Region/Salzburg",
    "plus": false,
    "date": "2026-11-01T10:42:00+00:00",
-   "first_seen": "2026-11-01T10:42:00+00:00"
+   "first_seen": "2026-11-01T10:42:00+00:00",
+   "pc": 2
   },
   "3736184897": {
    "sid": 3736184897,
@@ -2900,9 +2922,10 @@
    "teaser": "Rege Diskussionen haben die Bürgerversammlung in Inzell geprägt: Bürgermeister Michael Lorenz hat den Bürgern zu drängenden Themen wie geplanten Windrädern, dem Sommereis oder der Verkehrssicherheit ausführlich Rede und Antwort gestanden.",
    "category": "",
    "topic": "Region/Traunstein",
-   "plus": false,
+   "plus": true,
    "date": "2026-10-31T16:20:00+00:00",
-   "first_seen": "2026-10-31T16:20:00+00:00"
+   "first_seen": "2026-10-31T16:20:00+00:00",
+   "pc": 2
   },
   "2283215115": {
    "sid": 2283215115,
@@ -2935,9 +2958,10 @@
    "teaser": "Seit Sommer 2025 hat Traunstein seine erste Fahrradstraße mit eigenen Regeln: Sie war erst heiß umstritten, jetzt wurde Bilanz gezogen. Im Stadtrat drehten sich die Diskussionen nun um weitere Fahrradstraßen und ob Autos nicht doch ausgesperrt werden könnten – OB Hümmer stieg dabei jeweils auf die B",
    "category": "",
    "topic": "Region/Traunstein",
-   "plus": false,
+   "plus": true,
    "date": "2026-10-30T16:00:00+00:00",
-   "first_seen": "2026-10-30T16:00:00+00:00"
+   "first_seen": "2026-10-30T16:00:00+00:00",
+   "pc": 2
   },
   "2958969942": {
    "sid": 2958969942,
@@ -2948,7 +2972,8 @@
    "topic": "Region/Salzburg",
    "plus": false,
    "date": "2026-10-30T11:58:54+00:00",
-   "first_seen": "2026-10-30T11:58:54+00:00"
+   "first_seen": "2026-10-30T11:58:54+00:00",
+   "pc": 2
   },
   "1007512094": {
    "sid": 1007512094,
@@ -3043,7 +3068,8 @@
    "topic": "Region/Salzburg",
    "plus": false,
    "date": "2026-10-27T16:11:00+00:00",
-   "first_seen": "2026-10-27T16:11:00+00:00"
+   "first_seen": "2026-10-27T16:11:00+00:00",
+   "pc": 2
   },
   "947285134": {
    "sid": 947285134,

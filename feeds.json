@@ -56,6 +56,13 @@
    "name": "chiemgau24",
    "url": "https://raw.githubusercontent.com/bergf3x/BGA-Feed/main/feed_chiemgau24.xml",
    "topics": [
+    "Region",
+    "Region/Achental",
+    "Region/Chiemsee",
+    "Region/Polizeimeldungen",
+    "Region/Rupertiwinkel",
+    "Region/Traunstein",
+    "Region/Trostberg",
     "Bayern",
     "Bayern/Altoetting",
     "Bayern/Berchtesgadener Land",
@@ -67,8 +74,7 @@
     "Nachrichten/Deutschland",
     "Nachrichten/Stars",
     "Nachrichten/Welt",
-    "Nachrichten/Wirtschaft",
-    "Chiemgau"
+    "Nachrichten/Wirtschaft"
    ]
   },
   {
