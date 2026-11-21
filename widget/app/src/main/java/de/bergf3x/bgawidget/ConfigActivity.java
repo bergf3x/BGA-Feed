@@ -42,7 +42,7 @@ public class ConfigActivity extends Activity {
     private int theme;
     private boolean wxOn;
     private boolean warnOn;
-    private int bgMode, bgC1, bgC2, bgTint;
+    private int bgMode, bgC1, bgC2, bgTint, bgSrc;
     private boolean bgRound;
     private LinearLayout bgBox;
     private boolean settingHex = false;
@@ -97,6 +97,7 @@ public class ConfigActivity extends Activity {
         bgC1 = BgStyle.c1(this, widgetId);
         bgC2 = BgStyle.c2(this, widgetId);
         bgTint = BgStyle.tint(this, widgetId);
+        bgSrc = BgStyle.src(this, widgetId);
         bgRound = BgStyle.sysCorner(this, widgetId);
         kwNotifyOn = Prefs.kwNotify(this);
         selected.addAll(Prefs.feeds(this, widgetId));
@@ -354,14 +355,26 @@ public class ConfigActivity extends Activity {
                 refreshPreview();
             }));
         } else if (bgMode == BgStyle.DYNAMIC) {
+            b.label(bgBox, "Farbquelle");
+            b.segment(bgBox, new String[]{"Systempalette", "Hintergrundbild"}, bgSrc, i -> {
+                bgSrc = i;
+                buildBgBox();
+                refreshPreview();
+            });
+            final int[] det = bgSrc == 1 ? BgStyle.wallpaper(this) : BgStyle.palette(this, lightNow());
+            b.label(bgBox, "Erkannte Farben");
+            LinearLayout strip = new LinearLayout(this);
+            strip.setOrientation(LinearLayout.HORIZONTAL);
+            for (int c : det) strip.addView(swatch(c, false, b.px(34), x -> { }));
+            bgBox.addView(strip);
             final TextView lt = b.label(bgBox, "Tönung: " + bgTint + " %");
             bgBox.addView(seek(Math.max(1, bgTint), p -> {
                 bgTint = p;
                 lt.setText("Tönung: " + p + " %");
                 refreshPreview();
             }));
-            if (BgStyle.wallpaper(this).length == 0) {
-                b.label(bgBox, "Das System liefert hier keine Hintergrundfarben, es bleibt beim Standard.");
+            if (det.length == 0) {
+                b.label(bgBox, "Das System liefert hier keine Farben, es bleibt beim Standard.");
             }
             b.toggle(bgBox, "Ecken wie bei Systemwidgets", bgRound, on -> bgRound = on);
         }
@@ -459,7 +472,7 @@ public class ConfigActivity extends Activity {
         Prefs.setExtras(this, widgetId, plus, muted, density);
         Prefs.setLook(this, widgetId, font, size, theme, wxOn, warnOn);
         Prefs.setColors(this, widgetId, Prefs.colorSub(this, widgetId), Prefs.colorWx(this, widgetId), compact, notify);
-        BgStyle.set(this, widgetId, bgMode, bgC1, bgC2, bgTint, bgRound);
+        BgStyle.set(this, widgetId, bgMode, bgC1, bgC2, bgTint, bgRound, bgSrc);
         Prefs.setKeywords(this, etKw != null ? etKw.getText().toString() : kwText, kwNotifyOn);
         for (java.util.Map.Entry<String, Boolean> e : plusF.entrySet()) Prefs.setPlusFeed(this, widgetId, e.getKey(), e.getValue());
         WidgetProvider.updateAny(this, widgetId);
@@ -538,7 +551,7 @@ public class ConfigActivity extends Activity {
         if (prevFill == null || lblBg == null) return;
         lblBg.setText("Hintergrund-Deckkraft: " + bgPct + " %");
         lblTx.setText("Schrift-Deckkraft: " + txPct + " %");
-        int[] fc = BgStyle.colors(this, bgMode, bgC1, bgC2, bgTint, lightNow());
+        int[] fc = BgStyle.colors(this, bgMode, bgC1, bgC2, bgTint, lightNow(), bgSrc);
         int a = Prefs.alpha(bgPct);
         int[] cs = new int[Math.max(2, fc.length)];
         for (int i = 0; i < cs.length; i++) cs[i] = (a << 24) | (fc[Math.min(i, fc.length - 1)] & 0xFFFFFF);

@@ -30,18 +30,23 @@ final class BgStyle {
         return Math.max(0, Math.min(100, Prefs.sp(c).getInt("bgt_" + id, 55)));
     }
 
+    /** Farbquelle bei "Dynamisch": 0 = Systempalette (Material You), 1 = Hintergrundbild. */
+    static int src(Context c, int id) {
+        return Prefs.sp(c).getInt("bgs_" + id, 0) == 1 ? 1 : 0;
+    }
+
     static boolean sysCorner(Context c, int id) {
         return Prefs.sp(c).getBoolean("bgr_" + id, true);
     }
 
-    static void set(Context c, int id, int mode, int c1, int c2, int tint, boolean sysCorner) {
-        Prefs.sp(c).edit().putInt("bgm_" + id, mode).putInt("bgc1_" + id, c1).putInt("bgc2_" + id, c2)
+    static void set(Context c, int id, int mode, int c1, int c2, int tint, boolean sysCorner, int src) {
+        Prefs.sp(c).edit().putInt("bgs_" + id, src).putInt("bgm_" + id, mode).putInt("bgc1_" + id, c1).putInt("bgc2_" + id, c2)
                 .putInt("bgt_" + id, tint).putBoolean("bgr_" + id, sysCorner).apply();
     }
 
     static void remove(Context c, int id) {
         Prefs.sp(c).edit().remove("bgm_" + id).remove("bgc1_" + id).remove("bgc2_" + id)
-                .remove("bgt_" + id).remove("bgr_" + id).apply();
+                .remove("bgt_" + id).remove("bgr_" + id).remove("bgs_" + id).apply();
     }
 
     static int mix(int base, int color, int pct) {
@@ -72,14 +77,30 @@ final class BgStyle {
 
     /** Fuellfarben von links nach rechts (ohne Alpha); eine Farbe = einfarbig. */
     static int[] colors(Context c, int id, boolean light) {
-        return colors(c, mode(c, id), c1(c, id), c2(c, id), tint(c, id), light);
+        return colors(c, mode(c, id), c1(c, id), c2(c, id), tint(c, id), light, src(c, id));
     }
 
-    static int[] colors(Context c, int mode, int c1, int c2, int tint, boolean light) {
+    /** Farben der Systempalette (Material You, ab Android 12) von links nach rechts; leer, wenn nicht verfuegbar. */
+    static int[] palette(Context c, boolean light) {
+        if (Build.VERSION.SDK_INT < 31) return new int[0];
+        try {
+            android.content.res.Resources r = c.getResources();
+            int[] ids = light
+                    ? new int[]{android.R.color.system_neutral1_50, android.R.color.system_accent2_100, android.R.color.system_accent1_200}
+                    : new int[]{android.R.color.system_neutral1_900, android.R.color.system_accent2_800, android.R.color.system_accent1_700};
+            int[] out = new int[ids.length];
+            for (int i = 0; i < ids.length; i++) out[i] = r.getColor(ids[i], c.getTheme()) & 0xFFFFFF;
+            return out;
+        } catch (Throwable t) {
+            return new int[0];
+        }
+    }
+
+    static int[] colors(Context c, int mode, int c1, int c2, int tint, boolean light, int src) {
         int base = light ? LIGHT_BASE : DARK_BASE;
         if (mode == FIXED) return c2 < 0 ? new int[]{c1} : new int[]{c1, c2 & 0xFFFFFF};
         if (mode == DYNAMIC) {
-            int[] w = wallpaper(c);
+            int[] w = src == 1 ? wallpaper(c) : palette(c, light);
             if (w.length > 0) {
                 int[] out = new int[w.length];
                 for (int i = 0; i < w.length; i++) out[i] = mix(base, w[i], tint);

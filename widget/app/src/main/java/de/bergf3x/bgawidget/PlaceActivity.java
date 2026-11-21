@@ -32,12 +32,11 @@ public class PlaceActivity extends Activity {
             b.row(body, Weather.PLACES[idx], idx == cur, () -> {
                 Prefs.setPlace(this, id, place);
                 WidgetProvider.refreshHeader(this, id);
-                // ListService holt beim Neuladen auch das Wetter fuer den neuen Ort
-                AppWidgetManager.getInstance(this).notifyAppWidgetViewDataChanged(id, R.id.list);
-                android.appwidget.AppWidgetProviderInfo info = AppWidgetManager.getInstance(this).getAppWidgetInfo(id);
-                if (info != null && WeatherWidgetProvider.class.getName().equals(info.provider.getClassName())) {
-                    WeatherWidgetProvider.refresh(this, id);
-                }
+                // nur das Wetter des neuen Ortes holen (ohne die Nachrichten) und gleich danach neu zeichnen
+                final android.content.Context app = getApplicationContext();
+                new Thread(() -> {
+                    if (Weather.refreshIfStale(app, place)) WidgetProvider.refreshHeader(app, id);
+                }).start();
             }, true);
         }
         b.space(6);
