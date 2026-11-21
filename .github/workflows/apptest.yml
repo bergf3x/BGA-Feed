@@ -1,6 +1,8 @@
 name: apptest
 on:
   workflow_dispatch:
+permissions:
+  contents: write
 jobs:
   quellen:
     runs-on: ubuntu-latest
@@ -53,8 +55,11 @@ jobs:
           disable-animations: true
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           script: bash tools/apptest.sh
-      - uses: actions/upload-artifact@v4
+      - name: Ergebnisse in Zweig apptest-results ablegen
         if: always()
-        with:
-          name: apptest
-          path: out/
+        run: |
+          cd out
+          git init -q -b apptest-results
+          git config user.name "apptest"; git config user.email "apptest@users.noreply.github.com"
+          git add -A && git commit -qm "Alltagstest ${{ github.run_id }}"
+          git push -q -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" apptest-results

@@ -22,6 +22,8 @@ NODE = re.compile(r'<node [^>]*?text="([^"]*)"[^>]*?content-desc="([^"]*)"[^>]*?
 def nodes():
     for m in NODE.finditer(dump()):
         t, d, x1, y1, x2, y2 = m.groups()
+        import html as _h
+        t, d = _h.unescape(t), _h.unescape(d)
         yield t, d, (int(x1) + int(x2)) // 2, (int(y1) + int(y2)) // 2
 
 

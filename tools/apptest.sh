@@ -27,6 +27,7 @@ log "Warte 75 s auf ersten Abruf aller Quellen ..."
 for i in $(seq 1 15); do sleep 5; if $UI has "Lade Nachrichten" | grep -q gefunden; then :; else break; fi; done
 sleep 20; shot 02_nach_abruf
 log "Speicher nach Abruf: $(appmem)"
+adb shell dumpsys meminfo $PKG | grep -E "Java Heap|Native Heap|Graphics|Views:|Activities:" | tr -s ' ' | tee -a $R
 
 log "== Quellen einschalten (alle) über Einstellungen -> Quellen & Themen =="
 $UI tap "Einstellungen" | tee -a $R; sleep 2; shot 03_einstellungen
@@ -36,8 +37,10 @@ for n in "BGLand24" "chiemgau24" "ORF Salzburg" "Traunsteiner Tagblatt" "Landrat
   $UI tap "$n" | tee -a $R; sleep 1
 done
 shot 05_quellen_an
-adb shell input keyevent KEYCODE_BACK; sleep 1; adb shell input keyevent KEYCODE_BACK; sleep 1
-adb shell input keyevent KEYCODE_BACK; sleep 1
+$UI texts > $OUT/quellen_texts_nach.txt
+$UI tap "Fertig" | tee -a $R; sleep 1
+$UI tap "Speichern" | tee -a $R; sleep 2
+adb shell run-as $PKG cat shared_prefs/bga_widget.xml | grep -A12 'name="fd_' | head -14 | tee -a $R
 adb shell am start -n $ACT >/dev/null; sleep 2
 
 log "== Aktualisieren (alle Quellen direkt) =="
@@ -103,6 +106,8 @@ adb shell monkey -p $PKG --throttle 120 --pct-syskeys 0 --pct-appswitch 5 -s 424
 grep -E "Events injected|CRASH|ANR|Monkey aborted" $OUT/monkey.txt | tee -a $R
 sleep 3
 log "Speicher nach Monkey: $(appmem)"
+adb shell dumpsys meminfo $PKG > $OUT/meminfo_nach_monkey.txt
+grep -E "Java Heap|Native Heap|Graphics|Views:|Activities:|ViewRootImpl|Bitmaps" $OUT/meminfo_nach_monkey.txt | tr -s ' ' | tee -a $R
 
 log "== Kaltstart mit vorhandenen Daten (3x) =="
 for i in 1 2 3; do
