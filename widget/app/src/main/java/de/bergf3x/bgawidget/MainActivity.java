@@ -532,9 +532,13 @@ public class MainActivity extends Activity {
         mini.setVisibility(View.INVISIBLE);
         card.addView(mini, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER_VERTICAL));
         // Halter mit fester Hoehe in der Liste; die Karte darin schrumpft synchron zum Scrollen und bleibt oben stehen
+        // deckender Untergrund: Karte und Foto sind leicht durchscheinend, die Liste darf beim Zusammenschieben nicht durchschimmern
+        View under = new View(this);
+        under.setBackground(windowBg());
+        card.addView(under, 0, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         FrameLayout box = new FrameLayout(this);
         box.setClipChildren(false);
-        box.setTranslationZ(px(3));
+        box.setTranslationZ(px(6));
         box.addView(card, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.TOP));
         page.addView(box, lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 0));
         wxBox = box;
