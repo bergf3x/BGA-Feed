@@ -57,6 +57,20 @@ log "== Direktabruf-Protokoll der App =="
 adb shell run-as $PKG cat shared_prefs/direct.xml | sed 's/&#10;/\n/g;s/&quot;/"/g' | grep -vE "state_|^<" | tail -40 | tee -a $R
 adb shell run-as $PKG ls -l files/feeds | tee -a $R
 
+log "== App-Daten BGLand24: Region Berchtesgaden/Rupertiwinkel (Datum | Abo | Titelanfang) =="
+adb shell run-as $PKG cat files/feeds/bgland24.xml > $OUT/app_bgland24.xml
+python3 - <<'PY' | tee -a $R
+import re
+x=open("out/app_bgland24.xml",encoding="utf-8").read()
+items=re.findall(r"<item>(.*?)</item>",x,re.S)
+print("Items gesamt", len(items), "davon Abo", sum("🔒" in i for i in items))
+for it in items:
+    tp=re.search(r"<topic>(.*?)</topic>",it).group(1)
+    if tp in ("Region/Berchtesgaden","Region/Rupertiwinkel"):
+        t=re.search(r"<title>(.*?)</title>",it).group(1)
+        print(tp[7:10], re.search(r"<pubDate>(.*?)</pubDate>",it).group(1)[5:22], "ABO" if "🔒" in t else "   ", t.replace("🔒 ","")[:40])
+PY
+adb shell run-as $PKG cat shared_prefs/bga_widget.xml | grep -E "plus|tp_" | tee -a $R
 log "== Scroll-Flüssigkeit (Nachrichtenliste) =="
 adb shell dumpsys gfxinfo $PKG reset >/dev/null
 for i in $(seq 1 8); do adb shell input swipe 540 1900 540 700 250; sleep 0.4; done
