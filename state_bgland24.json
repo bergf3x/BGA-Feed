@@ -493,7 +493,8 @@
    "topic": "Region/Rupertiwinkel",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:02:47+00:00"
+   "first_seen": "2026-11-21T01:02:47+00:00",
+   "pc": true
   },
   "2869682255": {
    "sid": 2869682255,
@@ -504,7 +505,8 @@
    "topic": "Nachrichten/Welt",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:02:47+00:00"
+   "first_seen": "2026-11-21T01:02:47+00:00",
+   "pc": true
   },
   "4100726518": {
    "sid": 4100726518,
@@ -515,7 +517,8 @@
    "topic": "Region/Rupertiwinkel",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:02:47+00:00"
+   "first_seen": "2026-11-21T01:02:47+00:00",
+   "pc": true
   },
   "3861608990": {
    "sid": 3861608990,
@@ -526,7 +529,8 @@
    "topic": "Nachrichten/Deutschland",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:02:47+00:00"
+   "first_seen": "2026-11-21T01:02:47+00:00",
+   "pc": true
   },
   "247774297": {
    "sid": 247774297,
@@ -537,7 +541,8 @@
    "topic": "Bayern/Rosenheim",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:02:47+00:00"
+   "first_seen": "2026-11-21T01:02:47+00:00",
+   "pc": true
   },
   "357173783": {
    "sid": 357173783,
@@ -548,7 +553,8 @@
    "topic": "Sport",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:02:47+00:00"
+   "first_seen": "2026-11-21T01:02:47+00:00",
+   "pc": true
   },
   "2792976479": {
    "sid": 2792976479,
@@ -559,7 +565,8 @@
    "topic": "Sport",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:02:47+00:00"
+   "first_seen": "2026-11-21T01:02:47+00:00",
+   "pc": true
   },
   "2768877257": {
    "sid": 2768877257,
@@ -570,7 +577,8 @@
    "topic": "Region/Traunstein",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:02:47+00:00"
+   "first_seen": "2026-11-21T01:02:47+00:00",
+   "pc": true
   },
   "4073011318": {
    "sid": 4073011318,
@@ -581,7 +589,8 @@
    "topic": "Region/Berchtesgaden",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:02:47+00:00"
+   "first_seen": "2026-11-21T01:02:47+00:00",
+   "pc": true
   },
   "2747862570": {
    "sid": 2747862570,
@@ -592,7 +601,8 @@
    "topic": "Region/Berchtesgaden",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:02:47+00:00"
+   "first_seen": "2026-11-21T01:02:47+00:00",
+   "pc": true
   },
   "2202387239": {
    "sid": 2202387239,
@@ -603,7 +613,8 @@
    "topic": "Sport/Wintersport",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:02:47+00:00"
+   "first_seen": "2026-11-21T01:02:47+00:00",
+   "pc": true
   },
   "2276270801": {
    "sid": 2276270801,
@@ -614,7 +625,8 @@
    "topic": "Sport/Wintersport",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:02:47+00:00"
+   "first_seen": "2026-11-21T01:02:47+00:00",
+   "pc": true
   },
   "1786586750": {
    "sid": 1786586750,
@@ -625,7 +637,8 @@
    "topic": "Sport/Wintersport",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:02:47+00:00"
+   "first_seen": "2026-11-21T01:02:47+00:00",
+   "pc": true
   },
   "3913733406": {
    "sid": 3913733406,
@@ -636,7 +649,8 @@
    "topic": "Sport/Wintersport",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:02:47+00:00"
+   "first_seen": "2026-11-21T01:02:47+00:00",
+   "pc": true
   },
   "848144652": {
    "sid": 848144652,
@@ -647,7 +661,8 @@
    "topic": "Bayern/Muehldorf",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:02:47+00:00"
+   "first_seen": "2026-11-21T01:02:47+00:00",
+   "pc": true
   },
   "3158405121": {
    "sid": 3158405121,
@@ -658,7 +673,8 @@
    "topic": "Bayern/Rosenheim",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:02:47+00:00"
+   "first_seen": "2026-11-21T01:02:47+00:00",
+   "pc": true
   },
   "4084488612": {
    "sid": 4084488612,
@@ -669,7 +685,8 @@
    "topic": "Bayern/Rosenheim",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:02:47+00:00"
+   "first_seen": "2026-11-21T01:02:47+00:00",
+   "pc": true
   },
   "2704230439": {
    "sid": 2704230439,
@@ -680,7 +697,8 @@
    "topic": "Bayern/Rosenheim",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:02:47+00:00"
+   "first_seen": "2026-11-21T01:02:47+00:00",
+   "pc": true
   },
   "1816736295": {
    "sid": 1816736295,
@@ -689,9 +707,10 @@
    "teaser": "",
    "category": "",
    "topic": "Region",
-   "plus": false,
+   "plus": true,
    "date": "",
-   "first_seen": "2026-11-21T01:02:47+00:00"
+   "first_seen": "2026-11-21T01:02:47+00:00",
+   "pc": true
   },
   "1489434860": {
    "sid": 1489434860,
@@ -702,7 +721,8 @@
    "topic": "Nachrichten/Leben",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:02:47+00:00"
+   "first_seen": "2026-11-21T01:02:47+00:00",
+   "pc": true
   },
   "609367740": {
    "sid": 609367740,
@@ -713,7 +733,8 @@
    "topic": "Nachrichten/Politik",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:02:47+00:00"
+   "first_seen": "2026-11-21T01:02:47+00:00",
+   "pc": true
   },
   "3811091599": {
    "sid": 3811091599,
@@ -724,7 +745,8 @@
    "topic": "Nachrichten/Politik",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:02:47+00:00"
+   "first_seen": "2026-11-21T01:02:47+00:00",
+   "pc": true
   },
   "403138886": {
    "sid": 403138886,
@@ -735,7 +757,8 @@
    "topic": "Nachrichten/Politik",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:02:47+00:00"
+   "first_seen": "2026-11-21T01:02:47+00:00",
+   "pc": true
   },
   "1016652123": {
    "sid": 1016652123,
@@ -746,7 +769,8 @@
    "topic": "Sport",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:02:47+00:00"
+   "first_seen": "2026-11-21T01:02:47+00:00",
+   "pc": true
   },
   "4106760021": {
    "sid": 4106760021,
@@ -757,7 +781,8 @@
    "topic": "Bayern",
    "plus": false,
    "date": "",
-   "first_seen": "2026-11-21T01:02:47+00:00"
+   "first_seen": "2026-11-21T01:02:47+00:00",
+   "pc": true
   },
   "3885596448": {
    "sid": 3885596448,
