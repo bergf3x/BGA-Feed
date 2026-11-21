@@ -168,7 +168,7 @@ public class ColorsActivity extends Activity {
             this.c1 = c1;
             this.c2 = c2;
             b.label(body, title);
-            h1 = new LinearLayout(ConfigActivity.this);
+            h1 = new LinearLayout(ColorsActivity.this);
             h1.setOrientation(LinearLayout.VERTICAL);
             body.addView(h1);
             e1 = hex(body, v -> {
@@ -176,7 +176,7 @@ public class ColorsActivity extends Activity {
                 paint();
             });
             b.label(body, "Verlauf bis (optional, nur mit eigener Startfarbe)");
-            h2 = new LinearLayout(ConfigActivity.this);
+            h2 = new LinearLayout(ColorsActivity.this);
             h2.setOrientation(LinearLayout.VERTICAL);
             body.addView(h2);
             e2 = hex(body, v -> {
@@ -190,7 +190,7 @@ public class ColorsActivity extends Activity {
         }
 
         private EditText hex(LinearLayout body, IntCb cb) {
-            EditText e = new EditText(ConfigActivity.this);
+            EditText e = new EditText(ColorsActivity.this);
             e.setSingleLine(true);
             e.setHint("Hex, z. B. 4DA3FF");
             e.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
