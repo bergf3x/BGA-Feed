@@ -5,6 +5,8 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.05",
+                    "~ App flackert beim Tippen und Bestätigen nicht mehr: Seite wird ohne Neuaufbau des Fensters aktualisiert, Scrollposition bleibt"},
             {"1.04",
                     "+ Quelle in Klammern unter jeder Nachricht (App, Widget, Vorschau, Gemerkt)",
                     "~ Gemerkte Artikel als getrennte Karten mit fetter Überschrift"},

@@ -73,7 +73,16 @@ public class MainActivity extends Activity {
     }
 
     private void restore(final int y) {
-        if (y > 0 && scroll != null) scroll.post(() -> scroll.scrollTo(0, y));
+        if (scroll == null) return;
+        // vor dem naechsten Zeichnen setzen, damit die Liste nicht kurz oben aufblitzt
+        scroll.getViewTreeObserver().addOnPreDrawListener(new android.view.ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                scroll.getViewTreeObserver().removeOnPreDrawListener(this);
+                scroll.scrollTo(0, y);
+                return true;
+            }
+        });
     }
 
     // ------------------------------------------------------------------ Abruf
@@ -186,14 +195,21 @@ public class MainActivity extends Activity {
     private void build() {
         loadLook();
         applyWindow();
-        scroll = new ScrollView(this);
-        scroll.setFillViewport(true);
-        scroll.setVerticalScrollBarEnabled(false);
-        page = new LinearLayout(this);
-        page.setOrientation(LinearLayout.VERTICAL);
-        page.setPadding(px(14), px(8), px(14), px(28));
-        scroll.addView(page, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        setContentView(scroll);
+        // dieselbe Seite wiederverwenden: kein neues Fenster-Inhalt, kein Aufblitzen, Scrollposition bleibt
+        int keepY = 0;
+        if (scroll == null) {
+            scroll = new ScrollView(this);
+            scroll.setFillViewport(true);
+            scroll.setVerticalScrollBarEnabled(false);
+            page = new LinearLayout(this);
+            page.setOrientation(LinearLayout.VERTICAL);
+            page.setPadding(px(14), px(8), px(14), px(28));
+            scroll.addView(page, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            setContentView(scroll);
+        } else {
+            keepY = scroll.getScrollY();
+            page.removeAllViews();
+        }
 
         header();
         if (widgetCount() == 0) addWidgetCard(true);
@@ -202,6 +218,7 @@ public class MainActivity extends Activity {
         news();
         addWidgetCard(false);
         footer();
+        restore(keepY);
     }
 
     // ------------------------------------------------------------------ Bausteine
