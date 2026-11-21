@@ -16,14 +16,14 @@ final class GlassBg {
 
     private GlassBg() {}
 
-    static synchronized Bitmap get(int wPx, int hPx, int bgPct, boolean light, float density) {
+    static synchronized Bitmap get(int wPx, int hPx, int bgPct, boolean light, float density, int[] colors, float rDp) {
         if (wPx < 40 || hPx < 40) return null;
-        String key = wPx + "x" + hPx + "_" + bgPct + "_" + light;
+        String key = wPx + "x" + hPx + "_" + bgPct + "_" + light + "_" + java.util.Arrays.toString(colors) + "_" + rDp;
         Bitmap b = CACHE.get(key);
         if (b != null) return b;
         if (CACHE.size() > 4) CACHE.clear();
         try {
-            b = render(wPx, hPx, bgPct, light, density);
+            b = render(wPx, hPx, bgPct, light, density, colors, rDp);
         } catch (Throwable t) {
             return null;
         }
@@ -31,15 +31,20 @@ final class GlassBg {
         return b;
     }
 
-    private static Bitmap render(int w, int h, int bgPct, boolean light, float density) {
+    private static Bitmap render(int w, int h, int bgPct, boolean light, float density, int[] colors, float rDp) {
         Bitmap bmp = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         Canvas c = new Canvas(bmp);
-        float r = 28 * density;
+        float r = rDp * density;
         float stroke = Math.max(1.2f, 1.2f * density);
         RectF rect = new RectF(stroke / 2, stroke / 2, w - stroke / 2, h - stroke / 2);
 
         Paint fill = new Paint(Paint.ANTI_ALIAS_FLAG);
-        fill.setColor(light ? 0xFFEEF1F6 : 0xFF1E1E26);
+        fill.setColor(0xFF000000 | colors[0]);
+        if (colors.length > 1) {
+            int[] cs = new int[colors.length];
+            for (int i = 0; i < cs.length; i++) cs[i] = 0xFF000000 | colors[i];
+            fill.setShader(new LinearGradient(0, 0, w, 0, cs, null, Shader.TileMode.CLAMP));
+        }
         fill.setAlpha(Prefs.alpha(bgPct));
         c.drawRoundRect(rect, r, r, fill);
 

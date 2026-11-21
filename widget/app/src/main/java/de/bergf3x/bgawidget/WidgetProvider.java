@@ -140,8 +140,9 @@ public class WidgetProvider extends AppWidgetProvider {
         int hDp = o.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT, 0);
         int w = Math.round(wDp * d * sc), h = Math.round(hDp * d * sc);
         boolean needDark = theme != 1, needLight = theme != 0;
-        android.graphics.Bitmap bd = needDark ? GlassBg.get(w, h, bg, false, d * sc) : null;
-        android.graphics.Bitmap bl = needLight ? GlassBg.get(w, h, bg, true, d * sc) : null;
+        float rDp = BgStyle.radiusDp(ctx, id);
+        android.graphics.Bitmap bd = needDark ? GlassBg.get(w, h, bg, false, d * sc, BgStyle.colors(ctx, id, false), rDp) : null;
+        android.graphics.Bitmap bl = needLight ? GlassBg.get(w, h, bg, true, d * sc, BgStyle.colors(ctx, id, true), rDp) : null;
         if (theme != 2) {
             rv.setFloat(R.id.bg_fill, "setAlpha", theme == 1 ? 0f : 1f);
             rv.setFloat(R.id.bg_fill_l, "setAlpha", theme == 1 ? 1f : 0f);

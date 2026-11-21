@@ -13,7 +13,7 @@ final class Prefs {
 
     private Prefs() {}
 
-    private static SharedPreferences sp(Context c) {
+    static SharedPreferences sp(Context c) {
         return c.getSharedPreferences("bga_widget", Context.MODE_PRIVATE);
     }
 
@@ -145,6 +145,7 @@ final class Prefs {
                 .remove("plus_" + id).remove("mute_" + id).remove("dens_" + id)
                 .remove("tcs2_" + id).remove("tcw2_" + id).remove("font_" + id).remove("size_" + id).remove("theme_" + id)
                 .remove("wx_" + id).remove("warn_" + id).remove("tcs_" + id).remove("tcw_" + id).remove("cmp_" + id).apply();
+        BgStyle.remove(c, id);
     }
 
     /** Bezahlartikel einer Quelle anzeigen; ohne eigene Wahl gilt der fruehere gemeinsame Schalter. */

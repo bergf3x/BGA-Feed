@@ -66,7 +66,9 @@ final class Bubble {
         box.setOrientation(LinearLayout.VERTICAL);
         int pad = px(padDp);
         box.setPadding(pad, pad, pad, pad);
-        box.setBackground(new Glass(light, bgPct, d));
+        int[] fillColors = wid != 0 ? BgStyle.colors(act, wid, light) : new int[]{light ? BgStyle.LIGHT_BASE : BgStyle.DARK_BASE};
+        float rDp = wid != 0 ? BgStyle.radiusDp(act, wid) : 28f;
+        box.setBackground(new Glass(light, bgPct, d, fillColors, rDp));
         box.setClickable(true);
 
         int screenW = act.getResources().getDisplayMetrics().widthPixels;
@@ -99,12 +101,15 @@ final class Bubble {
         private final android.graphics.Paint edge = new android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG);
         private final android.graphics.RectF rect = new android.graphics.RectF();
 
-        Glass(boolean light, int bgPct, float density) {
+        private final int[] colors;
+
+        Glass(boolean light, int bgPct, float density, int[] colors, float rDp) {
             this.light = light;
             this.bgPct = bgPct;
-            r = 28 * density;
+            this.colors = colors;
+            r = rDp * density;
             stroke = Math.max(1.2f, 1.2f * density);
-            fill.setColor(light ? 0xFFEEF1F6 : 0xFF1E1E26);
+            fill.setColor(0xFF000000 | colors[0]);
             fill.setAlpha(Prefs.alpha(bgPct));
             edge.setStyle(android.graphics.Paint.Style.STROKE);
             edge.setStrokeWidth(stroke);
@@ -113,6 +118,12 @@ final class Bubble {
         @Override
         protected void onBoundsChange(android.graphics.Rect b) {
             float w = b.width(), h = b.height();
+            if (colors.length > 1) {
+                int[] cs = new int[colors.length];
+                for (int i = 0; i < cs.length; i++) cs[i] = 0xFF000000 | colors[i];
+                fill.setShader(new android.graphics.LinearGradient(b.left, 0, b.right, 0, cs, null,
+                        android.graphics.Shader.TileMode.CLAMP));
+            }
             rect.set(b.left + stroke / 2, b.top + stroke / 2, b.right - stroke / 2, b.bottom - stroke / 2);
             int top = light ? 0x70FFFFFF : 0x2EFFFFFF;
             gloss.setShader(new android.graphics.LinearGradient(b.left, b.top, b.left + w * .75f, b.top + h * .45f,

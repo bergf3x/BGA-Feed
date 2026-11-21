@@ -42,6 +42,9 @@ public class ConfigActivity extends Activity {
     private int theme;
     private boolean wxOn;
     private boolean warnOn;
+    private int bgMode, bgC1, bgC2, bgTint;
+    private boolean bgRound;
+    private LinearLayout bgBox;
     private boolean settingHex = false;
     private final Set<String> selected = new HashSet<>();
     private final Set<String> muted = new HashSet<>();
@@ -96,6 +99,11 @@ public class ConfigActivity extends Activity {
         colWx = Prefs.colorWx(this, widgetId);
         compact = Prefs.compact(this, widgetId);
         notify = Prefs.warnNotify(this);
+        bgMode = BgStyle.mode(this, widgetId);
+        bgC1 = BgStyle.c1(this, widgetId);
+        bgC2 = BgStyle.c2(this, widgetId);
+        bgTint = BgStyle.tint(this, widgetId);
+        bgRound = BgStyle.sysCorner(this, widgetId);
         kwNotifyOn = Prefs.kwNotify(this);
         selected.addAll(Prefs.feeds(this, widgetId));
         muted.addAll(Prefs.muted(this, widgetId));
@@ -248,6 +256,16 @@ public class ConfigActivity extends Activity {
             buildSwatches();
             refreshPreview();
         });
+        b.label(body, "Hintergrund");
+        b.segment(body, new String[]{"Standard", "Farbe", "Dynamisch"}, bgMode, i -> {
+            bgMode = i;
+            buildBgBox();
+            refreshPreview();
+        });
+        bgBox = new LinearLayout(this);
+        bgBox.setOrientation(LinearLayout.VERTICAL);
+        body.addView(bgBox);
+        buildBgBox();
         lblBg = b.label(body, "");
         body.addView(seek(bgPct, p -> {
             bgPct = p;
@@ -315,6 +333,72 @@ public class ConfigActivity extends Activity {
         b.pillKeep("Fertig", true, this::showMain);
     }
 
+    private static final int[] BG_COLORS = {
+            0x3B6EA5, 0x1F8A70, 0x8E5BA8, 0xC8553D, 0xD9A441, 0x2B2D42, 0x5C677D, 0xFFFFFF, 0x000000
+    };
+
+    private void buildBgBox() {
+        if (bgBox == null) return;
+        bgBox.removeAllViews();
+        if (bgMode == BgStyle.FIXED) {
+            b.label(bgBox, "Farbe");
+            bgBox.addView(swatches(bgC1, false, c -> {
+                bgC1 = c;
+                buildBgBox();
+                refreshPreview();
+            }));
+            b.label(bgBox, "Zweite Farbe für Verlauf (links → rechts)");
+            bgBox.addView(swatches(bgC2, true, c -> {
+                bgC2 = c;
+                buildBgBox();
+                refreshPreview();
+            }));
+        } else if (bgMode == BgStyle.DYNAMIC) {
+            final TextView lt = b.label(bgBox, "Tönung: " + bgTint + " %");
+            bgBox.addView(seek(Math.max(1, bgTint), p -> {
+                bgTint = p;
+                lt.setText("Tönung: " + p + " %");
+                refreshPreview();
+            }));
+            if (BgStyle.wallpaper(this).length == 0) {
+                b.label(bgBox, "Das System liefert hier keine Hintergrundfarben, es bleibt beim Standard.");
+            }
+            b.toggle(bgBox, "Ecken wie bei Systemwidgets", bgRound, on -> bgRound = on);
+        }
+    }
+
+    private interface RgbCb {
+        void on(int rgb);
+    }
+
+    /** Reihe runder Farbfelder; allowNone = erstes Feld "aus" (-1). */
+    private View swatches(int current, boolean allowNone, RgbCb cb) {
+        android.widget.HorizontalScrollView sv = new android.widget.HorizontalScrollView(this);
+        sv.setHorizontalScrollBarEnabled(false);
+        LinearLayout row = new LinearLayout(this);
+        row.setOrientation(LinearLayout.HORIZONTAL);
+        row.setGravity(Gravity.CENTER_VERTICAL);
+        int size = b.px(34);
+        if (allowNone) row.addView(swatch(-1, current == -1, size, cb));
+        for (int c : BG_COLORS) row.addView(swatch(c, c == (current & 0xFFFFFF) && current != -1, size, cb));
+        sv.addView(row);
+        return sv;
+    }
+
+    private View swatch(int c, boolean on, int size, RgbCb cb) {
+        View v = new View(this);
+        GradientDrawable g = new GradientDrawable();
+        g.setShape(GradientDrawable.OVAL);
+        g.setColor(c < 0 ? 0x00000000 : 0xFF000000 | c);
+        g.setStroke(b.px(on ? 3 : 1), on ? b.title : b.soft);
+        v.setBackground(g);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(size, size);
+        lp.setMargins(0, 0, b.px(7), 0);
+        v.setLayoutParams(lp);
+        v.setOnClickListener(x -> cb.on(c));
+        return v;
+    }
+
     /** Live-Vorschau auf einem bunten Hintergrund, damit man die Transparenz sieht. */
     private void buildPreview() {
         FrameLayout backdrop = new FrameLayout(this);
@@ -375,6 +459,7 @@ public class ConfigActivity extends Activity {
         Prefs.setExtras(this, widgetId, plus, muted, density);
         Prefs.setLook(this, widgetId, font, size, theme, wxOn, warnOn);
         Prefs.setColors(this, widgetId, Prefs.colorSub(this, widgetId), Prefs.colorWx(this, widgetId), compact, notify);
+        BgStyle.set(this, widgetId, bgMode, bgC1, bgC2, bgTint, bgRound);
         Prefs.setKeywords(this, etKw != null ? etKw.getText().toString() : kwText, kwNotifyOn);
         for (java.util.Map.Entry<String, Boolean> e : plusF.entrySet()) Prefs.setPlusFeed(this, widgetId, e.getKey(), e.getValue());
         WidgetProvider.updateAny(this, widgetId);
@@ -458,7 +543,12 @@ public class ConfigActivity extends Activity {
         if (prevFill == null || lblBg == null) return;
         lblBg.setText("Hintergrund-Deckkraft: " + bgPct + " %");
         lblTx.setText("Schrift-Deckkraft: " + txPct + " %");
-        prevFill.setColor(Prefs.argb(lightNow() ? 0xEEF1F6 : 0x1E1E26, bgPct, 1f));
+        int[] fc = BgStyle.colors(this, bgMode, bgC1, bgC2, bgTint, lightNow());
+        int a = Prefs.alpha(bgPct);
+        int[] cs = new int[Math.max(2, fc.length)];
+        for (int i = 0; i < cs.length; i++) cs[i] = (a << 24) | (fc[Math.min(i, fc.length - 1)] & 0xFFFFFF);
+        prevFill.setOrientation(GradientDrawable.Orientation.LEFT_RIGHT);
+        prevFill.setColors(cs);
         int shown = theme == 2 ? (lightNow() ? 0x1B1F22 : 0xFFFFFF) : color;
         prevTitle.setTextColor(Prefs.argb(shown, txPct, 1f));
         prevMeta.setTextColor(Prefs.argb(shown, txPct, 0.7f));
