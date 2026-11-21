@@ -33,9 +33,11 @@ log "== Quellen einschalten (alle) über Einstellungen -> Quellen & Themen =="
 $UI tap "Einstellungen" | tee -a $R; sleep 2; shot 03_einstellungen
 $UI tap "Quellen & Themen" | tee -a $R; sleep 2; shot 04_quellen
 $UI texts > $OUT/quellen_texts.txt
-for n in "BGLand24" "chiemgau24" "ORF Salzburg" "Traunsteiner Tagblatt" "Landratsamt BGL" "Nationalpark Berchtesgaden"; do
+for n in "BGLand24" "chiemgau24" "ORF Salzburg" "Traunsteiner Tagblatt" "Landratsamt BGL"; do
   $UI tap "$n" | tee -a $R; sleep 1
 done
+adb shell input swipe 540 1800 540 900 300; sleep 1
+$UI tap "Nationalpark Berchtesgaden" | tee -a $R; sleep 1
 shot 05_quellen_an
 $UI texts > $OUT/quellen_texts_nach.txt
 $UI tap "Fertig" | tee -a $R; sleep 1
@@ -109,6 +111,9 @@ log "Speicher nach Monkey: $(appmem)"
 adb shell dumpsys meminfo $PKG > $OUT/meminfo_nach_monkey.txt
 grep -E "Java Heap|Native Heap|Graphics|Views:|Activities:|ViewRootImpl|Bitmaps" $OUT/meminfo_nach_monkey.txt | tr -s ' ' | tee -a $R
 
+log "== Reihenfolge der obersten Meldungen (Zeitangaben) =="
+adb shell am start -n $ACT >/dev/null; sleep 2; $UI tap "Alle" >/dev/null; sleep 2
+$UI texts | grep -E "vor |heute|gestern" | head -12 | tee -a $R
 log "== Kaltstart mit vorhandenen Daten (3x) =="
 for i in 1 2 3; do
   adb shell am force-stop $PKG; sleep 1

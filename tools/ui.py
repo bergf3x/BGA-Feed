@@ -34,8 +34,11 @@ def main():
             if t or d:
                 print(f"{y:5} | {t[:70]} | {d[:50]}")
         return
-    for t, d, x, y in nodes():
-        if arg and (arg == t or arg == d or arg in d or t.startswith(arg)):
+    ns = list(nodes())
+    exact = [n for n in ns if arg and (n[0] == arg or n[1] == arg)]
+    loose = [n for n in ns if arg and (arg in n[1] or n[0].startswith(arg))]
+    for t, d, x, y in exact + loose:
+        if True:
             if cmd == "tap":
                 subprocess.run(["adb", "shell", "input", "tap", str(x), str(y)])
                 print(f"getippt: {arg} @ {x},{y}")
