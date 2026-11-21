@@ -107,6 +107,7 @@ public class ConfigActivity extends Activity {
         muted.addAll(Prefs.muted(this, widgetId));
 
         b = new Bubble(this, 360, 16);
+        b.high();
         kwText = Prefs.keywords(this);
         showMain();
 
@@ -198,7 +199,7 @@ public class ConfigActivity extends Activity {
         clear();
         page = P_MAIN;
         b.text("Einstellungen", 20, b.title, true).setPadding(b.px(4), 0, 0, b.px(2));
-        LinearLayout body = b.scrollBox(0.66f);
+        LinearLayout body = b.scrollBox(0.9f);
         LinearLayout keep = b.box;
         // Kacheln in den scrollbaren Bereich legen
         java.util.function.Consumer<Runnable> into = r -> {

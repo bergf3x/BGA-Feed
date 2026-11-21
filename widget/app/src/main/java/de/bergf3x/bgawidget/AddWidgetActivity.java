@@ -18,9 +18,9 @@ public class AddWidgetActivity extends Activity {
         b.hint("Wähle, was das Widget auf dem Startbildschirm zeigen soll. Ändern kannst du es später in den Widget-Einstellungen.");
         option(b, R.drawable.ic_news, "Nur Nachrichten", "Liste mit Reitern, ohne Wetter",
                 () -> WidgetPin.pin(this, WidgetProvider.class, 0));
-        option(b, R.drawable.ic_cloud, "Nur Wetter", "Ort, Temperatur, 3 Tage, Warnungen, Webcams",
+        option(b, R.drawable.ic_cloud, "Nur Wetter", "Ort, 3 Tage, Warnungen, Webcams",
                 () -> WidgetPin.pin(this, WeatherWidgetProvider.class, -1));
-        option(b, R.drawable.ic_widgets, "Beides", "Wetter oben, Nachrichten darunter – wie in der App",
+        option(b, R.drawable.ic_widgets, "Beides", "Wetter oben, Nachrichten darunter",
                 () -> WidgetPin.pin(this, WidgetProvider.class, 1));
         b.space(4);
         b.pill("Schließen", false, true, () -> { });

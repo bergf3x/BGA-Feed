@@ -39,6 +39,18 @@ final class Bubble {
     final LinearLayout box;
     final float d;
     private boolean closing;
+    /** Abstand der Blase vom oberen Rand (Anteil der Hoehe). */
+    private float topFrac = 0.18f;
+
+    /** Blase weiter oben beginnen lassen (fuer lange Menues wie die Einstellungen). */
+    void high() {
+        topFrac = 0.08f;
+        android.view.ViewGroup.LayoutParams p = box.getLayoutParams();
+        if (p instanceof FrameLayout.LayoutParams) {
+            ((FrameLayout.LayoutParams) p).topMargin = Math.round(act.getResources().getDisplayMetrics().heightPixels * topFrac);
+            box.setLayoutParams(p);
+        }
+    }
 
     Bubble(Activity act, int widthDp, int padDp) {
         this.act = act;
@@ -76,7 +88,7 @@ final class Bubble {
         int w = Math.min(px(widthDp), screenW - px(40));
         FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(w, ViewGroup.LayoutParams.WRAP_CONTENT);
         lp.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
-        lp.topMargin = Math.round(screenH * 0.18f);
+        lp.topMargin = Math.round(screenH * topFrac);
         root.addView(box, lp);
         act.setContentView(root);
 
@@ -233,13 +245,13 @@ final class Bubble {
         LinearLayout r = new LinearLayout(act);
         r.setOrientation(LinearLayout.HORIZONTAL);
         r.setGravity(Gravity.CENTER_VERTICAL);
-        r.setPadding(px(16), px(12), px(14), px(12));
+        r.setPadding(px(16), px(10), px(14), px(10));
         pressable(r, light ? 0x14000000 : 0x1AFFFFFF, ripple);
         LinearLayout col = new LinearLayout(act);
         col.setOrientation(LinearLayout.VERTICAL);
         TextView t = new TextView(act);
         t.setText(title);
-        t.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        t.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15.5f);
         t.setTextColor(tx);
         t.setTypeface(null, Typeface.BOLD);
         col.addView(t);
@@ -259,7 +271,7 @@ final class Bubble {
         r.setOnClickListener(v -> onClick.run());
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        lp.topMargin = px(7);
+        lp.topMargin = px(6);
         box.addView(r, lp);
     }
 
@@ -432,7 +444,12 @@ final class Bubble {
             t.setText(labels[i]);
             t.setGravity(Gravity.CENTER);
             t.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-            t.setPadding(px(8), px(10), px(8), px(10));
+            t.setPadding(px(4), px(10), px(4), px(10));
+            t.setMaxLines(1);
+            if (labels.length >= 4) {
+                // viele Felder (z. B. Schriftarten): Schrift verkleinert sich statt umzubrechen
+                t.setAutoSizeTextTypeUniformWithConfiguration(10, 14, 1, TypedValue.COMPLEX_UNIT_SP);
+            }
             t.setOnClickListener(v -> {
                 sel[0] = idx;
                 paint.run();
@@ -452,7 +469,7 @@ final class Bubble {
     LinearLayout scrollBox(float heightFraction) {
         // Hoehe begrenzen: Blase beginnt bei 18 % der Hoehe; Kopf und "Schliessen" muessen immer sichtbar bleiben
         int screenH = act.getResources().getDisplayMetrics().heightPixels;
-        final int max = Math.max(px(160), Math.min(Math.round(screenH * heightFraction), Math.round(screenH * 0.82f) - px(200)));
+        final int max = Math.max(px(160), Math.min(Math.round(screenH * heightFraction), Math.round(screenH * (1f - topFrac)) - px(200)));
         ScrollView sv = new ScrollView(act) {
             @Override
             protected void onMeasure(int w, int h) {

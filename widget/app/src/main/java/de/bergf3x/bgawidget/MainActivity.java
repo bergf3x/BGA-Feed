@@ -623,7 +623,7 @@ public class MainActivity extends Activity {
         appName.setLetterSpacing(-0.01f);
         float nameW = appName.getPaint().measureText("BGL Wetter & News");
         appName.getPaint().setShader(new android.graphics.LinearGradient(0, 0, nameW, 0,
-                new int[]{0xFFFFFFFF, 0xFFF1F3F6, 0xFF9AA3B2},
+                light ? new int[]{0xFF14171B, 0xFF2A2F36, 0xFF6B7380} : new int[]{0xFFFFFFFF, 0xFFF1F3F6, 0xFF9AA3B2},
                 new float[]{0f, 0.45f, 1f}, android.graphics.Shader.TileMode.CLAMP));
         titles.addView(appName);
         titles.addView(text(statusLine(), 11.5f, soft, false));
@@ -724,7 +724,7 @@ public class MainActivity extends Activity {
             int wl = Prefs.warnLevel(this);
             if (Prefs.showWarn(this, ID) && wl >= 2 && !Prefs.warnText(this).isEmpty()
                     && System.currentTimeMillis() - Prefs.warnTime(this) < 6L * 3600000) {
-                TextView t = text("⚠ " + Prefs.warnText(this), 13, Warnings.color(wl), true);
+                TextView t = text("⚠ " + Prefs.warnText(this), 13, light ? (wl >= 3 ? 0xFFC62828 : 0xFFB35C00) : Warnings.color(wl), true);
                 t.setPadding(0, px(8), 0, 0);
                 in.addView(t);
             }
