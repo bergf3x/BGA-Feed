@@ -88,6 +88,10 @@ public class MainActivity extends Activity {
         @Override
         public void onReceive(android.content.Context c, android.content.Intent i) {
             if (syncing || isFinishing() || isDestroyed()) return;
+            if (pullBusy()) {
+                pullRebuild = true; // erst nach der Animation neu aufbauen, sonst ruckelt es
+                return;
+            }
             int y = scroll == null ? 0 : scroll.getScrollY();
             build();
             restore(y);
@@ -156,9 +160,16 @@ public class MainActivity extends Activity {
     }
 
     private void startSync(final boolean force, final int keepY) {
+        startSync(force, keepY, false);
+    }
+
+    /** quiet: kein Neuaufbau beim Start (Ziehen zum Aktualisieren), damit die Animation nicht hakt. */
+    private void startSync(final boolean force, final int keepY, final boolean quiet) {
         syncing = true;
-        build();
-        restore(keepY);
+        if (!quiet) {
+            build();
+            restore(keepY);
+        }
         final android.content.Context app = getApplicationContext();
         new Thread(() -> {
             try {
@@ -169,10 +180,19 @@ public class MainActivity extends Activity {
             ui.post(() -> {
                 syncing = false;
                 if (isFinishing() || isDestroyed()) return;
-                int y = scroll == null ? 0 : scroll.getScrollY();
+                final int y = scroll == null ? 0 : scroll.getScrollY();
+                if (pullLoading) {
+                    // erst "Aktualisiert ✓" stehen lassen (Kreis steht still), dann im naechsten Bild neu aufbauen
+                    pullShowDone();
+                    ui.post(() -> {
+                        build();
+                        restore(0);
+                        ui.postDelayed(this::pullBack, 450);
+                    });
+                    return;
+                }
                 build();
                 restore(force ? 0 : y);
-                pullDone();
             });
         }).start();
     }
@@ -183,7 +203,7 @@ public class MainActivity extends Activity {
     private TextView pullLabel;
     private PullSpinner pullSpin;
     private float pullStartX, pullStartY, pullOffset;
-    private boolean pullArmed, pulling, pullLoading, pullBuzzed;
+    private boolean pullArmed, pulling, pullLoading, pullBuzzed, pullRebuild;
     private android.animation.ValueAnimator pullAnim;
 
     /** Glas-Kreis mit Bogen: fuellt sich beim Ziehen, dreht sich beim Laden. */
@@ -257,7 +277,7 @@ public class MainActivity extends Activity {
         if (pullAnim != null) pullAnim.cancel();
         pullAnim = android.animation.ValueAnimator.ofFloat(pullOffset, to);
         pullAnim.setDuration(ms);
-        pullAnim.setInterpolator(new android.view.animation.DecelerateInterpolator(1.6f));
+        pullAnim.setInterpolator(new android.view.animation.PathInterpolator(0.2f, 0f, 0f, 1f));
         pullAnim.addUpdateListener(a -> setPull((float) a.getAnimatedValue()));
         if (end != null) pullAnim.addListener(new android.animation.AnimatorListenerAdapter() {
             boolean cancelled;
@@ -275,17 +295,33 @@ public class MainActivity extends Activity {
         pullAnim.start();
     }
 
-    /** Abruf fertig: kurz "Aktualisiert ✓", dann sanft zurueck. */
-    private void pullDone() {
-        if (!pullLoading) return;
+    private boolean pullBusy() {
+        return pulling || pullLoading || (pullAnim != null && pullAnim.isRunning()) || pullOffset > 0.5f;
+    }
+
+    private void pullText(String t) {
+        if (!t.contentEquals(pullLabel.getText())) pullLabel.setText(t); // nur bei Aenderung: kein unnoetiges Neu-Layout
+    }
+
+    /** Abruf fertig: Kreis steht, "Aktualisiert ✓". */
+    private void pullShowDone() {
         pullSpin.spin = false;
         pullSpin.progress = 1f;
         pullSpin.invalidate();
-        pullLabel.setText("Aktualisiert ✓");
-        ui.postDelayed(() -> animatePull(0, 380, () -> {
+        pullText("Aktualisiert ✓");
+    }
+
+    /** Sanft zurueck nach oben. */
+    private void pullBack() {
+        animatePull(0, 420, () -> {
             pullLoading = false;
-            pullLabel.setText("Zum Aktualisieren ziehen");
-        }), 650);
+            pullText("Zum Aktualisieren ziehen");
+            if (pullRebuild) {
+                pullRebuild = false;
+                build();
+                restore(0);
+            }
+        });
     }
 
     @Override
@@ -326,7 +362,7 @@ public class MainActivity extends Activity {
             float off = max * (1f - (float) Math.exp(-d / (max * 1.1f))); // Gummiband: wird immer schwerer
             setPull(off);
             boolean ready = off >= px(96);
-            pullLabel.setText(ready ? "Loslassen zum Aktualisieren" : "Zum Aktualisieren ziehen");
+            pullText(ready ? "Loslassen zum Aktualisieren" : "Zum Aktualisieren ziehen");
             if (ready && !pullBuzzed) {
                 pullBuzzed = true;
                 pullBox.performHapticFeedback(android.os.Build.VERSION.SDK_INT >= 30
@@ -343,12 +379,20 @@ public class MainActivity extends Activity {
                 pullLoading = true;
                 pullSpin.spin = true;
                 pullSpin.invalidate();
-                pullLabel.setText("Aktualisieren …");
-                animatePull(px(84), 260, null);
-                sync(true);
-                if (!syncing) pullDone(); // Abruf lief schon
+                pullText("Aktualisieren …");
+                animatePull(px(84), 280, null);
+                if (!syncing) startSync(true, 0, true);
+                else {
+                    // es laeuft schon ein Abruf: dessen Ende abwarten
+                }
             } else {
-                animatePull(0, 300, null);
+                animatePull(0, 320, () -> {
+                    if (pullRebuild) {
+                        pullRebuild = false;
+                        build();
+                        restore(0);
+                    }
+                });
             }
             return true;
         }
