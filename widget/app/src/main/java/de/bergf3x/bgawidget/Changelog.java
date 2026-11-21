@@ -5,6 +5,8 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.14",
+                    "! Sonderzeichen in Überschriften korrigiert (z. B. »Costa Concordia« statt &raquo;…&laquo;)"},
             {"1.11",
                     "+ Test: App-Name oben in altdeutscher Schrift (UnifrakturMaguntia, freie Lizenz)"},
             {"1.10",

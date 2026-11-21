@@ -13,6 +13,15 @@ import java.util.List;
 import java.util.Locale;
 
 final class FeedItem {
+    /** Wandelt HTML-Entities (&raquo;, &#8222; ...) in echte Zeichen um. */
+    static String unescape(String s) {
+        if (s == null || s.indexOf('&') < 0) return s == null ? "" : s;
+        for (int i = 0; i < 2 && s.indexOf('&') >= 0; i++) {
+            s = android.text.Html.fromHtml(s, android.text.Html.FROM_HTML_MODE_LEGACY).toString();
+        }
+        return s.replace('\u00A0', ' ').replace("\uFFFC", "");
+    }
+
     String title = "";
     String link = "";
     String category = "";
@@ -116,7 +125,8 @@ final class FeedItem {
                     else if ("pubDate".equals(tag)) cur.pubDate += t;
                 } else if (e == XmlPullParser.END_TAG) {
                     if ("item".equals(p.getName()) && cur != null) {
-                        cur.title = cur.title.trim();
+                        cur.title = unescape(cur.title).trim();
+                        cur.description = unescape(cur.description);
                         if (cur.title.startsWith("\uD83D\uDD12")) {
                             cur.plus = true;
                             cur.title = cur.title.substring(2).trim();

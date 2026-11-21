@@ -338,9 +338,8 @@ final class Direct {
     private static String clean(String s) {
         if (s == null) return "";
         s = s.replaceAll("<[^>]+>", " ");
-        s = s.replace("&nbsp;", " ").replace("&amp;", "&").replace("&quot;", "\"").replace("&#39;", "'")
-                .replace("&lt;", "<").replace("&gt;", ">").replace("&shy;", "");
-        s = s.replaceAll("&#(\\d+);", "").replaceAll("\\s+", " ").trim();
+        s = s.replace("&shy;", "");
+        s = FeedItem.unescape(s).replaceAll("\\s+", " ").trim();
         return s;
     }
 
