@@ -38,6 +38,22 @@ final class Direct {
     private static final String BGA = "https://www.berchtesgadener-anzeiger.de";
     private static final String BGL = "https://www.bgland24.de";
     private static final String C24 = "https://www.chiemgau24.de";
+    private static final String TT = "https://www.traunsteiner-tagblatt.de";
+    private static final String LRA = "https://www.lra-bgl.de";
+    private static final String NPV = "https://www.nationalpark-berchtesgaden.bayern.de/service/presse/pressemitteilungen/";
+    private static final String BR24 = "https://feeds.br24.de/rss/nachrichten";
+
+    /** Seiten des Anzeiger-Verlags (gleiches System): Artikel-ID im Link, Zeit auf der Artikelseite. */
+    static boolean miller(Catalog.Feed f) {
+        return f.id.equals("bga") || f.id.equals("tt");
+    }
+
+    private static final String[][] TT_SOURCES = {
+            {"/region/landkreis-traunstein.html", "Region/Landkreis Traunstein", "/region/"},
+            {"/region/berchtesgadener-land.html", "Region/Berchtesgadener Land", "/region/"},
+            {"/sport/sport-aus-der-region.html", "Sport/Sport aus der Region", "/sport/"},
+            {"/region/kultur.html", "Kultur", "/region/kultur"},
+    };
     private static final String ORF_SBG = "https://rss.orf.at/salzburg.xml";
 
     /** Ippen-Seiten: Abo-Pruefung je Artikel, nur echte Artikel-Links. */
@@ -72,17 +88,27 @@ final class Direct {
     }
 
     static boolean handles(Catalog.Feed f) {
-        return f.id.equals("bga") || f.id.equals("bgland24") || f.id.equals("chiemgau24") || f.id.equals("orf_salzburg");
+        switch (f.id) {
+            case "bga": case "tt": case "bgland24": case "chiemgau24": case "orf_salzburg":
+            case "lra_bgl": case "npv": case "br24":
+                return true;
+            default:
+                return false;
+        }
     }
 
     /** Holt die Seite(n) live, mischt mit dem gemerkten Stand und liefert den RSS-Text. */
     static String fetch(Context ctx, Catalog.Feed f) throws IOException {
         long t0 = System.currentTimeMillis();
         try {
-            boolean bga = f.id.equals("bga");
+            boolean bga = miller(f);
             StringBuilder rep = new StringBuilder();
             List<Map<String, Object>> found;
-            if (bga) found = scrapeBga();
+            if (f.id.equals("bga")) found = scrapeMiller(BGA, BGA_SOURCES);
+            else if (f.id.equals("tt")) found = scrapeMiller(TT, TT_SOURCES);
+            else if (f.id.equals("lra_bgl")) found = scrapeLra(rep);
+            else if (f.id.equals("npv")) found = scrapeNpv(rep);
+            else if (f.id.equals("br24")) found = scrapeBr(rep);
             else if (f.id.equals("bgland24")) found = scrapeIppen(BGL, java.util.Arrays.asList(BG_SECTIONS), true, rep);
             else if (f.id.equals("chiemgau24")) found = scrapeChiemgau(rep);
             else found = scrapeOrf(rep);
@@ -131,13 +157,13 @@ final class Direct {
 
     // ------------------------------------------------------------------ Anzeiger
 
-    private static List<Map<String, Object>> scrapeBga() {
+    private static List<Map<String, Object>> scrapeMiller(final String base, String[][] sources) {
         ExecutorService ex = Executors.newFixedThreadPool(5);
         List<Callable<List<Map<String, Object>>>> tasks = new ArrayList<>();
-        for (final String[] src : BGA_SOURCES) {
+        for (final String[] src : sources) {
             tasks.add(() -> {
-                String html = Net.download(BGA + src[0]);
-                List<Map<String, Object>> out = parseBga(html);
+                String html = Net.download(base + src[0]);
+                List<Map<String, Object>> out = parseBga(html, base);
                 List<Map<String, Object>> keep = new ArrayList<>();
                 for (Map<String, Object> it : out) {
                     if (!src[2].isEmpty() && !((String) it.get("url")).contains(src[2])) continue;
@@ -145,6 +171,9 @@ final class Direct {
                     if (!topic.startsWith("Sport/") && ((String) it.get("category")).toLowerCase(Locale.GERMANY).startsWith("regionalsport")) {
                         topic = "Sport/Sport aus der Region";
                     }
+                    String u = (String) it.get("url");
+                    if (u.contains("/region/berchtesgadener-land")) topic = "Region/Berchtesgadener Land";
+                    else if (u.contains("/region/landkreis-traunstein")) topic = "Region/Landkreis Traunstein";
                     it.put("topic", topic);
                     keep.add(it);
                 }
@@ -181,7 +210,7 @@ final class Direct {
         return new ArrayList<>(found.values());
     }
 
-    static List<Map<String, Object>> parseBga(String html) {
+    static List<Map<String, Object>> parseBga(String html, String base) {
         Map<Long, Map<String, Object>> items = new java.util.LinkedHashMap<>();
         Matcher m = A_BGA.matcher(html);
         while (m.find()) {
@@ -189,7 +218,7 @@ final class Direct {
             Matcher am = ARID.matcher(href);
             if (!am.find()) continue;
             long sid = Long.parseLong(am.group(1));
-            String url = href.startsWith("http") ? href : BGA + (href.startsWith("/") ? "" : "/") + href;
+            String url = href.startsWith("http") ? href : base + (href.startsWith("/") ? "" : "/") + href;
             String title = "";
             Matcher hm = HEAD.matcher(inner);
             if (hm.find()) title = clean(hm.group(1));
@@ -340,6 +369,101 @@ final class Direct {
         return got;
     }
 
+    // ------------------------------------------------------------------ Landratsamt, Nationalpark, BR24
+
+    private static final String[] DE_MON = {"jan", "feb", "mär", "apr", "mai", "jun", "jul", "aug", "sep", "okt", "nov", "dez"};
+
+    private static long deDate(int d, int m, int y) {
+        java.util.Calendar c = java.util.Calendar.getInstance(TimeZone.getTimeZone("Europe/Berlin"));
+        c.clear();
+        c.set(y, m - 1, d, 12, 0, 0);
+        return c.getTimeInMillis();
+    }
+
+    private static Map<String, Object> simple(String url, String title, String teaser, String topic, long pub) throws IOException {
+        Map<String, Object> it = new HashMap<>();
+        CRC32 c = new CRC32();
+        c.update(url.getBytes("UTF-8"));
+        it.put("sid", c.getValue());
+        it.put("url", url);
+        it.put("title", title);
+        it.put("teaser", teaser.length() > 300 ? teaser.substring(0, 300) : teaser);
+        it.put("category", "");
+        it.put("topic", topic);
+        it.put("plus", false);
+        if (pub > 0) it.put("pub", pub);
+        return it;
+    }
+
+    private static final Pattern LRA_A = Pattern.compile("<a[^>]+href=\"(/t/presse/pressemitteilungen/detail/news/[^\"#?]+)\"[^>]*>(.*?)</a>", Pattern.DOTALL);
+    private static final Pattern LRA_D = Pattern.compile("(\\d{1,2})\\.\\s*([A-Za-zäÄ]{3})[a-zä]*\\.?\\s*(\\d{4})");
+
+    /** Landratsamt BGL: Liste der Pressemitteilungen (Datum, Titel, Anriss). */
+    private static List<Map<String, Object>> scrapeLra(StringBuilder rep) throws IOException {
+        String html = Net.download(LRA + "/t/presse/pressemitteilungen/");
+        List<Map<String, Object>> out = new ArrayList<>();
+        java.util.Set<String> seen = new java.util.HashSet<>();
+        Matcher m = LRA_A.matcher(html);
+        while (m.find()) {
+            String title = clean(m.group(2));
+            if (!seen.add(m.group(1)) || title.length() < 8) continue;
+            long pub = -1;
+            Matcher d = LRA_D.matcher(html.substring(Math.max(0, m.start() - 1500), m.start()));
+            int[] last = null;
+            while (d.find()) {
+                String mon = d.group(2).toLowerCase(Locale.GERMANY);
+                for (int i = 0; i < DE_MON.length; i++) {
+                    if (mon.equals(DE_MON[i]) || (i == 2 && (mon.equals("mae") || mon.equals("mar")))) {
+                        last = new int[]{Integer.parseInt(d.group(1)), i + 1, Integer.parseInt(d.group(3))};
+                    }
+                }
+            }
+            if (last != null) pub = deDate(last[0], last[1], last[2]);
+            String after = html.substring(m.end(), Math.min(html.length(), m.end() + 1500));
+            Matcher p = PARA.matcher(after);
+            out.add(simple(LRA + m.group(1), title, p.find() ? clean(p.group(1)) : "", "Region/Landratsamt", pub));
+        }
+        rep.append("Liste ").append(out.size());
+        return out;
+    }
+
+    private static final Pattern NPV_ROW = Pattern.compile(
+            "(\\d{2})\\.(\\d{2})\\.(\\d{4})\\s*</td>\\s*<td[^>]*>\\s*<a[^>]+href=\"([^\"]+)\"[^>]*>(.*?)</a>", Pattern.DOTALL);
+
+    /** Nationalpark Berchtesgaden: Tabelle der Pressemitteilungen. */
+    private static List<Map<String, Object>> scrapeNpv(StringBuilder rep) throws IOException {
+        String html = Net.download(NPV + "index.htm");
+        List<Map<String, Object>> out = new ArrayList<>();
+        Matcher m = NPV_ROW.matcher(html);
+        while (m.find()) {
+            String href = m.group(4).replace("&amp;", "&");
+            String url = href.startsWith("http") ? href : NPV + href.replaceFirst("^\\./", "");
+            long pub = deDate(Integer.parseInt(m.group(1)), Integer.parseInt(m.group(2)), Integer.parseInt(m.group(3)));
+            out.add(simple(url, clean(m.group(5)), "", "Region/Nationalpark", pub));
+        }
+        rep.append("Tabelle ").append(out.size());
+        return out;
+    }
+
+    private static final Pattern BR_PLACES = Pattern.compile(
+            "Berchtesgaden|Bad Reichenhall|Reichenhall|Freilassing|Laufen|Bischofswiesen|Ramsau|Schönau|Königssee|"
+            + "Marktschellenberg|Piding|Ainring|Teisendorf|Bayerisch Gmain|Schneizlreuth|Saaldorf|Surheim|Anger\\b|"
+            + "Traunstein|Traunreut|Trostberg|Ruhpolding|Inzell|Reit im Winkl|Chiemsee|Chiemgau|Rupertiwinkel|Waging|"
+            + "Tittmoning|Siegsdorf|Grassau|Übersee|Watzmann|Untersberg|Kehlstein|Obersalzberg|Jenner|Hochkalter|Salzach");
+
+    /** BR24: offizieller Feed, nur Meldungen mit Ortsbezug BGL/Chiemgau. */
+    private static List<Map<String, Object>> scrapeBr(StringBuilder rep) throws IOException {
+        List<Map<String, Object>> out = new ArrayList<>();
+        for (Map<String, Object> it : parseRss(Net.download(BR24), false)) {
+            if (!BR_PLACES.matcher(it.get("title") + " " + it.get("teaser")).find()) continue;
+            it.put("topic", "Region/BGL & Chiemgau");
+            out.add(it);
+        }
+        rep.append("RSS mit Ortsbezug ").append(out.size());
+        if (out.isEmpty()) throw new IOException("gerade keine Meldung mit Ortsbezug");
+        return out;
+    }
+
     private static final Pattern RSS_ITEM = Pattern.compile("<(item|entry)\\b[^>]*>(.*?)</\\1>", Pattern.DOTALL);
 
     private static String rssTag(String blk, String name) {
@@ -449,7 +573,7 @@ final class Direct {
             if (sb.length() > 0) sb.append(' ');
             sb.append(Character.toUpperCase(w.charAt(0))).append(w.substring(1));
         }
-        return sb.toString();
+        return sb.toString().replace("Muehldorf", "Mühldorf").replace("Altoetting", "Altötting").replace("Tv Kino", "TV & Kino");
     }
 
     static String bgTopic(String url) {
@@ -523,14 +647,14 @@ final class Direct {
             JSONArray a = new JSONArray(sp.getString("state_" + f.id, "[]"));
             for (int i = 0; i < a.length(); i++) {
                 JSONObject o = a.getJSONObject(i);
-                boolean ok = f.id.equals("bga") ? o.optBoolean("tok") : o.optBoolean("pc");
+                boolean ok = miller(f) ? o.optBoolean("tok") : o.optBoolean("pc");
                 if (ok || o.optInt("tries") >= 2) done.add(String.valueOf(o.getLong("sid")));
             }
         } catch (Exception ignored) {
         }
         // neueste zuerst: BGA nach Artikel-ID, BGLand24 nach Veroeffentlichung
         List<Map<String, Object>> cand = new ArrayList<>(found);
-        if (f.id.equals("bga")) Collections.sort(cand, (x, y) -> Long.compare((Long) y.get("sid"), (Long) x.get("sid")));
+        if (miller(f)) Collections.sort(cand, (x, y) -> Long.compare((Long) y.get("sid"), (Long) x.get("sid")));
         else Collections.sort(cand, (x, y) -> Long.compare(x.containsKey("pub") ? 0 : 1, y.containsKey("pub") ? 0 : 1) != 0
                 ? Long.compare(x.containsKey("pub") ? 0 : 1, y.containsKey("pub") ? 0 : 1)
                 : Long.compare(y.containsKey("pub") ? (Long) y.get("pub") : 0L, x.containsKey("pub") ? (Long) x.get("pub") : 0L));
@@ -550,7 +674,7 @@ final class Direct {
                         long t = parseTime(page);
                         if (t > 0) it.put("pub", t);
                     }
-                    if (!f.id.equals("bga")) {
+                    if (ippen(f)) {
                         if (PAID.matcher(page).find()) it.put("plus", true);
                         it.put("pc", true);
                     }
@@ -561,7 +685,7 @@ final class Direct {
         }
         int ok = 0;
         try {
-            ex.invokeAll(tasks, f.id.equals("bga") ? 8 : 25, TimeUnit.SECONDS);
+            ex.invokeAll(tasks, miller(f) ? 8 : 25, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         } finally {
@@ -569,7 +693,7 @@ final class Direct {
         }
         for (Map<String, Object> it : todo) {
             it.put("tried", true);
-            if (f.id.equals("bga") ? it.containsKey("pub") : it.containsKey("pc")) ok++;
+            if (miller(f) ? it.containsKey("pub") : it.containsKey("pc")) ok++;
         }
         return ok;
     }

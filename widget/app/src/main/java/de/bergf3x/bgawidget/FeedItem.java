@@ -62,6 +62,10 @@ final class FeedItem {
         if (low.contains("anzeiger")) return 0xFF459BDB;
         if (low.contains("chiemgau")) return 0xFF5BBF8A;
         if (low.contains("orf")) return 0xFFE5484D;
+        if (low.contains("traunsteiner")) return 0xFF1BA3D9;
+        if (low.contains("landratsamt")) return 0xFF3A6BB5;
+        if (low.contains("nationalpark")) return 0xFF2E8B6E;
+        if (low.contains("br24")) return 0xFF8C7AE6;
         return 0xFFF0997B;
     }
 

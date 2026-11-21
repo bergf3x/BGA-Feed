@@ -203,6 +203,8 @@ final class Bubble {
         r.setOrientation(LinearLayout.HORIZONTAL);
         r.setGravity(Gravity.CENTER_VERTICAL);
         r.setPadding(px(12), px(10), px(12), px(10));
+        r.setMinimumHeight(px(44));
+        r.setContentDescription(label.trim() + (selected ? ", ausgewählt" : ""));
         pressable(r, selected ? hi : 0, selected ? 0x33000000 : ripple);
         TextView t = new TextView(act);
         t.setText(label);

@@ -5,6 +5,12 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.18",
+                    "+ Themenmenü neu (für Region, Nachrichten, Sport, Kultur …): je Quelle ein aufklappbarer Reiter, immer nur einer offen",
+                    "+ Mehrere Themen gleichzeitig wählbar, Reiter zeigt z. B. „Berchtesgaden +2“",
+                    "+ Neue Quellen: Traunsteiner Tagblatt, Landratsamt BGL, Nationalpark Berchtesgaden, BR24 (nur Meldungen mit Ortsbezug)",
+                    "~ Themennamen mit Umlauten (Mühldorf, Altötting)",
+                    "~ Bedienungshilfen: größere Tippflächen, vorgelesene Zustände („ausgewählt“, „öffnet Auswahl“)"},
             {"1.17",
                     "+ Neue Quelle chiemgau24: Traunstein, Rupertiwinkel, Chiemsee, Trostberg, Achental, Polizeimeldungen (offizielle RSS-Feeds)",
                     "+ Neue Quelle ORF Salzburg (offizieller RSS-Feed, frei lesbar)",

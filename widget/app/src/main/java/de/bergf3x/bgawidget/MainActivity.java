@@ -340,6 +340,7 @@ public class MainActivity extends Activity {
         if (w != null) {
             ImageView sky = new ImageView(this);
             sky.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            sky.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
             sky.setImageBitmap(WeatherBg.get(this, w.code, w.day, light));
             card.addView(sky, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         }
@@ -351,6 +352,7 @@ public class MainActivity extends Activity {
         TextView ort = text(Weather.PLACES[place] + " ▾", 15, tx, true);
         ort.setPadding(0, px(2), px(12), px(6));
         ort.setOnClickListener(v -> open(PlaceActivity.class));
+        ort.setContentDescription("Ort " + Weather.PLACES[place] + ", ändern");
         in.addView(ort, lp(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 0));
 
         if (w == null) {
@@ -362,6 +364,7 @@ public class MainActivity extends Activity {
             now.setOnClickListener(v -> open(HourlyActivity.class));
             ImageView ic = new ImageView(this);
             ic.setImageResource(Weather.icon(w.code, w.day));
+            ic.setContentDescription(Weather.text(w.code, w.day));
             now.addView(ic, lp(54, 54, 0, 0, 12, 0));
             now.addView(text(Weather.deg(w.temp), 46, tx, false));
             LinearLayout side = new LinearLayout(this);
@@ -411,8 +414,8 @@ public class MainActivity extends Activity {
         cam.addView(ct, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         cam.setContentDescription("Live Webcams");
         cam.setOnClickListener(v -> open(WebcamActivity.class));
-        FrameLayout.LayoutParams clp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, px(40), Gravity.TOP | Gravity.END);
-        clp.topMargin = px(10);
+        FrameLayout.LayoutParams clp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, px(44), Gravity.TOP | Gravity.END);
+        clp.topMargin = px(8);
         clp.rightMargin = px(14);
         card.addView(cam, clp);
         page.addView(card, lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 10));
@@ -558,8 +561,13 @@ public class MainActivity extends Activity {
     private View chip(String label, boolean on, final Runnable click) {
         TextView c = text(label, 13.5f, on ? chipOnTx : tx, on);
         c.setPadding(px(14), px(8), px(14), px(8));
+        c.setMinHeight(px(40));
+        c.setGravity(Gravity.CENTER);
         press(c, on ? chipOn : cardFill, 18, on ? 0 : line);
         c.setOnClickListener(v -> click.run());
+        // Bedienungshilfe: Zustand und Funktion vorlesen statt des Pfeil-Zeichens
+        String spoken = label.replace(" ▾", "") + (on ? ", ausgewählt" : "") + (label.endsWith("▾") ? ", öffnet Auswahl" : "");
+        c.setContentDescription(spoken);
         c.setLayoutParams(lp(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 8, 0));
         return c;
     }
