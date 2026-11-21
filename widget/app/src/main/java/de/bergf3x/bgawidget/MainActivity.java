@@ -233,7 +233,8 @@ public class MainActivity extends Activity {
         pullBox.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
         pullLabel = text("Zum Aktualisieren ziehen", 14, tx, false);
         pullLabel.setPadding(0, 0, 0, px(8));
-        pullBox.addView(pullLabel);
+        pullLabel.setGravity(Gravity.CENTER_HORIZONTAL);
+        pullBox.addView(pullLabel, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         pullSpin = new PullSpinner(this, tx, getResources().getDisplayMetrics().density * 1.2f);
         pullBox.addView(pullSpin, lp(38, 38, 0, 0, 0, 0));
         return pullBox;
