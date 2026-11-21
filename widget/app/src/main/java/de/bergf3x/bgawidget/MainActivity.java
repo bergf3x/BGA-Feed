@@ -388,6 +388,21 @@ public class MainActivity extends Activity {
             }
             if (w.days > 1) in.addView(forecast(w));
         }
+        // Webcams: grosser, gut tippbarer Knopf oben rechts in der Wetterkarte
+        LinearLayout cam = new LinearLayout(this);
+        cam.setOrientation(LinearLayout.VERTICAL);
+        cam.setGravity(Gravity.CENTER);
+        press(cam, cardFill, 20, line);
+        ImageView civ = new ImageView(this);
+        civ.setImageResource(R.drawable.ic_cam);
+        civ.setColorFilter(tx);
+        cam.addView(civ, lp(28, 28, 0, 0, 0, 3));
+        cam.addView(text("Webcams", 11.5f, tx, true));
+        cam.setOnClickListener(v -> open(WebcamActivity.class));
+        FrameLayout.LayoutParams clp = new FrameLayout.LayoutParams(px(76), px(68), Gravity.TOP | Gravity.END);
+        clp.topMargin = px(30);
+        clp.rightMargin = px(30);
+        card.addView(cam, clp);
         page.addView(card, lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 10));
     }
 
@@ -413,9 +428,8 @@ public class MainActivity extends Activity {
         LinearLayout row = new LinearLayout(this);
         row.setOrientation(LinearLayout.HORIZONTAL);
         row.addView(toolPill(R.drawable.ic_search, "Suche", () -> open(SearchActivity.class)), lp(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 6, 0));
-        row.addView(toolPill(R.drawable.ic_bookmark, "Gemerkt", () -> open(SavedActivity.class)), lp(0, ViewGroup.LayoutParams.WRAP_CONTENT, 3, 0, 3, 0));
-        row.addView(toolPill(R.drawable.ic_cam, "Webcams", () -> open(WebcamActivity.class)), lp(0, ViewGroup.LayoutParams.WRAP_CONTENT, 6, 0, 0, 0));
-        for (int i = 0; i < 3; i++) ((LinearLayout.LayoutParams) row.getChildAt(i).getLayoutParams()).weight = 1f;
+        row.addView(toolPill(R.drawable.ic_bookmark, "Gemerkt", () -> open(SavedActivity.class)), lp(0, ViewGroup.LayoutParams.WRAP_CONTENT, 6, 0, 0, 0));
+        for (int i = 0; i < 2; i++) ((LinearLayout.LayoutParams) row.getChildAt(i).getLayoutParams()).weight = 1f;
         page.addView(row, lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 12));
     }
 
