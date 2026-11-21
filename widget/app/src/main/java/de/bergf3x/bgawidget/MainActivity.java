@@ -589,7 +589,7 @@ public class MainActivity extends Activity {
             return;
         }
         // "Alle": BGL oben, Außerhalb und Deutschland & Welt jeweils zugeklappt darunter
-        boolean split = Prefs.topic(this, ID).isEmpty();
+        boolean split = false; // "Alle": alle Zeitungen gemischt, neueste zuerst
         List<FeedItem> main = new ArrayList<>(), out = new ArrayList<>(), world = new ArrayList<>();
         for (FeedItem it : items) {
             if (split && it.topic.startsWith(Taxonomy.OUT)) out.add(it);
@@ -636,7 +636,7 @@ public class MainActivity extends Activity {
 
     private void chips(List<String> topics, final String topic) {
         List<String> parents = new ArrayList<>();
-        for (String t : topics) if (t.indexOf('/') < 0) parents.add(t);
+        for (String t : topics) if (t.indexOf('/') < 0 && !t.equals(Taxonomy.OUT)) parents.add(t);
         if (parents.isEmpty()) return;
         String curParent = topic.isEmpty() ? "" : topic.split("/")[0];
         LinearLayout row = new LinearLayout(this);

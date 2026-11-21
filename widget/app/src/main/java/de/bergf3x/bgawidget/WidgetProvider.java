@@ -92,7 +92,7 @@ public class WidgetProvider extends AppWidgetProvider {
         applyWeather(ctx, rv, id, fg, Prefs.argb(rgb, tx, 0.7f), false);
 
         List<String> parents = new java.util.ArrayList<>();
-        for (String t : topics) if (t.indexOf('/') < 0) parents.add(t);
+        for (String t : topics) if (t.indexOf('/') < 0 && !t.equals(Taxonomy.OUT)) parents.add(t);
         String curParent = topic.isEmpty() ? "" : topic.split("/")[0];
         for (int i = 0; i < P.length; i++) {
             String value = i == 0 ? "" : (i - 1 < parents.size() ? parents.get(i - 1) : null);

@@ -5,6 +5,13 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.24",
+                    "+ Neuer Reiter „Zeitungen“: jede Zeitung mit ihren eigenen Rubriken, beliebig kombinierbar",
+                    "+ Neue Quelle Merkur (Bayern, München, Oberbayern)",
+                    "+ Neue Quelle alpin.de (Bergsport-News, nur Direktabruf vom Handy)",
+                    "~ „Alle“ zeigt alle Meldungen gemischt, neueste zuerst",
+                    "- Reiter „Außerhalb“ entfernt (Chiemgau, Salzburg, Bayern jetzt über die jeweilige Zeitung)",
+                    "! Gleiche Meldung aus derselben Quelle wird nur noch einmal gezeigt"},
             {"1.23",
                     "+ Neue Themenordnung: BGL · Außerhalb · Deutschland & Welt – gleich für alle Quellen",
                     "+ BGL: Berchtesgaden & Talkessel, Bad Reichenhall & Umgebung, Freilassing & Rupertiwinkel, Ganzer Landkreis, Amtliches – je mit Nachrichten, Sport, Kultur, Blaulicht",

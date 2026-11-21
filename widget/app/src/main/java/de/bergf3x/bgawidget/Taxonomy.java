@@ -21,7 +21,12 @@ final class Taxonomy {
     static final String BGL = "BGL";
     static final String OUT = "Außerhalb";
     static final String WORLD = "Deutschland & Welt";
-    static final String[] AREAS = {BGL, OUT, WORLD};
+    /** Zweite Sicht: je Zeitung deren eigene Rubriken. */
+    static final String PAPERS = "Zeitungen";
+    static final String[] AREAS = {PAPERS, BGL, WORLD, OUT};
+    /** Reihenfolge der Zeitungen im Menue. */
+    static final String[] PAPER_ORDER = {"Berchtesgadener Anzeiger", "BGLand24", "Traunsteiner Tagblatt", "chiemgau24",
+            "Merkur", "ORF Salzburg", "BR24", "alpin.de", "Landratsamt BGL", "Nationalpark Berchtesgaden"};
 
     static final String BGD = "Berchtesgaden & Talkessel";
     static final String BRH = "Bad Reichenhall & Umgebung";
@@ -34,7 +39,7 @@ final class Taxonomy {
 
     /** Reihenfolge der Unterpunkte im Menue. */
     static final String[] ORDER = {BGD, BRH, FRL, LK, AMT, CHG, SBG, BAY,
-            "Nachrichten", "Politik & Gesellschaft", "Wirtschaft", "Wissen & Digital", "Leute", "Sport", "Kultur", "Blaulicht"};
+            "Nachrichten", "Politik & Gesellschaft", "Wirtschaft", "Wissen & Digital", "Leute", "Sport", "Kultur", "Blaulicht", "Bergsport"};
 
     private static final Pattern P_BGD = Pattern.compile("Berchtesgaden|Bischofswiesen|Ramsau|Schönau|Königssee|Marktschellenberg|"
             + "Watzmann|Jenner|Obersalzberg|Kehlstein|Hintersee|Hochkalter|Roßfeld|Rossfeld|Strub|Loipl|Maria Gern");
@@ -57,6 +62,10 @@ final class Taxonomy {
         String low = raw.toLowerCase(Locale.GERMANY);
 
         if (src.contains("landratsamt") || src.contains("nationalpark")) return BGL + "/" + AMT;
+        if (src.contains("alpin")) {
+            String r = bglRegion(title);
+            return r != null ? BGL + "/" + r + "/Sport" : WORLD + "/Bergsport";
+        }
 
         String rubric = rubric(raw, it.category, title);
         boolean regional = low.startsWith("region") || low.startsWith("bayern") || low.equals("sport/sport aus der region")
@@ -107,6 +116,16 @@ final class Taxonomy {
         return "Politik & Gesellschaft";
     }
 
+    /** Pfad in der Zeitungs-Sicht: "Zeitungen/<Zeitung>/<Rubrik der Zeitung>". */
+    static String paper(FeedItem it) {
+        String raw = it.rawTopic.isEmpty() ? "Allgemein" : it.rawTopic;
+        String r = raw.substring(raw.lastIndexOf('/') + 1).trim();
+        if (r.equalsIgnoreCase("region")) r = "Region";
+        if (r.equalsIgnoreCase("sport aus der region")) r = "Regionalsport";
+        if (r.isEmpty()) r = "Allgemein";
+        return PAPERS + "/" + it.feedName.replace('/', '-') + "/" + r;
+    }
+
     /** Anzahl Meldungen je Themenpfad (inkl. aller Oberpfade) fuer die gewaehlten Quellen. */
     static Map<String, Integer> counts(Context ctx, int id) {
         Map<String, Integer> m = new LinkedHashMap<>();
@@ -117,12 +136,14 @@ final class Taxonomy {
             boolean plus = Prefs.showPlusFeed(ctx, id, f.id);
             for (FeedItem it : FeedCache.items(ctx, f.id, f.name)) {
                 if (it.plus && !plus) continue;
-                String p = it.topic;
-                while (!p.isEmpty()) {
-                    Integer c = m.get(p);
-                    m.put(p, c == null ? 1 : c + 1);
-                    int i = p.lastIndexOf('/');
-                    p = i < 0 ? "" : p.substring(0, i);
+                for (String start : new String[]{it.topic, it.paper}) {
+                    String p = start;
+                    while (!p.isEmpty()) {
+                        Integer c = m.get(p);
+                        m.put(p, c == null ? 1 : c + 1);
+                        int i = p.lastIndexOf('/');
+                        p = i < 0 ? "" : p.substring(0, i);
+                    }
                 }
             }
         }
@@ -150,6 +171,7 @@ final class Taxonomy {
     private static int rank(String s) {
         for (int i = 0; i < AREAS.length; i++) if (AREAS[i].equals(s)) return i;
         for (int i = 0; i < ORDER.length; i++) if (ORDER[i].equals(s)) return 10 + i;
+        for (int i = 0; i < PAPER_ORDER.length; i++) if (PAPER_ORDER[i].equals(s)) return 40 + i;
         return 99;
     }
 
@@ -158,6 +180,11 @@ final class Taxonomy {
         String[] p = path.split("/");
         if (p.length == 0) return "";
         if (p[0].equals(WORLD)) return p.length > 1 ? p[1] : WORLD;
+        if (p[0].equals(PAPERS)) {
+            if (p.length < 2) return PAPERS;
+            String n = FeedItem.shortSource(p[1]);
+            return p.length > 2 ? n + " · " + p[2] : n;
+        }
         String region = p.length > 1 ? shortRegion(p[1]) : p[0];
         if (p.length > 2 && !p[2].equals("Nachrichten")) return region + " · " + p[2];
         return region;

@@ -197,7 +197,7 @@ public class ListService extends RemoteViewsService {
                 }
                 for (java.util.Map.Entry<Integer, Integer> e : common.entrySet()) {
                     int i = e.getKey();
-                    if (out.get(i).feedName.equals(it.feedName)) continue;
+                    if (out.get(i).feedName.equals(it.feedName) && !out.get(i).title.equals(it.title)) continue;
                     Set<String> o = sets.get(i);
                     if (o.size() < 3) continue;
                     int c = e.getValue();

@@ -29,7 +29,8 @@ final class Catalog {
         String json = Prefs.catalogCache(c);
         if (json != null && lastList != null && (json == lastJson || json.equals(lastJson))) return lastList;
         List<Feed> list = parse(json);
-        if (list.isEmpty()) return fallback();
+        if (list.isEmpty()) list = fallback();
+        if (Direct.enabled(c)) addDirectOnly(list);
         lastJson = json;
         lastList = list;
         return list;
@@ -64,7 +65,7 @@ final class Catalog {
 
     /** Quellen, die selten veroeffentlichen (Behoerden, Ortsfilter): keine Warnung "ohne Neues". */
     static boolean lowVolume(String id) {
-        return id.equals("lra_bgl") || id.equals("npv") || id.equals("br24");
+        return id.equals("lra_bgl") || id.equals("npv") || id.equals("br24") || id.equals("alpin");
     }
 
     static Feed find(List<Feed> all, String id) {
@@ -109,6 +110,20 @@ final class Catalog {
             out.clear();
         }
         return out;
+    }
+
+    /** Quellen, die nur die Test-App direkt vom Handy abruft (kein GitHub-Feed vorhanden). */
+    private static void addDirectOnly(List<Feed> list) {
+        String[][] extra = {{"merkur", "Merkur", "Bayern"}, {"alpin", "alpin.de", "Bergsport"}};
+        for (String[] e : extra) {
+            if (find(list, e[0]) != null) continue;
+            Feed f = new Feed();
+            f.id = e[0];
+            f.name = e[1];
+            f.url = e[0].equals("merkur") ? RAW + "feed_merkur.xml" : "";
+            f.topics.add(e[2]);
+            list.add(f);
+        }
     }
 
     private static List<Feed> fallback() {

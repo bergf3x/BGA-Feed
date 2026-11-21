@@ -85,7 +85,8 @@ public class TopicActivity extends Activity {
 
     private void render() {
         body.removeAllViews();
-        b.row(body, "Alles in „" + parent + "“ (" + count(parent) + ")", sel.contains(parent), () -> {
+        String all = parent.equals(Taxonomy.PAPERS) ? "Alle Zeitungen gemischt" : "Alles in „" + parent + "“";
+        b.row(body, all + " (" + count(parent) + ")", sel.contains(parent), () -> {
             sel.clear();
             sel.add(parent);
             save(sel);
@@ -105,7 +106,8 @@ public class TopicActivity extends Activity {
                 render();
             }));
             if (!expanded) continue;
-            b.row(body, "Alles aus „" + name(region) + "“", sel.contains(region), () -> toggle(region), false);
+            b.row(body, (parent.equals(Taxonomy.PAPERS) ? "Alles aus " : "Alles aus „") + name(region)
+                    + (parent.equals(Taxonomy.PAPERS) ? "" : "“"), sel.contains(region), () -> toggle(region), false);
             for (final String sub : subs) {
                 b.row(body, "   " + name(sub) + " (" + count(sub) + ")", sel.contains(sub), () -> toggle(sub), false);
             }

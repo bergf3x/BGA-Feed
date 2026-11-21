@@ -42,6 +42,14 @@ final class Direct {
     private static final String LRA = "https://www.lra-bgl.de";
     private static final String NPV = "https://www.nationalpark-berchtesgaden.bayern.de/service/presse/pressemitteilungen/";
     private static final String BR24 = "https://feeds.br24.de/rss/nachrichten";
+    private static final String MERKUR = "https://www.merkur.de";
+    private static final String ALPIN = "https://www.alpin.de";
+    /** Merkur-RSS je Rubrik: Pfad, Thema, erwarteter Kanal-Titel (unbekannte Rubriken liefern still die Startseite). */
+    private static final String[][] MERKUR_SOURCES = {
+            {"/bayern/rssfeed.rdf", "Bayern", "Bayern"},
+            {"/lokales/muenchen/rssfeed.rdf", "Bayern/München", "München"},
+            {"/lokales/rssfeed.rdf", "Bayern/Oberbayern", "Lokales"},
+    };
 
     /** Seiten des Anzeiger-Verlags (gleiches System): Artikel-ID im Link, Zeit auf der Artikelseite. */
     static boolean miller(Catalog.Feed f) {
@@ -93,7 +101,7 @@ final class Direct {
     static boolean handles(Catalog.Feed f) {
         switch (f.id) {
             case "bga": case "tt": case "bgland24": case "chiemgau24": case "orf_salzburg":
-            case "lra_bgl": case "npv": case "br24":
+            case "lra_bgl": case "npv": case "br24": case "merkur": case "alpin":
                 return true;
             default:
                 return false;
@@ -112,6 +120,8 @@ final class Direct {
             else if (f.id.equals("lra_bgl")) found = scrapeLra(rep);
             else if (f.id.equals("npv")) found = scrapeNpv(rep);
             else if (f.id.equals("br24")) found = scrapeBr(rep);
+            else if (f.id.equals("merkur")) found = scrapeMerkur(rep);
+            else if (f.id.equals("alpin")) found = scrapeAlpin(rep);
             else if (f.id.equals("bgland24")) found = scrapeIppen(BGL, java.util.Arrays.asList(BG_SECTIONS), true, rep);
             else if (f.id.equals("chiemgau24")) found = scrapeChiemgau(rep);
             else found = scrapeOrf(rep);
@@ -466,6 +476,70 @@ final class Direct {
         for (Map<String, Object> it : out) it.put("topic", brTopic(String.valueOf(it.get("category"))));
         rep.append("RSS ").append(out.size());
         return out;
+    }
+
+    /** Merkur: offizielle RSS-Feeds je Rubrik; Feeds, die nur die Startseite liefern, werden verworfen. */
+    private static List<Map<String, Object>> scrapeMerkur(StringBuilder rep) throws IOException {
+        List<Map<String, Object>> out = new ArrayList<>();
+        java.util.Set<String> seen = new java.util.HashSet<>();
+        IOException last = null;
+        for (String[] s : MERKUR_SOURCES) {
+            try {
+                String xml = Net.download(MERKUR + s[0]);
+                Matcher ch = Pattern.compile("<channel>.*?<title>(?:<!\\[CDATA\\[)?(.*?)(?:\\]\\]>)?</title>", Pattern.DOTALL).matcher(xml);
+                if (ch.find() && !ch.group(1).contains(s[2])) {
+                    rep.append(s[1]).append(": falscher Kanal; ");
+                    continue;
+                }
+                int n = 0;
+                for (Map<String, Object> it : parseRss(xml, false)) {
+                    if (!seen.add(String.valueOf(it.get("url")))) continue;
+                    it.put("topic", s[1]);
+                    out.add(it);
+                    n++;
+                }
+                rep.append(s[1]).append(' ').append(n).append("; ");
+            } catch (IOException e) {
+                last = e;
+                rep.append(s[1]).append(": ").append(e.getMessage()).append("; ");
+            }
+        }
+        if (out.isEmpty() && last != null) throw last;
+        return out;
+    }
+
+    private static final Pattern ALPIN_A = Pattern.compile(
+            "<a\\b[^>]*?href=\"((?:https://www\\.alpin\\.de)?/home/(?:news|interviews|historisches)/(\\d+)/artikel_([^\"]+)\\.html)\"[^>]*>(.*?)</a>",
+            Pattern.DOTALL);
+
+    /** alpin.de: keine RSS; Artikel-Links der News-Seite (aufsteigende ID = neuer), Zeit = Erstsichtung. */
+    private static List<Map<String, Object>> scrapeAlpin(StringBuilder rep) throws IOException {
+        Map<String, Map<String, Object>> byUrl = new java.util.LinkedHashMap<>();
+        Map<String, Long> ids = new HashMap<>();
+        String html = Net.download(ALPIN + "/home/news");
+        Matcher m = ALPIN_A.matcher(html);
+        while (m.find()) {
+            String url = m.group(1).startsWith("http") ? m.group(1) : ALPIN + m.group(1);
+            String text = clean(m.group(4));
+            if (text.length() < 12) {
+                Matcher t = Pattern.compile("title=\"([^\"]{12,})\"").matcher(m.group(0));
+                text = t.find() ? clean(t.group(1)) : slugTitle(m.group(3));
+            }
+            Map<String, Object> old = byUrl.get(url);
+            if (old != null && String.valueOf(old.get("title")).length() >= text.length()) continue;
+            byUrl.put(url, simple(url, text, "", "Bergsport", 0));
+            ids.put(url, Long.parseLong(m.group(2)));
+        }
+        List<Map<String, Object>> out = new ArrayList<>(byUrl.values());
+        // neueste (hoechste ID) zuerst, damit die Schaetzung der Zeit die Reihenfolge erhaelt
+        Collections.sort(out, (a, b) -> Long.compare(ids.get(String.valueOf(b.get("url"))), ids.get(String.valueOf(a.get("url")))));
+        rep.append("Seite ").append(html.length() / 1024).append(" KB, Artikel ").append(out.size());
+        return out;
+    }
+
+    private static String slugTitle(String slug) {
+        String s = slug.replace("__", " – ").replace('_', ' ').trim();
+        return s.isEmpty() ? s : Character.toUpperCase(s.charAt(0)) + s.substring(1);
     }
 
     static String brTopic(String cat) {

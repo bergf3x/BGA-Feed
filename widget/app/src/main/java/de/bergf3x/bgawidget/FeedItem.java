@@ -28,6 +28,8 @@ final class FeedItem {
     String topic = "";
     /** Rubrik, wie die Quelle sie liefert (vor der Einordnung). */
     String rawTopic = "";
+    /** Pfad in der Zeitungs-Sicht ("Zeitungen/BGLand24/Berchtesgaden"). */
+    String paper = "";
     String description = "";
     String pubDate = "";
     String feedName = "";
@@ -69,6 +71,7 @@ final class FeedItem {
         if (low.contains("landratsamt")) return "Landratsamt";
         if (low.contains("nationalpark")) return "Nationalpark";
         if (low.contains("br24")) return "BR24";
+        if (low.contains("merkur")) return "Merkur";
         return feedName;
     }
 
@@ -135,6 +138,7 @@ final class FeedItem {
 
     /** Gehoert der Artikel zu diesem Thema (gleich oder Unterthema)? */
     boolean inTopic(String t) {
+        if (t.startsWith(Taxonomy.PAPERS)) return paper.equals(t) || paper.startsWith(t + "/");
         String mine = topic.isEmpty() ? "Region" : topic;
         return mine.equals(t) || mine.startsWith(t + "/");
     }
@@ -174,6 +178,7 @@ final class FeedItem {
                         cur.feedName = feedName;
                         cur.rawTopic = cur.topic;
                         cur.topic = Taxonomy.classify(cur);
+                        cur.paper = Taxonomy.paper(cur);
                         try {
                             Date d = in.parse(cur.pubDate.trim());
                             if (d != null) cur.time = d.getTime();
