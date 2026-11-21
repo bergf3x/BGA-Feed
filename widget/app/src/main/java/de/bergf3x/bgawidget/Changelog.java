@@ -5,6 +5,9 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.28",
+                    "+ Ziehen zum Aktualisieren: ganz oben nach unten ziehen lädt Nachrichten und Wetter neu",
+                    "+ Animierter Glas-Kreis mit „Zum Aktualisieren ziehen“ → „Loslassen zum Aktualisieren“ → „Aktualisieren …“ → „Aktualisiert ✓“, kurze Vibration an der Auslöse-Stelle"},
             {"1.27",
                     "~ Test: Wetterkarte schrumpft beim Scrollen synchron zur schmalen Wetterzeile (gleiches Bergfoto), Reiter bleiben darunter stehen",
                     "~ Zurückscrollen zieht die Karte genauso gleichmäßig wieder auf; Antippen der Wetterzeile springt nach oben"},

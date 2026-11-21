@@ -172,8 +172,186 @@ public class MainActivity extends Activity {
                 int y = scroll == null ? 0 : scroll.getScrollY();
                 build();
                 restore(force ? 0 : y);
+                pullDone();
             });
         }).start();
+    }
+
+    // ------------------------------------------------------------------ Ziehen zum Aktualisieren
+
+    private LinearLayout pullBox;
+    private TextView pullLabel;
+    private PullSpinner pullSpin;
+    private float pullStartX, pullStartY, pullOffset;
+    private boolean pullArmed, pulling, pullLoading, pullBuzzed;
+    private android.animation.ValueAnimator pullAnim;
+
+    /** Glas-Kreis mit Bogen: fuellt sich beim Ziehen, dreht sich beim Laden. */
+    static final class PullSpinner extends View {
+        float progress;
+        boolean spin;
+        private float angle;
+        private final android.graphics.Paint ring = new android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG);
+        private final android.graphics.Paint fill = new android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG);
+        private final android.graphics.Paint arc = new android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG);
+        private final android.graphics.RectF box = new android.graphics.RectF();
+
+        PullSpinner(android.content.Context c, int color, float dp) {
+            super(c);
+            fill.setColor(0x1AFFFFFF);
+            ring.setStyle(android.graphics.Paint.Style.STROKE);
+            ring.setStrokeWidth(dp);
+            ring.setColor(0x46FFFFFF);
+            arc.setStyle(android.graphics.Paint.Style.STROKE);
+            arc.setStrokeCap(android.graphics.Paint.Cap.ROUND);
+            arc.setStrokeWidth(dp * 3f);
+            arc.setColor(color);
+        }
+
+        @Override
+        protected void onDraw(android.graphics.Canvas c) {
+            float w = getWidth(), h = getHeight(), r = Math.min(w, h) / 2f - ring.getStrokeWidth();
+            c.drawCircle(w / 2, h / 2, r, fill);
+            c.drawCircle(w / 2, h / 2, r, ring);
+            float rr = r * 0.56f;
+            box.set(w / 2 - rr, h / 2 - rr, w / 2 + rr, h / 2 + rr);
+            if (spin) {
+                angle = (angle + 7f) % 360f;
+                c.drawArc(box, angle - 90, 280, false, arc);
+                postInvalidateOnAnimation();
+            } else {
+                c.drawArc(box, -90, Math.max(4f, 320f * progress), false, arc);
+            }
+        }
+    }
+
+    private View buildPull() {
+        pullBox = new LinearLayout(this);
+        pullBox.setOrientation(LinearLayout.VERTICAL);
+        pullBox.setGravity(Gravity.CENTER_HORIZONTAL);
+        pullBox.setAlpha(0f);
+        pullBox.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+        pullLabel = text("Zum Aktualisieren ziehen", 14, tx, false);
+        pullLabel.setPadding(0, 0, 0, px(8));
+        pullBox.addView(pullLabel);
+        pullSpin = new PullSpinner(this, tx, getResources().getDisplayMetrics().density * 1.2f);
+        pullBox.addView(pullSpin, lp(38, 38, 0, 0, 0, 0));
+        return pullBox;
+    }
+
+    /** Liste um "offset" nach unten schieben und Anzeige im freien Raum darueber mitfuehren. */
+    private void setPull(float offset) {
+        pullOffset = offset;
+        if (page != null) page.setTranslationY(offset);
+        if (pullBox == null) return;
+        float th = px(96);
+        int h = pullBox.getHeight() == 0 ? px(70) : pullBox.getHeight();
+        pullBox.setTranslationY(Math.max(-h, offset / 2f - h / 2f));
+        pullBox.setAlpha(pullLoading ? Math.min(1f, offset / px(40)) : Math.min(1f, offset / th));
+        if (!pullLoading) pullSpin.progress = Math.min(1f, offset / th);
+        pullSpin.invalidate();
+    }
+
+    private void animatePull(float to, long ms, Runnable end) {
+        if (pullAnim != null) pullAnim.cancel();
+        pullAnim = android.animation.ValueAnimator.ofFloat(pullOffset, to);
+        pullAnim.setDuration(ms);
+        pullAnim.setInterpolator(new android.view.animation.DecelerateInterpolator(1.6f));
+        pullAnim.addUpdateListener(a -> setPull((float) a.getAnimatedValue()));
+        if (end != null) pullAnim.addListener(new android.animation.AnimatorListenerAdapter() {
+            boolean cancelled;
+
+            @Override
+            public void onAnimationCancel(android.animation.Animator a) {
+                cancelled = true;
+            }
+
+            @Override
+            public void onAnimationEnd(android.animation.Animator a) {
+                if (!cancelled) end.run();
+            }
+        });
+        pullAnim.start();
+    }
+
+    /** Abruf fertig: kurz "Aktualisiert ✓", dann sanft zurueck. */
+    private void pullDone() {
+        if (!pullLoading) return;
+        pullSpin.spin = false;
+        pullSpin.progress = 1f;
+        pullSpin.invalidate();
+        pullLabel.setText("Aktualisiert ✓");
+        ui.postDelayed(() -> animatePull(0, 380, () -> {
+            pullLoading = false;
+            pullLabel.setText("Zum Aktualisieren ziehen");
+        }), 650);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(android.view.MotionEvent e) {
+        if (scroll == null || pullBox == null) return super.dispatchTouchEvent(e);
+        int act = e.getActionMasked();
+        if (act == android.view.MotionEvent.ACTION_DOWN) {
+            pullStartX = e.getRawX();
+            pullStartY = e.getRawY();
+            int[] at = new int[2];
+            scroll.getLocationOnScreen(at);
+            // nur in der Liste, ganz oben und wenn nichts geladen wird
+            pullArmed = !pullLoading && !syncing && scroll.getScrollY() == 0 && e.getRawY() >= at[1];
+            pulling = false;
+            pullBuzzed = false;
+            return super.dispatchTouchEvent(e);
+        }
+        if (act == android.view.MotionEvent.ACTION_MOVE && pullArmed) {
+            float dy = e.getRawY() - pullStartY, dx = e.getRawX() - pullStartX;
+            int slop = android.view.ViewConfiguration.get(this).getScaledTouchSlop();
+            if (!pulling) {
+                if (dy > slop && dy > Math.abs(dx) * 1.3f && scroll.getScrollY() == 0) {
+                    pulling = true;
+                    pullStartY = e.getRawY();
+                    if (pullAnim != null) pullAnim.cancel();
+                    // laufendes Antippen/Scrollen der Liste abbrechen
+                    android.view.MotionEvent c = android.view.MotionEvent.obtain(e);
+                    c.setAction(android.view.MotionEvent.ACTION_CANCEL);
+                    super.dispatchTouchEvent(c);
+                    c.recycle();
+                } else {
+                    if (dy < -slop || Math.abs(dx) > slop * 2) pullArmed = false;
+                    return super.dispatchTouchEvent(e);
+                }
+            }
+            float d = Math.max(0f, e.getRawY() - pullStartY);
+            float max = px(150);
+            float off = max * (1f - (float) Math.exp(-d / (max * 1.1f))); // Gummiband: wird immer schwerer
+            setPull(off);
+            boolean ready = off >= px(96);
+            pullLabel.setText(ready ? "Loslassen zum Aktualisieren" : "Zum Aktualisieren ziehen");
+            if (ready && !pullBuzzed) {
+                pullBuzzed = true;
+                pullBox.performHapticFeedback(android.os.Build.VERSION.SDK_INT >= 30
+                        ? android.view.HapticFeedbackConstants.CONFIRM : android.view.HapticFeedbackConstants.VIRTUAL_KEY);
+            } else if (!ready) {
+                pullBuzzed = false;
+            }
+            return true;
+        }
+        if ((act == android.view.MotionEvent.ACTION_UP || act == android.view.MotionEvent.ACTION_CANCEL) && pulling) {
+            pulling = false;
+            pullArmed = false;
+            if (act == android.view.MotionEvent.ACTION_UP && pullOffset >= px(96)) {
+                pullLoading = true;
+                pullSpin.spin = true;
+                pullSpin.invalidate();
+                pullLabel.setText("Aktualisieren …");
+                animatePull(px(84), 260, null);
+                sync(true);
+                if (!syncing) pullDone(); // Abruf lief schon
+            } else {
+                animatePull(0, 300, null);
+            }
+            return true;
+        }
+        return super.dispatchTouchEvent(e);
     }
 
     private boolean triedMissing;
@@ -280,6 +458,8 @@ public class MainActivity extends Activity {
             scroll.addView(page, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             FrameLayout stack = new FrameLayout(this);
             stack.addView(scroll, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            scroll.setOverScrollMode(View.OVER_SCROLL_NEVER);
+            stack.addView(buildPull(), new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.TOP));
             root.addView(stack, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
             setContentView(root);
         } else {
