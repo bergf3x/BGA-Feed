@@ -5,6 +5,10 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.17",
+                    "+ Neue Quelle chiemgau24: Traunstein, Rupertiwinkel, Chiemsee, Trostberg, Achental, Polizeimeldungen (offizielle RSS-Feeds)",
+                    "+ Neue Quelle ORF Salzburg (offizieller RSS-Feed, frei lesbar)",
+                    "~ Test: alle Quellen direkt vom Handy, GitHub-Feed als Ersatz"},
             {"1.16",
                     "! Test: BGLand24 über die offiziellen RSS-Feeds je Region (Berchtesgaden, Bad Reichenhall, Rupertiwinkel, Traunstein, Salzburg) mit echter Uhrzeit",
                     "! Menü- und Rubrik-Links erscheinen nicht mehr als Meldung",

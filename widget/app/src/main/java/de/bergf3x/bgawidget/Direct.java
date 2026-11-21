@@ -37,6 +37,13 @@ final class Direct {
     private static final int MAX_PER_TOPIC = 40;
     private static final String BGA = "https://www.berchtesgadener-anzeiger.de";
     private static final String BGL = "https://www.bgland24.de";
+    private static final String C24 = "https://www.chiemgau24.de";
+    private static final String ORF_SBG = "https://rss.orf.at/salzburg.xml";
+
+    /** Ippen-Seiten: Abo-Pruefung je Artikel, nur echte Artikel-Links. */
+    static boolean ippen(Catalog.Feed f) {
+        return f.id.equals("bgland24") || f.id.equals("chiemgau24");
+    }
     private static final Pattern ARID = Pattern.compile("_arid,(\\d+)\\.html");
     private static final Pattern A_BGA = Pattern.compile("<a\\b[^>]*?href=\"([^\"]*_arid,\\d+\\.html)\"[^>]*>(.*?)</a>", Pattern.DOTALL);
     private static final Pattern A_ANY = Pattern.compile("<a\\b[^>]*?href=\"([^\"]+)\"[^>]*>(.*?)</a>", Pattern.DOTALL);
@@ -65,7 +72,7 @@ final class Direct {
     }
 
     static boolean handles(Catalog.Feed f) {
-        return f.id.equals("bga") || f.id.equals("bgland24");
+        return f.id.equals("bga") || f.id.equals("bgland24") || f.id.equals("chiemgau24") || f.id.equals("orf_salzburg");
     }
 
     /** Holt die Seite(n) live, mischt mit dem gemerkten Stand und liefert den RSS-Text. */
@@ -73,7 +80,12 @@ final class Direct {
         long t0 = System.currentTimeMillis();
         try {
             boolean bga = f.id.equals("bga");
-            List<Map<String, Object>> found = bga ? scrapeBga() : scrapeBgland();
+            StringBuilder rep = new StringBuilder();
+            List<Map<String, Object>> found;
+            if (bga) found = scrapeBga();
+            else if (f.id.equals("bgland24")) found = scrapeIppen(BGL, java.util.Arrays.asList(BG_SECTIONS), true, rep);
+            else if (f.id.equals("chiemgau24")) found = scrapeChiemgau(rep);
+            else found = scrapeOrf(rep);
             if (found.isEmpty()) throw new IOException("keine Artikel gefunden");
             int timed = 0;
             if (bga) {
@@ -86,8 +98,8 @@ final class Direct {
             synchronized (Direct.class) {
                 xml = merge(ctx, f, bga, found);
             }
-            if (!bga) {
-                // BGLand24: Zeiten/Bezahl-Kennzeichen im Hintergrund nachladen, damit die Liste sofort erscheint
+            if (ippen(f)) {
+                // Ippen-Seiten: Zeiten/Bezahl-Kennzeichen im Hintergrund nachladen, damit die Liste sofort erscheint
                 final Context app = ctx.getApplicationContext();
                 final Catalog.Feed ff = f;
                 final List<Map<String, Object>> fl = found;
@@ -109,7 +121,7 @@ final class Direct {
             int regionN = 0;
             for (Map<String, Object> it : found) if (String.valueOf(it.get("topic")).startsWith("Region")) regionN++;
             log(ctx, f.name + ": " + found.size() + " Artikel direkt (davon Region " + regionN + "), " + timed + " Zeiten, "
-                    + (System.currentTimeMillis() - t0) / 1000 + " s" + (bga ? "" : " | " + bgReport));
+                    + (System.currentTimeMillis() - t0) / 1000 + " s" + (bga ? "" : " | " + rep));
             return xml;
         } catch (Exception e) {
             log(ctx, f.name + ": FEHLER direkt (" + e + ") - nehme GitHub-Feed");
@@ -232,24 +244,24 @@ final class Direct {
             "/bgland/region-berchtesgaden/", "/bgland/region-bad-reichenhall/", "/bgland/rupertiwinkel/",
             "/bgland/region-traunstein/", "/bgland/region-salzburg/", "/bgland/", "/",
     };
-    static volatile String bgReport = "";
-
-    private static List<Map<String, Object>> scrapeBgland() throws IOException {
+    /** Ippen-Seite: je Rubrik der RSS-Feed (sonst die Rubrikseite), optional die Startseite dazu. */
+    private static List<Map<String, Object>> scrapeIppen(final String base, List<String> sections, boolean home, StringBuilder rep)
+            throws IOException {
         ExecutorService ex = Executors.newFixedThreadPool(5);
         List<Callable<Object[]>> tasks = new ArrayList<>();
-        for (final String sec : BG_SECTIONS) {
+        for (final String sec : sections) {
             tasks.add(() -> {
                 List<Map<String, Object>> got = new ArrayList<>();
                 String how;
                 try {
-                    got = parseRss(Net.download(BGL + sec + "rssfeed.rdf"));
+                    got = parseRss(Net.download(base + sec + "rssfeed.rdf"), true);
                     how = "RSS " + got.size();
                 } catch (Exception e) {
                     how = "RSS-Fehler " + e.getMessage();
                 }
                 if (got.isEmpty() && !sec.equals("/")) {
                     try {
-                        got = parseBgland(Net.download(BGL + sec));
+                        got = parseIppen(base, Net.download(base + sec));
                         how += ", Seite " + got.size();
                     } catch (Exception e) {
                         how += ", Seiten-Fehler " + e.getMessage();
@@ -259,16 +271,15 @@ final class Direct {
             });
         }
         // Startseite ergaenzt Themen ausserhalb der Region (Bayern, Sport ...)
-        tasks.add(() -> {
+        if (home) tasks.add(() -> {
             try {
-                List<Map<String, Object>> got = parseBgland(Net.download(BGL + "/"));
+                List<Map<String, Object>> got = parseIppen(base, Net.download(base + "/"));
                 return new Object[]{"Startseite", "Seite " + got.size(), got};
             } catch (Exception e) {
                 return new Object[]{"Startseite", "Fehler " + e.getMessage(), new ArrayList<Map<String, Object>>()};
             }
         });
         Map<String, Map<String, Object>> byUrl = new java.util.LinkedHashMap<>();
-        StringBuilder rep = new StringBuilder();
         try {
             for (Future<Object[]> fu : ex.invokeAll(tasks, 20, TimeUnit.SECONDS)) {
                 if (fu.isCancelled()) {
@@ -278,7 +289,7 @@ final class Direct {
                 try {
                     Object[] r = fu.get();
                     String sec = (String) r[0];
-                    rep.append(sec.replace("/bgland/", "").replace("region-", "").replace("/", "")).append(": ").append(r[1]).append("; ");
+                    rep.append(sec.replace("/bgland/", "").replace("/chiemgau/", "").replace("region-", "").replace("/", "")).append(": ").append(r[1]).append("; ");
                     @SuppressWarnings("unchecked")
                     List<Map<String, Object>> got = (List<Map<String, Object>>) r[2];
                     for (Map<String, Object> it : got) {
@@ -295,8 +306,38 @@ final class Direct {
         } finally {
             ex.shutdownNow();
         }
-        bgReport = rep.toString();
         return new ArrayList<>(byUrl.values());
+    }
+
+    /** chiemgau24: Lokalteil /chiemgau/, Unterrubriken aus den Artikel-Adressen; nur Regionales. */
+    private static List<Map<String, Object>> scrapeChiemgau(StringBuilder rep) throws IOException {
+        List<String> secs = new ArrayList<>();
+        secs.add("/chiemgau/");
+        try {
+            for (Map<String, Object> it : parseRss(Net.download(C24 + "/chiemgau/rssfeed.rdf"), true)) {
+                List<String> seg = new ArrayList<>();
+                for (String x : new java.net.URI((String) it.get("url")).getPath().split("/")) if (!x.isEmpty()) seg.add(x);
+                if (seg.size() > 2 && seg.get(0).equals("chiemgau")) {
+                    String sub = "/chiemgau/" + seg.get(1) + "/";
+                    if (!secs.contains(sub) && secs.size() < 11) secs.add(sub);
+                }
+            }
+        } catch (Exception e) {
+            rep.append("Rubriksuche-Fehler ").append(e.getMessage()).append("; ");
+        }
+        List<Map<String, Object>> out = new ArrayList<>();
+        for (Map<String, Object> it : scrapeIppen(C24, secs, false, rep)) {
+            if (String.valueOf(it.get("topic")).startsWith("Region")) out.add(it);
+        }
+        return out;
+    }
+
+    /** ORF Salzburg: offizieller RSS-Feed, alles ins Thema Region/Salzburg. */
+    private static List<Map<String, Object>> scrapeOrf(StringBuilder rep) throws IOException {
+        List<Map<String, Object>> got = parseRss(Net.download(ORF_SBG), false);
+        for (Map<String, Object> it : got) it.put("topic", "Region/Salzburg");
+        rep.append("RSS ").append(got.size());
+        return got;
     }
 
     private static final Pattern RSS_ITEM = Pattern.compile("<(item|entry)\\b[^>]*>(.*?)</\\1>", Pattern.DOTALL);
@@ -310,7 +351,7 @@ final class Direct {
     }
 
     /** RSS 2.0 / RDF / Atom tolerant lesen (nur echte Artikel-Links). */
-    static List<Map<String, Object>> parseRss(String xml) throws IOException {
+    static List<Map<String, Object>> parseRss(String xml, boolean art) throws IOException {
         List<Map<String, Object>> out = new ArrayList<>();
         SimpleDateFormat rfc = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH);
         Matcher m = RSS_ITEM.matcher(xml);
@@ -322,7 +363,7 @@ final class Direct {
                 if (h.find()) link = h.group(1);
             }
             link = FeedItem.unescape(link.split("#")[0]).trim();
-            if (link.isEmpty() || !BG_ART.matcher(link.split("\\?")[0]).find()) continue;
+            if (link.isEmpty() || (art && !BG_ART.matcher(link.split("\\?")[0]).find())) continue;
             String title = clean(rssTag(blk, "title"));
             if (title.length() < 10) continue;
             Map<String, Object> it = new HashMap<>();
@@ -355,8 +396,8 @@ final class Direct {
         return out;
     }
 
-    private static List<Map<String, Object>> parseBgland(String html) throws IOException {
-        String host = "bgland24.de";
+    private static List<Map<String, Object>> parseIppen(String base, String html) throws IOException {
+        String host = base.replaceFirst("^https?://(www\\.)?", "");
         String[] skip = {"/category/", "/tag/", "/author/", "/page/", "/impressum", "/datenschutz", "/kontakt", "/wp-", "/feed", "/tags/", "/kategorie"};
         java.util.Set<String> seen = new java.util.HashSet<>();
         List<Map<String, Object>> out = new ArrayList<>();
@@ -365,7 +406,7 @@ final class Direct {
             String href = m.group(1).split("#")[0];
             String url;
             if (href.startsWith("http")) url = href;
-            else if (href.startsWith("/")) url = BGL + href;
+            else if (href.startsWith("/")) url = base + href;
             else continue;
             java.net.URI u;
             try {
@@ -420,7 +461,8 @@ final class Direct {
         if (seg.isEmpty()) return "Region";
         String top = seg.get(0);
         switch (top) {
-            case "bgland": return seg.size() > 2 ? "Region/" + nice(seg.get(1)) : "Region";
+            case "bgland": case "chiemgau": case "lokal": case "lokales":
+                return seg.size() > 2 ? "Region/" + nice(seg.get(1)) : "Region";
             case "welt": case "deutschland": case "politik": case "wirtschaft": return "Nachrichten/" + nice(top);
             case "sport": return "Sport";
             case "wintersport": return "Sport/Wintersport";
@@ -545,11 +587,13 @@ final class Direct {
             }
         } catch (Exception ignored) {
         }
-        if (!bga) {
+        if (ippen(f)) {
+            boolean onlyRegion = f.id.equals("chiemgau24");
             java.util.Iterator<Map.Entry<String, JSONObject>> iter = state.entrySet().iterator();
             while (iter.hasNext()) {
-                String u = iter.next().getValue().optString("url").split("\\?")[0];
-                if (!BG_ART.matcher(u).find()) iter.remove();
+                JSONObject o = iter.next().getValue();
+                String u = o.optString("url").split("\\?")[0];
+                if (!BG_ART.matcher(u).find() || (onlyRegion && !o.optString("topic", "Region").startsWith("Region"))) iter.remove();
             }
         }
         long now = System.currentTimeMillis();

@@ -60,6 +60,8 @@ final class FeedItem {
         String low = name.toLowerCase(Locale.GERMANY);
         if (low.contains("bgland")) return 0xFFF7DD45;
         if (low.contains("anzeiger")) return 0xFF459BDB;
+        if (low.contains("chiemgau")) return 0xFF5BBF8A;
+        if (low.contains("orf")) return 0xFFE5484D;
         return 0xFFF0997B;
     }
 
