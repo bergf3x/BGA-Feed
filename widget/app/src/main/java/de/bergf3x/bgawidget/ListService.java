@@ -132,7 +132,7 @@ public class ListService extends RemoteViewsService {
             if (parsed == null) parsed = FeedCache.items(ctx, f.id, f.name);
             long newest = 0;
             for (FeedItem it : parsed) newest = Math.max(newest, it.time);
-            if (newest > 0 && nowMs - newest > 24L * 3600000) {
+            if (newest > 0 && nowMs - newest > 24L * 3600000 && !Catalog.lowVolume(f.id)) {
                 if (stale.length() > 0) stale.append(", ");
                 stale.append(f.name).append(" ohne Neues seit ").append((nowMs - newest) / 3600000L).append(" Std.");
             }
@@ -178,23 +178,45 @@ public class ListService extends RemoteViewsService {
 
     /** Gleiche Meldung aus zwei Quellen nur einmal zeigen (aehnlicher Titel, ueber 60 % gleiche Woerter). */
     private static List<FeedItem> dedupe(List<FeedItem> in) {
+        // Wort-Index statt Jeder-gegen-Jeden: bleibt auch bei 1000+ Meldungen aus vielen Quellen schnell
         List<FeedItem> out = new ArrayList<>();
         List<Set<String>> sets = new ArrayList<>();
+        java.util.Map<String, List<Integer>> index = new java.util.HashMap<>();
         for (FeedItem it : in) {
             Set<String> w = words(it.title);
             boolean dup = false;
-            for (int i = 0; i < out.size() && !dup; i++) {
-                if (out.get(i).feedName.equals(it.feedName)) continue;
-                Set<String> o = sets.get(i);
-                if (w.size() < 3 || o.size() < 3) continue;
-                int common = 0;
-                for (String x : w) if (o.contains(x)) common++;
-                int union = w.size() + o.size() - common;
-                if (union > 0 && common / (double) union >= 0.6) dup = true;
+            if (w.size() >= 3) {
+                java.util.Map<Integer, Integer> common = new java.util.HashMap<>();
+                for (String x : w) {
+                    List<Integer> hits = index.get(x);
+                    if (hits == null) continue;
+                    for (int i : hits) {
+                        Integer c = common.get(i);
+                        common.put(i, c == null ? 1 : c + 1);
+                    }
+                }
+                for (java.util.Map.Entry<Integer, Integer> e : common.entrySet()) {
+                    int i = e.getKey();
+                    if (out.get(i).feedName.equals(it.feedName)) continue;
+                    Set<String> o = sets.get(i);
+                    if (o.size() < 3) continue;
+                    int c = e.getValue();
+                    int union = w.size() + o.size() - c;
+                    if (union > 0 && c / (double) union >= 0.6) {
+                        dup = true;
+                        break;
+                    }
+                }
             }
             if (dup) continue;
+            int pos = out.size();
             out.add(it);
             sets.add(w);
+            for (String x : w) {
+                List<Integer> l = index.get(x);
+                if (l == null) index.put(x, l = new ArrayList<>());
+                l.add(pos);
+            }
         }
         return out;
     }

@@ -563,6 +563,7 @@ public class ConfigActivity extends Activity {
                 if (on) selected.add(f.id);
                 else selected.remove(f.id);
             });
+            if (!Catalog.hasPaywall(f.id)) continue;
             if (!plusF.containsKey(f.id)) plusF.put(f.id, Prefs.showPlusFeed(this, widgetId, f.id));
             b.toggle(feedBox, "      Bezahlartikel anzeigen (🔒)", plusF.get(f.id), on -> plusF.put(f.id, on));
         }

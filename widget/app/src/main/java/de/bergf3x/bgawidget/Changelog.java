@@ -5,6 +5,13 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.19",
+                    "! Meldungen ohne bekannte Uhrzeit stehen nicht mehr als „vor 1 Min.“ ganz oben (Zeit wird geschätzt, echte Zeit ersetzt sie)",
+                    "! BGLand24-Startseite wurde wegen eines leeren Links („#“) nicht gelesen",
+                    "~ Schnellerer Start: gespeicherte Nachrichten werden im Hintergrund eingelesen",
+                    "~ Doppelte Meldungen über mehrere Quellen werden deutlich schneller erkannt",
+                    "~ Landratsamt, Nationalpark, BR24: keine Warnung „ohne Neues seit …“ mehr (veröffentlichen selten)",
+                    "~ Abo-Schalter nur noch bei Quellen mit Bezahl-Artikeln"},
             {"1.18",
                     "+ Themenmenü neu (für Region, Nachrichten, Sport, Kultur …): je Quelle ein aufklappbarer Reiter, immer nur einer offen",
                     "+ Mehrere Themen gleichzeitig wählbar, Reiter zeigt z. B. „Berchtesgaden +2“",

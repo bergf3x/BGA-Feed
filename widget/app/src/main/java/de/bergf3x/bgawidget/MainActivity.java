@@ -53,7 +53,31 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         d = getResources().getDisplayMetrics().density;
+        if (!warmed) {
+            // gespeicherte Feeds im Hintergrund einlesen, damit der Start nicht ruckelt
+            final android.content.Context app = getApplicationContext();
+            new Thread(() -> {
+                try {
+                    List<Catalog.Feed> all = Catalog.load(app);
+                    for (String fid : Catalog.effective(all, Prefs.feeds(app, ID))) {
+                        Catalog.Feed f = Catalog.find(all, fid);
+                        if (f != null) FeedCache.items(app, f.id, f.name);
+                    }
+                } catch (Exception ignored) {
+                }
+                warmed = true;
+                ui.post(() -> {
+                    if (isFinishing() || isDestroyed()) return;
+                    int y = scroll == null ? 0 : scroll.getScrollY();
+                    build();
+                    restore(y);
+                });
+            }).start();
+        }
     }
+
+    /** Gespeicherte Feeds einmal pro Prozess im Hintergrund eingelesen. */
+    private static volatile boolean warmed;
 
     @Override
     protected void onResume() {
@@ -61,7 +85,7 @@ public class MainActivity extends Activity {
         int y = scroll == null ? 0 : scroll.getScrollY();
         boolean stale = System.currentTimeMillis() - Math.max(lastSync, Prefs.newsTime(this)) > STALE_MS;
         // eigene Quellen der App, die das Widget nie geladen hat: einmal gezielt holen
-        boolean missing = !triedMissing && feedsMissing();
+        boolean missing = warmed && !triedMissing && feedsMissing();
         if (missing) triedMissing = true;
         boolean due = (firstResume || stale || missing) && !syncing;
         firstResume = false;
@@ -480,7 +504,13 @@ public class MainActivity extends Activity {
 
     /** Nachrichtenliste (scrollt). */
     private void news() {
-
+        if (!warmed) {
+            TextView t = text("Lade Nachrichten …", 14, soft, false);
+            t.setPadding(px(6), px(18), px(6), px(18));
+            t.setGravity(Gravity.CENTER);
+            page.addView(t);
+            return;
+        }
         List<FeedItem> items = ListService.loadItems(this, ID, false, null);
         Set<String> read = Prefs.readSet(this);
         List<String> kw = Keywords.list(this);
@@ -525,7 +555,7 @@ public class MainActivity extends Activity {
         String curParent = topic.isEmpty() ? "" : topic.split("/")[0];
         LinearLayout row = new LinearLayout(this);
         row.setOrientation(LinearLayout.HORIZONTAL);
-        int fresh = ListService.freshUnread(this, ID);
+        int fresh = warmed ? ListService.freshUnread(this, ID) : 0;
         row.addView(chip(fresh > 0 ? "Alle (" + Math.min(fresh, 99) + ")" : "Alle", curParent.isEmpty(), () -> setTopic("")));
         for (final String p : parents) {
             boolean hasSubs = false;

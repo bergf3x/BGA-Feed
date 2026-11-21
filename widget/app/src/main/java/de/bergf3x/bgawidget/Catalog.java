@@ -57,6 +57,16 @@ final class Catalog {
         }
     }
 
+    /** Quellen mit Bezahl-Artikeln (nur dort gibt es den Abo-Schalter). */
+    static boolean hasPaywall(String id) {
+        return id.equals("bga") || id.equals("tt") || id.equals("bgland24") || id.equals("chiemgau24");
+    }
+
+    /** Quellen, die selten veroeffentlichen (Behoerden, Ortsfilter): keine Warnung "ohne Neues". */
+    static boolean lowVolume(String id) {
+        return id.equals("lra_bgl") || id.equals("npv") || id.equals("br24");
+    }
+
     static Feed find(List<Feed> all, String id) {
         for (Feed f : all) if (f.id.equals(id)) return f;
         return null;

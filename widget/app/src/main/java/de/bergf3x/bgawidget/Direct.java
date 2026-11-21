@@ -318,7 +318,9 @@ final class Direct {
                 try {
                     Object[] r = fu.get();
                     String sec = (String) r[0];
-                    rep.append(sec.replace("/bgland/", "").replace("/chiemgau/", "").replace("region-", "").replace("/", "")).append(": ").append(r[1]).append("; ");
+                    String nm = sec.replace("/bgland/", "").replace("/chiemgau/", "").replace("region-", "").replace("/", "");
+                    if (nm.isEmpty()) nm = sec.equals("/") ? "Start-RSS" : "Gesamt-RSS";
+                    rep.append(nm).append(": ").append(r[1]).append("; ");
                     @SuppressWarnings("unchecked")
                     List<Map<String, Object>> got = (List<Map<String, Object>>) r[2];
                     for (Map<String, Object> it : got) {
@@ -486,8 +488,8 @@ final class Direct {
                 Matcher h = Pattern.compile("<link[^>]+href=\"([^\"]+)\"").matcher(blk);
                 if (h.find()) link = h.group(1);
             }
-            link = FeedItem.unescape(link.split("#")[0]).trim();
-            if (link.isEmpty() || (art && !BG_ART.matcher(link.split("\\?")[0]).find())) continue;
+            link = FeedItem.unescape(before(link, '#')).trim();
+            if (link.isEmpty() || (art && !BG_ART.matcher(before(link, '?')).find())) continue;
             String title = clean(rssTag(blk, "title"));
             if (title.length() < 10) continue;
             Map<String, Object> it = new HashMap<>();
@@ -527,7 +529,8 @@ final class Direct {
         List<Map<String, Object>> out = new ArrayList<>();
         Matcher m = A_ANY.matcher(html);
         while (m.find()) {
-            String href = m.group(1).split("#")[0];
+            String href = before(m.group(1), '#');
+            if (href.isEmpty()) continue;
             String url;
             if (href.startsWith("http")) url = href;
             else if (href.startsWith("/")) url = base + href;
@@ -716,7 +719,7 @@ final class Direct {
             java.util.Iterator<Map.Entry<String, JSONObject>> iter = state.entrySet().iterator();
             while (iter.hasNext()) {
                 JSONObject o = iter.next().getValue();
-                String u = o.optString("url").split("\\?")[0];
+                String u = before(o.optString("url"), '?');
                 if (!BG_ART.matcher(u).find() || (onlyRegion && !o.optString("topic", "Region").startsWith("Region"))) iter.remove();
             }
         }
@@ -747,6 +750,7 @@ final class Direct {
             }
         } catch (Exception ignored) {
         }
+        estimateTimes(state, bga, now);
         List<JSONObject> sorted = new ArrayList<>(state.values());
         final boolean byId = bga;
         Collections.sort(sorted, (x, y) -> byId ? Long.compare(y.optLong("sid"), x.optLong("sid"))
@@ -777,6 +781,57 @@ final class Direct {
         xml.append("</channel></rss>\n");
         sp.edit().putString("state_" + f.id, save.toString()).apply();
         return xml.toString();
+    }
+
+    /**
+     * Meldungen ohne echte Uhrzeit nicht als "gerade eben" ganz oben einsortieren.
+     * Anzeiger/Tagblatt: Artikel-IDs steigen mit der Zeit -> Zeit des naechstaelteren Artikels mit bekannter Zeit.
+     * Sonst: Median der bekannten Zeiten. Echte Zeiten ersetzen die Schaetzung spaeter.
+     */
+    private static void estimateTimes(Map<String, JSONObject> state, boolean byId, long now) {
+        List<JSONObject> timed = new ArrayList<>();
+        for (JSONObject o : state.values()) if (o.optBoolean("tok")) timed.add(o);
+        if (timed.isEmpty()) return;
+        Collections.sort(timed, (x, y) -> Long.compare(x.optLong("sid"), y.optLong("sid")));
+        List<Long> times = new ArrayList<>();
+        for (JSONObject o : timed) times.add(o.optLong("first"));
+        List<Long> byTime = new ArrayList<>(times);
+        Collections.sort(byTime);
+        long median = byTime.get(byTime.size() / 2);
+        long maxSid = timed.get(timed.size() - 1).optLong("sid");
+        try {
+            for (JSONObject o : state.values()) {
+                if (o.optBoolean("tok")) continue;
+                long sid = o.optLong("sid");
+                long est;
+                if (!byId) {
+                    est = median;
+                } else if (sid > maxSid) {
+                    continue; // neuer als alles Bekannte: Erstsichtung bleibt
+                } else {
+                    int lo = 0, hi = timed.size() - 1, pos = -1;
+                    while (lo <= hi) {
+                        int mid = (lo + hi) >>> 1;
+                        if (timed.get(mid).optLong("sid") <= sid) {
+                            pos = mid;
+                            lo = mid + 1;
+                        } else hi = mid - 1;
+                    }
+                    est = pos >= 0 ? times.get(pos) : byTime.get(0) - 60000L;
+                }
+                if (est > 0 && est < o.optLong("first", now)) {
+                    o.put("first", est);
+                    o.put("est", true);
+                }
+            }
+        } catch (Exception ignored) {
+        }
+    }
+
+    /** Teil vor dem ersten Zeichen c (sicher auch fuer "#" oder "" – split()[0] wirft dort einen Fehler). */
+    static String before(String s, char c) {
+        int i = s.indexOf(c);
+        return i < 0 ? s : s.substring(0, i);
     }
 
     private static String esc(String s) {
