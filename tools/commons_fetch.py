@@ -3,9 +3,15 @@ import json, re, sys, requests
 from pathlib import Path
 UA = "BGL-Wetter-News/1.0 (private app; github.com/bergf3x)"
 QUERIES = {
-    "watzmann": "Watzmann Berchtesgaden",
-    "koenigssee": "Königssee St. Bartholomä",
-    "hintersee": "Hintersee Ramsau Hochkalter",
+    "reichenhall": "Bad Reichenhall Hochstaufen",
+    "predigtstuhl": "Predigtstuhl Bad Reichenhall",
+    "untersberg": "Untersberg Marktschellenberg",
+    "anger": "Anger Berchtesgadener Land Hochstaufen",
+    "thumsee": "Thumsee",
+    "freilassing": "Untersberg Freilassing",
+    "teisendorf": "Teisendorf Teisenberg",
+    "laufen": "Laufen Salzach Oberndorf",
+    "kehlstein": "Kehlsteinhaus",
 }
 out = Path("cand"); out.mkdir(exist_ok=True)
 meta = {}
@@ -27,5 +33,5 @@ for key, q in QUERIES.items():
         (out / name).write_bytes(requests.get(ii["thumburl"], headers={"User-Agent": UA}, timeout=60).content)
         meta[name] = dict(title=p["title"], license=lic, artist=artist, page=ii.get("descriptionurl"))
         print(name, lic, artist, p["title"])
-        if n >= 5: break
+        if n >= 4: break
 (out / "meta.json").write_text(json.dumps(meta, ensure_ascii=False, indent=1))
