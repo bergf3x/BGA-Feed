@@ -163,7 +163,9 @@ public class WidgetProvider extends AppWidgetProvider {
         rv.setOnClickPendingIntent(R.id.w_temp, hourly);
         rv.setOnClickPendingIntent(R.id.w_hi, hourly);
         rv.setOnClickPendingIntent(R.id.w_lo, hourly);
-        rv.setOnClickPendingIntent(R.id.w_icon, activity(ctx, WebcamActivity.class, id, 903, "webcam"));
+        rv.setOnClickPendingIntent(R.id.btn_cam, activity(ctx, WebcamActivity.class, id, 903, "webcam"));
+        rv.setInt(R.id.btn_cam, "setColorFilter", 0xFF000000 | Prefs.color(ctx, id));
+        rv.setInt(R.id.btn_cam, "setImageAlpha", Prefs.alpha(Prefs.text(ctx, id)));
         rv.setTextColor(R.id.w_desc, fgSoft);
         rv.setTextColor(R.id.w_temp, fg);
         rv.setTextColor(R.id.w_hi, fg);
