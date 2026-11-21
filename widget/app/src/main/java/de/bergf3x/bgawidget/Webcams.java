@@ -82,6 +82,8 @@ final class Webcams {
         String err = "";
     }
 
+    private static final Object LOCK = new Object();
+
     private Webcams() {}
 
     private static File file(Context c, Cam cam) {
@@ -94,8 +96,10 @@ final class Webcams {
     static Shot cached(Context c, Cam cam, int maxW) {
         Shot s = new Shot();
         File f = file(c, cam);
+        synchronized (LOCK) {
+            if (f.exists()) s.bmp = decode(f, maxW);
+        }
         if (f.exists()) {
-            s.bmp = decode(f, maxW);
             s.taken = Prefs.sp(c).getLong("cam_t_" + cam.id, 0);
             s.fetched = Prefs.sp(c).getLong("cam_f_" + cam.id, f.lastModified());
         }
@@ -121,17 +125,21 @@ final class Webcams {
                     continue;
                 }
                 File tmp = new File(f.getPath() + ".tmp");
-                try (FileOutputStream out = new FileOutputStream(tmp)) {
-                    out.write(im.data);
-                }
-                if (!tmp.renameTo(f)) {
-                    f.delete();
-                    if (!tmp.renameTo(f)) throw new IOException("Speichern fehlgeschlagen");
+                synchronized (LOCK) {
+                    try (FileOutputStream out = new FileOutputStream(tmp)) {
+                        out.write(im.data);
+                    }
+                    if (!tmp.renameTo(f)) {
+                        f.delete();
+                        if (!tmp.renameTo(f)) throw new IOException("Speichern fehlgeschlagen");
+                    }
                 }
                 long taken = im.modified > 0 && im.modified <= now + 60000 ? im.modified : 0;
                 Prefs.sp(c).edit().putLong("cam_t_" + cam.id, taken).putLong("cam_f_" + cam.id, now).apply();
                 Shot s = new Shot();
-                s.bmp = decode(f, maxW);
+                synchronized (LOCK) {
+                    s.bmp = decode(f, maxW);
+                }
                 if (s.bmp == null) {
                     err = "Bild nicht lesbar";
                     f.delete();
