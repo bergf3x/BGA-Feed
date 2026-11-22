@@ -334,7 +334,7 @@ public class ConfigActivity extends Activity {
     }
 
     private void showDesign() {
-        LinearLayout body = subPage("Darstellung", P_DESIGN, 0.40f, true, this::showMain);
+        LinearLayout body = subPage("Darstellung", P_DESIGN, widgetId == Prefs.APP ? 0.55f : 0.40f, true, this::showMain);
         b.label(body, "Modus");
         b.segment(body, new String[]{"Dunkel", "Hell"}, theme, i -> {
             theme = i;
@@ -352,16 +352,19 @@ public class ConfigActivity extends Activity {
             size = i;
             refreshPreview();
         });
-        lblBg = b.label(body, "");
-        body.addView(seek(bgPct, 0, p -> {
-            bgPct = p;
-            refreshPreview();
-        }));
-        lblTx = b.label(body, "");
-        body.addView(seek(txPct, p -> {
-            txPct = p;
-            refreshPreview();
-        }));
+        if (widgetId != Prefs.APP) {
+            // Deckkraft wirkt nur im Widget auf dem Startbildschirm; in der App ist der Hintergrund immer deckend
+            lblBg = b.label(body, "");
+            body.addView(seek(bgPct, 0, p -> {
+                bgPct = p;
+                refreshPreview();
+            }));
+            lblTx = b.label(body, "");
+            body.addView(seek(txPct, p -> {
+                txPct = p;
+                refreshPreview();
+            }));
+        }
         b.label(body, "Abstand in der Liste");
         b.segment(body, new String[]{"Kompakt", "Luftig"}, density, i -> density = i);
         b.label(body, "Bedienung");

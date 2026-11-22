@@ -95,7 +95,11 @@ public class TopicActivity extends Activity {
             final List<String> subs = children(region);
             if (subs.size() <= 1) {
                 // keine Untergliederung: direkt waehlbar
-                b.row(body, name(region) + " (" + count(region) + ")", sel.contains(region), () -> toggle(region), false);
+                // gleiche Glas-Kachel wie die aufklappbaren Eintraege, nur mit Haken statt Pfeil
+                body.addView(entry(name(region), count(region), sel.contains(region), () -> {
+                    Haptic.play(body, Haptic.TICK);
+                    toggle(region);
+                }));
                 continue;
             }
             int picked = 0;
@@ -139,6 +143,28 @@ public class TopicActivity extends Activity {
         }
         Prefs.setTopic(this, id, sb.toString());
         WidgetProvider.refresh(this, id);
+    }
+
+    /** Direkt waehlbarer Eintrag im selben Glas-Stil; gewaehlt = hell mit Haken. */
+    private View entry(String name, int n, boolean on, Runnable click) {
+        View v = header(name, n, 0, false, click);
+        LinearLayout row = (LinearLayout) v;
+        TextView t = (TextView) row.getChildAt(0);
+        TextView c = (TextView) row.getChildAt(1);
+        TextView mark = (TextView) row.getChildAt(2);
+        mark.setText(on ? "✓" : "");
+        if (on) {
+            android.graphics.drawable.GradientDrawable bg = new android.graphics.drawable.GradientDrawable();
+            bg.setColor(b.hi);
+            bg.setCornerRadius(b.px(12));
+            row.setBackground(new android.graphics.drawable.RippleDrawable(
+                    android.content.res.ColorStateList.valueOf(0x33000000), bg, null));
+            t.setTextColor(b.hiTx);
+            c.setTextColor(b.hiTx);
+            mark.setTextColor(b.hiTx);
+        }
+        row.setContentDescription(name + ", " + n + " Meldungen" + (on ? ", ausgewählt" : ""));
+        return row;
     }
 
     /** Aufklappbarer Regions-Reiter im Glas-Stil: Name, Anzahl bzw. Auswahl, Pfeil. */
