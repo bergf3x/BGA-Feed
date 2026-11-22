@@ -10,6 +10,10 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.11",
+                    "+ Gemerkt erscheint als Liste mit Vorschaubildern wie unter News (Bilder nur bei neu gemerkten Artikeln); untere Leiste höher und mit Beschriftung",
+                    "~ Fehlende Vorschaubilder (z. B. Anzeiger-Rubriken) werden von der Artikelseite nachgeladen",
+                    "~ Bergwetter-Karten öffnen jetzt die jeweilige Regionsseite des DAV statt der Übersicht"},
             {"1.10",
                     "+ Untere Leiste in der App: News, Wetter, Gemerkt (mit Zähler). Gemerkt und Wetter stehen nicht mehr als Reiter oben",
                     "+ Neuer Wetter-Bereich: Bergwetter (DAV-Karten für Bayerische Alpen, Allgäu, Zillertal/Tirol, Ötztal/Silvretta) und Region (Vorhersage, Radar, Warnlage); Karten öffnen im Vorschau-Fenster mit Link zur Originalseite, Wetter wird nicht gemerkt",

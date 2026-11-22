@@ -78,7 +78,29 @@ final class Direct {
     private static final Pattern HEAD = Pattern.compile("<h[1-4][^>]*>(.*?)</h[1-4]>", Pattern.DOTALL);
     private static final Pattern PARA = Pattern.compile("<p[^>]*>(.*?)</p>", Pattern.DOTALL);
     /** Teaser-Bild im Anzeiger-System: verzoegert geladen, die echte Adresse steht in data-src. */
-    private static final Pattern IMG_LAZY = Pattern.compile("<img\\b[^>]*?data-src=\"([^\"]*?/cms_media/[^\"]+)\"", Pattern.DOTALL);
+    private static final Pattern IMG_LAZY = Pattern.compile("<img\\b[^>]*?(?:data-src|data-lazy-src|src)=\"([^\"]*?/cms_media/[^\"]+)\"", Pattern.DOTALL);
+    private static final Pattern OG1 = Pattern.compile("<meta[^>]+(?:property|name)=[\"']og:image(?::url)?[\"'][^>]*content=[\"']([^\"']+)[\"']", Pattern.CASE_INSENSITIVE);
+    private static final Pattern OG2 = Pattern.compile("<meta[^>]+content=[\"']([^\"']+)[\"'][^>]*(?:property|name)=[\"']og:image(?::url)?[\"']", Pattern.CASE_INSENSITIVE);
+
+    /** Titelbild aus einer Artikelseite (og:image); leer wenn keins. */
+    static String ogImage(String html, String pageUrl) {
+        try {
+            Matcher m = OG1.matcher(html);
+            String u = m.find() ? m.group(1) : null;
+            if (u == null) {
+                Matcher m2 = OG2.matcher(html);
+                if (m2.find()) u = m2.group(1);
+            }
+            if (u == null) return "";
+            u = u.trim().replace("&amp;", "&");
+            if (u.startsWith("//")) return "https:" + u;
+            if (u.startsWith("http")) return u;
+            java.net.URL b = new java.net.URL(pageUrl);
+            return new java.net.URL(b, u).toString();
+        } catch (Exception e) {
+            return "";
+        }
+    }
     private static final Pattern MEDIA_URL = Pattern.compile(
             "<(?:media:thumbnail|media:content|enclosure)\\b[^>]*?\\burl=\"([^\"]+)\"[^>]*>", Pattern.DOTALL);
 
@@ -739,12 +761,14 @@ final class Direct {
     private static int resolveTimes(Context ctx, Catalog.Feed f, List<Map<String, Object>> found) {
         SharedPreferences sp = ctx.getSharedPreferences("direct", Context.MODE_PRIVATE);
         java.util.Set<String> done = new java.util.HashSet<>();
+        java.util.Set<String> needImg = new java.util.HashSet<>();
         try {
             JSONArray a = new JSONArray(sp.getString("state_" + f.id, "[]"));
             for (int i = 0; i < a.length(); i++) {
                 JSONObject o = a.getJSONObject(i);
                 boolean ok = miller(f) ? o.optBoolean("tok") : o.optBoolean("pc");
                 if (ok || o.optInt("tries") >= 2) done.add(String.valueOf(o.getLong("sid")));
+                if (o.optString("img").isEmpty() && o.optInt("itries") < 2) needImg.add(String.valueOf(o.getLong("sid")));
             }
         } catch (Exception ignored) {
         }
@@ -756,7 +780,9 @@ final class Direct {
                 : Long.compare(y.containsKey("pub") ? (Long) y.get("pub") : 0L, x.containsKey("pub") ? (Long) x.get("pub") : 0L));
         final List<Map<String, Object>> todo = new ArrayList<>();
         for (Map<String, Object> it : cand) {
-            if (!done.contains(String.valueOf(it.get("sid")))) todo.add(it);
+            String sidS = String.valueOf(it.get("sid"));
+            boolean imgEmpty = it.get("img") == null || String.valueOf(it.get("img")).isEmpty();
+            if (!done.contains(sidS) || (imgEmpty && needImg.contains(sidS))) todo.add(it);
             if (todo.size() >= 60) break;
         }
         if (todo.isEmpty()) return 0;
@@ -766,6 +792,11 @@ final class Direct {
             tasks.add(() -> {
                 try {
                     String page = Net.download((String) it.get("url"), false);
+                    if (it.get("img") == null || String.valueOf(it.get("img")).isEmpty()) {
+                        it.put("itried", true);
+                        String og = ogImage(page, (String) it.get("url"));
+                        if (!og.isEmpty()) it.put("img", og);
+                    }
                     if (!it.containsKey("pub")) {
                         long t = parseTime(page);
                         if (t > 0) it.put("pub", t);
@@ -847,6 +878,7 @@ final class Direct {
                 o.put("plus", o.optBoolean("plus") || (Boolean) it.get("plus"));
                 String img = it.get("img") == null ? "" : String.valueOf(it.get("img"));
                 if (!img.isEmpty()) o.put("img", img);
+                else if (Boolean.TRUE.equals(it.get("itried"))) o.put("itries", o.optInt("itries") + 1);
             }
         } catch (Exception ignored) {
         }

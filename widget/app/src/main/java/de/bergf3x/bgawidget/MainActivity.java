@@ -65,6 +65,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Prefs.setFlag(this, "tab_saved", false);
         d = getResources().getDisplayMetrics().density;
         // "Neu seit deinem letzten Besuch": Zeitpunkt, als die App zuletzt verlassen wurde
         visitMark = getSharedPreferences("bga_widget", MODE_PRIVATE).getLong("last_visit", 0);
@@ -120,6 +121,7 @@ public class MainActivity extends Activity {
         if (android.os.Build.VERSION.SDK_INT >= 33) registerReceiver(dataChanged, flt, android.content.Context.RECEIVER_NOT_EXPORTED);
         else registerReceiver(dataChanged, flt);
         updateNav();
+        if (savedTab() && warmed) build();
         int y = scroll == null ? 0 : scroll.getScrollY();
         // anderes Thema gewaehlt (Auswahl-Blase): Liste von oben zeigen, nicht an der alten Stelle
         String tp = Prefs.topicRaw(this, ID);
@@ -550,7 +552,7 @@ public class MainActivity extends Activity {
         permCard();
         if (Prefs.showWeather(this, ID)) weatherCard();
         int before = page.getChildCount();
-        newsChips();
+        if (!savedTab()) newsChips();
         if (page.getChildCount() > before) {
             // Reiter in einen Streifen mit Fensterhintergrund legen: er bleibt beim Scrollen oben unter der Wetterzeile stehen
             View hs = page.getChildAt(page.getChildCount() - 1);
@@ -574,8 +576,22 @@ public class MainActivity extends Activity {
         restore(keepY);
     }
 
+    private boolean savedTab() {
+        return Prefs.flag(this, "tab_saved");
+    }
+
     private boolean weatherTab() {
-        return Prefs.topic(this, ID).startsWith(Taxonomy.WETTER);
+        return !savedTab() && Prefs.topic(this, ID).startsWith(Taxonomy.WETTER);
+    }
+
+    private void switchTab(boolean saved, String topic) {
+        Prefs.setFlag(this, "tab_saved", saved);
+        if (topic == null) {
+            build();
+            if (scroll != null) scroll.post(() -> scroll.scrollTo(0, 0));
+        } else {
+            setTopic(topic);
+        }
     }
 
     /** Flache untere Leiste: News | Wetter | Gemerkt (nur der aktive Bereich zeigt seinen Namen). */
@@ -583,32 +599,38 @@ public class MainActivity extends Activity {
         if (navBar == null) return;
         navBar.removeAllViews();
         boolean wx = weatherTab();
+        boolean sv = savedTab();
         int n = Prefs.saved(this).length();
-        navBar.addView(navItem(R.drawable.ic_news, "News", !wx, "", () -> {
-            if (wx) setTopic(""); else if (scroll != null) scroll.smoothScrollTo(0, 0);
-        }), new LinearLayout.LayoutParams(0, px(44), 1f));
+        navBar.addView(navItem(R.drawable.ic_news, "News", !wx && !sv, "", () -> {
+            if (wx || sv) switchTab(false, ""); else if (scroll != null) scroll.smoothScrollTo(0, 0);
+        }), new LinearLayout.LayoutParams(0, px(64), 1f));
         navBar.addView(navItem(R.drawable.ic_cloud, "Wetter", wx, "", () -> {
-            if (!wx) setTopic(WeatherCards.BERG); else if (scroll != null) scroll.smoothScrollTo(0, 0);
-        }), new LinearLayout.LayoutParams(0, px(44), 1f));
-        navBar.addView(navItem(R.drawable.ic_bookmark, "Gemerkt", false, n > 0 ? String.valueOf(n) : "",
-                () -> open(SavedActivity.class)), new LinearLayout.LayoutParams(0, px(44), 1f));
+            if (!wx) switchTab(false, WeatherCards.BERG); else if (scroll != null) scroll.smoothScrollTo(0, 0);
+        }), new LinearLayout.LayoutParams(0, px(64), 1f));
+        navBar.addView(navItem(R.drawable.ic_bookmark, "Gemerkt", sv, n > 0 ? String.valueOf(n) : "", () -> {
+            if (!sv) switchTab(true, null); else if (scroll != null) scroll.smoothScrollTo(0, 0);
+        }), new LinearLayout.LayoutParams(0, px(64), 1f));
     }
 
     private View navItem(int icon, String label, boolean on, String badge, final Runnable click) {
         LinearLayout it = new LinearLayout(this);
-        it.setOrientation(LinearLayout.HORIZONTAL);
+        it.setOrientation(LinearLayout.VERTICAL);
         it.setGravity(Gravity.CENTER);
         ImageView iv = new ImageView(this);
         iv.setImageResource(icon);
         iv.setColorFilter(on ? tx : soft);
-        it.addView(iv, lp(20, 20, 0, 0, 0, 0));
-        if (on) it.addView(text(label, 12.5f, tx, true), lp(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 6, 0, 0, 0));
+        it.addView(iv, lp(24, 24, 0, 0, 0, 0));
+        LinearLayout lab = new LinearLayout(this);
+        lab.setOrientation(LinearLayout.HORIZONTAL);
+        lab.setGravity(Gravity.CENTER);
+        lab.addView(text(label, 12, on ? tx : soft, on));
         if (!badge.isEmpty()) {
             TextView b = text(badge, 11, chipOnTx, true);
             b.setPadding(px(6), px(1), px(6), px(1));
             press(b, chipOn, 8, 0);
-            it.addView(b, lp(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 5, 0, 0, 0));
+            lab.addView(b, lp(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 5, 0, 0, 0));
         }
+        it.addView(lab, lp(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 2, 0, 0));
         it.setContentDescription(label + (on ? ", ausgewählt" : "") + (badge.isEmpty() ? "" : ", " + badge));
         it.setOnClickListener(v -> {
             Haptic.play(v, Haptic.TICK);
@@ -1005,6 +1027,22 @@ public class MainActivity extends Activity {
             t.setPadding(px(6), px(18), px(6), px(18));
             t.setGravity(Gravity.CENTER);
             page.addView(t);
+            return;
+        }
+        if (savedTab()) {
+            List<FeedItem> sv = ListService.savedItems(this);
+            Set<String> rd = new java.util.HashSet<>();
+            List<String> kw0 = Keywords.list(this);
+            TextView h = text(sv.isEmpty() ? "Gemerkt" : "Gemerkt · " + sv.size() + (sv.size() == 1 ? " Artikel" : " Artikel"), 13, soft, true);
+            h.setPadding(px(4), px(10), 0, px(8));
+            page.addView(h);
+            if (sv.isEmpty()) {
+                TextView t = text("Noch nichts gemerkt. In der Artikel-Vorschau gibt es den Knopf „Merken“.", 14, soft, false);
+                t.setPadding(px(6), px(18), px(6), px(18));
+                t.setGravity(Gravity.CENTER);
+                page.addView(t);
+            }
+            for (FeedItem f : sv) page.addView(newsCard(f, rd, kw0));
             return;
         }
         List<FeedItem> items = ListService.loadItems(this, ID, false, null);

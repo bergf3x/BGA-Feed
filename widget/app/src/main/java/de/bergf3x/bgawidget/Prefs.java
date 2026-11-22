@@ -407,7 +407,11 @@ final class Prefs {
     }
 
     /** Merken oder wieder entfernen; liefert den neuen Zustand. */
-    static synchronized boolean toggleSaved(Context c, String title, String meta, String text, String link) {
+    static boolean toggleSaved(Context c, String title, String meta, String text, String link) {
+        return toggleSaved(c, title, meta, text, link, "");
+    }
+
+    static synchronized boolean toggleSaved(Context c, String title, String meta, String text, String link, String image) {
         org.json.JSONArray a = saved(c);
         org.json.JSONArray out = new org.json.JSONArray();
         boolean had = false;
@@ -420,7 +424,7 @@ final class Prefs {
         if (!had) {
             try {
                 org.json.JSONObject n = new org.json.JSONObject();
-                n.put("t", title).put("m", meta).put("x", text).put("l", link);
+                n.put("t", title).put("m", meta).put("x", text).put("l", link).put("i", image == null ? "" : image);
                 org.json.JSONArray res = new org.json.JSONArray();
                 res.put(n);
                 for (int i = 0; i < out.length() && res.length() < 100; i++) res.put(out.get(i));
