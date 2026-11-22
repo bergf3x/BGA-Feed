@@ -158,11 +158,11 @@ public class WidgetProvider extends AppWidgetProvider {
             boolean hasSubs = false;
             if (!wxm) for (String t : topics) if (t.startsWith(value + "/") && !value.isEmpty()) hasSubs = true;
             int fresh = !wxm && i == 0 ? ListService.freshUnread(ctx, id) : 0;
-            String label = wxm ? (i == 0 ? "Bergwetter" : "Region") : (i == 0 ? (fresh > 0 ? "Alle (" + Math.min(fresh, 99) + ")" : "Alle") : value);
+            String label = wxm ? (i == 0 ? "Bergwetter" : "Region") : (i == 0 ? "Alle" : value);
             if (!wxm && on && (topic.indexOf('/') >= 0 || Prefs.topicSel(ctx, id).size() > 1)) label = Prefs.topicLabel(ctx, id);
             if (hasSubs) label = label + " ▾";
             rv.setViewVisibility(P[i], android.view.View.VISIBLE);
-            rv.setViewVisibility(P_DOT[i], !wxm && i > 0 && newTop.contains(value) ? android.view.View.VISIBLE : android.view.View.GONE);
+            rv.setViewVisibility(P_DOT[i], !wxm && (i == 0 ? !newTop.isEmpty() : newTop.contains(value)) ? android.view.View.VISIBLE : android.view.View.GONE);
             rv.setTextViewText(P_T[i], Style.font(ctx, id, label));
             rv.setInt(P[i], "setBackgroundResource", Pal.chipBg(ctx, id));
             int acc = Prefs.accent(ctx, id);

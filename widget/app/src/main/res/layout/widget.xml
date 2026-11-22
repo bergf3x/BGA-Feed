@@ -546,7 +546,7 @@
                 android:layout_width="0dp"
                 android:layout_height="26dp"
                 android:layout_marginRight="4dp"
-                android:layout_weight="0.75"
+                android:layout_weight="0.55"
                 android:background="@drawable/chip_bg">
 
                 <ImageView
@@ -797,6 +797,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
+                android:paddingRight="10dp"
                 android:text="Gemerkt"
                 android:textColor="#FFFFFFFF"
                 android:textSize="13sp" />
@@ -806,8 +807,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="19dp"
                     android:layout_gravity="top|right"
-                    android:layout_marginTop="1dp"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginRight="3dp"
                     android:background="@drawable/badge_red"
                     android:gravity="center"
                     android:minWidth="19dp"
