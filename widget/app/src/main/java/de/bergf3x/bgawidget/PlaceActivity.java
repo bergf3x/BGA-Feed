@@ -32,21 +32,21 @@ public class PlaceActivity extends Activity {
         final Collator col = Collator.getInstance(Locale.GERMANY);
         Arrays.sort(order, (x, y) -> col.compare(Weather.PLACES[x], Weather.PLACES[y]));
         final LinearLayout body = b.scrollBox(0.6f);
-        int curRow = 0, n = 0;
-        for (int idx : order) {
-            if (idx == cur) curRow = n;
-            n++;
-            final int place = idx;
-            b.row(body, Weather.PLACES[idx], idx == cur, () -> {
-                Prefs.setPlace(this, id, place);
-                WidgetProvider.refreshHeader(this, id);
-                // nur das Wetter des neuen Ortes holen (ohne die Nachrichten) und gleich danach neu zeichnen
-                final android.content.Context app = getApplicationContext();
-                new Thread(() -> {
-                    if (Weather.refreshIfStale(app, place)) WidgetProvider.refreshHeader(app, id);
-                }).start();
-            }, true);
-        }
+        final int[] chosen = {cur};
+        final Runnable[] render = new Runnable[1];
+        render[0] = () -> {
+            body.removeAllViews();
+            for (int idx : order) {
+                final int place = idx;
+                b.row(body, Weather.PLACES[idx], idx == chosen[0], () -> {
+                    chosen[0] = place;
+                    render[0].run();
+                }, false);
+            }
+        };
+        render[0].run();
+        int curRow = 0;
+        for (int i = 0; i < order.length; i++) if (order[i] == cur) curRow = i;
         // beim Oeffnen direkt zum aktuell gewaehlten Ort scrollen (etwa mittig)
         final int target = curRow;
         body.post(() -> {
@@ -65,7 +65,18 @@ public class PlaceActivity extends Activity {
         foot.setText(sp);
         foot.setMovementMethod(android.text.method.LinkMovementMethod.getInstance());
         foot.setLinkTextColor(b.tx);
-        b.pill("Schließen", false, true, () -> { });
+        b.pill("Übernehmen", true, true, () -> {
+            final int place = chosen[0];
+            if (place == cur) return;
+            Prefs.setPlace(this, id, place);
+            WidgetProvider.refreshHeader(this, id);
+            // nur das Wetter des neuen Ortes holen (ohne die Nachrichten) und gleich danach neu zeichnen
+            final android.content.Context app = getApplicationContext();
+            new Thread(() -> {
+                if (Weather.refreshIfStale(app, place)) WidgetProvider.refreshHeader(app, id);
+            }).start();
+        });
+        b.pill("Abbrechen", false, true, () -> { });
     }
 
     private void link(android.text.SpannableString sp, String full, String word, String url) {

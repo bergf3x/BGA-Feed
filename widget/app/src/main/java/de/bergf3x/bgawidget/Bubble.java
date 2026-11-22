@@ -503,6 +503,11 @@ final class Bubble {
 
     /** Knopf, der die Blase offen laesst (z. B. Merken); liefert die TextView zum Umbeschriften. */
     TextView pillKeep(String label, boolean primary, Runnable onClick) {
+        return pillIn(box, label, primary, onClick);
+    }
+
+    /** Wie pillKeep, aber in einem beliebigen Container (z. B. im scrollbaren Bereich). */
+    TextView pillIn(ViewGroup parent, String label, boolean primary, Runnable onClick) {
         TextView t = new TextView(act);
         t.setText(label);
         t.setGravity(Gravity.CENTER);
@@ -514,7 +519,7 @@ final class Bubble {
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         lp.topMargin = px(6);
-        box.addView(t, lp);
+        parent.addView(t, lp);
         return t;
     }
 }

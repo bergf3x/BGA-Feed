@@ -253,7 +253,7 @@ public class ConfigActivity extends Activity {
                     () -> startActivity(new Intent(this, InfoActivity.class)));
         });
         b.space(6);
-        b.pill("Speichern", true, true, this::save);
+        b.pill("Übernehmen", true, true, this::save);
         b.pill("Abbrechen", false, true, () -> { });
     }
 
