@@ -19,6 +19,14 @@ final class Net {
     private static final java.util.concurrent.atomic.AtomicInteger NOT_MOD = new java.util.concurrent.atomic.AtomicInteger();
     private static final java.util.concurrent.atomic.AtomicLong BYTES = new java.util.concurrent.atomic.AtomicLong();
 
+    /** Fuer die Fehlersuche: adb shell setprop log.tag.BGAnet DEBUG, dann steht jede Anfrage im Logcat. */
+    private static void dbg(int code, long bytes, String ne, String nl, boolean cond, String url) {
+        if (android.util.Log.isLoggable("BGAnet", android.util.Log.DEBUG)) {
+            android.util.Log.d("BGAnet", code + " " + bytes + "B etag=" + (ne != null) + " lm=" + (nl != null)
+                    + " cond=" + cond + " " + url);
+        }
+    }
+
     static void resetStats() {
         REQ.set(0);
         NOT_MOD.set(0);
@@ -152,6 +160,7 @@ final class Net {
                     NOT_MOD.incrementAndGet();
                     //noinspection ResultOfMethodCallIgnored
                     body.setLastModified(System.currentTimeMillis());
+                    dbg(304, 0, etag, lastMod, true, url);
                     return cached;
                 }
             }
@@ -167,6 +176,7 @@ final class Net {
             BYTES.addAndGet(out.size());
             String text = out.toString("UTF-8");
             String ne = c.getHeaderField("ETag"), nl = c.getHeaderField("Last-Modified");
+            dbg(200, out.size(), ne, nl, etag != null || lastMod != null, url);
             if (body != null && (ne != null || nl != null) && out.size() <= 1_500_000) {
                 writeFile(body, text);
                 writeFile(meta, (ne == null ? "" : ne) + "\n" + (nl == null ? "" : nl));

@@ -123,7 +123,7 @@ public class UpdateActivity extends Activity {
                 styleNote(newsNote, true, "⚠ Automatisch weckt das Handy regelmäßig auf und lädt alle Quellen neu. "
                         + "Das kostet Akku und Datenvolumen, je kürzer das Intervall, desto mehr. Manuell spart am meisten.");
             } else {
-                styleNote(newsNote, false, "Manuell spart am meisten Akku und Daten: Das Widget lädt nur neu, wenn du auf ⟳ tippst."
+                styleNote(newsNote, false, "Manuell spart am meisten Akku und Daten: Das Widget lädt nur neu, wenn du auf „Aktualisieren“ tippst."
                         + (notif ? "\nBenachrichtigungen (Stichwörter, Unwetter) kommen nur bei Automatik." : ""));
             }
         }
@@ -132,7 +132,7 @@ public class UpdateActivity extends Activity {
                 styleNote(wxNote, true, "⚠ Automatisch kostet Akku und Daten. Das Wetter ändert sich langsam, "
                         + "meist reicht 1 Std.");
             } else {
-                styleNote(wxNote, false, "Manuell: Das Wetter bleibt auf dem letzten Stand, bis du auf ⟳ tippst.");
+                styleNote(wxNote, false, "Manuell: Das Wetter bleibt auf dem letzten Stand, bis du auf „Aktualisieren“ tippst.");
             }
         }
     }
