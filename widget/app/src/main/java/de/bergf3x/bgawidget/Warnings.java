@@ -21,7 +21,11 @@ final class Warnings {
 
     /** Im Hintergrund-Thread aufrufen. Speichert die staerkste aktive Warnung (Stufe 2-4) oder "keine". */
     static void refreshIfStale(Context c) {
-        if (System.currentTimeMillis() - Prefs.warnTime(c) < Prefs.wxMs(c)) return;
+        refreshIfStale(c, Prefs.wxMaxAge(c));
+    }
+
+    static void refreshIfStale(Context c, long maxAge) {
+        if (Prefs.fresh(Prefs.warnTime(c), maxAge)) return;
         try {
             String raw = Net.download(URL);
             int a = raw.indexOf('{');

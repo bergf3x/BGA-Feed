@@ -22,21 +22,36 @@ final class Scheduler {
         return PendingIntent.getBroadcast(ctx, 91, in, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
     }
 
+    /**
+     * Naechster Wecker nur, wenn mindestens ein Teil auf Automatik steht (Nachrichten fuer Nachrichten-Widgets,
+     * Wetter fuer jedes Widget mit Wetter). Alles manuell = gar kein Wecker, das Handy wird nie dafuer geweckt.
+     * Ohne Benachrichtigungen reicht ein Wecker, der das Handy nicht aus dem Schlaf holt: er laeuft dann,
+     * sobald das Handy ohnehin wach wird (z. B. beim Entsperren). Das spart die naechtlichen Aufwachvorgaenge.
+     */
     static void schedule(Context ctx) {
         Context app = ctx.getApplicationContext();
         AlarmManager am = (AlarmManager) app.getSystemService(Context.ALARM_SERVICE);
         if (am == null) return;
         AppWidgetManager mgr = AppWidgetManager.getInstance(app);
-        int n = mgr.getAppWidgetIds(new ComponentName(app, WidgetProvider.class)).length
-                + mgr.getAppWidgetIds(new ComponentName(app, WeatherWidgetProvider.class)).length;
+        int[] news = mgr.getAppWidgetIds(new ComponentName(app, WidgetProvider.class));
+        int[] wx = mgr.getAppWidgetIds(new ComponentName(app, WeatherWidgetProvider.class));
         PendingIntent p = pi(app);
-        if (n == 0) {
+        if (news.length + wx.length == 0) {
             am.cancel(p);
             return;
         }
-        int min = Math.min(Prefs.INTERVALS[Prefs.wxIdx(app)], Prefs.INTERVALS[Prefs.newsIdx(app)]);
+        boolean needWx = wx.length > 0;
+        for (int id : news) if (Prefs.showWeather(app, id)) needWx = true;
+        int min = Integer.MAX_VALUE;
+        if (news.length > 0 && Prefs.newsAuto(app)) min = Math.min(min, Prefs.INTERVALS[Prefs.newsIdx(app)]);
+        if (needWx && Prefs.wxAuto(app)) min = Math.min(min, Prefs.INTERVALS[Prefs.wxIdx(app)]);
+        if (min == Integer.MAX_VALUE) {
+            am.cancel(p);
+            return;
+        }
+        boolean wake = Prefs.warnNotify(app) || Prefs.kwNotify(app);
         try {
-            am.setAndAllowWhileIdle(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+            am.setAndAllowWhileIdle(wake ? AlarmManager.ELAPSED_REALTIME_WAKEUP : AlarmManager.ELAPSED_REALTIME,
                     SystemClock.elapsedRealtime() + min * 60000L, p);
         } catch (Exception ignored) {
         }

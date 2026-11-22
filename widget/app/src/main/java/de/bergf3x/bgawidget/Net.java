@@ -14,15 +14,148 @@ import java.net.URL;
 final class Net {
     private Net() {}
 
+    // ---- Zaehler fuer den Probelauf (Anfragen, unveraenderte Antworten, Bytes) ----
+    private static final java.util.concurrent.atomic.AtomicInteger REQ = new java.util.concurrent.atomic.AtomicInteger();
+    private static final java.util.concurrent.atomic.AtomicInteger NOT_MOD = new java.util.concurrent.atomic.AtomicInteger();
+    private static final java.util.concurrent.atomic.AtomicLong BYTES = new java.util.concurrent.atomic.AtomicLong();
+
+    static void resetStats() {
+        REQ.set(0);
+        NOT_MOD.set(0);
+        BYTES.set(0);
+    }
+
+    static String stats() {
+        return "Anfragen=" + REQ.get() + " unveraendert=" + NOT_MOD.get() + " Bytes=" + BYTES.get();
+    }
+
+    // ---- Zwischenspeicher fuer Textseiten: Server antwortet bei Unveraendertem nur mit "304", ohne Inhalt ----
+    private static volatile java.io.File cacheDir;
+    private static volatile boolean pruned;
+
+    static void init(android.content.Context c) {
+        if (cacheDir != null) return;
+        java.io.File d = new java.io.File(c.getApplicationContext().getCacheDir(), "net");
+        //noinspection ResultOfMethodCallIgnored
+        d.mkdirs();
+        cacheDir = d;
+        if (!pruned) {
+            pruned = true;
+            // Eintraege aelter als 3 Tage aufraeumen
+            long limit = System.currentTimeMillis() - 3L * 86400000L;
+            java.io.File[] fs = d.listFiles();
+            if (fs != null) {
+                long total = 0;
+                for (java.io.File f : fs) {
+                    if (f.lastModified() < limit) {
+                        //noinspection ResultOfMethodCallIgnored
+                        f.delete();
+                    } else {
+                        total += f.length();
+                    }
+                }
+                // hoechstens ~12 MB: aelteste zuerst entfernen
+                if (total > 12_000_000) {
+                    java.util.Arrays.sort(fs, (x, y) -> Long.compare(x.lastModified(), y.lastModified()));
+                    for (java.io.File f : fs) {
+                        if (total <= 8_000_000) break;
+                        if (f.exists()) {
+                            total -= f.length();
+                            //noinspection ResultOfMethodCallIgnored
+                            f.delete();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /** Hat das Handy gerade Internet? Ohne Berechtigung oder bei Fehlern: ja (dann einfach versuchen). */
+    static boolean online(android.content.Context c) {
+        try {
+            android.net.ConnectivityManager cm = (android.net.ConnectivityManager) c.getSystemService(android.content.Context.CONNECTIVITY_SERVICE);
+            if (cm == null) return true;
+            android.net.Network n = cm.getActiveNetwork();
+            if (n == null) return false;
+            android.net.NetworkCapabilities nc = cm.getNetworkCapabilities(n);
+            return nc == null || nc.hasCapability(android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET);
+        } catch (Exception e) {
+            return true;
+        }
+    }
+
+    /** Schluessel ohne den Minuten-Zusatz "?t=…" (der soll nur Zwischenspeicher im Netz umgehen). */
+    private static String key(String url) {
+        String k = url.replaceAll("[?&]t=\\d+$", "");
+        try {
+            byte[] d = java.security.MessageDigest.getInstance("SHA-1").digest(k.getBytes("UTF-8"));
+            StringBuilder sb = new StringBuilder();
+            for (byte x : d) sb.append(String.format("%02x", x));
+            return sb.toString();
+        } catch (Exception e) {
+            return Integer.toHexString(k.hashCode());
+        }
+    }
+
+    private static String readFile(java.io.File f) {
+        try (java.io.FileInputStream in = new java.io.FileInputStream(f)) {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            byte[] buf = new byte[8192];
+            int n;
+            while ((n = in.read(buf)) > 0) out.write(buf, 0, n);
+            return out.toString("UTF-8");
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private static void writeFile(java.io.File f, String s) {
+        try (java.io.FileOutputStream o = new java.io.FileOutputStream(f)) {
+            o.write(s.getBytes("UTF-8"));
+        } catch (Exception ignored) {
+        }
+    }
+
     static String download(String url) throws IOException {
+        return download(url, true);
+    }
+
+    /** cache = false fuer Einzelseiten, die nur einmal gelesen werden (Artikel): kein Zwischenspeicher dafuer. */
+    static String download(String url, boolean cache) throws IOException {
+        java.io.File dir = cache ? cacheDir : null;
+        String k = dir == null ? null : key(url);
+        java.io.File body = k == null ? null : new java.io.File(dir, k + ".body");
+        java.io.File meta = k == null ? null : new java.io.File(dir, k + ".meta");
+        String etag = null, lastMod = null;
+        if (body != null && body.exists() && meta.exists()) {
+            String m = readFile(meta);
+            if (m != null) {
+                String[] p = m.split("\n", -1);
+                etag = p.length > 0 && !p[0].isEmpty() ? p[0] : null;
+                lastMod = p.length > 1 && !p[1].isEmpty() ? p[1] : null;
+            }
+        }
         HttpURLConnection c = (HttpURLConnection) new URL(url).openConnection();
         c.setConnectTimeout(10000);
         c.setReadTimeout(15000);
         c.setRequestProperty("User-Agent", "BGAWidget/2.3 (privates Nachrichten-Widget, Android)");
         c.setRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
         c.setRequestProperty("Accept-Language", "de-DE,de;q=0.9");
+        if (etag != null) c.setRequestProperty("If-None-Match", etag);
+        if (lastMod != null) c.setRequestProperty("If-Modified-Since", lastMod);
+        REQ.incrementAndGet();
         try {
-            if (c.getResponseCode() != 200) throw new IOException("HTTP " + c.getResponseCode());
+            int code = c.getResponseCode();
+            if (code == 304 && body != null) {
+                String cached = readFile(body);
+                if (cached != null) {
+                    NOT_MOD.incrementAndGet();
+                    //noinspection ResultOfMethodCallIgnored
+                    body.setLastModified(System.currentTimeMillis());
+                    return cached;
+                }
+            }
+            if (code != 200) throw new IOException("HTTP " + code);
             InputStream in = c.getInputStream();
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             byte[] buf = new byte[8192];
@@ -31,7 +164,14 @@ final class Net {
                 out.write(buf, 0, n);
                 if (out.size() > 4_000_000) throw new IOException("Antwort zu gross");
             }
-            return out.toString("UTF-8");
+            BYTES.addAndGet(out.size());
+            String text = out.toString("UTF-8");
+            String ne = c.getHeaderField("ETag"), nl = c.getHeaderField("Last-Modified");
+            if (body != null && (ne != null || nl != null) && out.size() <= 1_500_000) {
+                writeFile(body, text);
+                writeFile(meta, (ne == null ? "" : ne) + "\n" + (nl == null ? "" : nl));
+            }
+            return text;
         } finally {
             c.disconnect();
         }

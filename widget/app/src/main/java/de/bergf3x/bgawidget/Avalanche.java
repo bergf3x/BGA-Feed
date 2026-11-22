@@ -25,7 +25,11 @@ final class Avalanche {
 
     /** Im Hintergrund-Thread aufrufen. Ausserhalb der Saison (kein Bericht) bleibt der Text leer. */
     static void refreshIfStale(Context c) {
-        if (System.currentTimeMillis() - Prefs.avalTime(c) < Math.max(MAX_AGE, Prefs.wxMs(c))) return;
+        refreshIfStale(c, Prefs.wxMaxAge(c));
+    }
+
+    static void refreshIfStale(Context c, long maxAge) {
+        if (Prefs.fresh(Prefs.avalTime(c), maxAge == Long.MAX_VALUE ? maxAge : Math.max(MAX_AGE, maxAge))) return;
         SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd", Locale.GERMANY);
         f.setTimeZone(TimeZone.getTimeZone("Europe/Berlin"));
         String d = f.format(new Date());

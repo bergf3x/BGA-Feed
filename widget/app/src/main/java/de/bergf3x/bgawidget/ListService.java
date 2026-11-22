@@ -61,7 +61,8 @@ public class ListService extends RemoteViewsService {
     }
 
     /** Alle gewaehlten Feeds plus Wetter, Warnungen und Lawinenbericht gleichzeitig, mit gemeinsamem Zeitbudget. */
-    static java.util.Map<String, Fetched> fetchAll(final Context ctx, List<Catalog.Feed> all, Set<String> selected, final int place) {
+    static java.util.Map<String, Fetched> fetchAll(final Context ctx, List<Catalog.Feed> all, Set<String> selected, final int place, final boolean app) {
+        Net.init(ctx);
         java.util.Map<String, Fetched> out = new java.util.HashMap<>();
         List<java.util.concurrent.Callable<Fetched>> tasks = new ArrayList<>();
         final List<String> ids = new ArrayList<>();
@@ -80,9 +81,11 @@ public class ListService extends RemoteViewsService {
             });
         }
         final int feedCount = tasks.size();
-        tasks.add(() -> { Weather.refreshIfStale(ctx, place); return null; });
-        tasks.add(() -> { Warnings.refreshIfStale(ctx); return null; });
-        tasks.add(() -> { Avalanche.refreshIfStale(ctx); return null; });
+        // Vollbild-App: Wetter immer gleich frisch; Widgets: nach ihrer Einstellung (Automatik-Intervall oder manuell)
+        final long wxAge = app ? Prefs.APP_WX_MS : Prefs.wxMaxAge(ctx);
+        tasks.add(() -> { Weather.refreshIfStale(ctx, place, wxAge); return null; });
+        tasks.add(() -> { Warnings.refreshIfStale(ctx, wxAge); return null; });
+        tasks.add(() -> { Avalanche.refreshIfStale(ctx, wxAge); return null; });
         java.util.concurrent.ExecutorService ex = java.util.concurrent.Executors.newFixedThreadPool(Math.min(5, tasks.size()));
         try {
             List<java.util.concurrent.Future<Fetched>> fs = ex.invokeAll(tasks, Direct.enabled(ctx) ? 50 : 25, java.util.concurrent.TimeUnit.SECONDS);
@@ -291,8 +294,25 @@ public class ListService extends RemoteViewsService {
             Catalog.refresh(ctx);
             List<Catalog.Feed> all = Catalog.load(ctx);
             Set<String> selected = Catalog.effective(all, Prefs.feeds(ctx, Prefs.APP));
-            java.util.Map<String, Fetched> res = fetchAll(ctx, all, selected, Prefs.place(ctx, Prefs.APP));
+            java.util.Map<String, Fetched> res = fetchAll(ctx, all, selected, Prefs.place(ctx, Prefs.APP), true);
             loadItems(ctx, Prefs.APP, true, res);
+            lastFetchEnd = System.currentTimeMillis();
+        }
+    }
+
+    /**
+     * Ein gemeinsamer Abruf fuer alle Nachrichten-Widgets: die gewaehlten Quellen aller Widgets zusammen,
+     * jede Quelle genau einmal; danach schreibt jedes Widget seinen Teil in den Zwischenspeicher.
+     */
+    static void syncWidgets(Context ctx, int[] ids) {
+        if (ids.length == 0) return;
+        synchronized (FETCH_LOCK) {
+            Catalog.refresh(ctx);
+            List<Catalog.Feed> all = Catalog.load(ctx);
+            Set<String> union = new java.util.HashSet<>();
+            for (int id : ids) union.addAll(Catalog.effective(all, Prefs.feeds(ctx, id)));
+            java.util.Map<String, Fetched> res = fetchAll(ctx, all, union, Prefs.place(ctx, ids[0]), false);
+            for (int id : ids) loadItems(ctx, id, true, res);
             lastFetchEnd = System.currentTimeMillis();
         }
     }
@@ -319,28 +339,10 @@ public class ListService extends RemoteViewsService {
 
         @Override
         public void onDataSetChanged() {
-            sync(false);
-        }
-
-        /** Abruf nie doppelt: wer zweiter kommt, wartet und nimmt den frischen Cache (ausser force). */
-        void sync(boolean force) {
-            if (Prefs.takeLocalOnly(ctx)) {
-                items = load(false, null);
-                WidgetProvider.refreshHeader(ctx, widgetId);
-                return;
-            }
-            synchronized (FETCH_LOCK) {
-                if (!force && recentlyFetched()) {
-                    items = load(false, null);
-                } else {
-                    Catalog.refresh(ctx);
-                    List<Catalog.Feed> all = Catalog.load(ctx);
-                    Set<String> selected = Catalog.effective(all, Prefs.feeds(ctx, widgetId));
-                    java.util.Map<String, Fetched> res = fetchAll(ctx, all, selected, Prefs.place(ctx, widgetId));
-                    items = load(true, res);
-                    lastFetchEnd = System.currentTimeMillis();
-                }
-            }
+            // nie ins Netz: Neuabrufe laufen nur ueber den Wecker oder den Aktualisieren-Knopf (Updater).
+            // Ein Reiterwechsel, eine Groessenaenderung oder "gelesen" liest nur den Zwischenspeicher.
+            Prefs.takeLocalOnly(ctx);
+            items = load(false, null);
             WidgetProvider.refreshHeader(ctx, widgetId);
         }
 

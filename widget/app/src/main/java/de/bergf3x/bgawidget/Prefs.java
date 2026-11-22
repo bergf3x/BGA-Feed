@@ -432,6 +432,27 @@ final class Prefs {
         sp(c).edit().putInt("iv_wx", wx).putInt("iv_news", news).apply();
     }
 
+    /** Manuell: kein automatischer Abruf, nur auf Knopfdruck (je fuer Nachrichten und Wetter im Widget). */
+    static boolean newsAuto(Context c) {
+        return !sp(c).getBoolean("man_news", false);
+    }
+
+    static boolean wxAuto(Context c) {
+        return !sp(c).getBoolean("man_wx", false);
+    }
+
+    static void setNewsMode(Context c, boolean manual, int idx) {
+        SharedPreferences.Editor e = sp(c).edit().putBoolean("man_news", manual);
+        if (idx >= 0) e.putInt("iv_news", idx);
+        e.apply();
+    }
+
+    static void setWxMode(Context c, boolean manual, int idx) {
+        SharedPreferences.Editor e = sp(c).edit().putBoolean("man_wx", manual);
+        if (idx >= 0) e.putInt("iv_wx", idx);
+        e.apply();
+    }
+
     /** Ab diesem Alter gilt ein Stand als faellig (85 % des Intervalls, damit ein etwas frueher Wecker nicht ausfaellt). */
     static long wxMs(Context c) {
         return INTERVALS[wxIdx(c)] * 60000L * 85 / 100;
@@ -439,6 +460,19 @@ final class Prefs {
 
     static long newsMs(Context c) {
         return INTERVALS[newsIdx(c)] * 60000L * 85 / 100;
+    }
+
+    /** Die Vollbild-App haelt ihr Wetter immer gleich frisch, unabhaengig von den Widget-Einstellungen. */
+    static final long APP_WX_MS = 30L * 60000L * 85 / 100;
+
+    /** Hoechstalter des Wetters fuer Widgets: im Automatik-Betrieb das Intervall, manuell nie (nur wenn noch nichts da ist). */
+    static long wxMaxAge(Context c) {
+        return wxAuto(c) ? wxMs(c) : Long.MAX_VALUE;
+    }
+
+    /** true, wenn t (Zeitstempel) existiert und juenger als maxAge ist. */
+    static boolean fresh(long t, long maxAge) {
+        return t != 0 && System.currentTimeMillis() - t < maxAge;
     }
 
     static long newsTry(Context c) {
