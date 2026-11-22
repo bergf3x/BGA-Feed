@@ -64,5 +64,27 @@ adb shell am start -W -n $ACT >/dev/null; sleep 4
 tapw "Einstellungen" 3; tapw "Über die App" 3; tapw "Quellen" 2; shot b3_quellen
 $UI texts | grep -E "●|○" | tee -a $R
 log "== Widget mit Bildern =="
-adb shell input keyevent KEYCODE_BACK; adb shell input keyevent KEYCODE_BACK; adb shell input keyevent KEYCODE_HOME; sleep 2
+adb shell input keyevent KEYCODE_BACK; adb shell input keyevent KEYCODE_BACK; sleep 1
+adb shell am start -W -n $ACT >/dev/null; sleep 3
+tapw "Hinzufügen" 3
+tapw "Add to home screen" 3; tapw "Add automatically" 3; tapw "Hinzufügen" 3
+adb shell input keyevent KEYCODE_HOME; sleep 12
+shot b4_widget_start
+B=$(python3 tools/wbounds.py $PKG); log "Widget: $B"
+read X1 Y1 X2 Y2 <<< "$B"
+if [ "$X2" != "0" ]; then
+  CX=$(( (X1+X2)/2 ))
+  for step in 1 2 3; do
+    B=$(python3 tools/wbounds.py $PKG); read X1 Y1 X2 Y2 <<< "$B"; CY=$(( (Y1+Y2)/2 ))
+    adb shell input swipe $CX $CY $CX $CY 1200; sleep 1.5
+    adb shell input keyevent KEYCODE_BACK; sleep 0.5
+    adb shell input swipe $CX $CY $CX $CY 1200; sleep 2
+    adb shell input swipe $CX $((Y2+2)) $CX $((Y2+330)) 1500; sleep 2
+    adb shell input keyevent KEYCODE_HOME; sleep 6
+  done
+fi
+sleep 8
+shot b5_widget_gross
+log "Bilder ok insgesamt: $(adb logcat -d -s BGAimg:I | grep -c 'Bild ok')"
+adb shell input keyevent KEYCODE_HOME; sleep 2
 log "== Ende =="
