@@ -1,5 +1,45 @@
 {
  "items": {
+  "1027865": {
+   "sid": 1027865,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-merkursonde-bepicolombo-umkreist-zielplaneten-_arid,1027865.html",
+   "title": "Merkur-Sonde »BepiColombo« umkreist Zielplaneten",
+   "teaser": "Paris/Darmstadt (dpa) - Zehn Milliarden Kilometer hat »BepiColombo« zurückgelegt und ist endlich am Ziel angekommen: dem Merkur. Bevor die eigentliche Arbeit losgeht, ...",
+   "category": "Wissenschaft",
+   "plus": false,
+   "topic": "Nachrichten/Wissenschaft",
+   "first_seen": "2026-11-22T02:40:38+00:00"
+  },
+  "1027864": {
+   "sid": 1027864,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-goretzka-dachte-im-sommer-ueber-ende-seiner-karriere-nach-_arid,1027864.html",
+   "title": "Goretzka dachte im Sommer über Ende seiner Karriere nach",
+   "teaser": "Birmingham (dpa) - Lange Sommerpause, Sonne statt Fußball? Leon Goretzka denkt vor seinem Wechsel zu Aston Villa über mehr Lebensqualität und ein Karriereende nach.",
+   "category": "Fußball",
+   "plus": false,
+   "topic": "Sport/Fußball",
+   "first_seen": "2026-11-22T02:40:38+00:00"
+  },
+  "1027863": {
+   "sid": 1027863,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-nach-kritik-trump-bezeichnet-putin-erneut-als-freund-_arid,1027863.html",
+   "title": "Nach Kritik: Trump bezeichnet Putin erneut als »Freund«",
+   "teaser": "",
+   "category": "",
+   "plus": false,
+   "topic": "Nachrichten/Boulevard",
+   "first_seen": "2026-11-22T02:40:38+00:00"
+  },
+  "1027861": {
+   "sid": 1027861,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-mexiko-festnahme-von-drogenboss-loest-toedliche-gewalt-aus-_arid,1027861.html",
+   "title": "Mexiko: Festnahme von Drogenboss löst tödliche Gewalt aus",
+   "teaser": "",
+   "category": "",
+   "plus": false,
+   "topic": "Nachrichten/Boulevard",
+   "first_seen": "2026-11-22T02:40:38+00:00"
+  },
   "1027859": {
    "sid": 1027859,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-doppelter-blitzstart-st-pauli-schlaegt-bochum-20-_arid,1027859.html",
@@ -204,10 +244,10 @@
    "sid": 1027824,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-schneeflocken-und-graupelkoerner-mischen-sich-in-den-regen-_arid,1027824.html",
    "title": "Schneeflocken und Graupelkörner mischen sich in den Regen",
-   "teaser": "",
-   "category": "",
+   "teaser": "Offenbach (dpa) - Langsam wird es Winter. Obwohl es tagsüber meist bei Plus-Temperaturen bleibt und auch die Sonne scheint, nimmt das Weiß zu.",
+   "category": "Brennpunkt",
    "plus": false,
-   "topic": "Nachrichten/Boulevard",
+   "topic": "Nachrichten/Deutschland & Welt",
    "first_seen": "2026-11-21T12:07:46+00:00"
   },
   "1027823": {
@@ -244,10 +284,10 @@
    "sid": 1027818,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-streit-um-eubudget-costa-kuerzt-nach-kritik-von-merz-_arid,1027818.html",
    "title": "Neue EU-Digitalsteuer soll Streit um Haushalt entschärfen",
-   "teaser": "",
-   "category": "",
+   "teaser": "Brüssel (dpa) - Eine neue EU-Digitalsteuer soll nach dem Willen EU-Ratspräsident Costa künftig zur Finanzierung der EU beitragen. Der Vorschlag ist Teil eines neuen ...",
+   "category": "Brennpunkt",
    "plus": false,
-   "topic": "Nachrichten/Boulevard",
+   "topic": "Nachrichten/Deutschland & Welt",
    "first_seen": "2026-11-21T12:07:46+00:00"
   },
   "1027816": {
@@ -374,10 +414,10 @@
    "sid": 1027792,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-sind-vaeter-in-elternzeit-gluecklicher-_arid,1027792.html",
    "title": "Sind Väter in Elternzeit glücklicher?",
-   "teaser": "Berlin (dpa) - Elternzeit kann die psychische Gesundheit von Männern stärken, wie Studien nahelegen. Doch in Deutschland bleiben viele Väter hinter ihren Wünschen zurück. Woran liegt ...",
-   "category": "Wissenschaft",
+   "teaser": "",
+   "category": "",
    "plus": false,
-   "topic": "Nachrichten/Wissenschaft",
+   "topic": "Nachrichten/Deutschland & Welt",
    "first_seen": "2026-11-21T03:51:40+00:00"
   },
   "1027790": {
@@ -654,10 +694,10 @@
    "sid": 1027727,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-winzige-meeresbewohner-neue-baertierchenarten-entdeckt-_arid,1027727.html",
    "title": "Winzige Meeresbewohner - Neue Bärtierchenarten entdeckt",
-   "teaser": "",
-   "category": "",
+   "teaser": "Wilhelmshaven (dpa/lni) - Bärtierchen können an Land und unter Wasser und selbst extreme Umweltbedingungen überstehen. Forscher aus Wilhelmshaven haben jetzt zwei neue Arten der ...",
+   "category": "Wissenschaft",
    "plus": false,
-   "topic": "Nachrichten/Deutschland & Welt",
+   "topic": "Nachrichten/Wissenschaft",
    "first_seen": "2026-11-20T17:32:48+00:00"
   },
   "1027726": {
@@ -703,9 +743,9 @@
   "1027720": {
    "sid": 1027720,
    "url": "https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land/bad-reichenhall_artikel,-abenteurer-seit-60-jahren-otto-huber-erzaehlt-aus-seinem-leben-_arid,1027720.html",
-   "title": "Abenteurer seit 60 Jahren – Otto Huber erzählt aus seinem Leben",
-   "teaser": "Bad Reichenhall – Seit sechs Jahrzehnten ist der Traunsteiner Bergsteiger und Weltenbummler Otto Huber auf der Suche nach Abenteuern. Darüber spricht er am Mittwoch, 25. November, um ...",
-   "category": "Bad Reichenhall",
+   "title": "Abenteurer seit 60 Jahren – Otto Huber erzählt aus seinem Leben",
+   "teaser": "",
+   "category": "",
    "plus": false,
    "topic": "Region/Berchtesgadener Land",
    "first_seen": "2026-11-21T17:00:57+00:00"
@@ -735,7 +775,7 @@
    "url": "https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land/bischofswiesen_artikel,-neue-schiessanlage-der-bundeswehr-in-bischofswiesen-ist-uebergeben-mit-49-millionen-euro-fast-doppelt-_arid,1027715.html",
    "title": "Neue Schießanlage der Bundeswehr in Bischofswiesen ist übergeben - Mit 49 Millionen Euro fast doppelt so viel wie geplant",
    "teaser": "",
-   "category": "",
+   "category": "Bischofswiesen",
    "plus": true,
    "topic": "Region/Berchtesgadener Land",
    "first_seen": "2026-11-21T12:07:46+00:00"
@@ -754,8 +794,8 @@
    "sid": 1027709,
    "url": "https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land/berchtesgaden_artikel,-ju-draengt-auf-reformen-bei-wohnen-und-familienfoerderung-_arid,1027709.html",
    "title": "JU drängt auf Reformen bei Wohnen und Familienförderung",
-   "teaser": "",
-   "category": "",
+   "teaser": "Berchtesgaden – Die Interessen der jungen Generation und politische Antworten auf die Herausforderungen der Zukunft sollen im Mittelpunkt der Landesversammlung der Jungen Union Bayern ...",
+   "category": "Berchtesgaden",
    "plus": false,
    "topic": "Region/Berchtesgadener Land",
    "first_seen": "2026-11-21T15:31:58+00:00"
@@ -783,9 +823,9 @@
   "1027705": {
    "sid": 1027705,
    "url": "https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land/schoenau-am-koenigssee_artikel,-ein-tourismusjahr-das-sich-sehen-lassen-kann-bergerlebnis-berchtesgaden-zieht-bilanz-_arid,1027705.html",
-   "title": "Ein Tourismusjahr, das sich sehen lassen kann – Bergerlebnis Berchtesgaden zieht Bilanz",
+   "title": "Ein Tourismusjahr, das sich sehen lassen kann – Bergerlebnis Berchtesgaden zieht Bilanz",
    "teaser": "",
-   "category": "Schönau am Königssee",
+   "category": "",
    "plus": true,
    "topic": "Region/Berchtesgadener Land",
    "first_seen": "2026-11-21T12:07:46+00:00"
@@ -1114,7 +1154,7 @@
    "sid": 1027606,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-wann-gibt-es-mehr-menschenaehnliche-roboter-als-menschen-_arid,1027606.html",
    "title": "Wann gibt es mehr menschenähnliche Roboter als Menschen?",
-   "teaser": "Toronto (dpa) - Der Erde steht eine neue Bevölkerungsexplosion bevor, meinen einige Forscher. Diesmal geht es nicht um Menschen, sondern um Maschinen.",
+   "teaser": "",
    "category": "Wissenschaft",
    "plus": false,
    "topic": "Nachrichten/Wissenschaft",
@@ -1580,16 +1620,6 @@
    "topic": "Nachrichten/Deutschland & Welt",
    "first_seen": "2026-11-20T17:32:48+00:00"
   },
-  "1027512": {
-   "sid": 1027512,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-hautkrebsrisiko-leitlinie-empfiehlt-verbot-von-solarien-_arid,1027512.html",
-   "title": "Hautkrebsrisiko - Leitlinie empfiehlt Verbot von Solarien",
-   "teaser": "Berlin (dpa) - Gebräunte Haut gilt vielen noch immer als schön. Im Winter ist das über Solarien zu erreichen. Wegen des Risikos für Hautkrebs empfehlen Krebsforscher, Solarien nicht ...",
-   "category": "Brennpunkt",
-   "plus": false,
-   "topic": "Nachrichten/Deutschland & Welt",
-   "first_seen": "2026-11-20T17:45:57+00:00"
-  },
   "1027508": {
    "sid": 1027508,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-ezb-sieht-banken-robust-trotz-krisen-und-spricht-warnung-aus-_arid,1027508.html",
@@ -1630,16 +1660,6 @@
    "topic": "Nachrichten/Wirtschaft",
    "first_seen": "2026-11-20T17:45:57+00:00"
   },
-  "1027504": {
-   "sid": 1027504,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-trotz-eu-prien-will-weiter-an-socialmediaregeln-arbeiten-_arid,1027504.html",
-   "title": "Trotz EU: Prien will weiter an Social-Media-Regeln arbeiten",
-   "teaser": "Brüssel (dpa) - Kinder sollen nicht auf TikTok, Instagram und Co. zugreifen, da sind sich Brüssel und Berlin einig. Die EU-Kommission bremst Länder bei eigenen Vorstößen aus - aber ...",
-   "category": "Brennpunkt",
-   "plus": false,
-   "topic": "Nachrichten/Deutschland & Welt",
-   "first_seen": "2026-11-20T17:45:57+00:00"
-  },
   "1027496": {
    "sid": 1027496,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-bundesbank-erwartet-inflationsschub-nach-jahreswechsel-_arid,1027496.html",
@@ -1667,7 +1687,7 @@
    "teaser": "Essen (dpa) - Ein Fan von Rot-Weiss Essen zeigt beim Spiel in Saarbrücken den Hitlergruß – mehr als drei Monate später ist er identifiziert. Welche Schritte der Verein nun gegen ihn ...",
    "category": "Fußball",
    "plus": false,
-   "topic": "Sport/Fußball",
+   "topic": "Sport",
    "first_seen": "2026-11-20T17:45:57+00:00"
   },
   "1027484": {
@@ -1914,7 +1934,7 @@
    "sid": 1027410,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-lancetkommission-fordert-regeln-gegen-digitale-suchtfallen-_arid,1027410.html",
    "title": "Lancet-Kommission fordert Regeln gegen digitale Suchtfallen",
-   "teaser": "",
+   "teaser": "Hatfield (dpa) - Endloses Scrollen, automatisch startende Videos: Digitale Plattformen sind so gestaltet, dass Nutzer möglichst lange online bleiben. Eine Kommission fordert, etwas ...",
    "category": "Wissenschaft",
    "plus": false,
    "topic": "Nachrichten/Wissenschaft",
@@ -3164,7 +3184,7 @@
    "sid": 1026421,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-doppelter-fang-riesenrakete-starship-vor-neuem-testflug-_arid,1026421.html",
    "title": "Doppelter Fang? Riesen-Rakete Starship vor neuem Testflug",
-   "teaser": "Starbase (dpa) - Mit dem größten je gebauten Raketensystem der Raumfahrtgeschichte will Elon Musk den Mars erschließen. Jetzt soll das Starship aber erstmal zu einem weiteren Test ...",
+   "teaser": "",
    "category": "Wissenschaft",
    "plus": false,
    "topic": "Nachrichten/Wissenschaft",
@@ -3976,26 +3996,6 @@
    "title": "Hoher Besuch in Übersee: Reinhold Messner spricht über seinen Schicksalsberg – Fragerunde mit den Gästen",
    "teaser": "",
    "category": "Regional",
-   "plus": false,
-   "topic": "Region/Bergsteiger & Naturfreunde",
-   "first_seen": "2026-11-20T17:50:08+00:00"
-  },
-  "725786": {
-   "sid": 725786,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-72-tage-zu-fuss-unterwegs-maggi-und-alex-berger-aus-uebersee-wandern-vom-chiemsee-an-die-ostsee-_arid,725786.html",
-   "title": "72 Tage zu Fuß unterwegs: Maggi und Alex Berger aus Übersee wandern vom Chiemsee an die Ostsee",
-   "teaser": "",
-   "category": "Bergsteiger",
-   "plus": false,
-   "topic": "Region/Bergsteiger & Naturfreunde",
-   "first_seen": "2026-11-20T17:50:08+00:00"
-  },
-  "718900": {
-   "sid": 718900,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-radeln-fuer-kinder-in-not-chiemgau-king-und-der-verein-radeln-und-helfen-veranstalten-ein-zweitaegiges-_arid,718900.html",
-   "title": "Radeln für Kinder in Not: »Chiemgau King« und der Verein »Radeln und Helfen« veranstalten ein zweitägiges Sommerfest",
-   "teaser": "",
-   "category": "Landkreis Traunstein",
    "plus": false,
    "topic": "Region/Bergsteiger & Naturfreunde",
    "first_seen": "2026-11-20T17:50:08+00:00"
