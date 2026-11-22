@@ -10,6 +10,10 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.17",
+                    "+ Widget-Kopfzeile aufgeräumt: der Name „BGL Wetter & News“ ist immer voll lesbar, rechts nur Aktualisieren und Einstellungen",
+                    "+ Abo-Schloss sitzt wie in der App links vor den Themen, Webcams als runder Knopf rechts in der unteren Leiste; Gemerkt über den Reiter mit Zähler",
+                    "~ Webcam-Ansicht: „Zur Liste“ heißt jetzt „Schließen“ (zurück in die Auswahl)"},
             {"1.16",
                     "+ Webcam: Tipp aufs Bild öffnet die Original-Seite der Webcam (Vollbild bleibt als Knopf)",
                     "+ Gemerkt ist zwischen App und Widget synchron; der Zähler steht auch in der Widget-Leiste",

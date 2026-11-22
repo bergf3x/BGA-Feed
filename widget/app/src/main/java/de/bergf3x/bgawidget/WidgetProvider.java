@@ -174,6 +174,7 @@ public class WidgetProvider extends AppWidgetProvider {
                     : topicBroadcast(ctx, id, 100 + i, value, immutable));
         }
         if (shows == 2) rv.setViewVisibility(R.id.row_p, android.view.View.GONE);
+        rv.setViewVisibility(R.id.btn_pabo, shows == 2 || !pl.chips ? android.view.View.GONE : android.view.View.VISIBLE);
         // Untere Leiste ist immer da (das Widget ist mindestens 400 dp hoch): News | Wetter | Gemerkt mit Zaehler
         rv.setViewVisibility(R.id.nav_row, android.view.View.VISIBLE);
         int savedN = 0;
@@ -274,11 +275,10 @@ public class WidgetProvider extends AppWidgetProvider {
             Pal.filter(ctx, id, rv, tb, cw);
             rv.setInt(tb, "setImageAlpha", Prefs.alpha(Prefs.text(ctx, id)));
         }
-        rv.setViewVisibility(R.id.btn_saved, weatherWidget ? android.view.View.GONE : android.view.View.VISIBLE);
-        rv.setViewVisibility(R.id.btn_abo, weatherWidget ? android.view.View.GONE : android.view.View.VISIBLE);
-        if (!weatherWidget) aboButton(ctx, rv, id, R.id.btn_abo, 0xA0, cw);
+        rv.setViewVisibility(R.id.btn_saved, android.view.View.GONE);
+        rv.setViewVisibility(R.id.btn_abo, android.view.View.GONE);
         // reines Wetter-Widget hat einen eigenen, immer sichtbaren Webcam-Knopf oben rechts
-        rv.setViewVisibility(R.id.btn_cam, weatherWidget ? android.view.View.GONE : android.view.View.VISIBLE);
+        rv.setViewVisibility(R.id.btn_cam, android.view.View.GONE);
         Pal.text(ctx, id, rv, R.id.w_desc, cw, 0.7f);
         Pal.text(ctx, id, rv, R.id.w_temp, cw, 1f);
         Pal.text(ctx, id, rv, R.id.w_hi, cw, 1f);
@@ -382,22 +382,20 @@ public class WidgetProvider extends AppWidgetProvider {
         if (weatherWidget) return;
 
         // Nachrichten-Widget: Groessenstufe. Klein/mittel: Knoepfe und Stand in die Kopfzeile, Pfeil zum Aufklappen.
-        boolean small = !plan.tools;
+        // Kopfzeile: Name immer voll lesbar, rechts nur Aktualisieren und Einstellungen
         String sub = ok ? (stand.isEmpty() ? "" : "Aktualisiert " + stand) : "Offline" + (stand.isEmpty() ? "" : " · Stand " + stand);
         rv.setTextViewText(R.id.w_sub, sub);
         if (ok) Pal.text(ctx, id, rv, R.id.w_sub, -1, 0.7f); else rv.setTextColor(R.id.w_sub, 0xFFFFB74D);
-        rv.setViewVisibility(R.id.w_sub, small && !sub.isEmpty() ? android.view.View.VISIBLE : android.view.View.GONE);
-        int hv = small ? android.view.View.VISIBLE : android.view.View.GONE;
-        rv.setViewVisibility(R.id.btn_habo, hv);
-        aboButton(ctx, rv, id, R.id.btn_habo, 0xA0, -1);
-        rv.setViewVisibility(R.id.btn_hsaved, hv);
-        rv.setViewVisibility(R.id.btn_hcam, hv);
-        rv.setOnClickPendingIntent(R.id.btn_hsaved, activity(ctx, SavedActivity.class, id, 905, "saved"));
-        rv.setOnClickPendingIntent(R.id.btn_hcam, activity(ctx, WebcamActivity.class, id, 903, "webcam"));
-        for (int hb : new int[]{R.id.btn_hsaved, R.id.btn_hcam}) {
-            Pal.filter(ctx, id, rv, hb, -1);
-            rv.setInt(hb, "setImageAlpha", Prefs.alpha(Prefs.text(ctx, id)));
-        }
+        rv.setViewVisibility(R.id.w_sub, !sub.isEmpty() ? android.view.View.VISIBLE : android.view.View.GONE);
+        rv.setViewVisibility(R.id.btn_habo, android.view.View.GONE);
+        rv.setViewVisibility(R.id.btn_hsaved, android.view.View.GONE);
+        rv.setViewVisibility(R.id.btn_hcam, android.view.View.GONE);
+        rv.setViewVisibility(R.id.w_stand, android.view.View.GONE);
+        // Abo-Schloss links vor den Themen, Webcams rechts in der unteren Leiste
+        aboButton(ctx, rv, id, R.id.btn_pabo, 0xA0, -1);
+        rv.setOnClickPendingIntent(R.id.nav_cam, activity(ctx, WebcamActivity.class, id, 903, "webcam"));
+        Pal.filter(ctx, id, rv, R.id.nav_cam, -1);
+        rv.setInt(R.id.nav_cam, "setImageAlpha", Prefs.alpha(Prefs.text(ctx, id)));
         rv.setTextColor(R.id.w_warn_ic, Warnings.color(wl));
         rv.setViewVisibility(R.id.w_warn_ic, on && plan.warnIcon ? android.view.View.VISIBLE : android.view.View.GONE);
         boolean canToggle = on && plan.level < 2;
