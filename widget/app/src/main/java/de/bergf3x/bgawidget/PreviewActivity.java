@@ -34,7 +34,8 @@ public class PreviewActivity extends Activity {
         }
 
         // als gelesen markieren; Liste nur aus dem Cache neu zeichnen (kein Netz, kein Flackern)
-        if (!link.isEmpty()) {
+        final boolean wx = WeatherCards.isCardLink(this, link);
+        if (!link.isEmpty() && !wx) {
             Prefs.markRead(this, link);
             Prefs.setLocalOnly(this);
             android.appwidget.AppWidgetManager mgr = android.appwidget.AppWidgetManager.getInstance(this);
@@ -60,9 +61,10 @@ public class PreviewActivity extends Activity {
         b.text(title, 18, b.title, true).setPadding(0, b.px(6), 0, b.px(10));
         b.scrollText(text.isEmpty() ? "Für diesen Artikel gibt es keinen Anrisstext." : text, 14, b.tx);
         String src = FeedItem.source(link);
-        b.text("Nur der Anrisstext – der ganze Artikel steht auf der Webseite." + (src.isEmpty() ? "" : "\nQuelle: " + src), 11, b.soft, false)
+        b.text(wx ? "Wird dort laufend aktualisiert." + (src.isEmpty() ? "" : "\nQuelle: " + src)
+                        : "Nur der Anrisstext – der ganze Artikel steht auf der Webseite." + (src.isEmpty() ? "" : "\nQuelle: " + src), 11, b.soft, false)
                 .setPadding(0, b.px(10), 0, b.px(4));
-        b.pill("Artikel öffnen", true, isWeb(link), () -> {
+        b.pill(wx ? "Seite öffnen" : "Artikel öffnen", true, isWeb(link), () -> {
             try {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(link)));
             } catch (Exception ignored) {

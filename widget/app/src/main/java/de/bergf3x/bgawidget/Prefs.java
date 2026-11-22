@@ -72,6 +72,23 @@ final class Prefs {
         return sp(c).getBoolean("cmp_" + id, false);
     }
 
+    static java.util.Set<String> bergRegions(Context c) {
+        return new java.util.LinkedHashSet<>(sp(c).getStringSet("wc_berg", WeatherCards.BERG_DEFAULT));
+    }
+
+    static boolean regionCards(Context c) {
+        return sp(c).getBoolean("wc_region", true);
+    }
+
+    static java.util.Set<String> warnRegions(Context c) {
+        return new java.util.LinkedHashSet<>(sp(c).getStringSet("wc_warn", new java.util.LinkedHashSet<>(java.util.Arrays.asList("09172"))));
+    }
+
+    static void setWeatherCards(Context c, java.util.Set<String> berg, boolean region, java.util.Set<String> warn) {
+        sp(c).edit().putStringSet("wc_berg", new java.util.HashSet<>(berg)).putBoolean("wc_region", region)
+                .putStringSet("wc_warn", new java.util.HashSet<>(warn)).apply();
+    }
+
     static boolean warnNotify(Context c) {
         return sp(c).getBoolean("warn_notify", false);
     }

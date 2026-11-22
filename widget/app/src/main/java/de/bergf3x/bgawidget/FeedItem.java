@@ -44,9 +44,16 @@ final class FeedItem {
     boolean plus = false;
     /** Platzhalter fuer eine Medien-Ueberschrift in der Liste (title = Name des Mediums). */
     boolean header = false;
+    /** Zeile unter dem Titel bei Wetter-Karten (statt Rubrik und Zeit). */
+    String sub = "";
+
+    boolean weather() {
+        return topic.startsWith(WeatherCards.TOP + "/");
+    }
 
     /** "Region · vor 12 Min." fuer die Zeile unter dem Titel. */
     String meta() {
+        if (!sub.isEmpty()) return sub;
         String leaf = Taxonomy.label(topic);
         if (leaf.isEmpty()) leaf = category.trim();
         String t = timeText();
@@ -113,6 +120,7 @@ final class FeedItem {
 
     int accentColor() {
         String leaf = topic.substring(topic.lastIndexOf('/') + 1);
+        if (weather()) return 0xFF5AA9FF;
         if (leaf.equals("Sport")) return 0xFFF0997B;
         if (leaf.equals("Kultur")) return 0xFFED93B1;
         if (leaf.equals("Blaulicht")) return 0xFFE57373;

@@ -68,6 +68,9 @@ public class ConfigActivity extends Activity {
     private boolean kwNotifyOn;
     private boolean compact;
     private boolean notify;
+    private java.util.Set<String> wcBerg;
+    private boolean wcRegion;
+    private java.util.Set<String> wcWarn;
     private LinearLayout muteBox;
     private LinearLayout swatchBox;
 
@@ -99,6 +102,9 @@ public class ConfigActivity extends Activity {
         warnOn = Prefs.showWarn(this, widgetId);
         compact = Prefs.compact(this, widgetId);
         notify = Prefs.warnNotify(this);
+        wcBerg = Prefs.bergRegions(this);
+        wcRegion = Prefs.regionCards(this);
+        wcWarn = Prefs.warnRegions(this);
         bgMode = BgStyle.mode(this, widgetId);
         bgC1 = BgStyle.c1(this, widgetId);
         bgC2 = BgStyle.c2(this, widgetId);
@@ -130,7 +136,7 @@ public class ConfigActivity extends Activity {
     }
 
     // ---------- Seiten ----------
-    private static final int P_MAIN = 0, P_SOURCES = 1, P_DESIGN = 2, P_LIST = 3, P_WEATHER = 4, P_COLORS = 5, P_NOTIFY = 6;
+    private static final int P_MAIN = 0, P_SOURCES = 1, P_DESIGN = 2, P_LIST = 3, P_WEATHER = 4, P_COLORS = 5, P_NOTIFY = 6, P_WCARDS = 7;
     private boolean haptic;
     private int imgMode;
     private int page = P_MAIN;
@@ -149,7 +155,8 @@ public class ConfigActivity extends Activity {
                 .append(notify).append('|').append(haptic).append('|').append(imgMode).append('|')
                 .append(etKw != null ? etKw.getText().toString() : kwText).append('|')
                 .append(new java.util.TreeSet<>(selected)).append('|').append(new java.util.TreeSet<>(muted)).append('|')
-                .append(new java.util.TreeMap<>(plusF));
+                .append(new java.util.TreeMap<>(plusF)).append(new java.util.TreeSet<>(wcBerg)).append(wcRegion)
+                .append(new java.util.TreeSet<>(wcWarn));
         return sb.toString();
     }
 
@@ -171,6 +178,7 @@ public class ConfigActivity extends Activity {
             return;
         }
         if (b != null && page == P_WEATHER) showWeather();
+        else if (b != null && page == P_WCARDS) showWCards();
         else if (b != null && page == P_MAIN) showMain();
     }
 
@@ -260,6 +268,8 @@ public class ConfigActivity extends Activity {
                     + " · " + (notify ? "Unwetter an" : "Unwetter aus"), this::showNotify);
             b.tile(R.drawable.ic_cloud, "Wetter", Weather.PLACES[Prefs.place(this, widgetId)]
                     + (wxOn ? "" : " · ausgeblendet") + (warnOn ? " · Warnungen an" : ""), this::showWeather);
+            b.tile(R.drawable.ic_cloud, "Wetter-Karten", wcBerg.size() + " Bergwetter-Regionen · "
+                    + (wcRegion ? "Region an" : "Region aus") + (notify ? " · Warnungen" : ""), this::showWCards);
             int sc = savedCount();
             b.tile(R.drawable.ic_bookmark, "Gemerkte Artikel", sc < 0 ? "Später lesen" : sc + " gemerkt",
                     () -> startActivity(new Intent(this, SavedActivity.class)));
@@ -354,6 +364,30 @@ public class ConfigActivity extends Activity {
                 && checkSelfPermission("android.permission.POST_NOTIFICATIONS") != android.content.pm.PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{"android.permission.POST_NOTIFICATIONS"}, 1);
         }
+    }
+
+    private void showWCards() {
+        LinearLayout body = subPage("Wetter-Karten", P_WCARDS, 0.6f, false);
+        b.label(body, "Bergwetter (DAV)");
+        for (final String[] r : WeatherCards.BERG_REGIONS) {
+            b.toggle(body, r[1], wcBerg.contains(r[0]), on -> {
+                if (on) wcBerg.add(r[0]); else wcBerg.remove(r[0]);
+            });
+        }
+        b.label(body, "Region");
+        b.toggle(body, "Vorhersage, Radar und Warnlage", wcRegion, on -> wcRegion = on);
+        b.label(body, "Wetterwarnungen");
+        b.toggle(body, "Warnung melden (ab Stufe 3)", notify, on -> {
+            notify = on;
+            askNotifPermission(on);
+        });
+        b.hint("Warnungen für diese Regionen:");
+        for (final String[] r : WeatherCards.WARN_REGIONS) {
+            b.toggle(body, "   " + r[1], wcWarn.contains(r[0]), on -> {
+                if (on) wcWarn.add(r[0]); else wcWarn.remove(r[0]);
+            });
+        }
+        done(this::showMain);
     }
 
     private void showWeather() {
@@ -641,6 +675,7 @@ public class ConfigActivity extends Activity {
         BgStyle.set(this, widgetId, bgMode, bgC1, bgC2, bgTint, bgRound, bgSrc);
         Prefs.setAccent(this, widgetId, accent);
         Prefs.setImgMode(this, imgMode);
+        Prefs.setWeatherCards(this, wcBerg, wcRegion, wcWarn);
         Prefs.setKeywords(this, etKw != null ? etKw.getText().toString() : kwText, kwNotifyOn);
         for (java.util.Map.Entry<String, Boolean> e : plusF.entrySet()) Prefs.setPlusFeed(this, widgetId, e.getKey(), e.getValue());
         WidgetProvider.updateAny(this, widgetId);

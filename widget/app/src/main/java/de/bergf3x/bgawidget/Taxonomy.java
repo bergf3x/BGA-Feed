@@ -28,7 +28,8 @@ final class Taxonomy {
     static final String WORLD = "Deutschland & Welt";
     /** Zweite Sicht: je Zeitung deren eigene Rubriken. */
     static final String PAPERS = "Zeitungen";
-    static final String[] AREAS = {PAPERS, BGL, WORLD, OUT};
+    static final String WETTER = WeatherCards.TOP;
+    static final String[] AREAS = {PAPERS, BGL, WETTER, WORLD, OUT};
     /** Reihenfolge der Zeitungen im Menue. */
     static final String[] PAPER_ORDER = {"Berchtesgadener Anzeiger", "BGLand24", "Traunsteiner Tagblatt", "chiemgau24",
             "Merkur", "ORF Salzburg", "BR24", "alpin.de", "Landratsamt BGL", "Nationalpark Berchtesgaden"};
@@ -44,7 +45,7 @@ final class Taxonomy {
 
     /** Reihenfolge der Unterpunkte im Menue. */
     static final String[] ORDER = {BGD, BRH, FRL, LK, AMT, CHG, SBG, BAY,
-            "Nachrichten", "Politik & Gesellschaft", "Wirtschaft", "Wissen & Digital", "Leute", "Sport", "Kultur", "Blaulicht", "Bergsport"};
+            "Bergwetter", "Region", "Nachrichten", "Politik & Gesellschaft", "Wirtschaft", "Wissen & Digital", "Leute", "Sport", "Kultur", "Blaulicht", "Bergsport"};
 
     private static final Pattern P_BGD = Pattern.compile("Berchtesgaden|Bischofswiesen|Ramsau|Schönau|Königssee|Marktschellenberg|"
             + "Watzmann|Jenner|Obersalzberg|Kehlstein|Hintersee|Hochkalter|Roßfeld|Rossfeld|Strub|Loipl|Maria Gern");
@@ -189,6 +190,15 @@ final class Taxonomy {
                         p = i < 0 ? "" : p.substring(0, i);
                     }
                 }
+            }
+        }
+        for (FeedItem it : WeatherCards.items(ctx)) {
+            String p = it.topic;
+            while (!p.isEmpty()) {
+                Integer c = m.get(p);
+                m.put(p, c == null ? 1 : c + 1);
+                int i = p.lastIndexOf('/');
+                p = i < 0 ? "" : p.substring(0, i);
             }
         }
         return m;

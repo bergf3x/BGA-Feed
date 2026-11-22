@@ -154,6 +154,9 @@ public class ListService extends RemoteViewsService {
                 merged.add(it);
             }
         }
+        if (!sel.isEmpty()) {
+            for (FeedItem it : WeatherCards.items(ctx)) if (Prefs.matchTopic(it, WeatherCards.TOP, sel)) merged.add(it);
+        }
         if (online) Prefs.setNews(ctx, anyOk || !anyFail);
         if (online && merged.isEmpty()) showEmptyReason(ctx, id, all, selected, topic);
         // Gleiche Zeit (z. B. erster Lauf): Reihenfolge innerhalb des Feeds bleibt erhalten

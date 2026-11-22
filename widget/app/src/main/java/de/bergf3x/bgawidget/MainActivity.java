@@ -995,6 +995,7 @@ public class MainActivity extends Activity {
         }
         if (!syncing && !Prefs.newsOk(this)) offlineBanner();
         boolean marked = false;
+        String lastGroup = "";
         for (int i = 0; i < Math.min(main.size(), MAX_ITEMS); i++) {
             FeedItem it = main.get(i);
             if (!marked && visitMark > 0 && i > 0 && it.time > 0 && it.time <= visitMark) {
@@ -1002,6 +1003,12 @@ public class MainActivity extends Activity {
                 marked = true;
             }
             if (it.time > 0 && it.time <= visitMark) marked = true; // Linie nur, wenn oben wirklich Neues steht
+            if (it.weather() && !it.category.isEmpty() && !it.category.equals(lastGroup)) {
+                lastGroup = it.category;
+                TextView gh = text(it.category, Style.metaSp(sizeIdx) + 1f, soft, true);
+                gh.setPadding(px(4), px(10), 0, px(2));
+                page.addView(gh);
+            }
             page.addView(newsCard(it, read, kw));
         }
         foldSection(Taxonomy.OUT, out, read, kw);
@@ -1171,8 +1178,8 @@ public class MainActivity extends Activity {
     }
 
     private View newsCard(final FeedItem it, Set<String> read, List<String> kw) {
-        boolean isRead = Prefs.isRead(read, it.link);
-        boolean hit = Keywords.matches(kw, it);
+        boolean isRead = !it.weather() && Prefs.isRead(read, it.link);
+        boolean hit = !it.weather() && Keywords.matches(kw, it);
         float dim = isRead ? 0.6f : 1f;
         LinearLayout card = new LinearLayout(this);
         card.setOrientation(LinearLayout.HORIZONTAL);
@@ -1191,7 +1198,7 @@ public class MainActivity extends Activity {
                 hit ? 0xFFFFD166 : tx, !isRead);
         title.setAlpha(dim);
         col.addView(title);
-        String meta = it.meta() + " · " + FeedItem.shortSource(it.feedName) + (it.plus ? " · Plus" : "");
+        String meta = it.weather() ? it.meta() : it.meta() + " · " + FeedItem.shortSource(it.feedName) + (it.plus ? " · Plus" : "");
         TextView m = text((!isRead && it.isFresh() ? "● " : "") + meta, Style.metaSp(sizeIdx) + 1f, soft, false);
         m.setPadding(0, px(4), 0, 0);
         m.setAlpha(dim);
