@@ -568,6 +568,16 @@
                     android:paddingRight="4dp"
                     android:textColor="#FFFFFFFF"
                     android:textSize="11sp" />
+
+                <ImageView
+                    android:id="@+id/p0_dot"
+                    android:layout_width="11dp"
+                    android:layout_height="11dp"
+                    android:layout_gravity="top|right"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginRight="3dp"
+                    android:src="@drawable/dot_red"
+                    android:visibility="gone" />
             </FrameLayout>
             <FrameLayout
                 android:id="@+id/p1"
@@ -596,6 +606,16 @@
                     android:paddingRight="4dp"
                     android:textColor="#FFFFFFFF"
                     android:textSize="11sp" />
+
+                <ImageView
+                    android:id="@+id/p1_dot"
+                    android:layout_width="11dp"
+                    android:layout_height="11dp"
+                    android:layout_gravity="top|right"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginRight="3dp"
+                    android:src="@drawable/dot_red"
+                    android:visibility="gone" />
             </FrameLayout>
             <FrameLayout
                 android:id="@+id/p2"
@@ -624,6 +644,16 @@
                     android:paddingRight="4dp"
                     android:textColor="#FFFFFFFF"
                     android:textSize="11sp" />
+
+                <ImageView
+                    android:id="@+id/p2_dot"
+                    android:layout_width="11dp"
+                    android:layout_height="11dp"
+                    android:layout_gravity="top|right"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginRight="3dp"
+                    android:src="@drawable/dot_red"
+                    android:visibility="gone" />
             </FrameLayout>
             <FrameLayout
                 android:id="@+id/p3"
@@ -652,6 +682,16 @@
                     android:paddingRight="4dp"
                     android:textColor="#FFFFFFFF"
                     android:textSize="11sp" />
+
+                <ImageView
+                    android:id="@+id/p3_dot"
+                    android:layout_width="11dp"
+                    android:layout_height="11dp"
+                    android:layout_gravity="top|right"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginRight="3dp"
+                    android:src="@drawable/dot_red"
+                    android:visibility="gone" />
             </FrameLayout>
             <FrameLayout
                 android:id="@+id/p4"
@@ -680,6 +720,16 @@
                     android:paddingRight="4dp"
                     android:textColor="#FFFFFFFF"
                     android:textSize="11sp" />
+
+                <ImageView
+                    android:id="@+id/p4_dot"
+                    android:layout_width="11dp"
+                    android:layout_height="11dp"
+                    android:layout_gravity="top|right"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginRight="3dp"
+                    android:src="@drawable/dot_red"
+                    android:visibility="gone" />
             </FrameLayout>
         </LinearLayout>
 
@@ -737,15 +787,36 @@
                 android:textColor="#FFFFFFFF"
                 android:textSize="13sp" />
 
-            <TextView
-                android:id="@+id/nav_saved"
+            <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="1">
+
+                <TextView
+                android:id="@+id/nav_saved"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="Gemerkt"
                 android:textColor="#FFFFFFFF"
                 android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/nav_badge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="19dp"
+                    android:layout_gravity="top|center_horizontal"
+                    android:layout_marginLeft="52dp"
+                    android:background="@drawable/badge_red"
+                    android:gravity="center"
+                    android:minWidth="19dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:textColor="#FFFFFFFF"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+            </FrameLayout>
 
             <ImageView
                 android:id="@+id/nav_cam"

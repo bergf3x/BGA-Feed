@@ -10,6 +10,11 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.18",
+                    "+ Neue Meldungen sind markiert: roter Balken, „NEU“ vor der Zeile; neu ist, was seit dem letzten Öffnen der App oder nach dem Aktualisieren dazugekommen ist",
+                    "+ Roter Punkt in der Ecke eines Themas, wenn es dort Neues gibt (App und Widget)",
+                    "+ „Gemerkt“ zeigt die Anzahl als roten Kreis an der Ecke des Reiters (App und Widget), ab 100 als „99+“",
+                    "~ Der kleine Punkt vor frischen Meldungen entfällt, „NEU“ ersetzt ihn"},
             {"1.17",
                     "+ Widget-Kopfzeile aufgeräumt: der Name „BGL Wetter & News“ ist immer voll lesbar, rechts nur Aktualisieren und Einstellungen",
                     "+ Abo-Schloss sitzt wie in der App links vor den Themen, Webcams als runder Knopf rechts in der unteren Leiste; Gemerkt über den Reiter mit Zähler",

@@ -68,6 +68,7 @@ final class Updater {
             Avalanche.refreshIfStale(ctx);
             for (int id : news) Weather.refreshIfStale(ctx, Prefs.place(ctx, id));
         }
+        if (!Prefs.hasSeen(ctx)) ListService.markSeen(ctx);
         for (int id : news) WidgetProvider.refreshHeader(ctx, id);
         for (int id : wx) {
             Weather.refreshIfStale(ctx, Prefs.place(ctx, id));

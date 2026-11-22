@@ -547,6 +547,21 @@ final class Prefs {
         return !link.isEmpty() && read.contains(link);
     }
 
+    /** Zuletzt gesehene Artikel (Links): Grundlage fuer die Markierung "Neu". */
+    static boolean hasSeen(Context c) {
+        return sp(c).contains("seen");
+    }
+
+    static Set<String> seenSet(Context c) {
+        Set<String> out = new HashSet<>();
+        for (String l : sp(c).getString("seen", "").split("\n")) if (!l.isEmpty()) out.add(l);
+        return out;
+    }
+
+    static void setSeen(Context c, Set<String> links) {
+        sp(c).edit().putString("seen", android.text.TextUtils.join("\n", links)).apply();
+    }
+
     static Set<String> readSet(Context c) {
         String s = sp(c).getString("read", "");
         Set<String> out = new HashSet<>();
