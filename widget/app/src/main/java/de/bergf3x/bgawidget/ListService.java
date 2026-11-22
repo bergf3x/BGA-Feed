@@ -185,6 +185,33 @@ public class ListService extends RemoteViewsService {
      * Bei mehreren Medien: Liste nach Medium gruppieren (Reihenfolge wie im Katalog), je Gruppe eine Ueberschrift,
      * innerhalb der Gruppe weiter nach Zeit. Bei nur einem Medium unveraendert.
      */
+    /** Gemerkte Artikel als Listeneintraege (ohne Zeitangabe, die waere veraltet). */
+    static List<FeedItem> savedItems(Context ctx) {
+        List<FeedItem> sv = new ArrayList<>();
+        org.json.JSONArray a = Prefs.saved(ctx);
+        for (int i = 0; i < a.length(); i++) {
+            org.json.JSONObject o = a.optJSONObject(i);
+            if (o == null) continue;
+            FeedItem f = new FeedItem();
+            f.title = o.optString("t");
+            f.description = o.optString("x");
+            f.link = o.optString("l");
+            f.image = o.optString("i");
+            StringBuilder m = new StringBuilder();
+            for (String seg : o.optString("m").split(" · ")) {
+                String s = seg.trim();
+                if (s.isEmpty() || s.startsWith("vor ") || s.startsWith("heute") || s.startsWith("gestern") || Character.isDigit(s.charAt(0)) || s.equals("●")) continue;
+                if (m.length() > 0) m.append(" · ");
+                m.append(s.replace("● ", ""));
+            }
+            f.sub = m.toString();
+            String src = FeedItem.source(f.link);
+            f.feedName = src.isEmpty() ? "Gemerkt" : src;
+            sv.add(f);
+        }
+        return sv;
+    }
+
     static List<FeedItem> grouped(Context ctx, List<FeedItem> in) {
         java.util.Set<String> names = new java.util.LinkedHashSet<>();
         for (FeedItem it : in) names.add(it.feedName);
@@ -372,22 +399,7 @@ public class ListService extends RemoteViewsService {
             airy = Prefs.density(ctx, widgetId) == 1;
             sizeIdx = Prefs.size(ctx, widgetId);
             lightTheme = Prefs.isLight(ctx, widgetId);
-            if (Prefs.widgetShows(ctx, widgetId) == 2) {
-                List<FeedItem> sv = new ArrayList<>();
-                org.json.JSONArray a = Prefs.saved(ctx);
-                for (int i = 0; i < a.length(); i++) {
-                    org.json.JSONObject o = a.optJSONObject(i);
-                    if (o == null) continue;
-                    FeedItem f = new FeedItem();
-                    f.title = o.optString("t");
-                    f.description = o.optString("x");
-                    f.link = o.optString("l");
-                    f.sub = o.optString("m");
-                    f.feedName = "Gemerkt";
-                    sv.add(f);
-                }
-                return sv;
-            }
+            if (Prefs.widgetShows(ctx, widgetId) == 2) return savedItems(ctx);
             List<FeedItem> all = loadItems(ctx, widgetId, online, res);
             return grouped(ctx, new ArrayList<>(all.subList(0, Math.min(all.size(), 60))));
         }

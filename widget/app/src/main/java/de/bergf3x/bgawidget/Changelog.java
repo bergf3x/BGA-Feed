@@ -12,6 +12,7 @@ final class Changelog {
     static final String[][] LOG = {
             {"1.10",
                     "+ Untere Leiste in der App: News, Wetter, Gemerkt (mit Zähler). Gemerkt und Wetter stehen nicht mehr als Reiter oben",
+                    "+ Gemerkt erscheint als Liste mit Vorschaubildern wie unter News (Bilder nur bei neu gemerkten Artikeln); Leiste höher und mit Beschriftung",
                     "+ Neuer Wetter-Bereich: Bergwetter (DAV-Karten für Bayerische Alpen, Allgäu, Zillertal/Tirol, Ötztal/Silvretta) und Region (Vorhersage, Radar, Warnlage); Karten öffnen im Vorschau-Fenster mit Link zur Originalseite, Wetter wird nicht gemerkt",
                     "+ Widget: Inhalt wählbar (Nachrichten, Wetter, Gemerkt); die Leiste erscheint erst bei großem Widget",
                     "~ Einstellungen neu sortiert: Wetter auf einer Seite (Ort, Bergregionen, Region, Warnungen je Region ab Stufe 3), Gemerkt als eigene Kachel"},

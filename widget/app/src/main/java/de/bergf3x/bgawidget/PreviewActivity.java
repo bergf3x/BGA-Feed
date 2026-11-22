@@ -73,7 +73,7 @@ public class PreviewActivity extends Activity {
         if (!wx) {
             final TextView save = b.pillKeep(Prefs.isSaved(this, link) ? "Gemerkt ✓ (tippen zum Entfernen)" : "Merken", false, () -> { });
             save.setOnClickListener(v -> {
-                boolean now = Prefs.toggleSaved(this, title, meta, text, link);
+                boolean now = Prefs.toggleSaved(this, title, meta, text, link, image);
                 save.setText(now ? "Gemerkt ✓ (tippen zum Entfernen)" : "Merken");
                 Haptic.play(save, now ? Haptic.CONFIRM : Haptic.TICK);
             });
