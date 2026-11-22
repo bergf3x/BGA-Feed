@@ -69,6 +69,16 @@ final class Updater {
             for (int id : news) Weather.refreshIfStale(ctx, Prefs.place(ctx, id));
         }
         if (!Prefs.hasSeen(ctx)) ListService.markSeen(ctx);
+        // nach einem App-Update das Widget-Layout einmal komplett neu aufbauen (sonst bleibt das alte Layout stehen)
+        int ver = 0;
+        try {
+            ver = ctx.getPackageManager().getPackageInfo(ctx.getPackageName(), 0).versionCode;
+        } catch (Exception ignored) {
+        }
+        if (Prefs.sp(ctx).getInt("layout_ver", 0) != ver) {
+            for (int id : news) WidgetProvider.update(ctx, mgr, id);
+            Prefs.sp(ctx).edit().putInt("layout_ver", ver).apply();
+        }
         for (int id : news) WidgetProvider.refreshHeader(ctx, id);
         for (int id : wx) {
             Weather.refreshIfStale(ctx, Prefs.place(ctx, id));

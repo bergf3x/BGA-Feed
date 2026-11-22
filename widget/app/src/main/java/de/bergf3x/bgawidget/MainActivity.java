@@ -96,6 +96,7 @@ public class MainActivity extends Activity {
     private String shownTopic;
     private long visitMark;
     private boolean hasSeen;
+    private boolean badgeAlert;
     private Set<String> seenSnap = new java.util.HashSet<>();
     private Set<String> newTop = new java.util.HashSet<>();
     private final android.content.BroadcastReceiver dataChanged = new android.content.BroadcastReceiver() {
@@ -623,6 +624,7 @@ public class MainActivity extends Activity {
         navBar.addView(navItem(R.drawable.ic_cloud, "Wetter", wx, "", () -> {
             if (!wx) switchTab(false, WeatherCards.BERG); else if (scroll != null) scroll.smoothScrollTo(0, 0);
         }), new LinearLayout.LayoutParams(0, px(64), 1f));
+        badgeAlert = Prefs.savedUnread(this) > 0;
         navBar.addView(navItem(R.drawable.ic_bookmark, "Gemerkt", sv, n > 0 ? (n > 99 ? "99+" : String.valueOf(n)) : "", () -> {
             if (!sv) switchTab(true, null); else if (scroll != null) scroll.smoothScrollTo(0, 0);
         }), new LinearLayout.LayoutParams(0, px(64), 1f));
@@ -661,7 +663,7 @@ public class MainActivity extends Activity {
             b.setMinHeight(px(19));
             b.setPadding(px(5), 0, px(5), 0);
             GradientDrawable bg = new GradientDrawable();
-            bg.setColor(0xFFE53935);
+            bg.setColor(badgeAlert ? 0xFFE53935 : 0xFF6B7077);
             bg.setCornerRadius(px(10));
             bg.setStroke(Math.max(2, px(2)), baseColor());
             b.setBackground(bg);
