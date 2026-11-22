@@ -33,6 +33,7 @@ final class GlassBg {
 
     private static Bitmap render(int w, int h, int bgPct, boolean light, float density, int[] colors, float rDp) {
         Bitmap bmp = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        if (bgPct <= 0) return bmp; // 0 %: komplett durchsichtig, ohne Glanz und ohne Rand
         Canvas c = new Canvas(bmp);
         float r = rDp * density;
         float stroke = Math.max(1.2f, 1.2f * density);

@@ -24,7 +24,7 @@ final class Prefs {
     }
 
     static int bg(Context c, int id) {
-        return clamp(sp(c).getInt("bg_" + id, DEFAULT_BG));
+        return Math.max(0, Math.min(100, sp(c).getInt("bg_" + id, DEFAULT_BG))); // 0 % = ganz durchsichtig
     }
 
     static int text(Context c, int id) {
@@ -113,7 +113,7 @@ final class Prefs {
 
     static void set(Context c, int id, int bg, int text, int color, Set<String> feeds) {
         sp(c).edit()
-                .putInt("bg_" + id, clamp(bg))
+                .putInt("bg_" + id, Math.max(0, Math.min(100, bg)))
                 .putInt("tx_" + id, clamp(text))
                 .putInt("tc_" + id, color & 0xFFFFFF)
                 .putStringSet("fd_" + id, new HashSet<>(feeds))
@@ -525,7 +525,7 @@ final class Prefs {
 
     /** Prozent (1-100) in Alpha-Wert (0-255). */
     static int alpha(int pct) {
-        return Math.round(clamp(pct) * 255f / 100f);
+        return Math.round(Math.max(0, Math.min(100, pct)) * 255f / 100f);
     }
 
     /** Farbe mit Deckkraft-Prozent und optionalem Faktor (z. B. 0.7 fuer Nebentext). */

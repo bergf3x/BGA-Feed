@@ -134,6 +134,7 @@ public class WidgetProvider extends AppWidgetProvider {
         Pal.filter(ctx, id, rv, R.id.btn_settings, -1);
         rv.setInt(R.id.btn_refresh, "setImageAlpha", textAlpha);
         rv.setInt(R.id.btn_settings, "setImageAlpha", textAlpha);
+        Pal.text(ctx, id, rv, R.id.w_title, -1, 1f);
     }
 
     static final int[] FC_D = {R.id.fc1_d, R.id.fc2_d, R.id.fc3_d};
@@ -165,7 +166,7 @@ public class WidgetProvider extends AppWidgetProvider {
             rv.setInt(R.id.bg_border, "setImageAlpha", 0);
         } else {
             rv.setInt(on, "setImageAlpha", Prefs.alpha(bg));
-            rv.setInt(R.id.bg_border, "setImageAlpha", Math.round(Prefs.alpha(Math.max(bg, 20)) * 0.45f));
+            rv.setInt(R.id.bg_border, "setImageAlpha", bg <= 0 ? 0 : Math.round(Prefs.alpha(Math.max(bg, 20)) * 0.45f));
         }
     }
 
@@ -209,7 +210,7 @@ public class WidgetProvider extends AppWidgetProvider {
             Pal.filter(ctx, id, rv, tb, cw);
             rv.setInt(tb, "setImageAlpha", Prefs.alpha(Prefs.text(ctx, id)));
         }
-        rv.setViewVisibility(R.id.btn_search, weatherWidget ? android.view.View.GONE : android.view.View.VISIBLE);
+        rv.setViewVisibility(R.id.btn_search, android.view.View.GONE); // Suche gibt es nicht mehr
         rv.setViewVisibility(R.id.btn_saved, weatherWidget ? android.view.View.GONE : android.view.View.VISIBLE);
         // reines Wetter-Widget hat einen eigenen, immer sichtbaren Webcam-Knopf oben rechts
         rv.setViewVisibility(R.id.btn_cam, weatherWidget ? android.view.View.GONE : android.view.View.VISIBLE);

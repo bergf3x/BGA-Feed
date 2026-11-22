@@ -231,6 +231,7 @@ final class Bubble {
             r.addView(c);
         }
         r.setOnClickListener(v -> {
+            Haptic.play(v, Haptic.TICK); // vor dem Neuaufbau, sonst ist die Zeile schon weg
             onClick.run();
             if (closeAfter) close();
         });

@@ -61,6 +61,8 @@ public class WeatherWidgetProvider extends AppWidgetProvider {
         Pal.filter(ctx, id, rv, R.id.btn_refresh, -1);
         Pal.filter(ctx, id, rv, R.id.btn_settings, -1);
         Pal.filter(ctx, id, rv, R.id.btn_wcam, -1);
+        rv.setTextViewText(R.id.w_title, "BGL Wetter");
+        Pal.text(ctx, id, rv, R.id.w_title, -1, 1f);
         rv.setInt(R.id.btn_wcam, "setImageAlpha", Prefs.alpha(tx));
         Intent cam = new Intent(ctx, WebcamActivity.class);
         cam.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id);

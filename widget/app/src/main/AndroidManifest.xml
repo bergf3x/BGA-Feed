@@ -65,6 +65,7 @@
             android:name=".ConfigActivity"
             android:exported="true"
             android:excludeFromRecents="true"
+            android:taskAffinity="${applicationId}.bubble"
             android:theme="@style/BubbleTheme"
             android:label="@string/config_title">
             <intent-filter>
@@ -76,6 +77,7 @@
             android:name=".TopicActivity"
             android:exported="false"
             android:excludeFromRecents="true"
+            android:taskAffinity="${applicationId}.bubble"
             android:noHistory="true"
             android:theme="@style/BubbleTheme" />
 
@@ -83,6 +85,7 @@
             android:name=".PlaceActivity"
             android:exported="false"
             android:excludeFromRecents="true"
+            android:taskAffinity="${applicationId}.bubble"
             android:noHistory="true"
             android:theme="@style/BubbleTheme" />
 
@@ -90,6 +93,7 @@
             android:name=".HourlyActivity"
             android:exported="false"
             android:excludeFromRecents="true"
+            android:taskAffinity="${applicationId}.bubble"
             android:noHistory="true"
             android:theme="@style/BubbleTheme" />
 
@@ -97,12 +101,14 @@
             android:name=".WebcamActivity"
             android:exported="false"
             android:excludeFromRecents="true"
+            android:taskAffinity="${applicationId}.bubble"
             android:theme="@style/BubbleTheme" />
 
         <activity
             android:name=".CamFullActivity"
             android:exported="false"
             android:excludeFromRecents="true"
+            android:taskAffinity="${applicationId}.bubble"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:theme="@android:style/Theme.DeviceDefault.NoActionBar.Fullscreen" />
 
@@ -110,6 +116,7 @@
             android:name=".SearchActivity"
             android:exported="false"
             android:excludeFromRecents="true"
+            android:taskAffinity="${applicationId}.bubble"
             android:windowSoftInputMode="stateVisible|adjustResize"
             android:theme="@style/BubbleTheme" />
 
@@ -117,36 +124,42 @@
             android:name=".SavedActivity"
             android:exported="false"
             android:excludeFromRecents="true"
+            android:taskAffinity="${applicationId}.bubble"
             android:theme="@style/BubbleTheme" />
 
         <activity
             android:name=".UpdateActivity"
             android:exported="false"
             android:excludeFromRecents="true"
+            android:taskAffinity="${applicationId}.bubble"
             android:theme="@style/BubbleTheme" />
 
         <activity
             android:name=".AddWidgetActivity"
             android:exported="false"
             android:excludeFromRecents="true"
+            android:taskAffinity="${applicationId}.bubble"
             android:theme="@style/BubbleTheme" />
 
         <activity
             android:name=".InfoActivity"
             android:exported="false"
             android:excludeFromRecents="true"
+            android:taskAffinity="${applicationId}.bubble"
             android:theme="@style/BubbleTheme" />
 
         <activity
             android:name=".ColorsActivity"
             android:exported="false"
             android:excludeFromRecents="true"
+            android:taskAffinity="${applicationId}.bubble"
             android:theme="@style/BubbleTheme" />
 
         <activity
             android:name=".PreviewActivity"
             android:exported="false"
             android:excludeFromRecents="true"
+            android:taskAffinity="${applicationId}.bubble"
             android:theme="@style/BubbleTheme" />
     </application>
 </manifest>
