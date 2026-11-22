@@ -409,16 +409,43 @@ final class Prefs {
         }
     }
 
-    /** Wie viele gemerkte Artikel noch nicht gelesen wurden. */
+    /** Wie viele gemerkte Artikel noch nicht aus Gemerkt heraus gelesen wurden (Feld "r" fehlt = ungelesen). */
     static int savedUnread(Context c) {
         org.json.JSONArray a = saved(c);
-        Set<String> read = readSet(c);
         int n = 0;
         for (int i = 0; i < a.length(); i++) {
             org.json.JSONObject o = a.optJSONObject(i);
-            if (o != null && !isRead(read, o.optString("l"))) n++;
+            if (o != null && !o.optBoolean("r")) n++;
         }
         return n;
+    }
+
+    /** Links der gemerkten Artikel, die nach dem Merken geoeffnet wurden. */
+    static Set<String> savedReadSet(Context c) {
+        Set<String> out = new HashSet<>();
+        org.json.JSONArray a = saved(c);
+        for (int i = 0; i < a.length(); i++) {
+            org.json.JSONObject o = a.optJSONObject(i);
+            if (o != null && o.optBoolean("r")) out.add(o.optString("l"));
+        }
+        return out;
+    }
+
+    /** Gemerkten Artikel als gelesen markieren; true, wenn sich etwas geaendert hat. */
+    static synchronized boolean markSavedRead(Context c, String link) {
+        org.json.JSONArray a = saved(c);
+        boolean changed = false;
+        for (int i = 0; i < a.length(); i++) {
+            org.json.JSONObject o = a.optJSONObject(i);
+            if (o == null || !link.equals(o.optString("l")) || o.optBoolean("r")) continue;
+            try {
+                o.put("r", true);
+                changed = true;
+            } catch (Exception ignored) {
+            }
+        }
+        if (changed) sp(c).edit().putString("saved", a.toString()).apply();
+        return changed;
     }
 
     static boolean isSaved(Context c, String link) {
@@ -590,7 +617,7 @@ final class Prefs {
         while (list.size() > 400) list.remove(0);
         sp(c).edit().putString("read", android.text.TextUtils.join("\n", list)).apply();
         // gelesener Gemerkt-Artikel: Zaehler in App und Widget auf grau umstellen
-        if (isSaved(c, link)) savedChanged(c);
+        if (markSavedRead(c, link)) savedChanged(c);
     }
 
     /** Naechstes Listen-Update nur aus dem Cache (ohne Netz), z. B. nach "gelesen". */

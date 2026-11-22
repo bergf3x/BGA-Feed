@@ -10,6 +10,9 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.20",
+                    "~ Gemerkt: gelesen heißt jetzt, dass du den Artikel nach dem Merken aus Gemerkt geöffnet hast; App und Widget zeigen dasselbe (gelesene Karten blasser, Zähler rot oder grau)",
+                    "~ Widget: Der Zähler saß außerhalb des sichtbaren Bereichs, jetzt an der oberen rechten Ecke des Reiters"},
             {"1.19",
                     "+ Gemerkt-Zähler: rot, solange noch ungelesene Artikel darin liegen; grau, wenn alle gelesen sind (bleibt als Erinnerung stehen)",
                     "~ Widget: nach einem App-Update wird das Layout einmal komplett neu aufgebaut, damit Zähler und rote Punkte sicher erscheinen"},
