@@ -22,20 +22,20 @@ final class WeatherCards {
     static final String REGION = TOP + "/Region";
 
     private static final String DAV = "https://www.alpenverein.de/bergwetter";
-    private static final String DAV_OST = "https://www.alpenverein.de/bergwetter/alpen/bayerische-alpen-ost-osterreich-nord";
+    private static final String DAV_OST = DAV + "/alpen/bayerische-alpen-ost-osterreich-nord";
     private static final String DWD_WARN = "https://www.dwd.de/DE/wetter/warnungen/warnWetter_node.html";
 
-    /** id, Titel, Zeile darunter, Gruppe, Adresse (noch nicht bestaetigte Regionsadressen fuehren zur DAV-Uebersicht). */
+    /** id, Titel, Zeile darunter, Gruppe, Adresse (Regionsseiten des DAV, Adressen am 22.11.2026 geprueft). */
     static final String[][] BERG_REGIONS = {
             {"bay_ost", "Bayerische Alpen Ost", "Berchtesgaden, Chiemgau · mit Österreich Nord", "Deutsche Alpen", DAV_OST},
-            {"bay_west", "Allgäuer und Bayerische Alpen West", "mit Österreich Nord", "Deutsche Alpen", DAV},
-            {"zillertal", "Zillertaler Alpen, Hohe Tauern", "Zillertal, Pinzgau, Großglockner", "Salzburger Land und Tirol", DAV},
-            {"oetztal_nord", "Bündner und Ötztaler Alpen Nord, Stubaier", "Tirol West, Silvretta", "Salzburger Land und Tirol", DAV},
-            {"dolomiten_nord", "Dolomiten Nord, Sarntaler Alpen", "Südtirol", "Weitere Alpenregionen", DAV},
-            {"oetztal_sued", "Ötztaler Alpen Süd, Ortler, Livigno", "Südtirol, Lombardei", "Weitere Alpenregionen", DAV},
-            {"gardasee", "Gardasee, Dolomiten Süd, Bergamasker", "Trentino, Lombardei", "Weitere Alpenregionen", DAV},
-            {"berner", "Berner Alpen, Glarner Alpen, Voralpen", "Schweiz", "Weitere Alpenregionen", DAV},
-            {"aosta", "Aosta, Walliser Alpen, Tessin", "Schweiz, Italien", "Weitere Alpenregionen", DAV},
+            {"bay_west", "Allgäuer und Bayerische Alpen West", "mit Österreich Nord", "Deutsche Alpen", DAV + "/alpen/allgauer-und-bayerische-alpen-west-osterreich-nord"},
+            {"zillertal", "Zillertaler Alpen, Hohe Tauern", "Zillertal, Pinzgau, Großglockner", "Salzburger Land und Tirol", DAV + "/alpen/zillertaler-alpen-hohe-tauern"},
+            {"oetztal_nord", "Bündner und Ötztaler Alpen Nord, Stubaier", "Tirol West, Silvretta", "Salzburger Land und Tirol", DAV + "/alpen/bundner-und-otztaler-alpen-nord-silvretta-stubaier-alpen"},
+            {"dolomiten_nord", "Dolomiten Nord, Sarntaler Alpen", "Südtirol", "Weitere Alpenregionen", DAV + "/alpen/dolomiten-nord-sarntaler-alpen"},
+            {"oetztal_sued", "Ötztaler Alpen Süd, Ortler, Livigno", "Südtirol, Lombardei", "Weitere Alpenregionen", DAV + "/alpen/otztaler-alpen-sud-ortler-livigno-alpen"},
+            {"gardasee", "Gardasee, Dolomiten Süd, Bergamasker", "Trentino, Lombardei", "Weitere Alpenregionen", DAV + "/alpen/gardasee-dolomiten-sud-bergamasker-alpen"},
+            {"berner", "Berner Alpen, Glarner Alpen, Voralpen", "Schweiz", "Weitere Alpenregionen", DAV + "/alpen/berner-alpen-glarner-alpen-schweizer-voralpen"},
+            {"aosta", "Aosta, Walliser Alpen, Tessin", "Schweiz, Italien", "Weitere Alpenregionen", DAV + "/alpen/aosta-walliser-alpen-tessin"},
     };
     static final Set<String> BERG_DEFAULT = new LinkedHashSet<>(java.util.Arrays.asList("bay_ost", "bay_west", "zillertal", "oetztal_nord"));
 
