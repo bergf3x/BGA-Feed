@@ -33,8 +33,7 @@ tapw "Darstellung" 2; shot 08_darstellung; adb shell input swipe 540 1700 540 90
 tapw "Widgets" 2; shot 09_widgets; $UI texts > $OUT/09_widgets.txt; tapw "Schließen" 2
 $UI texts > $OUT/09b_nach_widgets.txt
 adb shell input swipe 540 1600 540 900 300; sleep 1; shot 09c_einstellungen_unten
-tapw "Über die App" 2; tapw "Neuigkeiten" 1.5; shot 10_ueber; tapw "Technisches Protokoll" 1.5; shot 10b_protokoll; tapw "Schließen" 2
-tapw "Speichern" 2
+tapw "Über die App" 2; tapw "Neuigkeiten" 1.5; shot 10_ueber; tapw "Technisches Protokoll" 1.5; shot 10b_protokoll; tapw "Schließen" 2; tapw "Speichern" 2
 adb shell run-as $PKG cat shared_prefs/bga_widget.xml | grep -E 'name="fd_' -A11 | head -12 | tee -a $R
 
 log "== Abruf aller Quellen (Ziehen zum Aktualisieren) =="
