@@ -270,7 +270,10 @@ public class WidgetProvider extends AppWidgetProvider {
             rv.setInt(R.id.w_tint, "setImageAlpha", 0);
             rv.setInt(R.id.w_tint_l, "setImageAlpha", 0);
             rv.setImageViewResource(R.id.w_icon, R.drawable.w_cloud);
-            rv.setTextViewText(R.id.w_desc, "Wetter lädt …");
+            rv.setTextViewText(R.id.w_desc, "Noch keine Wetterdaten · Tippen zum Aktualisieren");
+            rv.setOnClickPendingIntent(R.id.w_desc, PendingIntent.getBroadcast(ctx, 0,
+                    new Intent(ctx, WidgetProvider.class).setAction(ACTION_REFRESH),
+                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE));
             rv.setTextViewText(R.id.w_temp, "–");
             rv.setTextViewText(R.id.w_hi, "");
             rv.setTextViewText(R.id.w_lo, "");

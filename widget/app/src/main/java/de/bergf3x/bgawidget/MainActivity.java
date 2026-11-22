@@ -1220,6 +1220,11 @@ public class MainActivity extends Activity {
                 }
             }));
         }
+        final int ps = Prefs.plusState(this, ID);
+        row.addView(chip("Abo: " + (ps == 1 ? "An" : ps == 0 ? "Aus" : "teils"), ps == 1, () -> {
+            Prefs.setPlusAll(this, ID, ps != 1);
+            build();
+        }));
         HorizontalScrollView hs = new HorizontalScrollView(this);
         hs.setHorizontalScrollBarEnabled(false);
         hs.addView(row);
@@ -1296,7 +1301,7 @@ public class MainActivity extends Activity {
                 hit ? 0xFFFFD166 : tx, !isRead);
         title.setAlpha(dim);
         col.addView(title);
-        String meta = it.weather() ? it.meta() : it.meta() + " · " + FeedItem.shortSource(it.feedName) + (it.plus ? " · Plus" : "");
+        String meta = it.weather() ? it.meta() : it.meta() + " · " + FeedItem.shortSource(it.feedName) + (it.plus ? " · \uD83D\uDD12 Abo" : "");
         TextView m = text((!isRead && it.isFresh() ? "● " : "") + meta, Style.metaSp(sizeIdx) + 1f, soft, false);
         m.setPadding(0, px(4), 0, 0);
         m.setAlpha(dim);
@@ -1490,7 +1495,7 @@ public class MainActivity extends Activity {
         head.addView(x);
         box.addView(head);
         int n = Perms.open(this);
-        TextView sub = text("Noch " + n + (n == 1 ? " Einstellung" : " Einstellungen") + " offen · erkannt: " + Perms.vendorLabel(),
+        TextView sub = text("Noch " + n + (n == 1 ? " Einstellung" : " Einstellungen") + " offen",
                 12.5f, soft, false);
         sub.setPadding(0, px(4), 0, px(4));
         box.addView(sub);

@@ -97,7 +97,8 @@ final class WeatherCards {
                     "Das Regenradar zeigt Niederschlag der letzten und nächsten Stunden rund um Salzburg.",
                     "https://www.wetteronline.de/regenradar/salzburg"));
             for (String[] w : WARN_REGIONS) {
-                out.add(card(REGION, "Warnlage", w[1], "DWD · amtliche Warnungen",
+                String wr = Prefs.warnRegion(c, w[0]);
+                out.add(card(REGION, "Warnlage", w[1], wr.isEmpty() ? "DWD · amtliche Warnungen" : wr.equals("-") ? "Keine Warnung aktiv · DWD" : wr,
                         "Die amtlichen Warnungen des Deutschen Wetterdienstes für " + w[2] + " stehen auf der Seite des DWD.",
                         DWD_WARN_ORT + java.net.URLEncoder.encode(w[2], java.nio.charset.StandardCharsets.UTF_8)));
             }

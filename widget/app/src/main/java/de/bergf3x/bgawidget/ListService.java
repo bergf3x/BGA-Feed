@@ -168,6 +168,12 @@ public class ListService extends RemoteViewsService {
         }
         Prefs.setSrcWarn(ctx, stale.toString());
         final List<FeedItem> result = dedupe(merged);
+        if (online) {
+            try {
+                checkSaved(ctx, merged);
+            } catch (Exception ignored) {
+            }
+        }
         if (online && id != Prefs.APP) {
             // Widget: Bilder der obersten Meldungen im WLAN vorladen, danach die Liste neu zeichnen
             final Context app = ctx.getApplicationContext();
@@ -186,8 +192,57 @@ public class ListService extends RemoteViewsService {
      * innerhalb der Gruppe weiter nach Zeit. Bei nur einem Medium unveraendert.
      */
     /** Gemerkte Artikel als Listeneintraege (ohne Zeitangabe, die waere veraltet). */
+    /**
+     * Prueft bei jeder Aktualisierung die gemerkten Artikel: Steht der Link noch im geladenen Feed, ist er da;
+     * sonst wird die Seite abgerufen, nur bei HTTP 404/410 gilt er als entfernt (Netzfehler zaehlen nicht).
+     * Fehlende Bilder werden aus den geladenen Meldungen nachgetragen.
+     */
+    static void checkSaved(Context ctx, List<FeedItem> loaded) {
+        Prefs.pruneSaved(ctx);
+        org.json.JSONArray a = Prefs.saved(ctx);
+        if (a.length() == 0) return;
+        java.util.Map<String, String> imgs = new java.util.HashMap<>();
+        Set<String> live = new java.util.HashSet<>();
+        for (FeedItem it : loaded) {
+            if (it.link.isEmpty()) continue;
+            live.add(it.link);
+            if (!it.image.isEmpty()) imgs.put(it.link, it.image);
+        }
+        Set<String> gone = new java.util.HashSet<>();
+        Set<String> checked = new java.util.HashSet<>();
+        int fetched = 0;
+        for (int i = 0; i < a.length(); i++) {
+            org.json.JSONObject o = a.optJSONObject(i);
+            if (o == null) continue;
+            String l = o.optString("l");
+            if (!l.startsWith("http")) continue;
+            if (live.contains(l)) {
+                checked.add(l);
+                continue;
+            }
+            if (fetched >= 12) break;
+            fetched++;
+            try {
+                String html = Net.download(l, false);
+                checked.add(l);
+                if (o.optString("i").isEmpty()) {
+                    String img = Direct.ogImage(html, l);
+                    if (img != null && !img.isEmpty()) imgs.put(l, img);
+                }
+            } catch (java.io.IOException e) {
+                String m = String.valueOf(e.getMessage());
+                if (m.equals("HTTP 404") || m.equals("HTTP 410")) {
+                    checked.add(l);
+                    gone.add(l);
+                }
+            }
+        }
+        Prefs.markSavedGone(ctx, gone, checked, imgs);
+    }
+
     static List<FeedItem> savedItems(Context ctx) {
         List<FeedItem> sv = new ArrayList<>();
+        Prefs.pruneSaved(ctx);
         org.json.JSONArray a = Prefs.saved(ctx);
         for (int i = 0; i < a.length(); i++) {
             org.json.JSONObject o = a.optJSONObject(i);
@@ -204,6 +259,8 @@ public class ListService extends RemoteViewsService {
                 if (m.length() > 0) m.append(" · ");
                 m.append(s.replace("● ", ""));
             }
+            f.gone = o.optBoolean("g");
+            if (f.gone) m.insert(0, "Artikel nicht mehr verfügbar" + (m.length() > 0 ? " · " : ""));
             f.sub = m.toString();
             String src = FeedItem.source(f.link);
             f.feedName = src.isEmpty() ? "Gemerkt" : src;

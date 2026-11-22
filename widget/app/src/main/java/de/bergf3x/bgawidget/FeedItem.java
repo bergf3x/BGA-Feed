@@ -42,6 +42,8 @@ final class FeedItem {
     String image = "";
     long time = 0;
     boolean plus = false;
+    /** Gemerkter Artikel, den die Quelle nicht mehr liefert. */
+    boolean gone = false;
     /** Platzhalter fuer eine Medien-Ueberschrift in der Liste (title = Name des Mediums). */
     boolean header = false;
     /** Zeile unter dem Titel bei Wetter-Karten (statt Rubrik und Zeit). */
