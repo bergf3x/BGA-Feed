@@ -1,5 +1,71 @@
 {
  "items": {
+  "2383341751": {
+   "sid": 2383341751,
+   "url": "https://salzburg.orf.at/stories/3380630/",
+   "title": "Adventmärkte: Millionenumsätze und großer Andrang",
+   "teaser": "Das erste Adventmarkt-Wochenende ist für viele schon geöffnete Salzburger Märkte erfolgreich verlaufen. Beim Hellbrunner „Adventzauber“ waren die Parkplätze am Sonntagnachmittag bereits voll belegt. Auch am Wolfgangsee rechnen die Veranstalterinnen und Veranstalter heuer mit großem Andrang.",
+   "category": "Wirtschaft",
+   "topic": "Region/Salzburg",
+   "plus": false,
+   "date": "2026-11-22T17:00:00+00:00",
+   "first_seen": "2026-11-22T17:00:00+00:00"
+  },
+  "2455424883": {
+   "sid": 2455424883,
+   "url": "https://salzburg.orf.at/stories/3380641/",
+   "title": "Drogenhandel im Pongau: Fünf Beschuldigte ausgeforscht",
+   "teaser": "Die Polizei hat ein Drogennetzwerk im Pongau zerschlagen: Hauptverdächtiger ist ein dort lebender Spanier. Er soll jahrelang Suchtmittel und psychotrope Stoffe verkauft haben, organisiert über das Internet. Laut Polizei hatte er zumindest 43 Abnehmer. Vier weitere Personen wurden ausgeforscht, einer",
+   "category": "Chronik",
+   "topic": "Region/Salzburg",
+   "plus": false,
+   "date": "2026-11-22T16:30:47+00:00",
+   "first_seen": "2026-11-22T16:30:47+00:00"
+  },
+  "3953149828": {
+   "sid": 3953149828,
+   "url": "https://salzburg.orf.at/stories/3380624/",
+   "title": "Spenden sollen Reichenhaller Haus retten",
+   "teaser": "Wegen einer notwendigen Sanierung droht die Schließung des Reichenhaller Hauses auf dem Hochstaufen im benachbarten Bayern. Weil die Förderungen nicht ausreichen würden, wie es heißt, hat der Alpenverein in Bad Reichenhall eine Spendenaktion gestartet.",
+   "category": "Wirtschaft",
+   "topic": "Region/Salzburg",
+   "plus": false,
+   "date": "2026-11-22T14:45:00+00:00",
+   "first_seen": "2026-11-22T14:45:00+00:00"
+  },
+  "2732116538": {
+   "sid": 2732116538,
+   "url": "https://salzburg.orf.at/stories/3380582/",
+   "title": "„Wildtiere auf Achse“ mit Rekordbuchungen",
+   "teaser": "Mit einem mobilen Anhänger voller Tierpräparate bringt die Salzburger Jägerschaft heimische Wildtiere in Kindergärten, Schulen und zu Veranstaltungen. Das Interesse an „Wildtiere auf Achse“ wächst – die Aktion stößt aber zunehmend an organisatorische Grenzen.",
+   "category": "Wirtschaft",
+   "topic": "Region/Salzburg",
+   "plus": false,
+   "date": "2026-11-22T13:00:00+00:00",
+   "first_seen": "2026-11-22T13:00:00+00:00"
+  },
+  "4114614155": {
+   "sid": 4114614155,
+   "url": "https://salzburg.orf.at/stories/3380594/",
+   "title": "Schnapsbrennerei in Adnet in Brand geraten",
+   "teaser": "In einer Schnapsbrennerei in Adnet (Tennengau) ist am Samstagabend ein Feuer ausgebrochen. Die Flammen drohten auf weitere Gebäude und Anlagenteile überzugreifen. Die Feuerwehr konnte dies jedoch verhindern.",
+   "category": "Chronik",
+   "topic": "Region/Salzburg",
+   "plus": false,
+   "date": "2026-11-22T11:15:00+00:00",
+   "first_seen": "2026-11-22T11:15:00+00:00"
+  },
+  "2985972292": {
+   "sid": 2985972292,
+   "url": "https://salzburg.orf.at/stories/3380011/",
+   "title": "Weniger Geld, neue Lehre: Universitäten im Umbruch",
+   "teaser": "Die Budgets werden knapper, die Aufmerksamkeitsspanne der Studierenden kürzer und Künstliche Intelligenz verändert den Hochschulalltag: Die Universitäten stehen vor mehreren Herausforderungen gleichzeitig. Auch an der Universität Salzburg zeichnet sich ein Umbruch ab. Lehrende und Studierende suchen",
+   "category": "Wissenschaft",
+   "topic": "Region/Salzburg",
+   "plus": false,
+   "date": "2026-11-22T10:45:00+00:00",
+   "first_seen": "2026-11-22T10:45:00+00:00"
+  },
   "2612195205": {
    "sid": 2612195205,
    "url": "https://salzburg.orf.at/stories/3380570/",
@@ -26,7 +92,7 @@
    "sid": 3576763253,
    "url": "https://salzburg.orf.at/stories/3380567/",
    "title": "Feuer in Wohnhaus: Dachgeschoss knapp gerettet",
-   "teaser": "In einem Wohnhaus im Salzburger Stadtteil Riedenburg ist Sonntagfrüh ein Feuer ausgebrochen. Der Brand entstand in einem Zimmer im ersten Stock. Der hohe Holzanteil des Gebäudes erschwerte die Löscharbeiten.",
+   "teaser": "In einem Wohnhaus im Salzburger Stadtteil Riedenburg ist am Sonntag in den frühen Morgenstunden ein Feuer ausgebrochen. Der Brand entstand in einem Zimmer im ersten Stock. Der hohe Holzanteil des Gebäudes erschwerte die Löscharbeiten.",
    "category": "Chronik",
    "topic": "Region/Salzburg",
    "plus": false,

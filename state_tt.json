@@ -1,5 +1,15 @@
 {
  "items": {
+  "1027933": {
+   "sid": 1027933,
+   "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein/petting_artikel,-von-den-fans-gefeiert-bayernstar-luis-d%C3%ADaz-zu-gast-in-petting-enttaeuschung-in-traunstein-_arid,1027933.html",
+   "title": "Von den Fans gefeiert: Bayern-Star Luis Díaz zu Gast in Petting – Enttäuschung in Traunstein",
+   "teaser": "Es war ein Nachmittag in Petting, den so schnell niemand vergessen wird: FC-Bayern-Star Luis Díaz war zu Gast beim Fanclub »Red Piranhas«. In der prall gefüllten Turnhalle erlebten die ...",
+   "category": "Petting",
+   "plus": false,
+   "topic": "Region/Landkreis Traunstein",
+   "first_seen": "2026-11-22T18:03:52+00:00"
+  },
   "1027889": {
    "sid": 1027889,
    "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein/traunstein_artikel,-unbekannter-schlaegt-briefkaesten-von-hauswand-_arid,1027889.html",
@@ -59,6 +69,16 @@
    "plus": true,
    "topic": "Region/Landkreis Traunstein",
    "first_seen": "2026-11-22T10:21:35+00:00"
+  },
+  "1027751": {
+   "sid": 1027751,
+   "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein/siegsdorf_artikel,-sperrung-auf-der-a-8-asphaltierungsarbeiten-bei-siegsdorf-_arid,1027751.html",
+   "title": "Sperrung auf der A 8 – Asphaltierungsarbeiten bei Siegsdorf",
+   "teaser": "Wegen Asphaltierungsarbeiten im Bereich der Autobahnbrücke über die Weiße Traun wird die Autobahn von Montag um 18.45 Uhr bis Dienstag um 6 Uhr in Fahrtrichtung München gesperrt.\nDie ...",
+   "category": "Siegsdorf",
+   "plus": false,
+   "topic": "Region/Landkreis Traunstein",
+   "first_seen": "2026-11-22T18:03:52+00:00"
   },
   "1027750": {
    "sid": 1027750,
@@ -150,6 +170,16 @@
    "topic": "Sport/Sport aus der Region",
    "first_seen": "2026-11-21T17:12:25+00:00"
   },
+  "1027737": {
+   "sid": 1027737,
+   "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein/wonneberg_artikel,-haushalt-im-grossen-und-ganzen-sehr-positiv-_arid,1027737.html",
+   "title": "Haushalt im Großen und Ganzen »sehr positiv«",
+   "teaser": "",
+   "category": "Wonneberg",
+   "plus": true,
+   "topic": "Region/Landkreis Traunstein",
+   "first_seen": "2026-11-22T18:03:52+00:00"
+  },
   "1027734": {
    "sid": 1027734,
    "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein/traunreut_artikel,-vorfreude-auf-weihnachten-traunreuter-christkindlmarkt-startet-am-kommenden-donnerstag-_arid,1027734.html",
@@ -184,8 +214,8 @@
    "sid": 1027726,
    "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein/traunstein_artikel,-mit-vw-von-der-strasse-abgekommen-zwei-18jaehrige-leicht-verletzt-_arid,1027726.html",
    "title": "Mit VW von der Straße abgekommen: Zwei 18-Jährige leicht verletzt",
-   "teaser": "Unterwössen – Ein 18-jähriger Autofahrer ist in der Nacht auf Freitag in Unterwössen mit seinem Pkw von der Fahrbahn abgekommen und gegen einen Baum geprallt. Dabei wurden er und sein ...",
-   "category": "Traunstein",
+   "teaser": "",
+   "category": "",
    "plus": false,
    "topic": "Region/Landkreis Traunstein",
    "first_seen": "2026-11-21T17:12:25+00:00"
