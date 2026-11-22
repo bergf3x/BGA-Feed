@@ -44,6 +44,51 @@ public class ListService extends RemoteViewsService {
         return n;
     }
 
+    /** Alle Links im Zwischenspeicher aller Quellen. */
+    static Set<String> allLinks(Context ctx) {
+        Set<String> out = new java.util.HashSet<>();
+        for (Catalog.Feed f : Catalog.load(ctx)) {
+            for (FeedItem it : FeedCache.items(ctx, f.id, f.name)) if (!it.link.isEmpty()) out.add(it.link);
+        }
+        return out;
+    }
+
+    /** Alles Aktuelle gilt ab jetzt als gesehen (beim Verlassen der App). */
+    static void markSeen(Context ctx) {
+        Set<String> s = allLinks(ctx);
+        if (!s.isEmpty()) Prefs.setSeen(ctx, s);
+    }
+
+    /** Artikel ist neu: nicht in der zuletzt gesehenen Menge und noch nicht gelesen. */
+    static boolean isNew(boolean hasSeen, Set<String> seen, Set<String> read, FeedItem it) {
+        return hasSeen && !it.weather() && !it.link.isEmpty() && !seen.contains(it.link) && !Prefs.isRead(read, it.link);
+    }
+
+    /** Oberthemen (und Zeitungs-Wurzel), in denen es Neues gibt. */
+    static Set<String> newTopics(Context ctx, int widgetId) {
+        Set<String> out = new java.util.HashSet<>();
+        if (!Prefs.hasSeen(ctx)) return out;
+        Set<String> seen = Prefs.seenSet(ctx);
+        Set<String> read = Prefs.readSet(ctx);
+        List<Catalog.Feed> all = Catalog.load(ctx);
+        Set<String> selected = Catalog.effective(all, Prefs.feeds(ctx, widgetId));
+        Set<String> muted = Prefs.muted(ctx, widgetId);
+        for (Catalog.Feed f : all) {
+            if (!selected.contains(f.id)) continue;
+            boolean plusFeed = Prefs.showPlusFeed(ctx, widgetId, f.id);
+            for (FeedItem it : FeedCache.items(ctx, f.id, f.name)) {
+                if (!isNew(true, seen, read, it)) continue;
+                if (it.plus && !plusFeed) continue;
+                boolean hide = false;
+                for (String m : muted) if (it.inTopic(m)) hide = true;
+                if (hide) continue;
+                out.add((it.topic.isEmpty() ? "Region" : it.topic).split("/")[0]);
+                if (!it.paper.isEmpty()) out.add(it.paper.split("/")[0]);
+            }
+        }
+        return out;
+    }
+
     static final Object FETCH_LOCK = new Object();
     /** Grund, warum die letzte Abfrage keine Artikel ergab (fuer die Vollbild-App). */
     static volatile String emptyReason = "";
@@ -437,6 +482,8 @@ public class ListService extends RemoteViewsService {
         private final int widgetId;
         private List<FeedItem> items = new ArrayList<>();
         private Set<String> readSet = new java.util.HashSet<>();
+        private Set<String> seenSet = new java.util.HashSet<>();
+        private boolean hasSeen;
         private List<String> kwList = new ArrayList<>();
         private boolean airy;
         private int sizeIdx = 1;
@@ -463,6 +510,8 @@ public class ListService extends RemoteViewsService {
 
         private List<FeedItem> load(boolean online, java.util.Map<String, Fetched> res) {
             readSet = Prefs.readSet(ctx);
+            hasSeen = Prefs.hasSeen(ctx);
+            seenSet = Prefs.seenSet(ctx);
             kwList = Keywords.list(ctx);
             airy = Prefs.density(ctx, widgetId) == 1;
             sizeIdx = Prefs.size(ctx, widgetId);
@@ -519,12 +568,11 @@ public class ListService extends RemoteViewsService {
             if (hit) rv.setTextColor(R.id.item_title, Prefs.argb(0xFFD166, tx, dim)); else Pal.text(ctx, widgetId, rv, R.id.item_title, -1, dim);
             int sub = Prefs.colorSub(ctx, widgetId);
             Pal.set(ctx, widgetId, rv, R.id.item_meta, Style.font(ctx, widgetId, meta + " · " + FeedItem.shortSource(it.feedName)), sub, Prefs.colorSub2(ctx, widgetId), 0.7f * dim);
-            rv.setInt(R.id.item_accent, "setColorFilter", it.accentColor());
+            boolean isNew = isNew(hasSeen, seenSet, readSet, it);
+            rv.setInt(R.id.item_accent, "setColorFilter", isNew ? 0xFFE53935 : it.accentColor());
             rv.setInt(R.id.item_accent, "setImageAlpha", read ? 90 : 255);
             rv.setViewVisibility(R.id.item_plus, it.plus ? android.view.View.VISIBLE : android.view.View.GONE);
-            boolean dot = !read && it.isFresh();
-            rv.setTextColor(R.id.item_dot, it.accentColor());
-            rv.setViewVisibility(R.id.item_dot, dot ? android.view.View.VISIBLE : android.view.View.GONE);
+            rv.setViewVisibility(R.id.item_dot, isNew ? android.view.View.VISIBLE : android.view.View.GONE);
             float dp = ctx.getResources().getDisplayMetrics().density;
             int cardPad = Math.round((airy ? 13 : 8) * dp);
             int rowPad = Math.round((airy ? 5 : 3) * dp);

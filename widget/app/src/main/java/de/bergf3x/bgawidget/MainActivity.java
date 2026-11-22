@@ -95,6 +95,9 @@ public class MainActivity extends Activity {
 
     private String shownTopic;
     private long visitMark;
+    private boolean hasSeen;
+    private Set<String> seenSnap = new java.util.HashSet<>();
+    private Set<String> newTop = new java.util.HashSet<>();
     private final android.content.BroadcastReceiver dataChanged = new android.content.BroadcastReceiver() {
         @Override
         public void onReceive(android.content.Context c, android.content.Intent i) {
@@ -121,6 +124,9 @@ public class MainActivity extends Activity {
         android.content.IntentFilter flt = new android.content.IntentFilter(Direct.DATA_CHANGED);
         if (android.os.Build.VERSION.SDK_INT >= 33) registerReceiver(dataChanged, flt, android.content.Context.RECEIVER_NOT_EXPORTED);
         else registerReceiver(dataChanged, flt);
+        // "Neu" = seit dem letzten Verlassen der App dazugekommen (oder nach dem Aktualisieren)
+        hasSeen = Prefs.hasSeen(this);
+        seenSnap = Prefs.seenSet(this);
         updateNav();
         if (savedTab() && warmed) build();
         int y = scroll == null ? 0 : scroll.getScrollY();
@@ -146,6 +152,7 @@ public class MainActivity extends Activity {
     protected void onPause() {
         super.onPause();
         getSharedPreferences("bga_widget", MODE_PRIVATE).edit().putLong("last_visit", System.currentTimeMillis()).apply();
+        if (warmed) ListService.markSeen(this);
         try {
             unregisterReceiver(dataChanged);
         } catch (Exception ignored) {
@@ -616,7 +623,7 @@ public class MainActivity extends Activity {
         navBar.addView(navItem(R.drawable.ic_cloud, "Wetter", wx, "", () -> {
             if (!wx) switchTab(false, WeatherCards.BERG); else if (scroll != null) scroll.smoothScrollTo(0, 0);
         }), new LinearLayout.LayoutParams(0, px(64), 1f));
-        navBar.addView(navItem(R.drawable.ic_bookmark, "Gemerkt", sv, n > 0 ? String.valueOf(n) : "", () -> {
+        navBar.addView(navItem(R.drawable.ic_bookmark, "Gemerkt", sv, n > 0 ? (n > 99 ? "99+" : String.valueOf(n)) : "", () -> {
             if (!sv) switchTab(true, null); else if (scroll != null) scroll.smoothScrollTo(0, 0);
         }), new LinearLayout.LayoutParams(0, px(64), 1f));
     }
@@ -637,24 +644,39 @@ public class MainActivity extends Activity {
         ImageView iv = new ImageView(this);
         iv.setImageResource(icon);
         iv.setColorFilter(on ? chipOnTx : soft);
+        android.widget.FrameLayout ifl = new android.widget.FrameLayout(this);
+        ifl.setClipChildren(false);
         if (on) {
             // gewaehlter Reiter: erhabene Pille in Akzentfarbe hinter dem Symbol
             iv.setBackground(Depth.raised(Depth.blend(chipOn, baseColor()), px(16), d, light));
             iv.setPadding(px(18), px(5), px(18), px(7));
-            it.addView(iv, lp(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 0));
+            ifl.addView(iv, new android.widget.FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         } else {
-            it.addView(iv, lp(24, 24, 0, 0, 0, 0));
+            ifl.addView(iv, new android.widget.FrameLayout.LayoutParams(px(24), px(24), Gravity.CENTER));
         }
+        if (!badge.isEmpty()) {
+            TextView b = text(badge, 11, 0xFFFFFFFF, true);
+            b.setGravity(Gravity.CENTER);
+            b.setMinWidth(px(19));
+            b.setMinHeight(px(19));
+            b.setPadding(px(5), 0, px(5), 0);
+            GradientDrawable bg = new GradientDrawable();
+            bg.setColor(0xFFE53935);
+            bg.setCornerRadius(px(10));
+            bg.setStroke(Math.max(2, px(2)), baseColor());
+            b.setBackground(bg);
+            android.widget.FrameLayout.LayoutParams bp = new android.widget.FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.TOP | Gravity.END);
+            bp.rightMargin = on ? px(-2) : px(-8);
+            bp.topMargin = on ? px(-6) : px(-8);
+            ifl.addView(b, bp);
+        }
+        it.setClipChildren(false);
+        it.addView(ifl, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         LinearLayout lab = new LinearLayout(this);
         lab.setOrientation(LinearLayout.HORIZONTAL);
         lab.setGravity(Gravity.CENTER);
         lab.addView(text(label, 12, on ? tx : soft, on));
-        if (!badge.isEmpty()) {
-            TextView b = text(badge, 11, chipOnTx, true);
-            b.setPadding(px(6), px(1), px(6), px(1));
-            press(b, chipOn, 8, 0);
-            lab.addView(b, lp(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 5, 0, 0, 0));
-        }
         it.addView(lab, lp(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 2, 0, 0));
         it.setContentDescription(label + (on ? ", ausgewählt" : "") + (badge.isEmpty() ? "" : ", " + badge));
         it.setOnClickListener(v -> {
@@ -1345,6 +1367,7 @@ public class MainActivity extends Activity {
         String curParent = topic.isEmpty() ? "" : topic.split("/")[0];
         LinearLayout row = new LinearLayout(this);
         row.setOrientation(LinearLayout.HORIZONTAL);
+        newTop = warmed ? ListService.newTopics(this, ID) : new java.util.HashSet<String>();
         int fresh = warmed ? ListService.freshUnread(this, ID) : 0;
         row.addView(chip(fresh > 0 ? "Alle (" + Math.min(fresh, 99) + ")" : "Alle", curParent.isEmpty(), () -> setTopic("")));
         for (final String p : parents) {
@@ -1355,7 +1378,7 @@ public class MainActivity extends Activity {
             if (on && (topic.indexOf('/') >= 0 || Prefs.topicSel(this, ID).size() > 1)) label = Prefs.topicLabel(this, ID);
             if (hasSubs) label = label + " ▾";
             final boolean subs = hasSubs;
-            row.addView(chip(label, on, () -> {
+            View pc = chip(label, on, () -> {
                 if (subs) {
                     Intent in = new Intent(this, TopicActivity.class);
                     in.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, ID);
@@ -1365,7 +1388,8 @@ public class MainActivity extends Activity {
                 } else {
                     setTopic(p);
                 }
-            }));
+            });
+            row.addView(newTop.contains(p) ? withDot(pc) : pc);
         }
         final int ps = Prefs.plusState(this, ID);
         int pn = ps == 0 ? 0 : ListService.plusCount(ID);
@@ -1393,6 +1417,26 @@ public class MainActivity extends Activity {
         fixed.addView(abo);
         fixed.addView(hs, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
         page.addView(fixed, lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 10));
+    }
+
+    /** Roter Punkt in der oberen rechten Ecke (neue Meldungen in diesem Thema). */
+    private View withDot(View chip) {
+        android.widget.FrameLayout fl = new android.widget.FrameLayout(this);
+        fl.setLayoutParams(chip.getLayoutParams());
+        chip.setLayoutParams(new android.widget.FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        fl.addView(chip);
+        View dot = new View(this);
+        GradientDrawable g = new GradientDrawable();
+        g.setShape(GradientDrawable.OVAL);
+        g.setColor(0xFFE53935);
+        g.setStroke(Math.max(2, px(2)), baseColor());
+        dot.setBackground(g);
+        android.widget.FrameLayout.LayoutParams dp = new android.widget.FrameLayout.LayoutParams(px(13), px(13), Gravity.TOP | Gravity.END);
+        dp.topMargin = px(2);
+        dp.rightMargin = px(2);
+        fl.addView(dot, dp);
+        fl.setContentDescription("Neue Meldungen");
+        return fl;
     }
 
     private android.graphics.drawable.Drawable tinted(int res, int dp) {
@@ -1430,6 +1474,7 @@ public class MainActivity extends Activity {
         boolean isRead = !it.weather() && Prefs.isRead(read, it.link);
         boolean hit = !it.weather() && Keywords.matches(kw, it);
         float dim = isRead ? 0.6f : 1f;
+        final boolean isNew = !it.weather() && hasSeen && !it.link.isEmpty() && !seenSnap.contains(it.link) && !isRead;
         LinearLayout card = new LinearLayout(this);
         card.setOrientation(LinearLayout.HORIZONTAL);
         int pad = Prefs.density(this, ID) == 1 ? 14 : 11;
@@ -1437,7 +1482,7 @@ public class MainActivity extends Activity {
         press(card, cardFill, 16, line);
 
         View bar = new View(this);
-        bar.setBackground(shape(it.accentColor(), 3, 0));
+        bar.setBackground(shape(isNew ? 0xFFE53935 : it.accentColor(), 3, 0));
         bar.setAlpha(isRead ? 0.4f : 1f);
         card.addView(bar, lp(4, ViewGroup.LayoutParams.MATCH_PARENT, 0, 0, 11, 0));
 
@@ -1448,7 +1493,13 @@ public class MainActivity extends Activity {
         title.setAlpha(dim);
         col.addView(title);
         String meta = it.weather() ? it.meta() : it.meta() + " · " + FeedItem.shortSource(it.feedName) + (it.plus ? " · \uD83D\uDD12 Abo" : "");
-        TextView m = text((!isRead && it.isFresh() ? "● " : "") + meta, Style.metaSp(sizeIdx) + 1f, soft, false);
+        TextView m = text(meta, Style.metaSp(sizeIdx) + 1f, soft, false);
+        if (isNew) {
+            android.text.SpannableString sp = new android.text.SpannableString("NEU · " + meta);
+            sp.setSpan(new android.text.style.ForegroundColorSpan(0xFFE53935), 0, 3, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            sp.setSpan(new android.text.style.StyleSpan(Typeface.BOLD), 0, 3, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            m.setText(sp);
+        }
         m.setPadding(0, px(4), 0, 0);
         m.setAlpha(dim);
         col.addView(m);

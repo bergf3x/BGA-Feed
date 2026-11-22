@@ -26,6 +26,7 @@ public class WidgetProvider extends AppWidgetProvider {
     static final String ACTION_TOGGLE_ABO = "de.bergf3x.bgawidget.TOGGLE_ABO";
     private static final int[] P = {R.id.p0, R.id.p1, R.id.p2, R.id.p3, R.id.p4};
     private static final int[] P_ON = {R.id.p0_on, R.id.p1_on, R.id.p2_on, R.id.p3_on, R.id.p4_on};
+    private static final int[] P_DOT = {R.id.p0_dot, R.id.p1_dot, R.id.p2_dot, R.id.p3_dot, R.id.p4_dot};
     private static final int[] P_T = {R.id.p0_t, R.id.p1_t, R.id.p2_t, R.id.p3_t, R.id.p4_t};
 
     @Override
@@ -146,6 +147,7 @@ public class WidgetProvider extends AppWidgetProvider {
             for (String t : topics) if (t.indexOf('/') < 0 && !t.equals(Taxonomy.OUT) && !t.equals(Taxonomy.WETTER)) parents.add(t);
         }
         String curParent = topic.isEmpty() ? "" : topic.split("/")[0];
+        java.util.Set<String> newTop = wxm ? new java.util.HashSet<String>() : ListService.newTopics(ctx, id);
         for (int i = 0; i < P.length; i++) {
             String value = wxm ? (i < parents.size() ? parents.get(i) : null) : (i == 0 ? "" : (i - 1 < parents.size() ? parents.get(i - 1) : null));
             if (value == null || topics.isEmpty()) {
@@ -160,6 +162,7 @@ public class WidgetProvider extends AppWidgetProvider {
             if (!wxm && on && (topic.indexOf('/') >= 0 || Prefs.topicSel(ctx, id).size() > 1)) label = Prefs.topicLabel(ctx, id);
             if (hasSubs) label = label + " ▾";
             rv.setViewVisibility(P[i], android.view.View.VISIBLE);
+            rv.setViewVisibility(P_DOT[i], !wxm && i > 0 && newTop.contains(value) ? android.view.View.VISIBLE : android.view.View.GONE);
             rv.setTextViewText(P_T[i], Style.font(ctx, id, label));
             rv.setInt(P[i], "setBackgroundResource", Pal.chipBg(ctx, id));
             int acc = Prefs.accent(ctx, id);
@@ -182,7 +185,9 @@ public class WidgetProvider extends AppWidgetProvider {
             savedN = Prefs.saved(ctx).length();
         } catch (Exception ignored) {
         }
-        rv.setTextViewText(R.id.nav_saved, savedN > 0 ? "Gemerkt · " + savedN : "Gemerkt");
+        rv.setTextViewText(R.id.nav_saved, "Gemerkt");
+        rv.setViewVisibility(R.id.nav_badge, savedN > 0 ? android.view.View.VISIBLE : android.view.View.GONE);
+        rv.setTextViewText(R.id.nav_badge, savedN > 99 ? "99+" : String.valueOf(savedN));
         {
             int[] nv = {R.id.nav_news, R.id.nav_wx, R.id.nav_saved};
             for (int k = 0; k < 3; k++) {

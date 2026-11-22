@@ -51,9 +51,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="5dp"
-                    android:text="●"
-                    android:textColor="#FF5DCAA5"
-                    android:textSize="8sp"
+                    android:text="NEU"
+                    android:textColor="#FFE53935"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
                     android:visibility="gone" />
 
                 <TextView
