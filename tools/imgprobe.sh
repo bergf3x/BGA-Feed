@@ -1,25 +1,48 @@
 #!/bin/bash
-# Welche Quelle liefert Bild-Adressen? (nur Auszuege, kein Seiteninhalt)
 set +e
 OUT=out; mkdir -p $OUT; R=$OUT/report.txt
 UA="BGAWidget/2.3 (privates Nachrichten-Widget, Android)"
-probe() {
-  name="$1"; url="$2"
-  echo "=== $name $url" | tee -a $R
-  curl -sL -m 40 -A "$UA" -H "Accept-Encoding: gzip" --compressed -w "HTTP %{http_code} %{size_download}B\n" -o /tmp/p.html "$url" | tee -a $R
-  echo "-- img-Tags (erste 4):" | tee -a $R
-  grep -o -i -E '<img[^>]{0,260}>' /tmp/p.html | head -4 | tee -a $R
-  echo "-- enclosure/media/og (erste 4):" | tee -a $R
-  grep -o -i -E '<(enclosure|media:content|media:thumbnail)[^>]{0,200}>|property="og:image"[^>]{0,200}>' /tmp/p.html | head -4 | tee -a $R
-  echo "-- anzahl img: $(grep -o -i '<img' /tmp/p.html | wc -l)  enclosure/media: $(grep -o -i -E '<(enclosure|media:content|media:thumbnail)' /tmp/p.html | wc -l)" | tee -a $R
-}
-probe BGA "https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land.html"
-probe TT "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein.html"
-probe BGLand24-RSS "https://www.bgland24.de/bgland/region-berchtesgaden/rssfeed.rdf"
-probe Chiemgau24-RSS "https://www.chiemgau24.de/chiemgau/rssfeed.rdf"
-probe ORF "https://rss.orf.at/salzburg.xml"
-probe LRA "https://www.lra-bgl.de/t/presse/pressemitteilungen/"
-probe NPV "https://www.nationalpark-berchtesgaden.bayern.de/service/presse/pressemitteilungen/index.htm"
-probe BR24 "https://feeds.br24.de/rss/nachrichten"
-probe Merkur "https://www.merkur.de/bayern/rssfeed.rdf"
+get() { curl -sL -m 40 -A "$UA" --compressed -o /tmp/p.html "$1"; }
+get "https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land.html"
+echo "=== BGA Artikel-Links mit img (Auszug) ===" | tee -a $R
+python3 - <<'PY' | tee -a out/report.txt
+import re
+h=open('/tmp/p.html',encoding='utf-8',errors='ignore').read()
+ms=list(re.finditer(r'<a\b[^>]*?href="[^"]*_arid,\d+\.html"[^>]*>.*?</a>',h,re.S))
+print("Artikel-Anker:",len(ms),"mit <img>:",sum('<img' in m.group(0) for m in ms))
+for m in ms[:3]:
+    print(re.sub(r'\s+',' ',m.group(0))[:700]); print('--')
+# Bilder ausserhalb der Anker nahe Artikeln
+print("cms_media/pic-Bilder:",len(re.findall(r'<img[^>]+(?:cms_media|/pic/)[^>]*>',h)))
+PY
+get "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein.html"
+echo "=== TT ===" | tee -a $R
+python3 - <<'PY' | tee -a out/report.txt
+import re
+h=open('/tmp/p.html',encoding='utf-8',errors='ignore').read()
+ms=list(re.finditer(r'<a\b[^>]*?href="[^"]*_arid,\d+\.html"[^>]*>.*?</a>',h,re.S))
+print("Artikel-Anker:",len(ms),"mit <img>:",sum('<img' in m.group(0) for m in ms))
+for m in ms[:2]:
+    print(re.sub(r'\s+',' ',m.group(0))[:600]); print('--')
+PY
+get "https://www.lra-bgl.de/t/presse/pressemitteilungen/"
+echo "=== LRA ===" | tee -a $R
+python3 - <<'PY' | tee -a out/report.txt
+import re
+h=open('/tmp/p.html',encoding='utf-8',errors='ignore').read()
+i=h.find('pressemitteilungen/')
+for m in list(re.finditer(r'<(?:li|article|div)[^>]*class="[^"]*(?:news|press|teaser|item|result)[^"]*"[^>]*>.{0,600}',h,re.S))[:3]:
+    print(re.sub(r'\s+',' ',m.group(0))[:600]); print('--')
+print("img mit /media|/files|/upload:",re.findall(r'<img[^>]+(?:media|files|upload|presse)[^>]*>',h)[:3])
+PY
+get "https://www.nationalpark-berchtesgaden.bayern.de/service/presse/pressemitteilungen/index.htm"
+echo "=== NPV ===" | tee -a $R
+python3 - <<'PY' | tee -a out/report.txt
+import re
+h=open('/tmp/p.html',encoding='utf-8',errors='ignore').read()
+imgs=re.findall(r'<img[^>]+>',h)
+print([re.sub(r'\s+',' ',i)[:160] for i in imgs if 'pressemitteilungen' in i or 'presse' in i][:4])
+i=h.find('Pressemitteilung')
+print(re.sub(r'\s+',' ',h[h.find('<h2'):h.find('<h2')+700]))
+PY
 echo "== Ende ==" | tee -a $R
