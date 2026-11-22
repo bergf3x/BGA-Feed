@@ -65,7 +65,7 @@ public class PlaceActivity extends Activity {
         foot.setText(sp);
         foot.setMovementMethod(android.text.method.LinkMovementMethod.getInstance());
         foot.setLinkTextColor(b.tx);
-        b.pill("Übernehmen", true, true, () -> {
+        android.widget.TextView ok = b.pillApply("Übernehmen", true, () -> {
             final int place = chosen[0];
             if (place == cur) return;
             Prefs.setPlace(this, id, place);
@@ -76,6 +76,7 @@ public class PlaceActivity extends Activity {
                 if (Weather.refreshIfStale(app, place)) WidgetProvider.refreshHeader(app, id);
             }).start();
         });
+        b.watch(ok, () -> chosen[0] != cur);
         b.pill("Abbrechen", false, true, () -> { });
     }
 

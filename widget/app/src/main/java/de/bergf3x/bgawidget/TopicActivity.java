@@ -66,7 +66,9 @@ public class TopicActivity extends Activity {
         body = b.scrollBox(0.7f);
         render();
         b.space(4);
-        b.pill("Übernehmen", true, true, () -> save(sel));
+        final java.util.Set<String> init = new java.util.HashSet<>(sel);
+        TextView ok = b.pillApply("Übernehmen", true, () -> save(sel));
+        b.watch(ok, () -> !init.equals(new java.util.HashSet<>(sel)));
         b.pill("Abbrechen", false, true, () -> { });
     }
 

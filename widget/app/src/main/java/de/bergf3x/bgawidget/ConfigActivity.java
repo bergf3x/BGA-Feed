@@ -114,6 +114,7 @@ public class ConfigActivity extends Activity {
         b = new Bubble(this, 360, 16);
         b.high();
         kwText = Prefs.keywords(this);
+        baseSnap = snap();
         showMain();
 
         // Katalog im Hintergrund aktualisieren (neue Feeds erscheinen ohne App-Update)
@@ -132,6 +133,31 @@ public class ConfigActivity extends Activity {
     private boolean haptic;
     private int page = P_MAIN;
     private String kwText = "";
+
+    private String baseSnap = "";
+
+    /** Alle Entwurfswerte als Text: Aenderung = Knopf "Uebernehmen" wird hell. */
+    private String snap() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(bgPct).append('|').append(txPct).append('|').append(color).append('|').append(plus).append('|')
+                .append(density).append('|').append(font).append('|').append(size).append('|').append(theme).append('|')
+                .append(wxOn).append('|').append(warnOn).append('|').append(bgMode).append('|').append(bgC1).append('|')
+                .append(bgC2).append('|').append(bgTint).append('|').append(bgSrc).append('|').append(accent).append('|')
+                .append(bgRound).append('|').append(kwNotifyOn).append('|').append(compact).append('|')
+                .append(notify).append('|').append(haptic).append('|')
+                .append(etKw != null ? etKw.getText().toString() : kwText).append('|')
+                .append(new java.util.TreeSet<>(selected)).append('|').append(new java.util.TreeSet<>(muted)).append('|')
+                .append(new java.util.TreeMap<>(plusF));
+        return sb.toString();
+    }
+
+    /** "Fertig" einer Unterseite: nur Text, hell sobald auf dieser Seite etwas geaendert wurde. */
+    private void done(Runnable back) {
+        final String base = snap();
+        TextView t = b.pillKeep("Fertig", false, back);
+        t.setTag(Boolean.FALSE);
+        b.watch(t, () -> !snap().equals(base));
+    }
 
     private boolean firstResume = true;
 
@@ -253,7 +279,8 @@ public class ConfigActivity extends Activity {
                     () -> startActivity(new Intent(this, InfoActivity.class)));
         });
         b.space(6);
-        b.pill("Übernehmen", true, true, this::save);
+        TextView ok = b.pillApply("Übernehmen", true, this::save);
+        b.watch(ok, () -> !snap().equals(baseSnap));
         b.pill("Abbrechen", false, true, () -> { });
     }
 
@@ -276,7 +303,7 @@ public class ConfigActivity extends Activity {
         View tile = b.box.getChildAt(before);
         b.box.removeView(tile);
         body.addView(tile);
-        b.pillKeep("Fertig", true, this::showMain);
+        done(this::showMain);
     }
 
     /** Themen ausblenden: BGL-Regionen und Rubriken von Deutschland & Welt. */
@@ -289,7 +316,7 @@ public class ConfigActivity extends Activity {
         muteBox.setOrientation(LinearLayout.VERTICAL);
         body.addView(muteBox);
         buildMutes();
-        b.pillKeep("Fertig", true, this::showSources);
+        done(this::showSources);
     }
 
     /** Benachrichtigungen: Stichwoerter und Unwetter. */
@@ -317,7 +344,7 @@ public class ConfigActivity extends Activity {
             notify = on;
             askNotifPermission(on);
         });
-        b.pillKeep("Fertig", true, this::showMain);
+        done(this::showMain);
     }
 
     private void askNotifPermission(boolean on) {
@@ -343,7 +370,7 @@ public class ConfigActivity extends Activity {
         b.toggle(body, "Wetter kompakt (ohne Vorschau und Zusatzzeilen)", compact, on -> compact = on);
         b.label(body, "Warnungen");
         b.toggle(body, "Unwetterwarnungen anzeigen", warnOn, on -> warnOn = on);
-        b.pillKeep("Fertig", true, this::showMain);
+        done(this::showMain);
     }
 
     private void showDesign() {
@@ -387,7 +414,7 @@ public class ConfigActivity extends Activity {
         });
         refreshPreview();
         b.pillKeep("Farben …", false, this::showColors);
-        b.pillKeep("Fertig", true, this::showMain);
+        done(this::showMain);
     }
 
     /** Alle Farben des Widgets an einem Ort: Hintergrund, Schrift, Nebenzeilen, Wetter, Akzent. */
@@ -452,7 +479,7 @@ public class ConfigActivity extends Activity {
             startActivity(in);
         });
         refreshPreview();
-        b.pillKeep("Fertig", true, this::showDesign);
+        done(this::showDesign);
     }
 
     private void buildAccent(final LinearLayout box) {
