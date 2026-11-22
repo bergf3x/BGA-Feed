@@ -66,7 +66,8 @@ public class TopicActivity extends Activity {
         body = b.scrollBox(0.7f);
         render();
         b.space(4);
-        b.pill("Schließen", false, true, () -> { });
+        b.pill("Übernehmen", true, true, () -> save(sel));
+        b.pill("Abbrechen", false, true, () -> { });
     }
 
     private List<String> children(String path) {
@@ -94,8 +95,8 @@ public class TopicActivity extends Activity {
         b.row(body, all + " (" + count(parent) + ")", sel.contains(parent), () -> {
             sel.clear();
             sel.add(parent);
-            save(sel);
-        }, true);
+            render();
+        }, false);
         for (final String region : children(parent)) {
             final List<String> subs = children(region);
             if (subs.size() <= 1) {
@@ -133,7 +134,6 @@ public class TopicActivity extends Activity {
             }
             sel.add(value);
         }
-        save(sel);
         render();
     }
 

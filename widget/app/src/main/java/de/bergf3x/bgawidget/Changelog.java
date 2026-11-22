@@ -10,6 +10,10 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.07",
+                    "~ Einheitliche Buttons: Übernehmen und Abbrechen bei Einstellungen und Auswahlfenstern",
+                    "+ Aktualisierung: Auswahl gilt erst nach Übernehmen, neuer Schalter „Ausgeglichen“ (3 Std)",
+                    "~ Hinweis hinter den Intervallen: 3 Std ist die sparsamste Automatik, Manuell geht immer"},
             {"1.06",
                     "~ Widget: Nachrichten haben Vorrang, Wetter passt sich der Größe an",
                     "+ Widget klein: Wetter in einer Zeile, Gemerkt und Webcam oben",
