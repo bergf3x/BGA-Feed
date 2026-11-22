@@ -80,5 +80,14 @@
                     android:textSize="11sp" />
             </LinearLayout>
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/item_thumb"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="8dp"
+            android:scaleType="centerCrop"
+            android:visibility="gone" />
     </LinearLayout>
 </LinearLayout>

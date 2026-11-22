@@ -27,6 +27,10 @@ final class Net {
         }
     }
 
+    static void countBytes(long n) {
+        BYTES.addAndGet(n);
+    }
+
     static void resetStats() {
         REQ.set(0);
         NOT_MOD.set(0);

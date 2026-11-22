@@ -17,6 +17,7 @@ public class PreviewActivity extends Activity {
     static final String EXTRA_META = "meta";
     static final String EXTRA_TEXT = "text";
     static final String EXTRA_LINK = "link";
+    static final String EXTRA_IMAGE = "image";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,19 @@ public class PreviewActivity extends Activity {
         }
 
         final Bubble b = new Bubble(this, 330, 16);
+        final String image = str(in, EXTRA_IMAGE);
+        // Bild nur, wenn es wirklich da ist (gemerkt oder jetzt ladbar); sonst kein leerer Rahmen
+        if (!image.isEmpty() && ImageStore.mode(this) != ImageStore.OFF) {
+            android.widget.ImageView iv = new android.widget.ImageView(this);
+            iv.setScaleType(android.widget.ImageView.ScaleType.CENTER_CROP);
+            ImageStore.round(iv, b.px(12));
+            android.widget.LinearLayout.LayoutParams ilp = new android.widget.LinearLayout.LayoutParams(
+                    android.view.ViewGroup.LayoutParams.MATCH_PARENT, b.px(170));
+            ilp.bottomMargin = b.px(10);
+            iv.setVisibility(android.view.View.GONE);
+            b.box.addView(iv, ilp);
+            ImageStore.into(iv, image, 480, false);
+        }
         b.text(meta, 12, b.soft, false);
         b.text(title, 18, b.title, true).setPadding(0, b.px(6), 0, b.px(10));
         b.scrollText(text.isEmpty() ? "Für diesen Artikel gibt es keinen Anrisstext." : text, 14, b.tx);

@@ -108,6 +108,7 @@ public class ConfigActivity extends Activity {
         bgRound = BgStyle.sysCorner(this, widgetId);
         kwNotifyOn = Prefs.kwNotify(this);
         haptic = Haptic.enabled(this);
+        imgMode = Prefs.imgMode(this);
         selected.addAll(Prefs.feeds(this, widgetId));
         muted.addAll(Prefs.muted(this, widgetId));
 
@@ -131,6 +132,7 @@ public class ConfigActivity extends Activity {
     // ---------- Seiten ----------
     private static final int P_MAIN = 0, P_SOURCES = 1, P_DESIGN = 2, P_LIST = 3, P_WEATHER = 4, P_COLORS = 5, P_NOTIFY = 6;
     private boolean haptic;
+    private int imgMode;
     private int page = P_MAIN;
     private String kwText = "";
 
@@ -144,7 +146,7 @@ public class ConfigActivity extends Activity {
                 .append(wxOn).append('|').append(warnOn).append('|').append(bgMode).append('|').append(bgC1).append('|')
                 .append(bgC2).append('|').append(bgTint).append('|').append(bgSrc).append('|').append(accent).append('|')
                 .append(bgRound).append('|').append(kwNotifyOn).append('|').append(compact).append('|')
-                .append(notify).append('|').append(haptic).append('|')
+                .append(notify).append('|').append(haptic).append('|').append(imgMode).append('|')
                 .append(etKw != null ? etKw.getText().toString() : kwText).append('|')
                 .append(new java.util.TreeSet<>(selected)).append('|').append(new java.util.TreeSet<>(muted)).append('|')
                 .append(new java.util.TreeMap<>(plusF));
@@ -407,6 +409,8 @@ public class ConfigActivity extends Activity {
         }
         b.label(body, "Abstand in der Liste");
         b.segment(body, new String[]{"Kompakt", "Luftig"}, density, i -> density = i);
+        b.label(body, "Vorschaubilder (Nur WLAN schont dein Datenvolumen)");
+        b.segment(body, new String[]{"Aus", "Nur WLAN", "Immer"}, imgMode, i -> imgMode = i);
         b.label(body, "Bedienung");
         b.toggle(body, "Vibration bei Aktionen", haptic, on -> {
             haptic = on;
@@ -636,6 +640,7 @@ public class ConfigActivity extends Activity {
         Prefs.setColors(this, widgetId, Prefs.colorSub(this, widgetId), Prefs.colorWx(this, widgetId), compact, notify);
         BgStyle.set(this, widgetId, bgMode, bgC1, bgC2, bgTint, bgRound, bgSrc);
         Prefs.setAccent(this, widgetId, accent);
+        Prefs.setImgMode(this, imgMode);
         Prefs.setKeywords(this, etKw != null ? etKw.getText().toString() : kwText, kwNotifyOn);
         for (java.util.Map.Entry<String, Boolean> e : plusF.entrySet()) Prefs.setPlusFeed(this, widgetId, e.getKey(), e.getValue());
         WidgetProvider.updateAny(this, widgetId);

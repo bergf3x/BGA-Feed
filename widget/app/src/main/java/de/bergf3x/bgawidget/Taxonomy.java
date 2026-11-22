@@ -56,11 +56,31 @@ final class Taxonomy {
     private static final Pattern P_CHG = Pattern.compile("Traunstein|Traunreut|Trostberg|Waging|Tittmoning|Kirchanschöring|Petting|Chiemsee|"
             + "Chiemgau|Ruhpolding|Inzell|Siegsdorf|Reit im Winkl|Grassau|Unterwössen|Marquartstein|Prien am Chiemsee|Palling|Fridolfing");
     private static final Pattern P_SBG = Pattern.compile("Salzburg|Hallein|Flachgau|Pongau|Pinzgau|Tennengau|Lungau|Großgmain");
-    private static final Pattern P_BLAU = Pattern.compile("Polizei|Unfall|Feuerwehr|Bergwacht|Einbruch|Brand\\b|brennt|Festnahme|festgenommen|"
-            + "Verletzt|verletzt|tödlich|Rettung|Vermisst|vermisst|Diebstahl|Betrug|Schockanruf|Crash|Blaulicht|Gericht|Prozess", 0);
+    /** Blaulicht: Polizei, Unfaelle, Rettung, Gericht. Woerter mit Wortgrenzen, damit "Gerichte" (Essen) oder "Brandenburg" nicht treffen. */
+    private static final Pattern P_BLAU = Pattern.compile("Polizei|Unfall|Unfälle|Feuerwehr|Bergwacht|Einbruch|\\bBrand\\b|brennt|Festnahme|festgenommen|"
+            + "verletzt|Verletzte|tödlich|\\bRettung|Rettungs(?:dienst|kräfte|einsatz|hubschrauber)|vermisst|Diebstahl|Betrug|Schockanruf|\\bCrash\\b|Blaulicht|"
+            + "\\bGericht\\b|Landgericht|Amtsgericht|Urteil|Staatsanwalt|\\bProzess\\b|Prozessauftakt|Messer|Schüsse|\\bSchuss\\b|\\bWaffe|Mord\\b|"
+            + "Totschlag|Überfall|\\bRaub\\b|Razzia|Amok|Anschlag|Entführ|Explosion|Vergewalt|Leiche|Lawine|abgestürzt|Absturz|ertrunken");
+    /** Eindeutige Straftaten/Notfaelle: gehen auch dann nach Blaulicht, wenn die Quelle die Meldung unter Boulevard/Leben fuehrt. */
+    private static final Pattern P_CRIME = Pattern.compile("Polizei|Festnahme|festgenommen|Messer|Schüsse|\\bSchuss\\b|\\bWaffe|Mord\\b|Totschlag|"
+            + "Überfall|\\bRaub\\b|Razzia|Amok|Anschlag|Entführ|Explosion|Vergewalt|Leiche|tödlich|Unfall|Staatsanwalt|Schockanruf");
+    private static final Pattern P_WIRT = Pattern.compile("\\bAktie|\\bDAX\\b|Börse|Inflation|Zinsen|Zinssatz|Konzern|Arbeitsmarkt|Insolvenz|Quartal|"
+            + "Umsatz|Bundesbank|Steuer|Mindestlohn|Gewinnwarnung|Verbraucherpreise|Haushalt\\b|Strompreis|Gaspreis|Wirtschaft");
+    private static final Pattern P_WISS = Pattern.compile("Künstliche Intelligenz|\\bKI\\b|Smartphone|Software|Raumfahrt|Forscher|Forschung|Studie|"
+            + "Klimawandel|\\bNASA\\b|Satellit|Cyber|Hacker|Algorithmus|Roboter|Mikroplastik|Virus");
+    private static final Pattern P_LEUTE = Pattern.compile("Promi|Royal|Prinz\\b|Prinzessin|Schauspieler|Sängerin|\\bSänger\\b|Scheidung|Hochzeit|"
+            + "Dschungelcamp|Bachelor|Influencer|Netflix|Serienstar|Filmstar|Skandal um");
 
     /** Einheitlicher Themenpfad der Meldung. */
     static String classify(FeedItem it) {
+        String r = classifyImpl(it);
+        if (android.util.Log.isLoggable("BGAclass", android.util.Log.DEBUG)) {
+            android.util.Log.d("BGAclass", r + " <- [" + it.topic + "|" + it.category + "|" + it.feedName + "] " + it.title);
+        }
+        return r;
+    }
+
+    private static String classifyImpl(FeedItem it) {
         String raw = it.topic.isEmpty() ? "Region" : it.topic;
         String src = it.feedName.toLowerCase(Locale.GERMANY);
         String title = it.title;
@@ -80,7 +100,7 @@ final class Taxonomy {
         String bglRegion = bglRegion(title);
         if (bglRegion != null) return BGL + "/" + bglRegion + "/" + rubric;
 
-        if (!regional) return WORLD + "/" + worldRubric(raw, rubric);
+        if (!regional) return WORLD + "/" + worldRubric(raw, rubric, title);
 
         // regionale Meldung ohne Ort im Titel: Rubrik/Quelle der Seite entscheidet
         if (low.contains("berchtesgaden") && !low.contains("berchtesgadener land")) return BGL + "/" + BGD + "/" + rubric;
@@ -117,12 +137,20 @@ final class Taxonomy {
         return "Nachrichten";
     }
 
-    private static String worldRubric(String raw, String rubric) {
-        if (rubric.equals("Sport") || rubric.equals("Kultur")) return rubric;
+    private static String worldRubric(String raw, String rubric, String title) {
         String l = raw.toLowerCase(Locale.GERMANY);
+        if (rubric.equals("Sport") || rubric.equals("Kultur")) return rubric;
+        // eindeutige Straftaten/Notfaelle immer nach Blaulicht, auch aus Boulevard/Leben; schwache Treffer nur ohne klare Quell-Rubrik
+        boolean sourceSaysOther = l.contains("wirtschaft") || l.contains("wissen") || l.contains("digital") || l.contains("netzwelt")
+                || l.contains("politik");
+        if (rubric.equals("Blaulicht") && (P_CRIME.matcher(title).find() || !sourceSaysOther)) return "Blaulicht";
         if (l.contains("wirtschaft")) return "Wirtschaft";
         if (l.contains("wissen") || l.contains("digital") || l.contains("netzwelt")) return "Wissen & Digital";
-        if (l.contains("boulevard") || l.contains("stars") || l.contains("leben")) return "Leute";
+        if (l.contains("politik")) return "Politik & Gesellschaft";
+        // Quelle ohne klare Rubrik (oder Boulevard/Leben): Titel entscheidet
+        if (P_WIRT.matcher(title).find()) return "Wirtschaft";
+        if (P_WISS.matcher(title).find()) return "Wissen & Digital";
+        if (l.contains("boulevard") || l.contains("stars") || l.contains("leben") || P_LEUTE.matcher(title).find()) return "Leute";
         return "Politik & Gesellschaft";
     }
 

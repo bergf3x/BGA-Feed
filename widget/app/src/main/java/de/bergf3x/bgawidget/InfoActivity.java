@@ -41,7 +41,16 @@ public class InfoActivity extends Activity {
         android.widget.LinearLayout src = section(b, "Quellen", 0.28f);
         src.addView(line(b, "Die App zeigt Überschriften und kurze Anrisse und verlinkt immer auf den Originalartikel. "
                 + "Alle Rechte an den Inhalten liegen bei den jeweiligen Verlagen und Stellen.", 12, b.soft, false, 2));
-        for (Catalog.Feed f : Catalog.load(this)) src.addView(link(b, f.name, homepage(f.id)));
+        for (Catalog.Feed f : Catalog.load(this)) {
+            src.addView(link(b, f.name, homepage(f.id)));
+            String[] st = Watch.status(this, f);
+            int lvl = Integer.parseInt(st[0]);
+            int col = lvl == Watch.OK ? 0xFF5DCAA5 : lvl == Watch.WARN ? 0xFFE8C37A : lvl == Watch.BAD ? 0xFFE57373 : b.soft;
+            String dot = lvl == Watch.IDLE ? "○ " : "● ";
+            android.widget.TextView sl = line(b, dot + st[1], 11.5f, col, false, 0);
+            sl.setPadding(b.px(4), 0, b.px(4), b.px(4));
+            src.addView(sl);
+        }
         src.addView(line(b, "Wetter und Warnungen", 12, b.soft, false, 10));
         src.addView(link(b, "Open-Meteo (Wetterdaten)", "https://open-meteo.com"));
         src.addView(link(b, "DWD – Deutscher Wetterdienst (Warnungen)", "https://www.dwd.de"));

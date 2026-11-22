@@ -1197,6 +1197,18 @@ public class MainActivity extends Activity {
         m.setAlpha(dim);
         col.addView(m);
         card.addView(col, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+        if (!it.image.isEmpty() && ImageStore.mode(this) != ImageStore.OFF) {
+            ImageView th = new ImageView(this);
+            th.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            th.setBackground(shape(light ? 0x14000000 : 0x1FFFFFFF, 10, 0));
+            ImageStore.round(th, px(10));
+            th.setAlpha(isRead ? 0.6f : 1f);
+            LinearLayout.LayoutParams tlp = new LinearLayout.LayoutParams(px(78), px(58));
+            tlp.leftMargin = px(10);
+            tlp.gravity = Gravity.CENTER_VERTICAL;
+            card.addView(th, tlp);
+            ImageStore.into(th, it.image, 200, true);
+        }
 
         final String metaText = it.meta();
         card.setOnClickListener(v -> {
@@ -1206,6 +1218,7 @@ public class MainActivity extends Activity {
             in.putExtra(PreviewActivity.EXTRA_META, metaText);
             in.putExtra(PreviewActivity.EXTRA_TEXT, it.description);
             in.putExtra(PreviewActivity.EXTRA_LINK, it.link);
+            in.putExtra(PreviewActivity.EXTRA_IMAGE, it.image);
             startActivity(in);
         });
         card.setLayoutParams(lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 8));

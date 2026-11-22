@@ -291,6 +291,15 @@ final class Prefs {
         sp(c).edit().putInt("acc_" + id, rgb < 0 ? -1 : rgb & 0xFFFFFF).apply();
     }
 
+    /** Vorschaubilder: 0 aus, 1 nur WLAN (Standard), 2 immer. Gilt fuer App und Widgets. */
+    static int imgMode(Context c) {
+        return sp(c).getInt("img_mode", 1);
+    }
+
+    static void setImgMode(Context c, int m) {
+        sp(c).edit().putInt("img_mode", m).apply();
+    }
+
     static boolean flag(Context c, String key) {
         return sp(c).getBoolean(key, false);
     }

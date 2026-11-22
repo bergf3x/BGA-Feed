@@ -38,6 +38,8 @@ final class FeedItem {
     String description = "";
     String pubDate = "";
     String feedName = "";
+    /** Adresse des Vorschaubildes (leer, wenn die Quelle keins liefert). */
+    String image = "";
     long time = 0;
     boolean plus = false;
     /** Platzhalter fuer eine Medien-Ueberschrift in der Liste (title = Name des Mediums). */
@@ -161,6 +163,10 @@ final class FeedItem {
                 if (e == XmlPullParser.START_TAG) {
                     tag = p.getName();
                     if ("item".equals(tag)) cur = new FeedItem();
+                    else if (cur != null && "enclosure".equals(tag)) {
+                        String u = p.getAttributeValue(null, "url");
+                        if (u != null && u.startsWith("http")) cur.image = u.trim();
+                    }
                 } else if (e == XmlPullParser.TEXT && cur != null && tag != null) {
                     String t = p.getText();
                     if ("title".equals(tag)) cur.title += t;
