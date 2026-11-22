@@ -29,6 +29,7 @@ def nodes():
 
 def main():
     cmd, arg = sys.argv[1], (sys.argv[2] if len(sys.argv) > 2 else "")
+    nth = int(sys.argv[3]) if len(sys.argv) > 3 else 0
     if cmd == "texts":
         for t, d, x, y in nodes():
             if t or d:
@@ -37,7 +38,7 @@ def main():
     ns = list(nodes())
     exact = [n for n in ns if arg and (n[0] == arg or n[1] == arg)]
     loose = [n for n in ns if arg and (arg in n[1] or n[0].startswith(arg))]
-    for t, d, x, y in exact + loose:
+    for t, d, x, y in (exact + loose)[nth:nth + 1]:
         if True:
             if cmd == "tap":
                 subprocess.run(["adb", "shell", "input", "tap", str(x), str(y)])
