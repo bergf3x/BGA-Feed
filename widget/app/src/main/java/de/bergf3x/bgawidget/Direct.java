@@ -1,3 +1,8 @@
+/*
+ * BGL Wetter & News
+ * Copyright (c) 2026 bergf3x. Alle Rechte vorbehalten.
+ * Nutzung, Vervielfaeltigung und Weitergabe nur mit ausdruecklicher Erlaubnis des Urhebers.
+ */
 package de.bergf3x.bgawidget;
 
 import android.content.Context;

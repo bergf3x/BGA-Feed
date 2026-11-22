@@ -1,3 +1,8 @@
+/*
+ * BGL Wetter & News
+ * Copyright (c) 2026 bergf3x. Alle Rechte vorbehalten.
+ * Nutzung, Vervielfaeltigung und Weitergabe nur mit ausdruecklicher Erlaubnis des Urhebers.
+ */
 package de.bergf3x.bgawidget;
 
 /** Kurze Versionshistorie fuer das Info-Menue. Neueste Version zuerst. Praefix: + neu, - entfernt, ~ geaendert/behoben. */
@@ -5,6 +10,8 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.03",
+                    "+ Copyright-Hinweis in „Über die App“"},
             {"1.02",
                     "+ Über die App: Quellen, Open-Meteo und DWD als Links",
                     "~ Über die App: „Schließen“ bleibt immer sichtbar"},
