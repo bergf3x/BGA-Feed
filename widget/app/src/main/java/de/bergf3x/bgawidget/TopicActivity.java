@@ -96,10 +96,7 @@ public class TopicActivity extends Activity {
             if (subs.size() <= 1) {
                 // keine Untergliederung: direkt waehlbar
                 // gleiche Glas-Kachel wie die aufklappbaren Eintraege, nur mit Haken statt Pfeil
-                body.addView(entry(name(region), count(region), sel.contains(region), () -> {
-                    Haptic.play(body, Haptic.TICK);
-                    toggle(region);
-                }));
+                body.addView(entry(name(region), count(region), sel.contains(region), () -> toggle(region)));
                 continue;
             }
             int picked = 0;
@@ -198,7 +195,10 @@ public class TopicActivity extends Activity {
         arrow.setTextColor(b.tx);
         row.addView(arrow);
         row.setClickable(true);
-        row.setOnClickListener(v -> click.run());
+        row.setOnClickListener(v -> {
+            Haptic.play(v, Haptic.TICK);
+            click.run();
+        });
         row.setContentDescription(name + ", " + n + " Meldungen, " + (expanded ? "zuklappen" : "aufklappen"));
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);

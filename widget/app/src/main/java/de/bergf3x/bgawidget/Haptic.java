@@ -37,10 +37,10 @@ final class Haptic {
         int c;
         switch (kind) {
             case TOGGLE_ON:
-                c = Build.VERSION.SDK_INT >= 34 ? HapticFeedbackConstants.TOGGLE_ON : HapticFeedbackConstants.CLOCK_TICK;
+                c = Build.VERSION.SDK_INT >= 34 ? HapticFeedbackConstants.TOGGLE_ON : HapticFeedbackConstants.KEYBOARD_TAP;
                 break;
             case TOGGLE_OFF:
-                c = Build.VERSION.SDK_INT >= 34 ? HapticFeedbackConstants.TOGGLE_OFF : HapticFeedbackConstants.CLOCK_TICK;
+                c = Build.VERSION.SDK_INT >= 34 ? HapticFeedbackConstants.TOGGLE_OFF : HapticFeedbackConstants.KEYBOARD_TAP;
                 break;
             case CONFIRM:
                 c = Build.VERSION.SDK_INT >= 30 ? HapticFeedbackConstants.CONFIRM : HapticFeedbackConstants.VIRTUAL_KEY;
@@ -52,7 +52,7 @@ final class Haptic {
                 c = HapticFeedbackConstants.VIRTUAL_KEY;
                 break;
             default:
-                c = HapticFeedbackConstants.CLOCK_TICK;
+                c = HapticFeedbackConstants.KEYBOARD_TAP;
         }
         v.performHapticFeedback(c);
     }
