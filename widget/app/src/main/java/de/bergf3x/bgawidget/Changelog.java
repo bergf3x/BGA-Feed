@@ -10,6 +10,8 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.08",
+                    "~ „Übernehmen“ und „Fertig“ sind zunächst grau und werden erst hell, wenn etwas geändert wurde (App und Widget, alle Menüs)"},
             {"1.07",
                     "~ Einheitliche Buttons: Übernehmen und Abbrechen bei Einstellungen und Auswahlfenstern",
                     "+ Aktualisierung: Auswahl gilt erst nach Übernehmen, neuer Schalter „Ausgeglichen“ (3 Std)",

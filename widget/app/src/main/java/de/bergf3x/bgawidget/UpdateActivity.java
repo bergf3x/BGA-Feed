@@ -72,7 +72,8 @@ public class UpdateActivity extends Activity {
         });
         b.space(6);
         if (fromWidget) {
-            b.pill("Übernehmen", true, true, this::apply);
+            TextView ok = b.pillApply("Übernehmen", true, this::apply);
+            b.watch(ok, () -> (showNews && nSel != n0) || wSel != w0);
             b.pill("Abbrechen", false, true, () -> { });
         } else {
             b.pill("Schließen", false, true, () -> { });

@@ -93,7 +93,9 @@ public class ColorsActivity extends Activity {
         refreshPreview();
 
         b.space(6);
-        b.pill("Übernehmen", true, true, this::save);
+        final int[] init = {pickSub.c1, pickSub.c2, pickWx.c1, pickWx.c2};
+        TextView ok = b.pillApply("Übernehmen", true, this::save);
+        b.watch(ok, () -> init[0] != pickSub.c1 || init[1] != pickSub.c2 || init[2] != pickWx.c1 || init[3] != pickWx.c2);
         b.pill("Abbrechen", false, true, () -> { });
     }
 

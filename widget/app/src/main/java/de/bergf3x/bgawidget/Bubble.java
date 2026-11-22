@@ -522,4 +522,48 @@ final class Bubble {
         parent.addView(t, lp);
         return t;
     }
+
+    /** "Uebernehmen"-Knopf: zunaechst wie "Abbrechen" (nur Text); wird mit watch() hell, sobald etwas geaendert ist. */
+    TextView pillApply(String label, boolean closeAfter, Runnable onClick) {
+        TextView t = pillIn(box, label, false, () -> {
+            onClick.run();
+            if (closeAfter) close();
+        });
+        t.setTag(Boolean.FALSE);
+        return t;
+    }
+
+    /** Hell (aktiv) oder nur Text (inaktiv). */
+    void setActive(TextView t, boolean on) {
+        if (Boolean.valueOf(on).equals(t.getTag())) return;
+        t.setTag(on);
+        pressable(t, on ? hi : 0, on ? 0x33000000 : ripple);
+        t.setTextColor(on ? hiTx : tx);
+    }
+
+    /** Prueft alle 250 ms, ob etwas geaendert wurde, und faerbt den Knopf entsprechend. */
+    void watch(final TextView btn, final java.util.function.BooleanSupplier dirty) {
+        final boolean[] on = {false};
+        final Runnable[] r = new Runnable[1];
+        r[0] = () -> {
+            if (!on[0]) return;
+            try {
+                setActive(btn, dirty.getAsBoolean());
+            } catch (Exception ignored) {
+            }
+            btn.postDelayed(r[0], 250);
+        };
+        btn.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+            @Override
+            public void onViewAttachedToWindow(View v) {
+                on[0] = true;
+                v.post(r[0]);
+            }
+
+            @Override
+            public void onViewDetachedFromWindow(View v) {
+                on[0] = false;
+            }
+        });
+    }
 }
