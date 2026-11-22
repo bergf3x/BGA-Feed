@@ -10,6 +10,13 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.13",
+                    "+ Abo-Schalter steht fest links vor den Themen (zeigt die Zahl der Abo-Artikel) und scrollt nicht mehr weg",
+                    "+ Neuer Look mit dezenter Tiefe in App und Widget: erhabene Knöpfe, Chips und Karten, eingesenkte Eingabefelder und Schalter-Rinnen; gedrückte Knöpfe sinken ein",
+                    "+ Gewählter Reiter unten (und im Widget) als farbige Pille deutlich hervorgehoben",
+                    "+ Warnzeile über den News bei aktiver DWD-Warnung ab Stufe 3 in den gewählten Regionen",
+                    "+ Gemerkt: nach rechts wischen öffnet den Artikel, nach links entfernt ihn",
+                    "~ „Neu seit“-Linie in Akzentfarbe"},
             {"1.12",
                     "+ Ein Schalter „Abo“ für alle Quellen (News-Leiste und Einstellungen); Untermenüs folgen dem Hauptschalter und bleiben einzeln änderbar; Abo-Karten tragen ein Schloss",
                     "+ Gemerkt: Aufbewahrung wählbar (dauerhaft oder 7 Tage); bei jeder Aktualisierung werden die Artikel geprüft, entfernte zeigen „Artikel nicht mehr verfügbar“; fehlende Bilder werden nachgeladen",

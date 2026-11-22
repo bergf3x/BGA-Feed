@@ -81,15 +81,22 @@ final class IosSwitch extends View {
     protected void onDraw(Canvas c) {
         float w = getWidth(), h = getHeight(), d = getResources().getDisplayMetrics().density;
         float clamp = Math.max(0f, Math.min(1f, pos));
-        track.setColor(blend(offColor, onColor, clamp));
+        int tc = blend(offColor, onColor, clamp);
+        track.setColor(tc);
         r.set(0, 0, w, h);
+        track.setShader(new android.graphics.LinearGradient(0, 0, 0, h,
+                Depth.shade(tc | 0xFF000000, 0.72f) & 0x00FFFFFF | (tc & 0xFF000000), tc,
+                android.graphics.Shader.TileMode.CLAMP));
         c.drawRoundRect(r, h / 2, h / 2, track);
+        track.setShader(null);
         float pad = 2 * d, rad = h / 2 - pad;
         float x0 = pad + rad, x1 = w - pad - rad;
         float cx = x0 + (x1 - x0) * pos; // pos darf kurz >1 / <0 sein (Nachfedern)
         cx = Math.max(x0 - 2 * d, Math.min(x1 + 2 * d, cx));
-        c.drawCircle(cx, h / 2 + d * 0.8f, rad, shadow);
-        thumb.setColor(blend(thumbOff, thumbOn, clamp));
-        c.drawCircle(cx, h / 2, rad, thumb);
+        int th = blend(thumbOff, thumbOn, clamp);
+        shadow.setColor(Depth.shade(th | 0xFF000000, 0.55f));
+        c.drawCircle(cx, h / 2 + d * 1.6f, rad, shadow);
+        thumb.setColor(th);
+        c.drawCircle(cx, h / 2 - d * 0.4f, rad, thumb);
     }
 }
