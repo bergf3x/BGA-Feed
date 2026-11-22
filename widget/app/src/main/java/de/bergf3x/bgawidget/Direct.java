@@ -910,7 +910,30 @@ final class Direct {
         sp.edit().putString("log", sb.toString()).apply();
     }
 
+    private static final Pattern LOG_OK = Pattern.compile("^\\S+ (\\d\\d:\\d\\d):\\d\\d\\s+(.+?): (\\d+) Artikel direkt.*?, (\\d+) s");
+    private static final Pattern LOG_ERR = Pattern.compile("^\\S+ (\\d\\d:\\d\\d):\\d\\d\\s+(.+?): FEHLER direkt \\((?:[\\w.]+Exception: )?([^)]*)\\)");
+
+    /** Kurzfassung fuer "Ueber die App": je Quelle nur der letzte Abruf, eine Zeile. */
     static String logText(Context ctx) {
-        return ctx.getSharedPreferences("direct", Context.MODE_PRIVATE).getString("log", "Noch kein Abruf.");
+        String raw = ctx.getSharedPreferences("direct", Context.MODE_PRIVATE).getString("log", "");
+        if (raw.isEmpty()) return "Noch kein Abruf.";
+        java.util.LinkedHashMap<String, String> last = new java.util.LinkedHashMap<>();
+        for (String l : raw.split("\n")) {
+            Matcher m = LOG_OK.matcher(l);
+            if (m.find()) {
+                String name = FeedItem.shortSource(m.group(2));
+                if (!last.containsKey(name)) last.put(name, m.group(1) + "  " + name + " · " + m.group(3) + " Meldungen · " + m.group(4) + " s");
+                continue;
+            }
+            m = LOG_ERR.matcher(l);
+            if (m.find()) {
+                String name = FeedItem.shortSource(m.group(2));
+                if (!last.containsKey(name)) last.put(name, m.group(1) + "  " + name + " · Fehler (" + m.group(3).trim() + "), Ersatz-Feed");
+            }
+        }
+        if (last.isEmpty()) return "Noch kein Abruf.";
+        StringBuilder sb = new StringBuilder("Letzter Abruf je Quelle:");
+        for (String v : last.values()) sb.append('\n').append(v);
+        return sb.toString();
     }
 }
