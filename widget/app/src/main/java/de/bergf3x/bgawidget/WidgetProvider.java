@@ -188,6 +188,8 @@ public class WidgetProvider extends AppWidgetProvider {
         rv.setTextViewText(R.id.nav_saved, "Gemerkt");
         rv.setViewVisibility(R.id.nav_badge, savedN > 0 ? android.view.View.VISIBLE : android.view.View.GONE);
         rv.setTextViewText(R.id.nav_badge, savedN > 99 ? "99+" : String.valueOf(savedN));
+        // rot = noch Ungelesenes im Gemerkt, grau = alles gelesen (nur noch Erinnerung)
+        rv.setInt(R.id.nav_badge, "setBackgroundResource", Prefs.savedUnread(ctx) > 0 ? R.drawable.badge_red : R.drawable.badge_gray);
         {
             int[] nv = {R.id.nav_news, R.id.nav_wx, R.id.nav_saved};
             for (int k = 0; k < 3; k++) {

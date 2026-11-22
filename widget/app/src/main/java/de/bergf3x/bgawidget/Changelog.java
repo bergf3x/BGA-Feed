@@ -10,6 +10,9 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.19",
+                    "+ Gemerkt-Zähler: rot, solange noch ungelesene Artikel darin liegen; grau, wenn alle gelesen sind (bleibt als Erinnerung stehen)",
+                    "~ Widget: nach einem App-Update wird das Layout einmal komplett neu aufgebaut, damit Zähler und rote Punkte sicher erscheinen"},
             {"1.18",
                     "+ Neue Meldungen sind markiert: roter Balken, „NEU“ vor der Zeile; neu ist, was seit dem letzten Öffnen der App oder nach dem Aktualisieren dazugekommen ist",
                     "+ Roter Punkt in der Ecke eines Themas, wenn es dort Neues gibt (App und Widget)",

@@ -409,6 +409,18 @@ final class Prefs {
         }
     }
 
+    /** Wie viele gemerkte Artikel noch nicht gelesen wurden. */
+    static int savedUnread(Context c) {
+        org.json.JSONArray a = saved(c);
+        Set<String> read = readSet(c);
+        int n = 0;
+        for (int i = 0; i < a.length(); i++) {
+            org.json.JSONObject o = a.optJSONObject(i);
+            if (o != null && !isRead(read, o.optString("l"))) n++;
+        }
+        return n;
+    }
+
     static boolean isSaved(Context c, String link) {
         org.json.JSONArray a = saved(c);
         for (int i = 0; i < a.length(); i++) {
@@ -577,6 +589,8 @@ final class Prefs {
         list.add(link);
         while (list.size() > 400) list.remove(0);
         sp(c).edit().putString("read", android.text.TextUtils.join("\n", list)).apply();
+        // gelesener Gemerkt-Artikel: Zaehler in App und Widget auf grau umstellen
+        if (isSaved(c, link)) savedChanged(c);
     }
 
     /** Naechstes Listen-Update nur aus dem Cache (ohne Netz), z. B. nach "gelesen". */
