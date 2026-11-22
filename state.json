@@ -1,5 +1,55 @@
 {
  "items": {
+  "1027992": {
+   "sid": 1027992,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-touchdown-von-st-brown-detroit-mit-sechstem-sieg-in-serie-_arid,1027992.html",
+   "title": "Touchdown von St. Brown: Detroit mit sechstem Sieg in Serie",
+   "teaser": "Detroit (dpa) - Amon-Ra St. Brown ist aktuell in toller Verfassung. Auch dank eines erneuten Touchdowns des deutschen Profis hält die Siegesserie der Detroit Lions.",
+   "category": "Sport",
+   "plus": false,
+   "topic": "Sport",
+   "first_seen": "2026-11-22T23:37:47+00:00"
+  },
+  "1027991": {
+   "sid": 1027991,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-pyro-und-braende-polizei-nach-nordderby-dennoch-zufrieden-_arid,1027991.html",
+   "title": "Pyro und Brände: Polizei nach Nordderby dennoch zufrieden",
+   "teaser": "Bremen (dpa) - Das Nordderby Werder Bremen gegen den HSV gilt als Hochrisikospiel. Auch bei der 111. Bundesliga-Auflage gibt es Vorfälle. Dennoch spricht die Polizei von einem ...",
+   "category": "1. Fußball Bundesliga",
+   "plus": false,
+   "topic": "Sport/Fußball",
+   "first_seen": "2026-11-22T23:37:47+00:00"
+  },
+  "1027990": {
+   "sid": 1027990,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-hamburger-muheim-im-nordderby-an-der-wade-verletzt-_arid,1027990.html",
+   "title": "Hamburger Muheim im Nordderby an der Wade verletzt",
+   "teaser": "Bremen (dpa) - Das 0:4 im Nordderby beim SV Werder Bremen ist für den Hamburger SV und Miro Muheim schlimm genug. Zu allem schlechten Überfluss muss der Schweizer verletzt den Platz ...",
+   "category": "1. Fußball Bundesliga",
+   "plus": false,
+   "topic": "Sport/Fußball",
+   "first_seen": "2026-11-22T23:37:47+00:00"
+  },
+  "1027987": {
+   "sid": 1027987,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-strahlend-in-weiss-miley-cyrus-postet-hochzeitsbilder-_arid,1027987.html",
+   "title": "Strahlend in Weiß: Miley Cyrus postet Hochzeitsbilder",
+   "teaser": "",
+   "category": "",
+   "plus": false,
+   "topic": "Nachrichten/Boulevard",
+   "first_seen": "2026-11-22T23:37:47+00:00"
+  },
+  "1027986": {
+   "sid": 1027986,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-alba-berlin-verliert-prestigeduell-gegen-bayern-muenchen-_arid,1027986.html",
+   "title": "Alba Berlin verliert Prestigeduell gegen Bayern München",
+   "teaser": "Berlin (dpa) - Auch das zweite Ligaduell der Berliner gegen den Dauerrivalen in dieser Saison geht an die Bayern. Alba kämpft zwar bis zum Ende, aber eine zu schwache Wurfquote ...",
+   "category": "Sport",
+   "plus": false,
+   "topic": "Sport/Fußball",
+   "first_seen": "2026-11-22T23:37:47+00:00"
+  },
   "1027970": {
    "sid": 1027970,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-rheinmetalldeal-duerfte-bei-bvbhauptversammlung-thema-sein-_arid,1027970.html",
@@ -13,7 +63,7 @@
   "1027953": {
    "sid": 1027953,
    "url": "https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land_artikel,-pensionist-aus-berchtesgaden-tot-im-wald-jaeger-fanden-leiche-nahe-hellbrunn-_arid,1027953.html",
-   "title": "Pensionist aus Berchtesgaden tot im Wald: Jäger fanden Leiche nahe Hellbrunn",
+   "title": "Pensionist aus Berchtesgaden tot im Wald: Jäger fanden Leiche nahe Hellbrunn",
    "teaser": "",
    "category": "",
    "plus": false,
@@ -49,6 +99,16 @@
    "plus": false,
    "topic": "Sport/Fußball",
    "first_seen": "2026-11-22T18:03:52+00:00"
+  },
+  "1027942": {
+   "sid": 1027942,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-kaiserslautern-mueht-sich-zum-22-gegen-dynamo-dresden-_arid,1027942.html",
+   "title": "Kaiserslautern müht sich zum 2:2 gegen Dynamo Dresden",
+   "teaser": "Kaiserslautern (dpa) - Der FCK kann die Kulisse von über 47.000 Fans auf dem Betzenberg lange nicht nutzen. Gegen Dresden fällt den Roten Teufeln spielerisch wenig ein - bis kurz vor ...",
+   "category": "2. Fußball Bundesliga",
+   "plus": false,
+   "topic": "Sport/Fußball",
+   "first_seen": "2026-11-22T23:37:47+00:00"
   },
   "1027941": {
    "sid": 1027941,
@@ -154,10 +214,10 @@
    "sid": 1027913,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-waffe-im-zug-polizei-mit-maschinenpistolen-raeumen-bahnsteig-_arid,1027913.html",
    "title": "Waffe im Zug: Polizei mit Maschinenpistolen räumen Bahnsteig",
-   "teaser": "",
-   "category": "",
+   "teaser": "Hamburg (dpa) - An einem Bahnhof in Hamburg warten schwer bewaffnete Polizisten auf einen einfahrenden Zug. Ein Reisender hatte darin einen Mann mit einer Waffe beobachtet.",
+   "category": "Brennpunkt",
    "plus": false,
-   "topic": "Nachrichten/Boulevard",
+   "topic": "Nachrichten/Deutschland & Welt",
    "first_seen": "2026-11-22T10:21:35+00:00"
   },
   "1027912": {
@@ -197,7 +257,7 @@
    "teaser": "Lausanne (dpa) - Zweimal muss der Gesamtsieg der Österreich-Rundfahrt 2017 neu vergeben werden: Nach Stefan Denifl trifft es jetzt Delio Fernandez. Doch auch der nächste Fahrer an der ...",
    "category": "Sport",
    "plus": false,
-   "topic": "Sport",
+   "topic": "Nachrichten/Wissenschaft",
    "first_seen": "2026-11-22T10:21:35+00:00"
   },
   "1027902": {
@@ -574,7 +634,7 @@
    "sid": 1027837,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-familie-kunstsammler-mick-flick-ist-tot-_arid,1027837.html",
    "title": "Familie: Kunstsammler »Mick« Flick ist tot",
-   "teaser": "Rosenheim (dpa) - Er war einer der superreichen Deutschen. Jetzt ist der Kunstsammler Friedrich Christian Flick nach einem Sturz gestorben. Die Familiengeschichte der Flicks birgt ...",
+   "teaser": "",
    "category": "Boulevard",
    "plus": false,
    "topic": "Nachrichten/Boulevard",
@@ -717,7 +777,7 @@
    "teaser": "London (dpa) - Tom Brady verkaufte diesen Monat seine Anteile an Birmingham City. Nun steigt er einem Bericht zufolge beim FC Chelsea ein.",
    "category": "Fußball",
    "plus": false,
-   "topic": "Sport/Fußball",
+   "topic": "Sport",
    "first_seen": "2026-11-21T12:07:46+00:00"
   },
   "1027811": {
@@ -749,6 +809,16 @@
    "plus": false,
    "topic": "Sport",
    "first_seen": "2026-11-21T12:07:46+00:00"
+  },
+  "1027802": {
+   "sid": 1027802,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-ziemlich-beste-feinde-verstappen-und-russell-in-reihe-eins-_arid,1027802.html",
+   "title": "Ziemlich beste Feinde: Verstappen und Russell in Reihe eins",
+   "teaser": "Las Vegas (dpa) - Die beste Zeit in der Quali fürs Formel-1-Rennen in Las Vegas gelingt Antonelli. Weil der neue Weltmeister aber eine Strafe verbüßt, stehen zwei in der ersten ...",
+   "category": "Formel 1",
+   "plus": false,
+   "topic": "Sport",
+   "first_seen": "2026-11-22T23:37:47+00:00"
   },
   "1027799": {
    "sid": 1027799,
@@ -1163,9 +1233,9 @@
   "1027722": {
    "sid": 1027722,
    "url": "https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land/piding_artikel,-kindertag-in-der-molkerei-piding-20-kinder-backen-basteln-und-besuchen-ihre-eltern-_arid,1027722.html",
-   "title": "Kindertag in der Molkerei Piding – 20 Kinder backen, basteln und besuchen ihre Eltern",
-   "teaser": "Piding – Wenn die Schule geschlossen ist, stehen berufstätige Eltern oft vor einer besonderen Herausforderung. Um ihre Mitarbeitenden zu entlasten und den Kindern gleichzeitig einen ...",
-   "category": "Piding",
+   "title": "Kindertag in der Molkerei Piding – 20 Kinder backen, basteln und besuchen ihre Eltern",
+   "teaser": "",
+   "category": "",
    "plus": false,
    "topic": "Region/Berchtesgadener Land",
    "first_seen": "2026-11-22T18:03:52+00:00"
@@ -1193,9 +1263,9 @@
   "1027719": {
    "sid": 1027719,
    "url": "https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land/ramsau_artikel,-musik-als-teil-der-wirtshausidentitaet-berggaststaette-wimbachschloss-als-musikantenfreundliches-wirts-_arid,1027719.html",
-   "title": "Musik als Teil der Wirtshausidentität: Berggaststätte »Wimbachschloss« als »Musikantenfreundliches Wirtshaus« ausgezeichnet",
-   "teaser": "",
-   "category": "",
+   "title": "Musik als Teil der Wirtshausidentität: Berggaststätte »Wimbachschloss« als »Musikantenfreundliches Wirtshaus« ausgezeichnet",
+   "teaser": "Stulln/Ramsau – Spontanes, unangekündigtes Singen und Musizieren zum eigenen Vergnügen und zur Unterhaltung der Gäste – das ist auch in der Berggaststätte »Wimbachschloss« jederzeit ...",
+   "category": "Ramsau",
    "plus": false,
    "topic": "Region/Berchtesgadener Land",
    "first_seen": "2026-11-22T10:21:35+00:00"
@@ -1235,7 +1305,7 @@
    "url": "https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land/bischofswiesen_artikel,-neue-schiessanlage-der-bundeswehr-in-bischofswiesen-ist-uebergeben-mit-49-millionen-euro-fast-doppelt-_arid,1027715.html",
    "title": "Neue Schießanlage der Bundeswehr in Bischofswiesen ist übergeben - Mit 49 Millionen Euro fast doppelt so viel wie geplant",
    "teaser": "",
-   "category": "Bischofswiesen",
+   "category": "",
    "plus": true,
    "topic": "Region/Berchtesgadener Land",
    "first_seen": "2026-11-21T12:07:46+00:00"
@@ -1253,7 +1323,7 @@
   "1027712": {
    "sid": 1027712,
    "url": "https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land_artikel,-faschingsstart-in-salzburg-berchtesgadener-goassen-im-einsatz-_arid,1027712.html",
-   "title": "Faschingsstart in Salzburg: Berchtesgadener Goassen im Einsatz",
+   "title": "Faschingsstart in Salzburg: Berchtesgadener Goassen im Einsatz",
    "teaser": "",
    "category": "",
    "plus": false,
@@ -1264,8 +1334,8 @@
    "sid": 1027711,
    "url": "https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land/ramsau_artikel,-buergermeister-ehrt-innungsbesten-_arid,1027711.html",
    "title": "Bürgermeister ehrt Innungsbesten",
-   "teaser": "Ramsau – Ein herausragendes Gesellenstück hat Florian Aschauer bei der Abschlussprüfung der Schreiner abgeliefert.",
-   "category": "Ramsau",
+   "teaser": "",
+   "category": "",
    "plus": false,
    "topic": "Region/Berchtesgadener Land",
    "first_seen": "2026-11-21T12:07:46+00:00"
@@ -1284,8 +1354,8 @@
    "sid": 1027709,
    "url": "https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land/berchtesgaden_artikel,-ju-draengt-auf-reformen-bei-wohnen-und-familienfoerderung-_arid,1027709.html",
    "title": "JU drängt auf Reformen bei Wohnen und Familienförderung",
-   "teaser": "",
-   "category": "",
+   "teaser": "Berchtesgaden – Die Interessen der jungen Generation und politische Antworten auf die Herausforderungen der Zukunft sollen im Mittelpunkt der Landesversammlung der Jungen Union Bayern ...",
+   "category": "Berchtesgaden",
    "plus": false,
    "topic": "Region/Berchtesgadener Land",
    "first_seen": "2026-11-21T15:31:58+00:00"
@@ -1293,9 +1363,9 @@
   "1027708": {
    "sid": 1027708,
    "url": "https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land/berchtesgaden_artikel,-vom-kehlsteinhaus-bis-zum-tiny-house-engagierte-diskussion-auf-der-ersten-buergerversammlung-von-ale-_arid,1027708.html",
-   "title": "Vom Kehlsteinhaus bis zum »Tiny House« – Engagierte Diskussion auf der ersten Bürgerversammlung von Alexander Resch",
+   "title": "Vom Kehlsteinhaus bis zum »Tiny House« – Engagierte Diskussion auf der ersten Bürgerversammlung von Alexander Resch",
    "teaser": "",
-   "category": "Berchtesgaden",
+   "category": "",
    "plus": true,
    "topic": "Region/Berchtesgadener Land",
    "first_seen": "2026-11-21T12:07:46+00:00"
@@ -1614,7 +1684,7 @@
    "sid": 1027620,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-usautor-delillo-wird-90-_arid,1027620.html",
    "title": "US-Autor DeLillo wird 90",
-   "teaser": "",
+   "teaser": "New York (dpa) - Don DeLillo gehört zu den weltweit erfolgreichsten Schriftstellern. Jetzt wird der US-Bestsellerautor 90 Jahre alt - und schenkt seinen Fans ein Buch, das mit der ...",
    "category": "Boulevard",
    "plus": false,
    "topic": "Nachrichten/Boulevard",
@@ -1755,16 +1825,6 @@
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-exit-vom-brexit-darueber-verhandeln-london-und-bruessel-_arid,1027591.html",
    "title": "Exit vom Brexit? Darüber verhandeln London und Brüssel",
    "teaser": "Brüssel/London (dpa) - In Brüssel wollen Großbritannien und die EU weitere Schritte zur Wiederannäherung verkünden. Eines der geplanten Vorhaben dürfte vor allem Menschen unter 30 ...",
-   "category": "Brennpunkt",
-   "plus": false,
-   "topic": "Nachrichten/Deutschland & Welt",
-   "first_seen": "2026-11-20T17:32:48+00:00"
-  },
-  "1027590": {
-   "sid": 1027590,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-mehr-als-waffen-berlin-will-ukraine-wirtschaftlich-staerken-_arid,1027590.html",
-   "title": "Mehr als Waffen: Berlin will Ukraine wirtschaftlich stärken",
-   "teaser": "Berlin (dpa) - Am zweiten Tag des Ukraine-Gipfels geht es um Wirtschaft. Beim Ringen mit Russland deuten sich indes Fortschritte an: Trump und Putin scheinen gewillt, Europa an den ...",
    "category": "Brennpunkt",
    "plus": false,
    "topic": "Nachrichten/Deutschland & Welt",
@@ -2000,16 +2060,6 @@
    "topic": "Region/Landkreis Traunstein",
    "first_seen": "2026-11-20T17:32:48+00:00"
   },
-  "1027540": {
-   "sid": 1027540,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-bericht-keine-revolution-bei-abseitsregel-_arid,1027540.html",
-   "title": "Bericht: Keine Revolution bei Abseits-Regel",
-   "teaser": "Manchester (dpa) - Eine neue Abseitsregel sollte Offensivfußball begünstigen. Tests sollen jedoch nicht die erhofften Ergebnisse geliefert haben.",
-   "category": "Fußball",
-   "plus": false,
-   "topic": "Sport/Fußball",
-   "first_seen": "2026-11-20T17:45:57+00:00"
-  },
   "1027536": {
    "sid": 1027536,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-rueckschlag-fuer-mobilfunker-11-beschwerde-in-bruessel-_arid,1027536.html",
@@ -2069,16 +2119,6 @@
    "plus": false,
    "topic": "Sport",
    "first_seen": "2026-11-20T22:57:40+00:00"
-  },
-  "1027506": {
-   "sid": 1027506,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-in-sorge-um-schlaf-bvbcoach-kovac-scherzt-ueber-gta-6-_arid,1027506.html",
-   "title": "In Sorge um Schlaf: BVB-Coach Kovac scherzt über GTA 6",
-   "teaser": "Dortmund (dpa) - Dass Fußballprofis gerne an der Konsole zocken, ist bekannt. Auch BVB-Coach Kovac ist der Hype um die neueste GTA-Version nicht entgangen. Vor dem Spiel in Gladbach ...",
-   "category": "1. Fußball Bundesliga",
-   "plus": false,
-   "topic": "Sport/Fußball",
-   "first_seen": "2026-11-20T17:45:57+00:00"
   },
   "1027505": {
    "sid": 1027505,
@@ -2210,16 +2250,6 @@
    "topic": "Nachrichten/Wirtschaft",
    "first_seen": "2026-11-20T17:45:57+00:00"
   },
-  "1027458": {
-   "sid": 1027458,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-referee-mit-stein-verletzt-acht-jahre-sperre-fuer-fussballer-_arid,1027458.html",
-   "title": "Referee mit Stein verletzt: Acht Jahre Sperre für Fußballer",
-   "teaser": "Yantzaza (dpa) - In Ecuador kommt es zu einem Eklat in der 3. Liga. Ein Spiel bewirft einen Unparteiischen mit einem Stein und verletzt ihn schwer. Nun kassiert der Fußballer die ...",
-   "category": "Fußball",
-   "plus": false,
-   "topic": "Sport/Fußball",
-   "first_seen": "2026-11-20T17:45:57+00:00"
-  },
   "1027457": {
    "sid": 1027457,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-6-millionen-akute-atemwegserkrankungen-moderates-niveau-_arid,1027457.html",
@@ -2280,16 +2310,6 @@
    "topic": "Sport",
    "first_seen": "2026-11-20T17:45:57+00:00"
   },
-  "1027436": {
-   "sid": 1027436,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-nba-wagnerbrueder-gehen-mit-pleiten-ins-familienduell-_arid,1027436.html",
-   "title": "NBA: Wagner-Brüder gehen mit Pleiten ins Familienduell",
-   "teaser": "Orlando (dpa) - In der NBA steht in der Nacht auf Samstag das erste Duell zwischen Franz und Moritz Wagner an. Rückenwind kann keiner der beiden deutschen Basketballer mitnehmen.",
-   "category": "Sport",
-   "plus": false,
-   "topic": "Sport",
-   "first_seen": "2026-11-20T17:45:57+00:00"
-  },
   "1027432": {
    "sid": 1027432,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-70-jahre-presserat-von-gladbeck-bis-zur-ki-_arid,1027432.html",
@@ -2308,16 +2328,6 @@
    "category": "Boulevard",
    "plus": false,
    "topic": "Nachrichten/Boulevard",
-   "first_seen": "2026-11-20T17:45:57+00:00"
-  },
-  "1027429": {
-   "sid": 1027429,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-aus-der-formel-1-zum-geheimdienst-norris-hat-favoriten-_arid,1027429.html",
-   "title": "Aus der Formel 1 zum Geheimdienst? Norris hat Favoriten",
-   "teaser": "Las Vegas (dpa) - Seit Montag ist klar, wer der neue James Bond wird. Vor dem Rennen in Las Vegas kommt die Frage auf, wer aus dem Fahrerlager ein geeigneter Kandidat wäre - Lando ...",
-   "category": "Formel 1",
-   "plus": false,
-   "topic": "Sport",
    "first_seen": "2026-11-20T17:45:57+00:00"
   },
   "1027424": {
@@ -2944,7 +2954,7 @@
    "sid": 1027000,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-magazin-holzinger-fuehrt-top-100-der-kunstwelt-an-_arid,1027000.html",
    "title": "Magazin: Holzinger führt Top 100 der Kunstwelt an",
-   "teaser": "Berlin (dpa) - Mit »Seaworld Venice« sorgte sie für lange Schlangen: Choreographin Florentina Holzinger ist dem Magazin »Monopol« zufolge die einflussreichste ...",
+   "teaser": "",
    "category": "Boulevard",
    "plus": false,
    "topic": "Nachrichten/Boulevard",
@@ -3987,16 +3997,6 @@
    "teaser": "",
    "category": "Bergsteiger",
    "plus": false,
-   "topic": "Region/Bergsteiger & Naturfreunde",
-   "first_seen": "2026-11-20T17:50:08+00:00"
-  },
-  "830083": {
-   "sid": 830083,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-natur-pur-tolle-panoramen-und-gluecksmomente-satt-_arid,830083.html",
-   "title": "Natur pur, tolle Panoramen und Glücksmomente satt",
-   "teaser": "",
-   "category": "Bergsteiger",
-   "plus": true,
    "topic": "Region/Bergsteiger & Naturfreunde",
    "first_seen": "2026-11-20T17:50:08+00:00"
   }
