@@ -17,6 +17,9 @@ tapw "Beides" 1.5; shot 3_beides
 adb shell input swipe 540 1500 540 1100 400; sleep 1; shot 4_berechtigungen
 $UI texts | head -40 | tee -a $R
 tapw "Erlauben" 2; shot 5_systemabfrage
-$UI tap "Zulassen" | tee -a $R; $UI tap "Allow" | tee -a $R; sleep 2; shot 6_nach_erlauben
+$UI tap "Allow" | tee -a $R; sleep 3; shot 6_nach_erlauben
+adb shell dumpsys package $PKG | grep -i "POST_NOTIFICATIONS" | tee -a $R
+adb shell am force-stop $PKG; adb shell am start -W -n $ACT >/dev/null; sleep 8; shot 7_neustart
+$UI texts | grep -E "offen|Benachrichtigungen|Akku" | tee -a $R
 adb logcat -d | grep -E "FATAL EXCEPTION" -A8 | head -30 | tee -a $R
 log "== Ende =="
