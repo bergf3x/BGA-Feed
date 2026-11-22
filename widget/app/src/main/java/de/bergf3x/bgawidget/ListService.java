@@ -103,6 +103,7 @@ public class ListService extends RemoteViewsService {
         } finally {
             ex.shutdownNow();
         }
+        android.util.Log.i("BGAstat", "fetchAll app=" + app + " " + Net.stats());
         return out;
     }
 
