@@ -241,6 +241,24 @@ final class Prefs {
         return sp(c).contains(k) ? sp(c).getBoolean(k, true) : showPlus(c, id);
     }
 
+    /** 0 = bei keiner Quelle, 1 = bei allen, 2 = bei einigen Quellen sichtbar (nur Quellen mit Abo-Artikeln). */
+    static int plusState(Context c, int id) {
+        int on = 0, tot = 0;
+        for (Catalog.Feed f : Catalog.load(c)) {
+            if (!Catalog.hasPaywall(f.id)) continue;
+            tot++;
+            if (showPlusFeed(c, id, f.id)) on++;
+        }
+        return tot == 0 || on == tot ? 1 : on == 0 ? 0 : 2;
+    }
+
+    /** Hauptschalter: Abo-Artikel bei allen Quellen an oder aus (einzelne lassen sich danach wieder aendern). */
+    static void setPlusAll(Context c, int id, boolean on) {
+        android.content.SharedPreferences.Editor e = sp(c).edit().putBoolean("plus_" + id, on);
+        for (Catalog.Feed f : Catalog.load(c)) if (Catalog.hasPaywall(f.id)) e.putBoolean("plusf_" + id + "_" + f.id, on);
+        e.apply();
+    }
+
     static void setPlusFeed(Context c, int id, String feedId, boolean on) {
         sp(c).edit().putBoolean("plusf_" + id + "_" + feedId, on).apply();
     }
@@ -424,7 +442,7 @@ final class Prefs {
         if (!had) {
             try {
                 org.json.JSONObject n = new org.json.JSONObject();
-                n.put("t", title).put("m", meta).put("x", text).put("l", link).put("i", image == null ? "" : image);
+                n.put("t", title).put("m", meta).put("x", text).put("l", link).put("i", image == null ? "" : image).put("d", System.currentTimeMillis());
                 org.json.JSONArray res = new org.json.JSONArray();
                 res.put(n);
                 for (int i = 0; i < out.length() && res.length() < 100; i++) res.put(out.get(i));
@@ -434,6 +452,74 @@ final class Prefs {
         }
         sp(c).edit().putString("saved", out.toString()).apply();
         return !had;
+    }
+
+    /** Aktuelle DWD-Warnung je Region fuer die Wetter-Karten ("" = noch unbekannt, "-" = keine). */
+    static String warnRegion(Context c, String ags) {
+        return sp(c).getString("warnr_" + ags, "");
+    }
+
+    static void setWarnRegion(Context c, String ags, String text) {
+        sp(c).edit().putString("warnr_" + ags, text).apply();
+    }
+
+    /** Aufbewahrung gemerkter Artikel in Tagen; 0 = dauerhaft. */
+    static int savedKeepDays(Context c) {
+        return sp(c).getInt("saved_days", 0);
+    }
+
+    static void setSavedKeepDays(Context c, int days) {
+        sp(c).edit().putInt("saved_days", days).apply();
+    }
+
+    /** Entfernt gemerkte Artikel, die laenger als die gewaehlte Frist gemerkt sind (Eintraege ohne Zeitstempel bekommen jetzt einen). */
+    static synchronized void pruneSaved(Context c) {
+        org.json.JSONArray a = saved(c);
+        long now = System.currentTimeMillis();
+        long keep = savedKeepDays(c) * 86400000L;
+        org.json.JSONArray out = new org.json.JSONArray();
+        boolean changed = false;
+        for (int i = 0; i < a.length(); i++) {
+            org.json.JSONObject o = a.optJSONObject(i);
+            if (o == null) continue;
+            try {
+                if (o.optLong("d") == 0) {
+                    o.put("d", now);
+                    changed = true;
+                }
+            } catch (Exception ignored) {
+            }
+            if (keep > 0 && now - o.optLong("d") > keep) {
+                changed = true;
+                continue;
+            }
+            out.put(o);
+        }
+        if (changed) sp(c).edit().putString("saved", out.toString()).apply();
+    }
+
+    /** Merkt sich je Artikel, ob die Quelle ihn nicht mehr liefert (gone) oder ob er erreichbar ist (checked); ungepruefte bleiben unveraendert. */
+    static synchronized void markSavedGone(Context c, Set<String> gone, Set<String> checked, java.util.Map<String, String> images) {
+        org.json.JSONArray a = saved(c);
+        boolean changed = false;
+        for (int i = 0; i < a.length(); i++) {
+            org.json.JSONObject o = a.optJSONObject(i);
+            if (o == null) continue;
+            String l = o.optString("l");
+            try {
+                if (checked.contains(l) && o.optBoolean("g") != gone.contains(l)) {
+                    o.put("g", gone.contains(l));
+                    changed = true;
+                }
+                String img = images.get(l);
+                if (img != null && !img.isEmpty() && o.optString("i").isEmpty()) {
+                    o.put("i", img);
+                    changed = true;
+                }
+            } catch (Exception ignored) {
+            }
+        }
+        if (changed) sp(c).edit().putString("saved", a.toString()).apply();
     }
 
     // ---- gelesene Artikel (global, die letzten 400 Links) ----

@@ -16,7 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-/** Einstellungen zur Aktualisierung: Intervalle, manueller Abruf, Akku-Ausnahme, Autostart (Xiaomi). */
+/** Einstellungen zur Aktualisierung: Intervalle, manueller Abruf, Akku-Ausnahme, Autostart (je nach Hersteller). */
 public class UpdateActivity extends Activity {
     private TextView battery, notify;
     private TextView stamp;
@@ -209,15 +209,7 @@ public class UpdateActivity extends Activity {
     }
 
     private void openAutostart() {
-        try {
-            Intent in = new Intent();
-            in.setComponent(new ComponentName("com.miui.securitycenter",
-                    "com.miui.permcenter.autostart.AutoStartManagementActivity"));
-            startActivity(in);
-        } catch (Exception e) {
-            appInfo();
-            Toast.makeText(this, "Dort: Autostart erlauben, Akkusparer auf „Keine Einschränkungen“", Toast.LENGTH_LONG).show();
-        }
+        Perms.openAutostart(this);
     }
 
     private void appInfo() {

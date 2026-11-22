@@ -42,7 +42,7 @@ final class WidgetPin {
                         + "1. Leere Stelle auf dem Startbildschirm gedrückt halten\n"
                         + "2. „Widgets“ wählen\n"
                         + "3. „BGL Wetter & News“ suchen und auf den Startbildschirm ziehen\n\n"
-                        + "Tipp Xiaomi: Unter App-Info > Weitere Berechtigungen kann „Verknüpfungen auf dem Startbildschirm erstellen“ "
+                        + "Tipp: Unter App-Info > Berechtigungen kann bei manchen Geräten „Verknüpfungen auf dem Startbildschirm erstellen“ "
                         + "erlaubt werden, dann klappt der Knopf direkt.")
                 .setPositiveButton("OK", null)
                 .setNeutralButton("App-Info", (dlg, w) -> {

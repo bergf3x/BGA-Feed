@@ -10,6 +10,12 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.12",
+                    "+ Ein Schalter „Abo“ für alle Quellen (News-Leiste und Einstellungen); Untermenüs folgen dem Hauptschalter und bleiben einzeln änderbar; Abo-Karten tragen ein Schloss",
+                    "+ Gemerkt: Aufbewahrung wählbar (dauerhaft oder 7 Tage); bei jeder Aktualisierung werden die Artikel geprüft, entfernte zeigen „Artikel nicht mehr verfügbar“; fehlende Bilder werden nachgeladen",
+                    "+ Region-Karten zeigen die aktuelle DWD-Warnung; Widget ohne Wetterdaten zeigt einen Hinweis zum Aktualisieren",
+                    "~ Fehlende Vorschaubilder werden am Folgetag erneut versucht",
+                    "~ Texte und Einstellungen nicht mehr herstellerspezifisch (allgemeine Android-App)"},
             {"1.11",
                     "+ Gemerkt erscheint als Liste mit Vorschaubildern wie unter News (Bilder nur bei neu gemerkten Artikeln); untere Leiste höher und mit Beschriftung",
                     "~ Fehlende Vorschaubilder (z. B. Anzeiger-Rubriken) werden von der Artikelseite nachgeladen",

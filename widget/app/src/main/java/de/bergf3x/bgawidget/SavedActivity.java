@@ -23,12 +23,16 @@ public class SavedActivity extends Activity {
         super.onCreate(savedInstanceState);
         final Bubble b = new Bubble(this, 340, 8);
         b.header("Gemerkte Artikel", b::close);
+        Prefs.pruneSaved(this);
         JSONArray a = Prefs.saved(this);
         if (a.length() == 0) {
             b.text("Noch nichts gemerkt. In der Artikel-Vorschau gibt es den Knopf „Merken“.", 14, b.tx, false)
                     .setPadding(b.px(10), b.px(4), b.px(10), b.px(10));
         } else {
             LinearLayout body = b.scrollBox(0.6f);
+            b.label(body, "Aufbewahrung");
+            b.segment(body, new String[]{"Dauerhaft", "7 Tage"}, Prefs.savedKeepDays(this) == 0 ? 0 : 1,
+                    i -> Prefs.setSavedKeepDays(this, i == 0 ? 0 : 7));
             for (int i = 0; i < a.length(); i++) {
                 final JSONObject o = a.optJSONObject(i);
                 if (o == null) continue;
@@ -41,6 +45,7 @@ public class SavedActivity extends Activity {
                 card.setBackground(bg);
                 card.addView(line(b, o.optString("t"), 16, b.title, true, 0));
                 String meta = o.optString("m");
+                if (o.optBoolean("g")) meta = "Artikel nicht mehr verfügbar" + (meta.isEmpty() ? "" : " · " + meta);
                 if (!meta.isEmpty()) card.addView(line(b, meta, 12, b.soft, false, 4));
                 String src = FeedItem.source(o.optString("l"));
                 if (!src.isEmpty()) card.addView(line(b, src, 11, b.soft, false, 1));

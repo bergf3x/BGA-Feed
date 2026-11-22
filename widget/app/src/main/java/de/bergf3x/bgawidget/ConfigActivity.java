@@ -735,6 +735,20 @@ public class ConfigActivity extends Activity {
     private void buildFeeds() {
         if (feedBox == null) return;
         feedBox.removeAllViews();
+        int paid = 0, paidOn = 0;
+        for (Catalog.Feed f : Catalog.load(this)) {
+            if (!Catalog.hasPaywall(f.id)) continue;
+            if (!plusF.containsKey(f.id)) plusF.put(f.id, Prefs.showPlusFeed(this, widgetId, f.id));
+            paid++;
+            if (plusF.get(f.id)) paidOn++;
+        }
+        if (paid > 0) {
+            final boolean allOn = paidOn == paid;
+            b.toggle(feedBox, paidOn == 0 || allOn ? "Abo-Artikel anzeigen (alle Quellen)" : "Abo-Artikel anzeigen (teilweise)", allOn, on -> {
+                for (Catalog.Feed g : Catalog.load(this)) if (Catalog.hasPaywall(g.id)) plusF.put(g.id, on);
+                feedBox.post(this::buildFeeds);
+            });
+        }
         for (Catalog.Feed f : Catalog.load(this)) {
             b.toggle(feedBox, f.name, selected.contains(f.id), on -> {
                 if (on) selected.add(f.id);
@@ -742,7 +756,10 @@ public class ConfigActivity extends Activity {
             });
             if (!Catalog.hasPaywall(f.id)) continue;
             if (!plusF.containsKey(f.id)) plusF.put(f.id, Prefs.showPlusFeed(this, widgetId, f.id));
-            b.toggle(feedBox, "  Abo-Artikel anzeigen", plusF.get(f.id), on -> plusF.put(f.id, on));
+            b.toggle(feedBox, "  Abo-Artikel anzeigen", plusF.get(f.id), on -> {
+                plusF.put(f.id, on);
+                feedBox.post(this::buildFeeds);
+            });
         }
     }
 

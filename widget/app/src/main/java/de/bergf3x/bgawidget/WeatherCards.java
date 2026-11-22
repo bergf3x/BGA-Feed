@@ -24,6 +24,8 @@ final class WeatherCards {
     private static final String DAV = "https://www.alpenverein.de/bergwetter";
     private static final String DAV_OST = DAV + "/alpen/bayerische-alpen-ost-osterreich-nord";
     private static final String DWD_WARN = "https://www.dwd.de/DE/wetter/warnungen/warnWetter_node.html";
+    /** Gemeindewarnungen: der Ort steht in der Adresse, die Seite zeigt gleich dessen Warnungen (22.11.2026 geprueft). */
+    static final String DWD_WARN_ORT = "https://www.dwd.de/DE/wetter/warnungen_gemeinden/warnWetter_node.html?ort=";
 
     /** id, Titel, Zeile darunter, Gruppe, Adresse (Regionsseiten des DAV, Adressen am 22.11.2026 geprueft). */
     static final String[][] BERG_REGIONS = {
@@ -39,11 +41,11 @@ final class WeatherCards {
     };
     static final Set<String> BERG_DEFAULT = new LinkedHashSet<>(java.util.Arrays.asList("bay_ost", "bay_west", "zillertal", "oetztal_nord"));
 
-    /** Warn-Regionen (DWD, Kreis): Schluessel, Name. */
+    /** Warn-Regionen (DWD, Kreis): Schluessel, Name, Ort fuer die DWD-Suche. */
     static final String[][] WARN_REGIONS = {
-            {"09172", "Berchtesgadener Land"},
-            {"09189", "Chiemgau, Traunstein"},
-            {"09187", "Rosenheim, Landkreis"},
+            {"09172", "Berchtesgadener Land", "Berchtesgaden"},
+            {"09189", "Chiemgau, Traunstein", "Traunstein"},
+            {"09187", "Rosenheim, Landkreis", "Rosenheim"},
     };
 
     private WeatherCards() {}
@@ -82,19 +84,24 @@ final class WeatherCards {
             }
         }
         if (Prefs.regionCards(c)) {
-            out.add(card(REGION, "Vorhersage", "Südbayern und Alpenrand", "DWD · mehrmals täglich neu",
-                    "Die Vorhersage des Deutschen Wetterdienstes für die nächsten 24 Stunden und den Trend bis zum zehnten Tag steht auf der Originalseite.",
-                    "https://www.dwd.de/DE/wetter/wetter_node.html"));
-            out.add(card(REGION, "Vorhersage", "Salzburg und Salzburger Land", "GeoSphere Austria",
-                    "Vorhersage und Warnungen des österreichischen Wetterdienstes GeoSphere Austria.",
-                    "https://wetter.geosphere.at/"));
-            out.add(card(REGION, "Radar", "Regenradar Bayern und Österreich", "Wo regnet es gerade",
-                    "Das Regenradar zeigt Niederschlag der letzten und nächsten Stunden, auch für Salzburg und Berchtesgaden.",
+            out.add(card(REGION, "Vorhersage", "Berchtesgaden", "WetterOnline · 4 Tage und Stundenwerte",
+                    "Die Vorhersage für Berchtesgaden mit Temperatur, Niederschlag und Sonnenstunden steht auf der Seite von WetterOnline.",
+                    "https://www.wetteronline.de/wetter/berchtesgaden"));
+            out.add(card(REGION, "Vorhersage", "Salzburg", "WetterOnline · 4 Tage und Stundenwerte",
+                    "Die Vorhersage für Salzburg mit Temperatur, Niederschlag und Sonnenstunden steht auf der Seite von WetterOnline.",
+                    "https://www.wetteronline.de/wetter/salzburg"));
+            out.add(card(REGION, "Radar", "Regenradar Berchtesgaden", "Wo regnet es gerade",
+                    "Das Regenradar zeigt Niederschlag der letzten und nächsten Stunden rund um Berchtesgaden.",
+                    "https://www.wetteronline.de/regenradar/berchtesgaden"));
+            out.add(card(REGION, "Radar", "Regenradar Salzburg", "Wo regnet es gerade",
+                    "Das Regenradar zeigt Niederschlag der letzten und nächsten Stunden rund um Salzburg.",
                     "https://www.wetteronline.de/regenradar/salzburg"));
-            out.add(card(REGION, "Warnlage", "Berchtesgadener Land", "DWD · Kreis",
-                    "Die amtlichen Warnungen des Deutschen Wetterdienstes für den Kreis stehen auf der Seite des DWD.", DWD_WARN));
-            out.add(card(REGION, "Warnlage", "Chiemgau, Landkreis Traunstein", "DWD · Kreis",
-                    "Die amtlichen Warnungen des Deutschen Wetterdienstes für den Kreis stehen auf der Seite des DWD.", DWD_WARN));
+            for (String[] w : WARN_REGIONS) {
+                String wr = Prefs.warnRegion(c, w[0]);
+                out.add(card(REGION, "Warnlage", w[1], wr.isEmpty() ? "DWD · amtliche Warnungen" : wr.equals("-") ? "Keine Warnung aktiv · DWD" : wr,
+                        "Die amtlichen Warnungen des Deutschen Wetterdienstes für " + w[2] + " stehen auf der Seite des DWD.",
+                        DWD_WARN_ORT + java.net.URLEncoder.encode(w[2], java.nio.charset.StandardCharsets.UTF_8)));
+            }
         }
         return out;
     }
@@ -102,6 +109,6 @@ final class WeatherCards {
     /** Gehoert der Link zu einer Wetter-Karte? Dann nicht als gelesen abdunkeln. */
     static boolean isCardLink(Context c, String link) {
         for (FeedItem it : items(c)) if (it.link.equals(link)) return true;
-        return link.startsWith(DAV) || link.equals(DWD_WARN);
+        return link.startsWith(DAV) || link.equals(DWD_WARN) || link.startsWith(DWD_WARN_ORT);
     }
 }

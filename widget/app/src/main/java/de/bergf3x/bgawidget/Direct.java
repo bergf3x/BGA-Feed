@@ -768,7 +768,8 @@ final class Direct {
                 JSONObject o = a.getJSONObject(i);
                 boolean ok = miller(f) ? o.optBoolean("tok") : o.optBoolean("pc");
                 if (ok || o.optInt("tries") >= 2) done.add(String.valueOf(o.getLong("sid")));
-                if (o.optString("img").isEmpty() && o.optInt("itries") < 2) needImg.add(String.valueOf(o.getLong("sid")));
+                if (o.optString("img").isEmpty() && (o.optInt("itries") < 2
+                        || (o.optInt("itries") < 8 && System.currentTimeMillis() - o.optLong("itime") > 86400000L))) needImg.add(String.valueOf(o.getLong("sid")));
             }
         } catch (Exception ignored) {
         }
@@ -878,7 +879,10 @@ final class Direct {
                 o.put("plus", o.optBoolean("plus") || (Boolean) it.get("plus"));
                 String img = it.get("img") == null ? "" : String.valueOf(it.get("img"));
                 if (!img.isEmpty()) o.put("img", img);
-                else if (Boolean.TRUE.equals(it.get("itried"))) o.put("itries", o.optInt("itries") + 1);
+                else if (Boolean.TRUE.equals(it.get("itried"))) {
+                    o.put("itries", o.optInt("itries") + 1);
+                    o.put("itime", System.currentTimeMillis());
+                }
             }
         } catch (Exception ignored) {
         }
