@@ -71,6 +71,10 @@ final class Taxonomy {
     private static final Pattern P_LEUTE = Pattern.compile("Promi|Royal|Prinz\\b|Prinzessin|Schauspieler|Sängerin|\\bSänger\\b|Scheidung|Hochzeit|"
             + "Dschungelcamp|Bachelor|Influencer|Netflix|Serienstar|Filmstar|Skandal um");
 
+    private static final Pattern P_MARKT = Pattern.compile("\\bAktie|Börsengang|\\bBörse|\\bDAX\\b|Inflation|Zinsen|Leitzins");
+    private static final Pattern P_POL = Pattern.compile("Kabinett|Bundestag|Bundesrat|Bundesregierung|Minister|Koalition|Landtag|Gesetz|"
+            + "\\bEU\\b|\\bUN\\b|\\bNato\\b|Kanzler|Wahl\\b|Frostige Nacht|glatt");
+
     /** Einheitlicher Themenpfad der Meldung. */
     static String classify(FeedItem it) {
         String r = classifyImpl(it);
@@ -142,8 +146,10 @@ final class Taxonomy {
         if (rubric.equals("Sport") || rubric.equals("Kultur")) return rubric;
         // eindeutige Straftaten/Notfaelle immer nach Blaulicht, auch aus Boulevard/Leben; schwache Treffer nur ohne klare Quell-Rubrik
         boolean sourceSaysOther = l.contains("wirtschaft") || l.contains("wissen") || l.contains("digital") || l.contains("netzwelt")
-                || l.contains("politik");
+                || l.contains("politik") || l.contains("boulevard") || l.contains("stars");
         if (rubric.equals("Blaulicht") && (P_CRIME.matcher(title).find() || !sourceSaysOther)) return "Blaulicht";
+        if (P_MARKT.matcher(title).find()) return "Wirtschaft";
+        if (P_POL.matcher(title).find() && !l.contains("wirtschaft") && !l.contains("wissen") && !l.contains("digital")) return "Politik & Gesellschaft";
         if (l.contains("wirtschaft")) return "Wirtschaft";
         if (l.contains("wissen") || l.contains("digital") || l.contains("netzwelt")) return "Wissen & Digital";
         if (l.contains("politik")) return "Politik & Gesellschaft";

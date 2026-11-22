@@ -141,7 +141,7 @@ final class ImageStore {
             int n;
             while ((n = in.read(buf)) > 0) {
                 out.write(buf, 0, n);
-                if (out.size() > 3_000_000) throw new java.io.IOException("Bild zu gross");
+                if (out.size() > 6_000_000) throw new java.io.IOException("Bild zu gross");
             }
             byte[] data = out.toByteArray();
             Net.countBytes(data.length);
@@ -155,12 +155,15 @@ final class ImageStore {
             d.inSampleSize = s;
             Bitmap bm = BitmapFactory.decodeByteArray(data, 0, data.length, d);
             if (bm == null) throw new java.io.IOException("nicht lesbar");
-            File tmp = new File(f.getPath() + ".tmp");
+            File tmp = new File(f.getPath() + "." + Thread.currentThread().getId() + ".tmp");
             FileOutputStream fo = new FileOutputStream(tmp);
             bm.compress(Bitmap.CompressFormat.JPEG, 82, fo);
             fo.close();
             bm.recycle();
-            if (!tmp.renameTo(f)) throw new java.io.IOException("Speichern fehlgeschlagen");
+            if (!tmp.renameTo(f)) {
+                tmp.delete();
+                if (!f.exists()) throw new java.io.IOException("Speichern fehlgeschlagen");
+            }
             android.util.Log.i("BGAimg", "Bild ok " + data.length / 1024 + " KB " + o.outWidth + "x" + o.outHeight + " " + url);
             if (f.getName().hashCode() % 7 == 0) prune(c);
             return true;
