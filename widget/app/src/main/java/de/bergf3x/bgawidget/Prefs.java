@@ -598,6 +598,7 @@ final class Prefs {
     }
 
     static void setSeen(Context c, Set<String> links) {
+        if (links.equals(seenSet(c))) return; // unveraendert: kein Schreibzugriff
         sp(c).edit().putString("seen", android.text.TextUtils.join("\n", links)).apply();
     }
 

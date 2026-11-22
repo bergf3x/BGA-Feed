@@ -75,7 +75,7 @@ final class Updater {
             ver = ctx.getPackageManager().getPackageInfo(ctx.getPackageName(), 0).versionCode;
         } catch (Exception ignored) {
         }
-        if (Prefs.sp(ctx).getInt("layout_ver", 0) != ver) {
+        if (ver != 0 && Prefs.sp(ctx).getInt("layout_ver", 0) != ver) {
             for (int id : news) WidgetProvider.update(ctx, mgr, id);
             Prefs.sp(ctx).edit().putInt("layout_ver", ver).apply();
         }
