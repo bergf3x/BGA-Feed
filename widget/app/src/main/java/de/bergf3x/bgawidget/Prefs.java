@@ -291,6 +291,14 @@ final class Prefs {
         sp(c).edit().putInt("acc_" + id, rgb < 0 ? -1 : rgb & 0xFFFFFF).apply();
     }
 
+    static boolean flag(Context c, String key) {
+        return sp(c).getBoolean(key, false);
+    }
+
+    static void setFlag(Context c, String key, boolean v) {
+        sp(c).edit().putBoolean(key, v).apply();
+    }
+
     static boolean addCardHidden(Context c) {
         return sp(c).getBoolean("addcard_hidden", false);
     }

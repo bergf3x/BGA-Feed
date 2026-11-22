@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 /** Einstellungen zur Aktualisierung: Intervalle, manueller Abruf, Akku-Ausnahme, Autostart (Xiaomi). */
 public class UpdateActivity extends Activity {
-    private TextView battery;
+    private TextView battery, notify;
     private TextView stamp;
     private Bubble b;
 
@@ -51,7 +51,19 @@ public class UpdateActivity extends Activity {
             Updater.runAsync(this, true, null);
         });
         battery = b.pillKeep("", false, this::askBattery);
-        b.pillKeep("Autostart-Einstellung öffnen (Xiaomi)", false, this::openAutostart);
+        notify = b.pillKeep("", false, () -> Perms.askNotify(this));
+        if (Perms.needsAutostart()) {
+            b.pillKeep(Perms.autostartTitle() + " öffnen (" + Perms.vendorLabel() + ")", false, () -> {
+                Prefs.setFlag(this, "perm_autostart_opened", true);
+                Perms.openAutostart(this);
+            });
+        }
+        b.pillKeep("Berechtigungs-Hinweis wieder anzeigen", false, () -> {
+            Prefs.setFlag(this, "perm_card_hidden", false);
+            Perms.setAutostartDone(this, false);
+            Prefs.setFlag(this, "perm_autostart_opened", false);
+            Toast.makeText(this, "Der Hinweis erscheint wieder oben in der App, solange etwas offen ist.", Toast.LENGTH_LONG).show();
+        });
         b.pill("Schließen", false, true, () -> { });
     }
 
@@ -60,6 +72,7 @@ public class UpdateActivity extends Activity {
         super.onResume();
         boolean ok = isIgnoring();
         battery.setText(ok ? "Akku-Optimierung: aufgehoben ✓" : "Akku-Optimierung für das Widget aufheben");
+        notify.setText(Perms.notifyOk(this) ? "Benachrichtigungen: erlaubt ✓" : "Benachrichtigungen erlauben");
         stamp.setText("Letzter Abruf: Nachrichten " + time(Prefs.newsTime(this)) + "  ·  Wetter "
                 + time(Prefs.weatherTime(this, 0)));
     }

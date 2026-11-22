@@ -10,6 +10,10 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.05",
+                    "~ Startkarte „Widget“: Auswahl Nachrichten, Wetter oder Beides zum Aufklappen",
+                    "+ Hinweis-Karte für Benachrichtigungen, Akku-Optimierung und Autostart",
+                    "+ Erkennt den Hersteller und öffnet direkt die passende Systemseite"},
             {"1.04",
                     "+ Zweiter Ersatz-Feed über jsDelivr, falls GitHub ausfällt"},
             {"1.03",
