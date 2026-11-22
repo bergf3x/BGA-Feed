@@ -22,6 +22,7 @@ public class WidgetProvider extends AppWidgetProvider {
     static final String ACTION_REFRESH = "de.bergf3x.bgawidget.REFRESH";
     static final String ACTION_SET_TOPIC = "de.bergf3x.bgawidget.SET_TOPIC";
     static final String ACTION_PINNED = "de.bergf3x.bgawidget.PINNED";
+    static final String ACTION_TOGGLE_WX = "de.bergf3x.bgawidget.TOGGLE_WX";
     private static final int[] P = {R.id.p0, R.id.p1, R.id.p2, R.id.p3, R.id.p4};
     private static final int[] P_ON = {R.id.p0_on, R.id.p1_on, R.id.p2_on, R.id.p3_on, R.id.p4_on};
     private static final int[] P_T = {R.id.p0_t, R.id.p1_t, R.id.p2_t, R.id.p3_t, R.id.p4_t};
@@ -56,6 +57,14 @@ public class WidgetProvider extends AppWidgetProvider {
             if (id != 0) {
                 Prefs.setShowWeather(ctx, id, intent.getBooleanExtra("wx", true));
                 refresh(ctx, id);
+            }
+            return;
+        }
+        if (ACTION_TOGGLE_WX.equals(action)) {
+            int id = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, 0);
+            if (id != 0) {
+                Prefs.setFlag(ctx, "wxopen_" + id, !Prefs.flag(ctx, "wxopen_" + id));
+                refreshHeader(ctx, id);
             }
             return;
         }
@@ -316,6 +325,41 @@ public class WidgetProvider extends AppWidgetProvider {
         rv.setTextViewText(R.id.w_stand, line);
         if (ok) Pal.text(ctx, id, rv, R.id.w_stand, cw, 0.7f); else rv.setTextColor(R.id.w_stand, 0xFFFFB74D);
         rv.setViewVisibility(R.id.w_stand, line.isEmpty() || !plan.tools ? android.view.View.GONE : android.view.View.VISIBLE);
+        if (weatherWidget) return;
+
+        // Nachrichten-Widget: Groessenstufe. Klein/mittel: Knoepfe und Stand in die Kopfzeile, Pfeil zum Aufklappen.
+        boolean small = !plan.tools;
+        String sub = ok ? (stand.isEmpty() ? "" : "Aktualisiert " + stand) : "Offline" + (stand.isEmpty() ? "" : " · Stand " + stand);
+        rv.setTextViewText(R.id.w_sub, sub);
+        if (ok) Pal.text(ctx, id, rv, R.id.w_sub, -1, 0.7f); else rv.setTextColor(R.id.w_sub, 0xFFFFB74D);
+        rv.setViewVisibility(R.id.w_sub, small && !sub.isEmpty() ? android.view.View.VISIBLE : android.view.View.GONE);
+        int hv = small ? android.view.View.VISIBLE : android.view.View.GONE;
+        rv.setViewVisibility(R.id.btn_hsaved, hv);
+        rv.setViewVisibility(R.id.btn_hcam, hv);
+        rv.setOnClickPendingIntent(R.id.btn_hsaved, activity(ctx, SavedActivity.class, id, 905, "saved"));
+        rv.setOnClickPendingIntent(R.id.btn_hcam, activity(ctx, WebcamActivity.class, id, 903, "webcam"));
+        for (int hb : new int[]{R.id.btn_hsaved, R.id.btn_hcam}) {
+            Pal.filter(ctx, id, rv, hb, -1);
+            rv.setInt(hb, "setImageAlpha", Prefs.alpha(Prefs.text(ctx, id)));
+        }
+        rv.setTextColor(R.id.w_warn_ic, Warnings.color(wl));
+        rv.setViewVisibility(R.id.w_warn_ic, on && plan.warnIcon ? android.view.View.VISIBLE : android.view.View.GONE);
+        boolean canToggle = on && plan.level < 2;
+        rv.setViewVisibility(R.id.w_more, canToggle ? android.view.View.VISIBLE : android.view.View.GONE);
+        if (canToggle) {
+            rv.setImageViewResource(R.id.w_more, plan.open ? R.drawable.ic_chevron_up : R.drawable.ic_chevron_down);
+            Pal.filter(ctx, id, rv, R.id.w_more, cw);
+            Intent tg = new Intent(ctx, WidgetProvider.class).setAction(ACTION_TOGGLE_WX)
+                    .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id)
+                    .setData(Uri.parse("bgawidget://togglewx/" + id));
+            PendingIntent tp = PendingIntent.getBroadcast(ctx, id * 1000 + 906, tg,
+                    PendingIntent.FLAG_UPDATE_CURRENT | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
+            rv.setOnClickPendingIntent(R.id.w_more, tp);
+            rv.setOnClickPendingIntent(R.id.w_icon, tp);
+            rv.setOnClickPendingIntent(R.id.w_warn_ic, tp);
+        } else {
+            rv.setOnClickPendingIntent(R.id.w_icon, hourly);
+        }
     }
 
     @Override

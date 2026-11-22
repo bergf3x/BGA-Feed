@@ -10,6 +10,11 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.06",
+                    "~ Widget: Nachrichten haben Vorrang, Wetter passt sich der Größe an",
+                    "+ Widget klein: Wetter in einer Zeile, Gemerkt und Webcam oben",
+                    "+ Widget mittel: zusätzlich die nächsten drei Tage",
+                    "+ Pfeil in der Wetterzeile klappt die Details auf und zu"},
             {"1.05",
                     "~ Startkarte „Widget“: Auswahl Nachrichten, Wetter oder Beides zum Aufklappen",
                     "+ Hinweis-Karte für Benachrichtigungen, Akku-Optimierung und Autostart",
