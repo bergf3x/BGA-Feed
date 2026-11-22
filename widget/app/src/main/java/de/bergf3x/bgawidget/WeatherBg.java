@@ -154,7 +154,10 @@ final class WeatherBg {
 
         Random rnd = new Random(5);
         if (cat.equals("clear")) {
-            if (day) sun(c, rnd);
+            // schmaler Widget-Streifen: kein zweiter Mond/keine zweite Sonne neben dem Wetter-Symbol
+            if (H <= 200) {
+                if (!day) stars(c, rnd, 30);
+            } else if (day) sun(c, rnd);
             else night(c, rnd);
         } else if (cat.equals("cloudy")) {
             if (!day) stars(c, rnd, 30);

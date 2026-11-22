@@ -395,7 +395,7 @@ public class ListService extends RemoteViewsService {
             rv.setInt(R.id.item_card, "setBackgroundResource", Pal.cardBg(ctx, widgetId));
             if (hit) rv.setTextColor(R.id.item_title, Prefs.argb(0xFFD166, tx, dim)); else Pal.text(ctx, widgetId, rv, R.id.item_title, -1, dim);
             int sub = Prefs.colorSub(ctx, widgetId);
-            Pal.set(ctx, widgetId, rv, R.id.item_meta, Style.font(ctx, widgetId, FeedItem.source(it.link).isEmpty() ? meta : meta + "\n" + FeedItem.source(it.link)), sub, Prefs.colorSub2(ctx, widgetId), 0.7f * dim);
+            Pal.set(ctx, widgetId, rv, R.id.item_meta, Style.font(ctx, widgetId, meta + " · " + FeedItem.shortSource(it.feedName)), sub, Prefs.colorSub2(ctx, widgetId), 0.7f * dim);
             rv.setInt(R.id.item_accent, "setColorFilter", it.accentColor());
             rv.setInt(R.id.item_accent, "setImageAlpha", read ? 90 : 255);
             rv.setViewVisibility(R.id.item_plus, it.plus ? android.view.View.VISIBLE : android.view.View.GONE);
