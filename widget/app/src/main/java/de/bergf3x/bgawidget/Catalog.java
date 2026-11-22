@@ -86,16 +86,6 @@ final class Catalog {
         return out;
     }
 
-    /** Alle Themen der gewaehlten Feeds, ohne Doppelte, in Katalog-Reihenfolge. */
-    static List<String> topicsFor(List<Feed> all, java.util.Set<String> selected) {
-        List<String> out = new ArrayList<>();
-        for (Feed f : all) {
-            if (!selected.contains(f.id)) continue;
-            for (String t : f.topics) if (!out.contains(t)) out.add(t);
-        }
-        return out;
-    }
-
     private static List<Feed> parse(String json) {
         List<Feed> out = new ArrayList<>();
         if (json == null) return out;

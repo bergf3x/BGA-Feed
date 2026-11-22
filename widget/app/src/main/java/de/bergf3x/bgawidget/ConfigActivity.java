@@ -26,7 +26,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /** Einstellungen im Stil der Glas-Blase, mit Live-Vorschau. */

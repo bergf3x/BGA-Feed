@@ -7,11 +7,6 @@ package de.bergf3x.bgawidget;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 /** Blase "Widgets": nur Nachrichten, nur Wetter (mit Webcams) oder beides auf den Startbildschirm legen. */
 public class AddWidgetActivity extends Activity {

@@ -114,11 +114,6 @@ final class Prefs {
         sp(c).edit().putInt("tcs_" + id, sub).putInt("tcw_" + id, wx).putBoolean("cmp_" + id, compact)
                 .putBoolean("warn_notify", notify).apply();
     }
-
-    static String lastNotified(Context c) {
-        return sp(c).getString("warn_notified", "");
-    }
-
     static void setLastNotified(Context c, String k) {
         sp(c).edit().putString("warn_notified", k).apply();
     }
@@ -196,12 +191,6 @@ final class Prefs {
     /** Gewaehltes Thema inkl. Medium ("Region/Berchtesgaden|BGLand24"); ohne Medium nur das Thema. */
     static String topicRaw(Context c, int id) {
         return sp(c).getString("tp_" + id, "");
-    }
-
-    /** Medium, auf das das Thema beschraenkt ist; leer = alle Medien (bei Mehrfachauswahl immer leer). */
-    static String topicFeed(Context c, int id) {
-        List<String[]> sel = topicSel(c, id);
-        return sel.size() == 1 ? sel.get(0)[1] : "";
     }
 
     /** Beschriftung des aktiven Reiters, z. B. "Berchtesgaden" oder "Berchtesgaden +2". */
@@ -564,11 +553,6 @@ final class Prefs {
     static int newsIdx(Context c) {
         return Math.max(0, Math.min(INTERVALS.length - 1, sp(c).getInt("iv_news", 1)));
     }
-
-    static void setIntervals(Context c, int wx, int news) {
-        sp(c).edit().putInt("iv_wx", wx).putInt("iv_news", news).apply();
-    }
-
     /** Manuell: kein automatischer Abruf, nur auf Knopfdruck (je fuer Nachrichten und Wetter im Widget). */
     static boolean newsAuto(Context c) {
         return !sp(c).getBoolean("man_news", false);
@@ -690,17 +674,6 @@ final class Prefs {
 
     static void setPlace(Context c, int id, int place) {
         sp(c).edit().putInt("pl_" + id, place).apply();
-    }
-
-    /** Zeitpunkt, zu dem dieses Handy einen Artikel zum ersten Mal gesehen hat. */
-    static long firstSeen(Context c, String key) {
-        SharedPreferences s = sp(c);
-        long t = s.getLong("seen_" + key, 0);
-        if (t == 0) {
-            t = System.currentTimeMillis();
-            s.edit().putLong("seen_" + key, t).apply();
-        }
-        return t;
     }
 
     static int clamp(int pct) {

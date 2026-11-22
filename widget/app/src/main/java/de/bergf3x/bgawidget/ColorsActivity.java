@@ -7,7 +7,6 @@ package de.bergf3x.bgawidget;
 
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
-import android.content.res.ColorStateList;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.Editable;

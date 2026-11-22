@@ -114,14 +114,6 @@
             android:theme="@android:style/Theme.DeviceDefault.NoActionBar.Fullscreen" />
 
         <activity
-            android:name=".SearchActivity"
-            android:exported="false"
-            android:excludeFromRecents="true"
-            android:taskAffinity="${applicationId}.bubble"
-            android:windowSoftInputMode="stateVisible|adjustResize"
-            android:theme="@style/BubbleTheme" />
-
-        <activity
             android:name=".SavedActivity"
             android:exported="false"
             android:excludeFromRecents="true"
