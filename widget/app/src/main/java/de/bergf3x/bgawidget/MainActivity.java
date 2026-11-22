@@ -537,6 +537,7 @@ public class MainActivity extends Activity {
         header();
         page = list;
         if (widgetCount() == 0 && !Prefs.addCardHidden(this)) addWidgetCard(true);
+        permCard();
         if (Prefs.showWeather(this, ID)) weatherCard();
         int before = page.getChildCount();
         newsChips();
@@ -1223,6 +1224,13 @@ public class MainActivity extends Activity {
         }
     }
 
+    /** Auswahl in der Widget-Karte: 0 = Nachrichten, 1 = Wetter, 2 = Beides; bleibt beim Neuaufbau erhalten. */
+    private int wSel;
+    private boolean wOpen;
+    private static final String[] W_NAME = {"Nachrichten", "Wetter", "Beides"};
+    private static final String[] W_DESC = {"Nur die Nachrichten", "Wetter mit Webcams", "Wetter und Nachrichten"};
+    private static final int[] W_ICON = {R.drawable.ic_news, R.drawable.ic_cloud, R.drawable.ic_layers};
+
     private void addWidgetCard(boolean first) {
         LinearLayout box = new LinearLayout(this);
         box.setOrientation(LinearLayout.VERTICAL);
@@ -1231,42 +1239,220 @@ public class MainActivity extends Activity {
         LinearLayout head = new LinearLayout(this);
         head.setOrientation(LinearLayout.HORIZONTAL);
         head.setGravity(Gravity.CENTER_VERTICAL);
-        head.addView(text(first ? "Widget auf den Startbildschirm" : "Widgets", 16, tx, true),
+        head.addView(text(first ? "Widget auf den Startbildschirm" : "Weiteres Widget", 16, tx, true),
                 new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+        final Runnable hide = () -> {
+            Prefs.setAddCardHidden(this, true);
+            Toast.makeText(this, "Du findest „Widget hinzufügen“ in den Einstellungen.", Toast.LENGTH_LONG).show();
+            build();
+        };
         if (first) {
             TextView x = text("✕", 18, soft, false);
             x.setPadding(px(12), px(4), px(4), px(4));
             x.setContentDescription("Schließen");
-            x.setOnClickListener(v -> {
-                Prefs.setAddCardHidden(this, true);
-                Toast.makeText(this, "Du findest „Widget hinzufügen“ in den Einstellungen.", Toast.LENGTH_LONG).show();
-                build();
-            });
+            x.setOnClickListener(v -> hide.run());
             head.addView(x);
         }
         box.addView(head);
-        TextView sub = text(first
-                ? "Mit einem Widget siehst du Nachrichten und Wetter direkt auf dem Home, ohne die App zu öffnen."
-                : "Weitere Widgets auf den Startbildschirm legen.", 13, soft, false);
+        TextView sub = text(first ? "Welche Art von Widget?" : "Noch ein Widget auf den Startbildschirm legen.", 13, soft, false);
         sub.setPadding(0, px(4), 0, px(10));
         box.addView(sub);
+
+        final LinearLayout dd = new LinearLayout(this);
+        dd.setOrientation(LinearLayout.VERTICAL);
+        dd.setBackground(shape(light ? 0x0D000000 : 0x14FFFFFF, 14, line));
+        dd.setClipToOutline(true);
+        android.animation.LayoutTransition lt = new android.animation.LayoutTransition();
+        lt.enableTransitionType(android.animation.LayoutTransition.CHANGING);
+        lt.setDuration(180);
+        dd.setLayoutTransition(lt);
+        fillDropdown(dd);
+        box.addView(dd);
+
         LinearLayout row = new LinearLayout(this);
         row.setOrientation(LinearLayout.HORIZONTAL);
-        row.addView(bigPill("Nachrichten", true, () -> pin(WidgetProvider.class)), lp(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 5, 0));
-        row.addView(bigPill("Wetter", false, () -> pin(WeatherWidgetProvider.class)), lp(0, ViewGroup.LayoutParams.WRAP_CONTENT, 5, 0, 0, 0));
+        row.addView(bigPill("Abbrechen", false, () -> {
+            if (first) hide.run();
+            else {
+                wSel = 0;
+                wOpen = false;
+                fillDropdown(dd);
+            }
+        }), lp(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 5, 0));
+        row.addView(bigPill("Hinzufügen", true, () -> {
+            if (wSel == 1) WidgetPin.pin(this, WeatherWidgetProvider.class, -1);
+            else WidgetPin.pin(this, WidgetProvider.class, wSel == 2 ? 1 : 0);
+        }), lp(0, ViewGroup.LayoutParams.WRAP_CONTENT, 5, 0, 0, 0));
         for (int i = 0; i < 2; i++) ((LinearLayout.LayoutParams) row.getChildAt(i).getLayoutParams()).weight = 1f;
-        box.addView(row);
+        box.addView(row, lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 12, 0, 0));
         page.addView(box, lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, first ? 0 : 14, 0, 12));
         if (first) hintCard = box;
     }
 
+    /** Zugeklappt: nur die gewaehlte Art mit Pfeil. Aufgeklappt: alle drei, die gewaehlte mit Haken. */
+    private void fillDropdown(final LinearLayout dd) {
+        dd.removeAllViews();
+        for (int i = 0; i < 3; i++) {
+            if (!wOpen && i != wSel) continue;
+            final int k = i;
+            LinearLayout o = new LinearLayout(this);
+            o.setOrientation(LinearLayout.HORIZONTAL);
+            o.setGravity(Gravity.CENTER_VERTICAL);
+            o.setPadding(px(14), px(11), px(14), px(11));
+            press(o, 0, 0, 0);
+            ImageView ic = new ImageView(this);
+            ic.setImageResource(W_ICON[i]);
+            ic.setColorFilter(tx);
+            o.addView(ic, lp(20, 20, 0, 0, 12, 0));
+            LinearLayout col = new LinearLayout(this);
+            col.setOrientation(LinearLayout.VERTICAL);
+            col.addView(text(W_NAME[i], 15, tx, true));
+            col.addView(text(W_DESC[i], 12, soft, false));
+            o.addView(col, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+            int mark = !wOpen ? R.drawable.ic_chevron_down : (i == wSel ? R.drawable.ic_check : 0);
+            if (mark != 0) {
+                ImageView m = new ImageView(this);
+                m.setImageResource(mark);
+                m.setColorFilter(wOpen ? tx : soft);
+                o.addView(m, lp(22, 22, 8, 0, 0, 0));
+            }
+            o.setOnClickListener(v -> {
+                Haptic.play(v, Haptic.TICK);
+                if (wOpen) wSel = k;
+                wOpen = !wOpen;
+                fillDropdown(dd);
+            });
+            if (dd.getChildCount() > 0) {
+                View sep = new View(this);
+                sep.setBackgroundColor(line);
+                dd.addView(sep, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.max(1, px(0.5f))));
+            }
+            dd.addView(o, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        }
+    }
+
     private View bigPill(String label, boolean primary, final Runnable click) {
-        TextView p = text("+ " + label, 14, primary ? chipOnTx : tx, true);
+        TextView p = text(label, 14, primary ? chipOnTx : tx, true);
         p.setGravity(Gravity.CENTER);
         p.setPadding(px(10), px(12), px(10), px(12));
         press(p, primary ? chipOn : cardFill, 16, primary ? 0 : line);
-        p.setOnClickListener(v -> click.run());
+        p.setOnClickListener(v -> {
+            Haptic.play(v, Haptic.CLICK);
+            click.run();
+        });
         return p;
+    }
+
+    /** Hinweis-Karte: was das Handy noch freigeben muss, mit Sprung direkt in die passende Systemseite. */
+    private void permCard() {
+        if (Prefs.flag(this, "perm_card_hidden") || Perms.open(this) == 0) return;
+        final int warnC = light ? 0xFF9A6B12 : 0xFFE8C37A;
+        final int okC = light ? 0xFF2E7D4F : 0xFF8FD19E;
+        LinearLayout box = new LinearLayout(this);
+        box.setOrientation(LinearLayout.VERTICAL);
+        box.setPadding(px(16), px(14), px(16), px(8));
+        box.setBackground(shape(cardFill, 20, line));
+        LinearLayout head = new LinearLayout(this);
+        head.setOrientation(LinearLayout.HORIZONTAL);
+        head.setGravity(Gravity.CENTER_VERTICAL);
+        ImageView sh = new ImageView(this);
+        sh.setImageResource(R.drawable.ic_shield);
+        sh.setColorFilter(warnC);
+        head.addView(sh, lp(20, 20, 0, 0, 8, 0));
+        head.addView(text("Damit alles zuverlässig läuft", 16, tx, true),
+                new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+        TextView x = text("✕", 18, soft, false);
+        x.setPadding(px(12), px(4), px(4), px(4));
+        x.setContentDescription("Schließen");
+        x.setOnClickListener(v -> {
+            Prefs.setFlag(this, "perm_card_hidden", true);
+            Toast.makeText(this, "Du findest das unter Einstellungen → Aktualisierung.", Toast.LENGTH_LONG).show();
+            build();
+        });
+        head.addView(x);
+        box.addView(head);
+        int n = Perms.open(this);
+        TextView sub = text("Noch " + n + (n == 1 ? " Einstellung" : " Einstellungen") + " offen · erkannt: " + Perms.vendorLabel(),
+                12.5f, soft, false);
+        sub.setPadding(0, px(4), 0, px(4));
+        box.addView(sub);
+
+        permRow(box, R.drawable.ic_bell, "Benachrichtigungen", "Für Unwetter und Stichwörter",
+                Perms.notifyOk(this), "Erlauben", () -> Perms.askNotify(this), null, okC);
+        permRow(box, R.drawable.ic_battery, "Akku-Optimierung aus", "Damit das Widget aktuell bleibt",
+                Perms.batteryOk(this), "Einstellungen", () -> Perms.askBattery(this), null, okC);
+        if (Perms.needsAutostart()) {
+            boolean opened = Prefs.flag(this, "perm_autostart_opened");
+            permRow(box, R.drawable.ic_autostart, Perms.autostartTitle(), Perms.autostartHint(),
+                    Perms.autostartDone(this), opened ? "Erledigt" : "Einstellungen",
+                    opened ? () -> {
+                        Perms.setAutostartDone(this, true);
+                        build();
+                    } : () -> {
+                        Prefs.setFlag(this, "perm_autostart_opened", true);
+                        Perms.openAutostart(this);
+                    },
+                    opened ? () -> Perms.openAutostart(this) : null, okC);
+        }
+        page.addView(box, lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 12));
+    }
+
+    private void permRow(LinearLayout box, int icon, String title, String hint, boolean ok, String btn,
+                         final Runnable act, final Runnable reopen, int okC) {
+        if (box.getChildCount() > 2) {
+            View sep = new View(this);
+            sep.setBackgroundColor(line);
+            box.addView(sep, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.max(1, px(0.5f))));
+        }
+        LinearLayout r = new LinearLayout(this);
+        r.setOrientation(LinearLayout.HORIZONTAL);
+        r.setGravity(Gravity.CENTER_VERTICAL);
+        r.setPadding(0, px(10), 0, px(10));
+        ImageView ic = new ImageView(this);
+        ic.setImageResource(icon);
+        ic.setColorFilter(tx);
+        r.addView(ic, lp(20, 20, 0, 0, 12, 0));
+        LinearLayout col = new LinearLayout(this);
+        col.setOrientation(LinearLayout.VERTICAL);
+        col.addView(text(title, 14.5f, tx, true));
+        col.addView(text(hint, 12, soft, false));
+        r.addView(col, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+        if (ok) {
+            LinearLayout done = new LinearLayout(this);
+            done.setGravity(Gravity.CENTER_VERTICAL);
+            ImageView ck = new ImageView(this);
+            ck.setImageResource(R.drawable.ic_check);
+            ck.setColorFilter(okC);
+            done.addView(ck, lp(16, 16, 0, 0, 4, 0));
+            done.addView(text("Erledigt", 12.5f, okC, true));
+            r.addView(done);
+        } else {
+            if (reopen != null) {
+                TextView o = text("Öffnen", 12.5f, soft, true);
+                o.setPadding(px(10), px(7), px(10), px(7));
+                press(o, 0, 14, line);
+                o.setOnClickListener(v -> {
+                    Haptic.play(v, Haptic.CLICK);
+                    reopen.run();
+                });
+                r.addView(o, lp(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 8, 0, 6, 0));
+            }
+            TextView b = text(btn, 12.5f, chipOnTx, true);
+            b.setPadding(px(12), px(7), px(12), px(7));
+            press(b, chipOn, 14, 0);
+            b.setOnClickListener(v -> {
+                Haptic.play(v, Haptic.CLICK);
+                act.run();
+            });
+            r.addView(b, lp(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, reopen == null ? 8 : 0, 0, 0, 0));
+        }
+        box.addView(r);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int code, String[] perms, int[] res) {
+        super.onRequestPermissionsResult(code, perms, res);
+        if (code == Perms.REQ_NOTIFY) build();
     }
 
     /** Fragt den Launcher, das Widget auf dem Startbildschirm abzulegen. */
