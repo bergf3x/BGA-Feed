@@ -1,5 +1,15 @@
 {
  "items": {
+  "1027889": {
+   "sid": 1027889,
+   "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein/traunstein_artikel,-unbekannter-schlaegt-briefkaesten-von-hauswand-_arid,1027889.html",
+   "title": "Unbekannter schlägt Briefkästen von Hauswand",
+   "teaser": "Traunstein – Ein Unbekannter hat in der Nacht auf Samstag mehrere Briefkästen an einem Mehrfamilienhaus in der Scheibenstraße beschädigt und von der Wand geschlagen. Auch die ...",
+   "category": "Traunstein",
+   "plus": false,
+   "topic": "Region/Landkreis Traunstein",
+   "first_seen": "2026-11-22T10:21:35+00:00"
+  },
   "1027825": {
    "sid": 1027825,
    "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein_artikel,-wegen-verletzung-von-harry-kane-fanclubbesuch-abgesagt-_arid,1027825.html",
@@ -40,15 +50,45 @@
    "topic": "Region/Landkreis Traunstein",
    "first_seen": "2026-11-21T17:12:25+00:00"
   },
+  "1027752": {
+   "sid": 1027752,
+   "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein/marquartstein_artikel,-ersatzbau-mit-26-betten-gemeinderat-stimmte-gegen-vorhaben-der-chiemgauklinik-_arid,1027752.html",
+   "title": "Ersatzbau mit 26 Betten: Gemeinderat stimmte gegen Vorhaben der Chiemgau-Klinik",
+   "teaser": "",
+   "category": "Marquartstein",
+   "plus": true,
+   "topic": "Region/Landkreis Traunstein",
+   "first_seen": "2026-11-22T10:21:35+00:00"
+  },
+  "1027750": {
+   "sid": 1027750,
+   "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein_artikel,-seit-50-jahren-bewegt-helmut-geier-menschen-auf-der-tanzflaeche-_arid,1027750.html",
+   "title": "Seit 50 Jahren bewegt Helmut Geier Menschen auf der Tanzfläche",
+   "teaser": "",
+   "category": "Landkreis Traunstein",
+   "plus": true,
+   "topic": "Region/Landkreis Traunstein",
+   "first_seen": "2026-11-22T10:21:35+00:00"
+  },
   "1027749": {
    "sid": 1027749,
    "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein/staudach-egerndach_artikel,-das-sind-53-000-euro-die-wir-nicht-haben-_arid,1027749.html",
-   "title": "»Das sind 53 000 Euro, die wir nicht haben«",
-   "teaser": "Staudach-Egerndach – Die Kindergartengebühren steigen nicht und dennoch wird die Betreuung für die Eltern teurer. Denn zum Januar 2027 fällt der Elternbeitragszuschuss des Freistaats ...",
+   "title": "Gemeinde Staudach-Egerndach kann wegfallendes Elterngeld nicht abfedern – Ferienbetreuung zusammen mit Mittelschule Siegsdorf",
+   "teaser": "",
    "category": "Staudach-Egerndach",
-   "plus": false,
+   "plus": true,
    "topic": "Region/Landkreis Traunstein",
    "first_seen": "2026-11-21T17:12:25+00:00"
+  },
+  "1027747": {
+   "sid": 1027747,
+   "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein/seeon-seebruck_artikel,-wasserpreis-wird-um-30-cent-erhoeht-_arid,1027747.html",
+   "title": "Wasserpreis wird um 30 Cent erhöht",
+   "teaser": "",
+   "category": "Seeon-Seebruck",
+   "plus": true,
+   "topic": "Region/Landkreis Traunstein",
+   "first_seen": "2026-11-22T10:21:35+00:00"
   },
   "1027746": {
    "sid": 1027746,
@@ -254,8 +294,8 @@
    "sid": 1027560,
    "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein/traunreut_artikel,-bahnuebergang-bleibt-laenger-gesperrt-_arid,1027560.html",
    "title": "Bahnübergang bleibt länger gesperrt",
-   "teaser": "Traunreut – Die seit dem 24. Oktober vollständige Sperrung des Bahnübergangs an der Porschestraße (Traunpassage) in Traunreut wird sich wegen weiteren technischen Anpassungsarbeiten am ...",
-   "category": "Traunreut",
+   "teaser": "",
+   "category": "",
    "plus": false,
    "topic": "Region/Landkreis Traunstein",
    "first_seen": "2026-11-21T17:12:25+00:00"

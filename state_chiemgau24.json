@@ -1,5 +1,57 @@
 {
  "items": {
+  "3882578711": {
+   "sid": 3882578711,
+   "url": "https://www.chiemgau24.de/chiemgau/chiemsee/frasdorf-ort28690/frasdorf-sperrung-der-a8-nach-vier-unfaellen-durch-glaette-94601950.html",
+   "title": "Blitzeis-Alarm am Sonntagmorgen: Vier Unfälle auf A8 nach gefährlicher Situation auf Brücke",
+   "teaser": "Extreme Glätte hat am Sonntagmorgen (22. November) auf der A8 (München – Salzburg) im Bereich der Prientalbrücke bei Frasdorf (Landkreis Rosenheim) für gefährliche Szenen gesorgt: Gleich mehrere Fahrzeuge gerieten ins Schleudern.",
+   "category": "",
+   "topic": "Region/Chiemsee",
+   "plus": false,
+   "date": "2026-11-22T09:03:54+00:00",
+   "sec": "/chiemgau/",
+   "pc": 2,
+   "first_seen": "2026-11-22T09:03:54+00:00"
+  },
+  "179152212": {
+   "sid": 179152212,
+   "url": "https://www.chiemgau24.de/chiemgau/trostberg/engelsberg-ort93666/engelsberg-vorstandsneuwahlen-bei-den-freien-waehlern-94600550.html",
+   "title": "Bewährte Führungskraft: Dr. Peter Aigner führt Engelsberger Freie Wähler weiter an",
+   "teaser": "Die Freien Wähler in Engelsberg haben ihre Führungsriege neu bestimmt. Bei der Zusammenkunft im Gasthaus Babinger blickten die Mitglieder auf personelle Weichenstellungen zurück und diskutierten zentrale Vorhaben für die Gemeindepolitik.",
+   "category": "",
+   "topic": "Region/Trostberg",
+   "plus": false,
+   "date": "2026-11-22T07:52:00+00:00",
+   "sec": "/chiemgau/",
+   "pc": 2,
+   "first_seen": "2026-11-22T07:52:00+00:00"
+  },
+  "2730953209": {
+   "sid": 2730953209,
+   "url": "https://www.chiemgau24.de/chiemgau/chiemsee/bad-endorf-ort49941/moorbad-bad-endorf-droht-nach-neun-jahren-jetzt-doch-das-aus-94596097.html",
+   "title": "Nach neun Jahren intensiver Arbeit: Kommt nun doch das Aus fürs Moorbad in Bad Endorf?",
+   "teaser": "Im Bad Endorfer Marktgemeinderat haben die Moorbad-Sanierung und die Kindergartenkosten für intensive Debatten gesorgt. Welche Vorhaben weiterverfolgt werden – und wo die Gemeinde jetzt sparen muss.",
+   "category": "",
+   "topic": "Region/Chiemsee",
+   "plus": true,
+   "date": "2026-11-22T06:24:00+00:00",
+   "sec": "/chiemgau/",
+   "pc": 2,
+   "first_seen": "2026-11-22T06:24:00+00:00"
+  },
+  "889790590": {
+   "sid": 889790590,
+   "url": "https://www.chiemgau24.de/chiemgau/achental/grassau-ort45369/grassau-nachtragshaushalt-im-gemeinderat-beschlossen-94600117.html",
+   "title": "Neue Schulden: Schulneubau strapaziert den Grassauer Haushalt",
+   "teaser": "Grassau hat einen Nachtragshaushalt verabschiedet: Während höhere Gewerbesteuereinnahmen die Kasse aufbessern, schrumpfen die Rücklagen drastisch. Vor allem das Millionenprojekt Schulhausbau treibt die Verbindlichkeiten der Marktgemeinde in die Höhe.",
+   "category": "",
+   "topic": "Region/Achental",
+   "plus": false,
+   "date": "2026-11-22T06:22:00+00:00",
+   "sec": "/chiemgau/",
+   "pc": 2,
+   "first_seen": "2026-11-22T06:22:00+00:00"
+  },
   "1102720712": {
    "sid": 1102720712,
    "url": "https://www.chiemgau24.de/chiemgau/chiemsee/uebersee-ort481558/harry-kane-verletzt-fanclub-besuch-in-uebersee-abgesagt-94601629.html",
@@ -2119,19 +2171,6 @@
    "first_seen": "2026-11-02T16:09:08+00:00",
    "pc": 2
   },
-  "4011112244": {
-   "sid": 4011112244,
-   "url": "https://www.chiemgau24.de/chiemgau/chiemsee/aschau-im-chiemgau-ort79357/landkreis-rosenheim-suche-nach-raubtier-spekulationen-um-wolf-94570287.html",
-   "title": "Blutiger Fund bei Aschau: Neuer Wolf im Chiemgau aufgetaucht – mit Folgen in ein paar Monaten?",
-   "teaser": "Neue Wolfs-Spuren im Landkreis Rosenheim: Vor rund zwei Wochen wurde bei Aschau im Chiemgau ein totes Schaf gefunden – gerissen von einem Wolf. Das wurde nun bestätigt. Inzwischen kommen immer mehr Details zu dem Raubtier ans Licht. Warum diese jetzt brisante Spekulationen auslösen.",
-   "category": "",
-   "topic": "Region/Chiemsee",
-   "plus": true,
-   "date": "2026-11-02T16:08:00+00:00",
-   "sec": "/chiemgau/chiemsee/",
-   "first_seen": "2026-11-02T16:08:00+00:00",
-   "pc": 2
-  },
   "961017782": {
    "sid": 961017782,
    "url": "https://www.chiemgau24.de/chiemgau/achental/marquartstein-ort60237/marquartstein-verhandlungsverfahren-fuer-grundschule-kita-und-mehrzwecksaal-94566236.html",
@@ -2156,19 +2195,6 @@
    "date": "2026-11-02T14:20:00+00:00",
    "sec": "/chiemgau/polizeimeldungen/",
    "first_seen": "2026-11-02T14:20:00+00:00",
-   "pc": 2
-  },
-  "3053490780": {
-   "sid": 3053490780,
-   "url": "https://www.chiemgau24.de/chiemgau/chiemsee/rimsting-ort82000/rimsting-wegfall-von-elternbeitragszuschuss-bringt-debatte-um-kindergartengebuehren-94569685.html",
-   "title": "Wer fängt die Kita-Kosten ab? Rimsting berät über Millionendefizit",
-   "teaser": "Das drohende Aus für den 100-Euro-Zuschuss kann Rimsting ab 2027 nicht allein stemmen. Angesichts eines Millionendefizits rang der Finanzausschuss um Lösungen zur Entlastung der Familien – und vertagte die schwierige Entscheidung in den Gemeinderat.",
-   "category": "",
-   "topic": "Region/Chiemsee",
-   "plus": true,
-   "date": "2026-11-02T10:41:25+00:00",
-   "sec": "/chiemgau/chiemsee/",
-   "first_seen": "2026-11-02T10:41:25+00:00",
    "pc": 2
   },
   "786597831": {
