@@ -27,7 +27,7 @@ final class Plan {
     private static final float HEADER = 48, WARN = 22, TOOLS = 36, CHIPS = 31, LIST = 80, FC = 58, LINE = 16, PAD = 34;
 
     /** Platz fuer etwa vier Meldungen: der bleibt den Nachrichten immer vorbehalten. */
-    private static final float NEWS = 256, ROW = 52, HEAD = 44, PAD_N = 36;
+    private static final float NEWS = 256, ROW = 52, HEAD = 44, PAD_N = 36 + 40; // + Leiste unten
 
     /** Tatsaechliche Hoehe: hochkant gilt MAX_HEIGHT, quer MIN_HEIGHT. */
     static int heightDp(Context ctx, int id) {

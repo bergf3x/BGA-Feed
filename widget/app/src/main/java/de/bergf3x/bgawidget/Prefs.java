@@ -77,13 +77,9 @@ final class Prefs {
         return sp(c).getInt("shows_" + id, 0);
     }
 
-    static boolean widgetBar(Context c, int id) {
-        return sp(c).getBoolean("bar_" + id, true);
-    }
-
     /** Setzt den Inhalt eines Widgets; Wetter nimmt Bergwetter oder Region als Thema, sonst wird das Wetter-Thema geloescht. */
-    static void setWidgetShows(Context c, int id, int shows, boolean region, boolean bar) {
-        android.content.SharedPreferences.Editor e = sp(c).edit().putInt("shows_" + id, shows).putBoolean("bar_" + id, bar);
+    static void setWidgetShows(Context c, int id, int shows, boolean region) {
+        android.content.SharedPreferences.Editor e = sp(c).edit().putInt("shows_" + id, shows);
         if (shows == 1) e.putString("tp_" + id, region ? WeatherCards.REGION : WeatherCards.BERG);
         else if (topic(c, id).startsWith(WeatherCards.TOP)) e.putString("tp_" + id, "");
         e.apply();
@@ -217,7 +213,7 @@ final class Prefs {
 
     static void remove(Context c, int id) {
         sp(c).edit().remove("bg_" + id).remove("tx_" + id).remove("tc_" + id)
-                .remove("fd_" + id).remove("tp_" + id).remove("pl_" + id)
+                .remove("fd_" + id).remove("tp_" + id).remove("pl_" + id).remove("pl2_" + id)
                 .remove("plus_" + id).remove("mute_" + id).remove("dens_" + id)
                 .remove("tcs2_" + id).remove("tcw2_" + id).remove("font_" + id).remove("size_" + id).remove("theme_" + id)
                 .remove("wx_" + id).remove("warn_" + id).remove("tcs_" + id).remove("tcw_" + id).remove("cmp_" + id).remove("acc_" + id).apply();
@@ -448,7 +444,24 @@ final class Prefs {
             }
         }
         sp(c).edit().putString("saved", out.toString()).apply();
+        savedChanged(c);
         return !had;
+    }
+
+    /** Gemerkt hat sich geaendert: App (falls offen) und alle Widgets (Leiste mit Zaehler, Liste) neu zeichnen. */
+    static void savedChanged(Context c) {
+        final Context app = c.getApplicationContext();
+        try {
+            app.sendBroadcast(new android.content.Intent(Direct.DATA_CHANGED).setPackage(app.getPackageName()));
+        } catch (Exception ignored) {
+        }
+        try {
+            android.appwidget.AppWidgetManager m = android.appwidget.AppWidgetManager.getInstance(app);
+            for (int wid : m.getAppWidgetIds(new android.content.ComponentName(app, WidgetProvider.class))) {
+                WidgetProvider.refresh(app, wid);
+            }
+        } catch (Exception ignored) {
+        }
     }
 
     /** Aktuelle DWD-Warnung je Region fuer die Wetter-Karten ("" = noch unbekannt, "-" = keine). */
@@ -496,7 +509,10 @@ final class Prefs {
             }
             out.put(o);
         }
-        if (changed) sp(c).edit().putString("saved", out.toString()).apply();
+        if (changed) {
+            sp(c).edit().putString("saved", out.toString()).apply();
+            savedChanged(c);
+        }
     }
 
     /** Merkt sich je Artikel, ob die Quelle ihn nicht mehr liefert (gone) oder ob er erreichbar ist (checked); ungepruefte bleiben unveraendert. */
@@ -520,7 +536,10 @@ final class Prefs {
             } catch (Exception ignored) {
             }
         }
-        if (changed) sp(c).edit().putString("saved", a.toString()).apply();
+        if (changed) {
+            sp(c).edit().putString("saved", a.toString()).apply();
+            savedChanged(c);
+        }
     }
 
     // ---- gelesene Artikel (global, die letzten 400 Links) ----
@@ -682,6 +701,16 @@ final class Prefs {
 
     static void setPlace(Context c, int id, int place) {
         sp(c).edit().putInt("pl_" + id, place).apply();
+    }
+
+    /** Zweiter Wetter-Ort des Wetter-Widgets (Index in Weather.PLACES), -1 = keiner. */
+    static int place2(Context c, int id) {
+        int p = sp(c).getInt("pl2_" + id, -1);
+        return p >= 0 && p < Weather.PLACES.length ? p : -1;
+    }
+
+    static void setPlace2(Context c, int id, int place) {
+        sp(c).edit().putInt("pl2_" + id, place).apply();
     }
 
     static int clamp(int pct) {

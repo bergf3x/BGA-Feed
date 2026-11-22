@@ -10,6 +10,12 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.16",
+                    "+ Webcam: Tipp aufs Bild öffnet die Original-Seite der Webcam (Vollbild bleibt als Knopf)",
+                    "+ Gemerkt ist zwischen App und Widget synchron; der Zähler steht auch in der Widget-Leiste",
+                    "+ Nachrichten-Widget mindestens 400 dp hoch: Leiste Wetter/News/Gemerkt immer sichtbar, mehr Höhe zeigt mehr Meldungen",
+                    "+ Wetter-Widget: von einer Symbolzeile bis maximal 400 dp; mit „Zweiter Ort“ erscheinen ab etwa 290 dp zwei Orte als getrennte Karten nebeneinander, Warnung gemeinsam darüber",
+                    "~ „Leiste im Widget“ entfernt (nicht mehr nötig), Einstellungs-Kachel heißt „Inhalt“"},
             {"1.15",
                     "+ Abo-Schalter jetzt auch im Widget (Schloss neben Gemerkt und Webcams); Themen am Rand weich ausgeblendet, Schloss „aus“ jetzt deutlich offen",
                     "+ Einheitlich „Abbrechen“ und „Übernehmen“ in allen Einstellungsseiten (App und Widget): Abbrechen setzt die Seite zurück, Übernehmen speichert sofort; „Schließen“ nur noch in reinen Anzeige-Fenstern; alle Knöpfe erhaben",

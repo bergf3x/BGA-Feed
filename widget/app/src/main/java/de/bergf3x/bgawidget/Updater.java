@@ -69,7 +69,10 @@ final class Updater {
             for (int id : news) Weather.refreshIfStale(ctx, Prefs.place(ctx, id));
         }
         for (int id : news) WidgetProvider.refreshHeader(ctx, id);
-        for (int id : wx) Weather.refreshIfStale(ctx, Prefs.place(ctx, id));
+        for (int id : wx) {
+            Weather.refreshIfStale(ctx, Prefs.place(ctx, id));
+            if (Prefs.place2(ctx, id) >= 0) Weather.refreshIfStale(ctx, Prefs.place2(ctx, id));
+        }
         for (int id : wx) WeatherWidgetProvider.update(ctx, mgr, id);
         if (newsDue) {
             for (int id : news) mgr.notifyAppWidgetViewDataChanged(id, R.id.list);
