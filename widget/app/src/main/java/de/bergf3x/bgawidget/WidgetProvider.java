@@ -8,7 +8,6 @@ package de.bergf3x.bgawidget;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -254,13 +253,11 @@ public class WidgetProvider extends AppWidgetProvider {
         rv.setOnClickPendingIntent(R.id.w_hi, hourly);
         rv.setOnClickPendingIntent(R.id.w_lo, hourly);
         rv.setOnClickPendingIntent(R.id.btn_cam, activity(ctx, WebcamActivity.class, id, 903, "webcam"));
-        rv.setOnClickPendingIntent(R.id.btn_search, activity(ctx, SearchActivity.class, id, 904, "search"));
         rv.setOnClickPendingIntent(R.id.btn_saved, activity(ctx, SavedActivity.class, id, 905, "saved"));
-        for (int tb : new int[]{R.id.btn_cam, R.id.btn_search, R.id.btn_saved}) {
+        for (int tb : new int[]{R.id.btn_cam, R.id.btn_saved}) {
             Pal.filter(ctx, id, rv, tb, cw);
             rv.setInt(tb, "setImageAlpha", Prefs.alpha(Prefs.text(ctx, id)));
         }
-        rv.setViewVisibility(R.id.btn_search, android.view.View.GONE); // Suche gibt es nicht mehr
         rv.setViewVisibility(R.id.btn_saved, weatherWidget ? android.view.View.GONE : android.view.View.VISIBLE);
         // reines Wetter-Widget hat einen eigenen, immer sichtbaren Webcam-Knopf oben rechts
         rv.setViewVisibility(R.id.btn_cam, weatherWidget ? android.view.View.GONE : android.view.View.VISIBLE);

@@ -999,31 +999,6 @@ public class MainActivity extends Activity {
         }
         return row;
     }
-
-    private void tools() {
-        LinearLayout row = new LinearLayout(this);
-        row.setOrientation(LinearLayout.HORIZONTAL);
-        row.addView(toolPill(R.drawable.ic_search, "Suche", () -> open(SearchActivity.class)), lp(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 6, 0));
-        row.addView(toolPill(R.drawable.ic_bookmark, "Gemerkt", () -> open(SavedActivity.class)), lp(0, ViewGroup.LayoutParams.WRAP_CONTENT, 6, 0, 0, 0));
-        for (int i = 0; i < 2; i++) ((LinearLayout.LayoutParams) row.getChildAt(i).getLayoutParams()).weight = 1f;
-        page.addView(row, lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 12));
-    }
-
-    private View toolPill(int icon, String label, final Runnable click) {
-        LinearLayout p = new LinearLayout(this);
-        p.setOrientation(LinearLayout.HORIZONTAL);
-        p.setGravity(Gravity.CENTER);
-        p.setPadding(px(8), px(10), px(8), px(10));
-        press(p, cardFill, 16, line);
-        ImageView iv = new ImageView(this);
-        iv.setImageResource(icon);
-        iv.setColorFilter(tx);
-        p.addView(iv, lp(18, 18, 0, 0, 6, 0));
-        p.addView(text(label, 13, tx, false));
-        p.setOnClickListener(v -> click.run());
-        return p;
-    }
-
     // ------------------------------------------------------------------ Nachrichten
 
     /** Themen-Reiter (bleiben oben stehen). */
@@ -1421,24 +1396,6 @@ public class MainActivity extends Activity {
         c.setContentDescription(spoken);
         c.setLayoutParams(lp(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 8, 0));
         return c;
-    }
-
-    /** Ueberschrift eines Mediums in der Liste: Balken, Name in Grossbuchstaben. */
-    private View mediumHeader(String name) {
-        LinearLayout row = new LinearLayout(this);
-        row.setOrientation(LinearLayout.HORIZONTAL);
-        row.setGravity(Gravity.CENTER_VERTICAL);
-        row.setPadding(px(4), px(10), px(4), px(6));
-        TextView t = text(name.toUpperCase(java.util.Locale.GERMANY), 12.5f, tx, true);
-        t.setLetterSpacing(0.08f);
-        row.addView(t);
-        View rule = new View(this);
-        rule.setBackgroundColor(FeedItem.mediumColor(name));
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, Math.max(1, px(1)), 1f);
-        lp.leftMargin = px(10);
-        row.addView(rule, lp);
-        row.setLayoutParams(lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 0));
-        return row;
     }
 
     private View newsCard(final FeedItem it, Set<String> read, List<String> kw) {

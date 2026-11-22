@@ -49,11 +49,6 @@ final class WeatherCards {
     };
 
     private WeatherCards() {}
-
-    static boolean any(Context c) {
-        return !Prefs.bergRegions(c).isEmpty() || Prefs.regionCards(c);
-    }
-
     private static FeedItem card(String path, String group, String title, String sub, String text, String link) {
         FeedItem it = new FeedItem();
         it.topic = path;
