@@ -15,7 +15,9 @@ $UI texts | head -30 | tee -a $R
 tapw "Wetter" 2
 shot w1_menue
 $UI texts | head -30 | tee -a $R
-tapw "Bergwetter" 3
+tapw "Bergwetter" 1
+shot w1b_menue_gewaehlt
+tapw "Übernehmen" 4
 shot w2_bergwetter
 $UI texts | head -30 | tee -a $R
 tapw "Bergbericht" 3
@@ -23,7 +25,9 @@ shot w3_vorschau
 $UI texts | head -20 | tee -a $R
 adb shell input keyevent KEYCODE_BACK; sleep 1.5
 tapw "Wetter" 2
-tapw "Region" 3
+tapw "Bergwetter" 1
+tapw "Region" 1
+tapw "Übernehmen" 4
 shot w4_region
 $UI texts | head -30 | tee -a $R
 adb shell input keyevent KEYCODE_HOME; sleep 1
