@@ -1,0 +1,29 @@
+Success
+Screenshot s1_news
+NICHT GEFUNDEN:  · Anzeiger
+Screenshot s2_vorschau
+NICHT GEFUNDEN: Merken
+NICHT GEFUNDEN:  · Anzeiger
+NICHT GEFUNDEN: Merken
+NICHT GEFUNDEN:  · Anzeiger
+NICHT GEFUNDEN: Merken
+NICHT GEFUNDEN: Gemerkt
+Screenshot s3_gemerkt
+  323 | Sun, Nov 22 | Sun, Nov 22
+ 1615 | Gmail | Gmail
+ 1615 | Photos | Photos
+ 1615 | YouTube | YouTube
+ 1232 |  | Home
+ 1970 | Phone | Phone
+ 1970 | Messages | Messages
+ 1970 | Chrome | Chrome
+ 1970 | BGL Test | Predicted app: BGL Test
+ 2207 |  | Search
+ 2207 |  | Google app
+ 2207 |  | Voice search
+ 2207 |  | Google Lens
+NICHT GEFUNDEN: Wetter
+Screenshot s4_wetter
+NICHT GEFUNDEN: News
+Screenshot s5_news_zurueck
+== Ende ==
