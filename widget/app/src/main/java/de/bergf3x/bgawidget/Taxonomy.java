@@ -73,7 +73,7 @@ final class Taxonomy {
 
     private static final Pattern P_MARKT = Pattern.compile("\\bAktie|Börsengang|\\bBörse|\\bDAX\\b|Inflation|Zinsen|Leitzins");
     private static final Pattern P_POL = Pattern.compile("Kabinett|Bundestag|Bundesrat|Bundesregierung|Minister|Koalition|Landtag|Gesetz|"
-            + "\\bEU\\b|\\bUN\\b|\\bNato\\b|Kanzler|Wahl\\b|Frostige Nacht|glatt");
+            + "\\bEU\\b|\\bUN\\b|\\bNato\\b|Kanzler|Wahl\\b|Frostige Nacht|glatt|Söder|Merz|Progression|\\bAfD\\b|\\bCSU\\b|\\bCDU\\b|\\bSPD\\b|Ärzte|Impfstoff|Krankenkasse|Klinik");
 
     /** Einheitlicher Themenpfad der Meldung. */
     static String classify(FeedItem it) {
