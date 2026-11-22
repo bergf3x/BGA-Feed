@@ -154,6 +154,9 @@ public class ListService extends RemoteViewsService {
                 merged.add(it);
             }
         }
+        if (!sel.isEmpty()) {
+            for (FeedItem it : WeatherCards.items(ctx)) if (Prefs.matchTopic(it, WeatherCards.TOP, sel)) merged.add(it);
+        }
         if (online) Prefs.setNews(ctx, anyOk || !anyFail);
         if (online && merged.isEmpty()) showEmptyReason(ctx, id, all, selected, topic);
         // Gleiche Zeit (z. B. erster Lauf): Reihenfolge innerhalb des Feeds bleibt erhalten
@@ -369,6 +372,22 @@ public class ListService extends RemoteViewsService {
             airy = Prefs.density(ctx, widgetId) == 1;
             sizeIdx = Prefs.size(ctx, widgetId);
             lightTheme = Prefs.isLight(ctx, widgetId);
+            if (Prefs.widgetShows(ctx, widgetId) == 2) {
+                List<FeedItem> sv = new ArrayList<>();
+                org.json.JSONArray a = Prefs.saved(ctx);
+                for (int i = 0; i < a.length(); i++) {
+                    org.json.JSONObject o = a.optJSONObject(i);
+                    if (o == null) continue;
+                    FeedItem f = new FeedItem();
+                    f.title = o.optString("t");
+                    f.description = o.optString("x");
+                    f.link = o.optString("l");
+                    f.sub = o.optString("m");
+                    f.feedName = "Gemerkt";
+                    sv.add(f);
+                }
+                return sv;
+            }
             List<FeedItem> all = loadItems(ctx, widgetId, online, res);
             return grouped(ctx, new ArrayList<>(all.subList(0, Math.min(all.size(), 60))));
         }

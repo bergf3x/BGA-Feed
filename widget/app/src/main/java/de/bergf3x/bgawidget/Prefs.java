@@ -72,6 +72,40 @@ final class Prefs {
         return sp(c).getBoolean("cmp_" + id, false);
     }
 
+    /** Was ein Widget zeigt: 0 Nachrichten, 1 Wetter, 2 Gemerkt. */
+    static int widgetShows(Context c, int id) {
+        return sp(c).getInt("shows_" + id, 0);
+    }
+
+    static boolean widgetBar(Context c, int id) {
+        return sp(c).getBoolean("bar_" + id, true);
+    }
+
+    /** Setzt den Inhalt eines Widgets; Wetter nimmt Bergwetter oder Region als Thema, sonst wird das Wetter-Thema geloescht. */
+    static void setWidgetShows(Context c, int id, int shows, boolean region, boolean bar) {
+        android.content.SharedPreferences.Editor e = sp(c).edit().putInt("shows_" + id, shows).putBoolean("bar_" + id, bar);
+        if (shows == 1) e.putString("tp_" + id, region ? WeatherCards.REGION : WeatherCards.BERG);
+        else if (topic(c, id).startsWith(WeatherCards.TOP)) e.putString("tp_" + id, "");
+        e.apply();
+    }
+
+    static java.util.Set<String> bergRegions(Context c) {
+        return new java.util.LinkedHashSet<>(sp(c).getStringSet("wc_berg", WeatherCards.BERG_DEFAULT));
+    }
+
+    static boolean regionCards(Context c) {
+        return sp(c).getBoolean("wc_region", true);
+    }
+
+    static java.util.Set<String> warnRegions(Context c) {
+        return new java.util.LinkedHashSet<>(sp(c).getStringSet("wc_warn", new java.util.LinkedHashSet<>(java.util.Arrays.asList("09172"))));
+    }
+
+    static void setWeatherCards(Context c, java.util.Set<String> berg, boolean region, java.util.Set<String> warn) {
+        sp(c).edit().putStringSet("wc_berg", new java.util.HashSet<>(berg)).putBoolean("wc_region", region)
+                .putStringSet("wc_warn", new java.util.HashSet<>(warn)).apply();
+    }
+
     static boolean warnNotify(Context c) {
         return sp(c).getBoolean("warn_notify", false);
     }

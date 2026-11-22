@@ -21,10 +21,12 @@ final class Notifier {
 
     private Notifier() {}
 
-    static void warn(Context c, int level, String text) {
+    static void warn(Context c, int level, String text, String region, String ags) {
         if (!Prefs.warnNotify(c) || level < 3 || text.isEmpty()) return;
         String key = level + "|" + text;
-        if (key.equals(Prefs.lastNotified(c))) return;
+        String pk = "wc_last_" + ags;
+        if (key.equals(Prefs.sp(c).getString(pk, ""))) return;
+        Prefs.sp(c).edit().putString(pk, key).apply();
         if (Build.VERSION.SDK_INT >= 33
                 && c.checkSelfPermission("android.permission.POST_NOTIFICATIONS") != PackageManager.PERMISSION_GRANTED) {
             return;
@@ -42,11 +44,11 @@ final class Notifier {
             PendingIntent pi = PendingIntent.getActivity(c, 77, open, PendingIntent.FLAG_UPDATE_CURRENT | imm);
             Notification.Builder b = Build.VERSION.SDK_INT >= 26 ? new Notification.Builder(c, CHANNEL) : new Notification.Builder(c);
             b.setSmallIcon(R.drawable.ic_warn)
-                    .setContentTitle("Berchtesgadener Land: Stufe " + level)
+                    .setContentTitle("Warnung " + region)
                     .setContentText(text)
                     .setContentIntent(pi)
                     .setAutoCancel(true);
-            nm.notify(7001, b.build());
+            nm.notify(7001 + Math.abs(ags.hashCode() % 500), b.build());
             Prefs.setLastNotified(c, key);
         } catch (Exception ignored) {
         }

@@ -33,13 +33,31 @@ final class Warnings {
             if (a < 0 || b <= a) return;
             JSONObject all = new JSONObject(raw.substring(a, b + 1)).getJSONObject("warnings");
             long now = System.currentTimeMillis();
+            java.util.Set<String> extra = Prefs.warnRegions(c);
+            java.util.Map<String, int[]> perRegion = new java.util.HashMap<>();
+            java.util.Map<String, String> perText = new java.util.HashMap<>();
+            for (String r : extra) { perRegion.put(r, new int[2]); perText.put(r, ""); }
             int best = 0;
             String bestText = "";
             int count = 0;
             Iterator<String> keys = all.keys();
             while (keys.hasNext()) {
                 String k = keys.next();
-                if (k.length() < 6 || !k.substring(1, 6).equals(AGS)) continue;
+                if (k.length() < 6) continue;
+                String ags = k.substring(1, 6);
+                int[] pr = perRegion.get(ags);
+                if (pr != null) {
+                    JSONArray ra = all.optJSONArray(k);
+                    for (int i = 0; ra != null && i < ra.length(); i++) {
+                        JSONObject w = ra.optJSONObject(i);
+                        if (w == null) continue;
+                        int lv = w.optInt("level", 0);
+                        if (lv < 3 || w.optLong("end", 0) < now || w.optLong("start", 0) > now + 12L * 3600000) continue;
+                        pr[1]++;
+                        if (lv > pr[0]) { pr[0] = lv; perText.put(ags, "Warnung: " + nice(w.optString("event", "Wetter"))); }
+                    }
+                }
+                if (!ags.equals(AGS)) continue;
                 JSONArray arr = all.optJSONArray(k);
                 if (arr == null) continue;
                 for (int i = 0; i < arr.length(); i++) {
@@ -61,7 +79,12 @@ final class Warnings {
             } else {
                 String t = "Warnung: " + nice(bestText) + (count > 1 ? " +" + (count - 1) : "");
                 Prefs.setWarn(c, best, t);
-                Notifier.warn(c, best, t);
+                if (extra.contains(AGS)) Notifier.warn(c, best, t, "Berchtesgadener Land", AGS);
+            }
+            for (String[] r : WeatherCards.WARN_REGIONS) {
+                if (r[0].equals(AGS) || !extra.contains(r[0])) continue;
+                int[] pr = perRegion.get(r[0]);
+                if (pr != null && pr[0] > 0) Notifier.warn(c, pr[0], perText.get(r[0]) + (pr[1] > 1 ? " +" + (pr[1] - 1) : ""), r[1], r[0]);
             }
         } catch (Exception ignored) {
             // bei Fehlern den alten Stand behalten
