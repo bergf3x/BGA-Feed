@@ -192,6 +192,7 @@ public class WebcamActivity extends Activity {
         spin = new ProgressBar(this);
         holder.addView(spin, new FrameLayout.LayoutParams(b.px(32), b.px(32), Gravity.CENTER));
         holder.setOnClickListener(v -> openFull());
+        b.flex(holder, 90);
         b.box.addView(holder, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
         prevStatus = b.text("Lade …", 12.5f, b.tx, false);
@@ -209,18 +210,18 @@ public class WebcamActivity extends Activity {
             prevStatus.setText(Webcams.status(c));
         }
         b.pillKeep("Vollbild", true, this::openFull);
-        b.pillKeep("Neu laden", false, () -> {
+        b.pillRow("Neu laden", () -> {
             if (!hasImage) spin.setVisibility(View.VISIBLE);
             prevStatus.setText("Aktualisiere …");
             load();
-        });
-        b.pillKeep("Webseite öffnen", false, () -> {
+        }, "Webseite öffnen", () -> {
             try {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(cam.page)).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
             } catch (Exception ignored) {
             }
         });
-        b.pill("Schließen", false, true, () -> { });
+        // "Zur Liste": zurueck in die Auswahl; erst dort schliesst "Schliessen" das Fenster
+        b.pillKeep("Zur Liste", false, this::showList);
         load();
     }
 

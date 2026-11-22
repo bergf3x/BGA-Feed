@@ -10,6 +10,15 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.15",
+                    "+ Abo-Schalter jetzt auch im Widget (Schloss neben Gemerkt und Webcams); Themen am Rand weich ausgeblendet, Schloss „aus“ jetzt deutlich offen",
+                    "+ Einheitlich „Abbrechen“ und „Übernehmen“ in allen Einstellungsseiten (App und Widget): Abbrechen setzt die Seite zurück, Übernehmen speichert sofort; „Schließen“ nur noch in reinen Anzeige-Fenstern; alle Knöpfe erhaben",
+                    "+ Fenster passen sich dem Platz an: Inhalt schrumpft, die Knöpfe unten bleiben immer erreichbar (Artikel-Vorschau, Webcam, Einstellungen); Merken und Teilen nebeneinander",
+                    "+ Freigaben nach dem Hinzufügen eines Widgets: Akku, Benachrichtigungen, Autostart mit „Erlauben“ oder „Später“ und Hinweis, wenn die App ohne sie nicht richtig läuft",
+                    "~ Webcam: aus der Ansicht geht „Zur Liste“ zurück in die Auswahl, in der Liste schließt „Schließen“ das Fenster",
+                    "~ Untere Leiste in der Fensterfarbe der App statt schwarz; „Neu seit“-Linie dezent grau",
+                    "~ Widget-Karte und Akku-Link nur noch dort, wo sie hingehören (News, ganz oben, solange kein Widget existiert); Gemerkt ohne Wetterstreifen, Aufbewahrung als schmale Zeile",
+                    "~ Widget: Vorschaubilder erscheinen auch, wenn die App das Bild zuerst geladen hat; Aufräumen alter Reste"},
             {"1.13",
                     "+ Abo-Schalter steht fest links vor den Themen (zeigt die Zahl der Abo-Artikel) und scrollt nicht mehr weg",
                     "+ Neuer Look mit dezenter Tiefe in App und Widget: erhabene Knöpfe, Chips und Karten, eingesenkte Eingabefelder und Schalter-Rinnen; gedrückte Knöpfe sinken ein",

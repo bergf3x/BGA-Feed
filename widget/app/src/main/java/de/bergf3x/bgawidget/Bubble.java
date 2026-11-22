@@ -79,7 +79,7 @@ final class Bubble {
         FrameLayout root = new FrameLayout(act);
         root.setOnClickListener(v -> close());
 
-        box = new LinearLayout(act);
+        box = new FitBox(act);
         box.setOrientation(LinearLayout.VERTICAL);
         int pad = px(padDp);
         box.setPadding(pad, pad, pad, pad);
@@ -105,6 +105,82 @@ final class Bubble {
         box.setPivotY(0f);
         box.animate().alpha(1f).scaleX(1f).scaleY(1f).setDuration(190)
                 .setInterpolator(new DecelerateInterpolator()).start();
+    }
+
+    /** ScrollView, das bei Platzmangel schrumpft (siehe FitBox): so bleiben die Knoepfe darunter immer sichtbar. */
+    static final class Flex extends ScrollView {
+        int max;
+        int cap = Integer.MAX_VALUE;
+        final int minPx;
+
+        Flex(Activity a, int maxPx, int minPx) {
+            super(a);
+            max = maxPx;
+            this.minPx = minPx;
+        }
+
+        @Override
+        protected void onMeasure(int w, int h) {
+            super.onMeasure(w, View.MeasureSpec.makeMeasureSpec(Math.max(minPx, Math.min(max, cap)), View.MeasureSpec.AT_MOST));
+        }
+    }
+
+    /**
+     * Inhalt der Blase: passt sich der verfuegbaren Hoehe an. Reicht sie nicht, schrumpfen zuerst die scrollbaren
+     * Bereiche, dann markierte Bilder (flex); Titel und Knoepfe unten bleiben immer sichtbar.
+     */
+    private static final class FitBox extends LinearLayout {
+        private final java.util.HashMap<View, Integer> orig = new java.util.HashMap<>();
+
+        FitBox(Activity a) {
+            super(a);
+        }
+
+        @Override
+        protected void onMeasure(int w, int h) {
+            int mode = View.MeasureSpec.getMode(h);
+            int avail = View.MeasureSpec.getSize(h) - Math.round(20 * getResources().getDisplayMetrics().density);
+            int n = getChildCount();
+            for (int i = 0; i < n; i++) {
+                View c = getChildAt(i);
+                if (c instanceof Flex) ((Flex) c).cap = Integer.MAX_VALUE;
+                Integer o = orig.get(c);
+                if (o != null) c.getLayoutParams().height = o;
+            }
+            super.onMeasure(w, View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+            int over = getMeasuredHeight() - avail;
+            if (mode == View.MeasureSpec.UNSPECIFIED || over <= 0) return;
+            for (int i = 0; i < n && over > 0; i++) {
+                View c = getChildAt(i);
+                if (!(c instanceof Flex)) continue;
+                Flex f = (Flex) c;
+                int cut = Math.min(over, Math.max(0, c.getMeasuredHeight() - f.minPx));
+                if (cut > 0) {
+                    f.cap = c.getMeasuredHeight() - cut;
+                    over -= cut;
+                }
+            }
+            for (int i = 0; i < n && over > 0; i++) {
+                View c = getChildAt(i);
+                Object t = c.getTag(FLEX_TAG);
+                if (!(t instanceof Integer)) continue;
+                int cur = c.getMeasuredHeight();
+                int cut = Math.min(over, Math.max(0, cur - (Integer) t));
+                if (cut > 0) {
+                    orig.put(c, c.getLayoutParams().height);
+                    c.getLayoutParams().height = cur - cut;
+                    over -= cut;
+                }
+            }
+            super.onMeasure(w, View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+        }
+    }
+
+    private static final int FLEX_TAG = 0x7f0b0fff;
+
+    /** Ansicht darf bei Platzmangel bis minDp schrumpfen (z. B. ein Vorschaubild mit fester Hoehe). */
+    void flex(View v, int minDp) {
+        v.setTag(FLEX_TAG, px(minDp));
     }
 
     /** Glas-Flaeche wie der Widget-Hintergrund: Fuellung, Lichtreflex links oben, feiner heller Rand. */
@@ -201,6 +277,11 @@ final class Bubble {
         g.setColor(color);
         g.setCornerRadius(px(radiusDp));
         return g;
+    }
+
+    /** Fuellung eines normalen (nicht hervorgehobenen) erhabenen Knopfs. */
+    int neutral() {
+        return light ? 0x1A000000 : 0x26FFFFFF;
     }
 
     private void pressable(View v, int fillColor, int rippleColor) {
@@ -324,7 +405,7 @@ final class Bubble {
         t.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         t.setTextColor(primary ? hiTx : tx);
         t.setPadding(px(12), px(11), px(12), px(11));
-        pressable(t, primary ? hi : (light ? 0x1A000000 : 0x26FFFFFF), primary ? 0x33000000 : ripple);
+        pressable(t, primary ? hi : neutral(), primary ? 0x33000000 : ripple);
         if (!enabled) {
             t.setAlpha(0.4f);
         } else {
@@ -347,12 +428,7 @@ final class Bubble {
         t.setTextColor(color);
         t.setLineSpacing(0, 1.15f);
         final int max = Math.round(act.getResources().getDisplayMetrics().heightPixels * 0.35f);
-        ScrollView sv = new ScrollView(act) {
-            @Override
-            protected void onMeasure(int w, int h) {
-                super.onMeasure(w, View.MeasureSpec.makeMeasureSpec(max, View.MeasureSpec.AT_MOST));
-            }
-        };
+        ScrollView sv = new Flex(act, max, px(70));
         sv.addView(t);
         box.addView(sv);
         return t;
@@ -482,12 +558,7 @@ final class Bubble {
         // Hoehe begrenzen: Blase beginnt bei 18 % der Hoehe; Kopf und "Schliessen" muessen immer sichtbar bleiben
         int screenH = act.getResources().getDisplayMetrics().heightPixels;
         final int max = Math.max(px(160), Math.min(Math.round(screenH * heightFraction), Math.round(screenH * (1f - topFrac)) - px(200)));
-        ScrollView sv = new ScrollView(act) {
-            @Override
-            protected void onMeasure(int w, int h) {
-                super.onMeasure(w, View.MeasureSpec.makeMeasureSpec(max, View.MeasureSpec.AT_MOST));
-            }
-        };
+        ScrollView sv = new Flex(act, max, px(90));
         sv.setVerticalScrollBarEnabled(false);
         LinearLayout body = new LinearLayout(act);
         body.setOrientation(LinearLayout.VERTICAL);
@@ -520,7 +591,7 @@ final class Bubble {
         t.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         t.setTextColor(primary ? hiTx : tx);
         t.setPadding(px(12), px(11), px(12), px(11));
-        pressable(t, primary ? hi : 0, primary ? 0x33000000 : ripple);
+        pressable(t, primary ? hi : neutral(), primary ? 0x33000000 : ripple);
         t.setOnClickListener(v -> onClick.run());
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -529,21 +600,57 @@ final class Bubble {
         return t;
     }
 
-    /** "Uebernehmen"-Knopf: zunaechst wie "Abbrechen" (nur Text); wird mit watch() hell, sobald etwas geaendert ist. */
-    TextView pillApply(String label, boolean closeAfter, Runnable onClick) {
-        TextView t = pillIn(box, label, false, () -> {
-            onClick.run();
-            if (closeAfter) close();
-        });
-        t.setTag(Boolean.FALSE);
-        return t;
+
+    /** Zwei Knoepfe nebeneinander (z. B. Merken | Teilen); die Blase bleibt offen. */
+    void pillRow(String l1, Runnable r1, String l2, Runnable r2) {
+        LinearLayout row = new LinearLayout(act);
+        row.setOrientation(LinearLayout.HORIZONTAL);
+        pillIn(row, l1, false, r1);
+        pillIn(row, l2, false, r2);
+        for (int i = 0; i < 2; i++) {
+            LinearLayout.LayoutParams p = (LinearLayout.LayoutParams) row.getChildAt(i).getLayoutParams();
+            p.width = 0;
+            p.weight = 1f;
+            p.leftMargin = i == 0 ? 0 : px(3);
+            p.rightMargin = i == 0 ? px(3) : 0;
+        }
+        box.addView(row, new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
     }
 
-    /** Hell (aktiv) oder nur Text (inaktiv). */
+    /**
+     * Einheitliche Fusszeile fuer alles, was Einstellungen aendert: links "Abbrechen", rechts "Uebernehmen".
+     * "Uebernehmen" ist erst hell, wenn etwas geaendert ist (mit watch()). closeAfter = Blase danach schliessen.
+     */
+    TextView footer(boolean closeAfter, Runnable onCancel, Runnable onApply) {
+        LinearLayout row = new LinearLayout(act);
+        row.setOrientation(LinearLayout.HORIZONTAL);
+        pillIn(row, "Abbrechen", false, () -> {
+            onCancel.run();
+            if (closeAfter) close();
+        });
+        TextView ok = pillIn(row, "Übernehmen", false, () -> {
+            onApply.run();
+            if (closeAfter) close();
+        });
+        ok.setTag(Boolean.FALSE);
+        for (int i = 0; i < 2; i++) {
+            LinearLayout.LayoutParams p = (LinearLayout.LayoutParams) row.getChildAt(i).getLayoutParams();
+            p.width = 0;
+            p.weight = 1f;
+            p.leftMargin = i == 0 ? 0 : px(3);
+            p.rightMargin = i == 0 ? px(3) : 0;
+        }
+        box.addView(row, new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        return ok;
+    }
+
+    /** Hell hervorgehoben (aktiv) oder normaler erhabener Knopf (inaktiv). */
     void setActive(TextView t, boolean on) {
         if (Boolean.valueOf(on).equals(t.getTag())) return;
         t.setTag(on);
-        pressable(t, on ? hi : 0, on ? 0x33000000 : ripple);
+        pressable(t, on ? hi : neutral(), on ? 0x33000000 : ripple);
         t.setTextColor(on ? hiTx : tx);
     }
 

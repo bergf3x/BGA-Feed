@@ -54,6 +54,7 @@ public class PreviewActivity extends Activity {
                     android.view.ViewGroup.LayoutParams.MATCH_PARENT, b.px(170));
             ilp.bottomMargin = b.px(10);
             iv.setVisibility(android.view.View.GONE);
+            b.flex(iv, 70);
             b.box.addView(iv, ilp);
             ImageStore.into(iv, image, 480, false);
         }
@@ -70,15 +71,7 @@ public class PreviewActivity extends Activity {
             } catch (Exception ignored) {
             }
         });
-        if (!wx) {
-            final TextView save = b.pillKeep(Prefs.isSaved(this, link) ? "Gemerkt ✓ (tippen zum Entfernen)" : "Merken", false, () -> { });
-            save.setOnClickListener(v -> {
-                boolean now = Prefs.toggleSaved(this, title, meta, text, link, image);
-                save.setText(now ? "Gemerkt ✓ (tippen zum Entfernen)" : "Merken");
-                Haptic.play(save, now ? Haptic.CONFIRM : Haptic.TICK);
-            });
-        }
-        b.pillKeep("Teilen", false, () -> {
+        final Runnable share = () -> {
             try {
                 Intent send = new Intent(Intent.ACTION_SEND);
                 send.setType("text/plain");
@@ -87,7 +80,19 @@ public class PreviewActivity extends Activity {
                 startActivity(Intent.createChooser(send, "Teilen"));
             } catch (Exception ignored) {
             }
-        });
+        };
+        if (!wx) {
+            // Merken und Teilen nebeneinander: spart eine Zeile, damit alle Knoepfe auf den Bildschirm passen
+            b.pillRow(Prefs.isSaved(this, link) ? "Gemerkt ✓" : "Merken", () -> { }, "Teilen", share);
+            final TextView save = (TextView) ((android.view.ViewGroup) b.box.getChildAt(b.box.getChildCount() - 1)).getChildAt(0);
+            save.setOnClickListener(v -> {
+                boolean now = Prefs.toggleSaved(this, title, meta, text, link, image);
+                save.setText(now ? "Gemerkt ✓" : "Merken");
+                Haptic.play(save, now ? Haptic.CONFIRM : Haptic.TICK);
+            });
+        } else {
+            b.pillKeep("Teilen", false, share);
+        }
         b.pill("Schließen", false, true, () -> { });
     }
 

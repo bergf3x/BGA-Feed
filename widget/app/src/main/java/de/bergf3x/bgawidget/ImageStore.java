@@ -196,7 +196,9 @@ final class ImageStore {
         iv.setImageDrawable(null);
         iv.setVisibility(reserve ? View.VISIBLE : View.GONE); // reserve: Platz bleibt frei, solange das Bild kommt
         POOL.execute(() -> {
+            final boolean had = has(c, url);
             final boolean ok = fetch(c, url);
+            if (ok && !had) widgetsChanged(c);
             final Bitmap bm = ok ? cached(c, url, w) : null;
             UI.post(() -> {
                 if (!url.equals(iv.getTag())) return; // View wurde inzwischen fuer eine andere Meldung benutzt
@@ -208,6 +210,27 @@ final class ImageStore {
                 }
             });
         });
+    }
+
+    private static volatile long lastWidgetPing;
+
+    /**
+     * Ein Bild kam neu auf die Platte (z. B. durch die App): Widget-Listen neu zeichnen, damit die Vorschaubilder
+     * dort auch erscheinen. Hoechstens einmal pro Sekunde, damit viele Bilder nicht viele Neuzeichnungen ausloesen.
+     */
+    private static void widgetsChanged(final Context c) {
+        long now = System.currentTimeMillis();
+        if (now - lastWidgetPing < 1000) return;
+        lastWidgetPing = now;
+        UI.postDelayed(() -> {
+            try {
+                android.appwidget.AppWidgetManager mgr = android.appwidget.AppWidgetManager.getInstance(c);
+                for (int wid : mgr.getAppWidgetIds(new android.content.ComponentName(c, WidgetProvider.class))) {
+                    mgr.notifyAppWidgetViewDataChanged(wid, R.id.list);
+                }
+            } catch (Exception ignored) {
+            }
+        }, 1500);
     }
 
     /** Abgerundete Ecken per Umriss (App-Ansichten). */
