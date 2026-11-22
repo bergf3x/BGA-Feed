@@ -171,7 +171,10 @@ final class Direct {
             return xml;
         } catch (Exception e) {
             log(ctx, f.name + ": FEHLER direkt (" + e + ") - nehme GitHub-Feed");
-            return Net.download(Net.fresh(f.url));
+            Net.lastMirror = false;
+            String x = Net.downloadFeed(f.url);
+            if (Net.lastMirror) log(ctx, f.name + ": GitHub nicht erreichbar - Spiegel jsDelivr");
+            return x;
         }
     }
 

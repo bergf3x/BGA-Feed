@@ -82,4 +82,27 @@ final class Net {
     static String fresh(String url) {
         return url + "?t=" + (System.currentTimeMillis() / 60000L);
     }
+
+    private static final String RAW = "https://raw.githubusercontent.com/bergf3x/BGA-Feed/main/";
+    private static final String MIRROR = "https://cdn.jsdelivr.net/gh/bergf3x/BGA-Feed@main/";
+
+    /** Spiegel der GitHub-Datei bei jsDelivr (eigenes Netz, gleiche Inhalte); leer, wenn es keinen gibt. */
+    static String mirror(String url) {
+        return url != null && url.startsWith(RAW) ? MIRROR + url.substring(RAW.length()) : "";
+    }
+
+    /** Ersatz-Feed: erst GitHub, faellt das aus, der jsDelivr-Spiegel. */
+    static String downloadFeed(String url) throws IOException {
+        try {
+            return download(fresh(url));
+        } catch (IOException e) {
+            String m = mirror(url);
+            if (m.isEmpty()) throw e;
+            lastMirror = true;
+            return download(m);
+        }
+    }
+
+    /** true, wenn zuletzt der Spiegel einspringen musste (fuer das Protokoll). */
+    static volatile boolean lastMirror;
 }

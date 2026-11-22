@@ -51,7 +51,7 @@ final class Catalog {
     /** Wie refresh, liefert aber eine Statuszeile (Erfolg oder Fehlergrund). */
     static String refreshStatus(Context c) {
         try {
-            String json = Net.download(Net.fresh(URL));
+            String json = Net.downloadFeed(URL);
             List<Feed> list = parse(json);
             if (list.isEmpty()) return "Katalog unlesbar (" + json.length() + " Zeichen)";
             Prefs.setCatalogCache(c, json);

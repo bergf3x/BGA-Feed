@@ -10,6 +10,8 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.04",
+                    "+ Zweiter Ersatz-Feed über jsDelivr, falls GitHub ausfällt"},
             {"1.03",
                     "+ Copyright-Hinweis in „Über die App“"},
             {"1.02",
