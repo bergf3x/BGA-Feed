@@ -102,10 +102,12 @@ public class ConfigActivity extends Activity {
         accent = Prefs.accent(this, widgetId);
         bgRound = BgStyle.sysCorner(this, widgetId);
         kwNotifyOn = Prefs.kwNotify(this);
+        haptic = Haptic.enabled(this);
         selected.addAll(Prefs.feeds(this, widgetId));
         muted.addAll(Prefs.muted(this, widgetId));
 
         b = new Bubble(this, 360, 16);
+        b.high();
         kwText = Prefs.keywords(this);
         showMain();
 
@@ -121,7 +123,8 @@ public class ConfigActivity extends Activity {
     }
 
     // ---------- Seiten ----------
-    private static final int P_MAIN = 0, P_SOURCES = 1, P_DESIGN = 2, P_LIST = 3, P_WEATHER = 4, P_COLORS = 5;
+    private static final int P_MAIN = 0, P_SOURCES = 1, P_DESIGN = 2, P_LIST = 3, P_WEATHER = 4, P_COLORS = 5, P_NOTIFY = 6;
+    private boolean haptic;
     private int page = P_MAIN;
     private String kwText = "";
 
@@ -141,6 +144,7 @@ public class ConfigActivity extends Activity {
     @Override
     public void onBackPressed() {
         if (page == P_COLORS) showDesign();
+        else if (page == P_LIST) showSources();
         else if (page != P_MAIN) showMain();
         else super.onBackPressed();
     }
@@ -182,49 +186,122 @@ public class ConfigActivity extends Activity {
         return Prefs.INTERVAL_NAMES[idx];
     }
 
+    private int savedCount() {
+        try {
+            return Prefs.saved(this).length();
+        } catch (Exception e) {
+            return -1;
+        }
+    }
+
+    /** Hauptmenue: Inhalte, Aussehen, System – wie in etablierten Nachrichten-Apps. */
     private void showMain() {
         clear();
         page = P_MAIN;
-        b.text("Einstellungen", 20, b.title, true).setPadding(b.px(4), 0, 0, b.px(4));
-        if (widgetId == Prefs.APP) {
-            b.tile("Widget hinzufügen", "Nachrichten- oder Wetter-Widget auf den Startbildschirm", () ->
-                    startActivity(new Intent(this, AddWidgetActivity.class)));
-        }
-        b.tile("Quellen & Themen", selected.size() + (selected.size() == 1 ? " Quelle" : " Quellen") + " · Stichwörter", this::showSources);
-        b.tile("Design", (theme == 1 ? "Hell" : "Dunkel") + " · "
-                + Style.FONT_NAMES[Math.max(0, Math.min(Style.FONT_NAMES.length - 1, font))] + " · Farben", this::showDesign);
-        b.tile("Liste", (density == 1 ? "Luftig" : "Kompakt") + " · Themen ausblenden · Gemerkte", this::showList);
-        b.tile("Wetter", Weather.PLACES[Prefs.place(this, widgetId)] + (wxOn ? "" : " · ausgeblendet"), this::showWeather);
-        b.tile("Aktualisierung", "Wetter " + ivName(Prefs.wxIdx(this)) + " · Nachrichten " + ivName(Prefs.newsIdx(this)), () -> {
-            Intent in = new Intent(this, UpdateActivity.class);
-            in.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
-            startActivity(in);
+        b.text("Einstellungen", 20, b.title, true).setPadding(b.px(4), 0, 0, b.px(2));
+        LinearLayout body = b.scrollBox(0.9f);
+        LinearLayout keep = b.box;
+        // Kacheln in den scrollbaren Bereich legen
+        java.util.function.Consumer<Runnable> into = r -> {
+            int before = keep.getChildCount();
+            r.run();
+            while (keep.getChildCount() > before) {
+                View v = keep.getChildAt(before);
+                keep.removeViewAt(before);
+                body.addView(v);
+            }
+        };
+        int n = selected.size();
+        into.accept(() -> {
+            b.group("Inhalte");
+            b.tile(R.drawable.ic_news, "Nachrichten", n + (n == 1 ? " Quelle" : " Quellen") + " · Abo-Artikel · Themen ausblenden", this::showSources);
+            b.tile(R.drawable.ic_bell, "Benachrichtigungen", (kwNotifyOn ? "Stichwörter an" : "Stichwörter aus")
+                    + " · " + (notify ? "Unwetter an" : "Unwetter aus"), this::showNotify);
+            b.tile(R.drawable.ic_cloud, "Wetter", Weather.PLACES[Prefs.place(this, widgetId)]
+                    + (wxOn ? "" : " · ausgeblendet") + (warnOn ? " · Warnungen an" : ""), this::showWeather);
+            int sc = savedCount();
+            b.tile(R.drawable.ic_bookmark, "Gemerkte Artikel", sc < 0 ? "Später lesen" : sc + " gemerkt",
+                    () -> startActivity(new Intent(this, SavedActivity.class)));
+            b.group("Aussehen");
+            b.tile(R.drawable.ic_palette, "Darstellung", (theme == 1 ? "Hell" : "Dunkel") + " · "
+                    + Style.FONT_NAMES[Math.max(0, Math.min(Style.FONT_NAMES.length - 1, font))] + " · "
+                    + (density == 1 ? "Luftig" : "Kompakt"), this::showDesign);
+            if (widgetId == Prefs.APP) {
+                b.tile(R.drawable.ic_widgets, "Widgets", "Nachrichten, Wetter oder beides auf den Startbildschirm",
+                        () -> startActivity(new Intent(this, AddWidgetActivity.class)));
+            }
+            b.group("System");
+            b.tile(R.drawable.ic_refresh, "Aktualisierung", "Nachrichten " + ivName(Prefs.newsIdx(this)) + " · Wetter " + ivName(Prefs.wxIdx(this)), () -> {
+                Intent in = new Intent(this, UpdateActivity.class);
+                in.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
+                startActivity(in);
+            });
+            b.tile(R.drawable.ic_info, "Über die App", "Version " + version() + " · Neuigkeiten · Quellen · Bildnachweise",
+                    () -> startActivity(new Intent(this, InfoActivity.class)));
         });
-        b.tile("Info", "bergf3x · Version " + version() + " · " + getString(R.string.build_date), () ->
-                startActivity(new Intent(this, InfoActivity.class)));
-        b.space(10);
+        b.space(6);
         b.pill("Speichern", true, true, this::save);
         b.pill("Abbrechen", false, true, () -> { });
     }
 
+    /** Nachrichten: Quellen (mit Abo-Schalter je Zeitung) und Themen ausblenden. */
     private void showSources() {
-        LinearLayout body = subPage("Quellen & Themen", P_SOURCES, 0.62f, false);
-        catStatus = b.label(body, "Katalog wird geladen ...");
+        LinearLayout body = subPage("Nachrichten", P_SOURCES, 0.6f, false);
+        b.box.removeView((View) body.getParent());
+        b.hint("Welche Zeitungen und Themen in der Liste erscheinen.");
+        b.box.addView((View) body.getParent());
+        b.label(body, "Quellen");
         feedBox = new LinearLayout(this);
         feedBox.setOrientation(LinearLayout.VERTICAL);
         body.addView(feedBox);
         buildFeeds();
+        catStatus = b.label(body, "");
+        catStatus.setVisibility(View.GONE);
+        b.label(body, "Themen");
+        final int before = b.box.getChildCount();
+        b.tile(R.drawable.ic_tune, "Themen ausblenden", muted.isEmpty() ? "Alle Themen sichtbar" : muted.size() + " ausgeblendet", this::showMutes);
+        View tile = b.box.getChildAt(before);
+        b.box.removeView(tile);
+        body.addView(tile);
+        b.pillKeep("Fertig", true, this::showMain);
+    }
 
-        b.label(body, "Stichwörter (mit Komma trennen, z. B. Sperrung, Vermisst, Lawine)");
+    /** Themen ausblenden: BGL-Regionen und Rubriken von Deutschland & Welt. */
+    private void showMutes() {
+        LinearLayout body = subPage("Themen ausblenden", P_LIST, 0.6f, false, this::showSources);
+        b.box.removeView((View) body.getParent());
+        b.hint("Eingeschaltete Themen werden in der Liste versteckt. Ein gewählter Reiter zeigt sie trotzdem.");
+        b.box.addView((View) body.getParent());
+        muteBox = new LinearLayout(this);
+        muteBox.setOrientation(LinearLayout.VERTICAL);
+        body.addView(muteBox);
+        buildMutes();
+        b.pillKeep("Fertig", true, this::showSources);
+    }
+
+    /** Benachrichtigungen: Stichwoerter und Unwetter. */
+    private void showNotify() {
+        LinearLayout body = subPage("Benachrichtigungen", P_NOTIFY, 0.6f, false);
+        b.box.removeView((View) body.getParent());
+        b.hint("Wann dich die App von sich aus benachrichtigt.");
+        b.box.addView((View) body.getParent());
+        b.label(body, "Stichwörter");
         etKw = new EditText(this);
         etKw.setSingleLine(false);
         etKw.setText(kwText);
+        etKw.setHint("z. B. Sperrung, Vermisst, Lawine");
+        etKw.setHintTextColor(b.soft);
         etKw.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         etKw.setTextColor(b.tx);
         etKw.setBackgroundTintList(ColorStateList.valueOf(b.soft));
         body.addView(etKw, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         b.toggle(body, "Treffer als Benachrichtigung melden", kwNotifyOn, on -> {
             kwNotifyOn = on;
+            askNotifPermission(on);
+        });
+        b.label(body, "Wetter");
+        b.toggle(body, "Unwetterwarnung melden (ab Stufe 3)", notify, on -> {
+            notify = on;
             askNotifPermission(on);
         });
         b.pillKeep("Fertig", true, this::showMain);
@@ -237,21 +314,11 @@ public class ConfigActivity extends Activity {
         }
     }
 
-    private void showList() {
-        LinearLayout body = subPage("Liste", P_LIST, 0.62f, false);
-        b.label(body, "Dichte der Liste");
-        b.segment(body, new String[]{"Kompakt", "Luftig"}, density, i -> density = i);
-        b.label(body, "Themen ausblenden (markiert = versteckt)");
-        muteBox = new LinearLayout(this);
-        muteBox.setOrientation(LinearLayout.VERTICAL);
-        body.addView(muteBox);
-        buildMutes();
-        b.pillKeep("Gemerkte Artikel ansehen", false, () -> startActivity(new Intent(this, SavedActivity.class)));
-        b.pillKeep("Fertig", true, this::showMain);
-    }
-
     private void showWeather() {
-        LinearLayout body = subPage("Wetter", P_WEATHER, 0.62f, false);
+        LinearLayout body = subPage("Wetter", P_WEATHER, 0.6f, false);
+        b.box.removeView((View) body.getParent());
+        b.hint("Ort und was die Wetterkarte zeigt.");
+        b.box.addView((View) body.getParent());
         b.label(body, "Ort");
         b.pillKeep(Weather.PLACES[Prefs.place(this, widgetId)] + "  ▾", false, () -> {
             Intent in = new Intent(this, PlaceActivity.class);
@@ -263,15 +330,11 @@ public class ConfigActivity extends Activity {
         b.toggle(body, "Wetter kompakt (ohne Vorschau und Zusatzzeilen)", compact, on -> compact = on);
         b.label(body, "Warnungen");
         b.toggle(body, "Unwetterwarnungen anzeigen", warnOn, on -> warnOn = on);
-        b.toggle(body, "Unwetterwarnung als Benachrichtigung (ab Stufe 3)", notify, on -> {
-            notify = on;
-            askNotifPermission(on);
-        });
         b.pillKeep("Fertig", true, this::showMain);
     }
 
     private void showDesign() {
-        LinearLayout body = subPage("Design", P_DESIGN, 0.40f, true, this::showMain);
+        LinearLayout body = subPage("Darstellung", P_DESIGN, 0.40f, true, this::showMain);
         b.label(body, "Modus");
         b.segment(body, new String[]{"Dunkel", "Hell"}, theme, i -> {
             theme = i;
@@ -299,8 +362,15 @@ public class ConfigActivity extends Activity {
             txPct = p;
             refreshPreview();
         }));
+        b.label(body, "Abstand in der Liste");
+        b.segment(body, new String[]{"Kompakt", "Luftig"}, density, i -> density = i);
+        b.label(body, "Bedienung");
+        b.toggle(body, "Vibration bei Aktionen", haptic, on -> {
+            haptic = on;
+            Haptic.set(this, on);
+        });
         refreshPreview();
-        b.pillKeep("Farben des Widgets …", false, this::showColors);
+        b.pillKeep("Farben …", false, this::showColors);
         b.pillKeep("Fertig", true, this::showMain);
     }
 
@@ -563,25 +633,31 @@ public class ConfigActivity extends Activity {
                 if (on) selected.add(f.id);
                 else selected.remove(f.id);
             });
+            if (!Catalog.hasPaywall(f.id)) continue;
             if (!plusF.containsKey(f.id)) plusF.put(f.id, Prefs.showPlusFeed(this, widgetId, f.id));
-            b.toggle(feedBox, "      Bezahlartikel anzeigen (🔒)", plusF.get(f.id), on -> plusF.put(f.id, on));
+            b.toggle(feedBox, "  Abo-Artikel anzeigen", plusF.get(f.id), on -> plusF.put(f.id, on));
         }
     }
 
     private void buildMutes() {
         if (muteBox == null) return;
         muteBox.removeAllViews();
-        Set<String> seen = new HashSet<>();
-        for (Catalog.Feed f : Catalog.load(this)) {
-            for (String t : f.topics) {
-                if (!seen.add(t)) continue;
-                int slash = t.indexOf('/');
-                String label = slash < 0 ? t : "      " + t.substring(t.lastIndexOf('/') + 1);
-                b.toggle(muteBox, label, muted.contains(t), on -> {
+        for (String t : Taxonomy.topics(this, widgetId)) {
+            String[] p = t.split("/");
+            if (!p[0].equals(Taxonomy.BGL) && !p[0].equals(Taxonomy.WORLD)) continue; // Zeitungen: ueber die Quellen
+            if (p.length > 2) continue;
+            if (p.length == 1) {
+                b.label(muteBox, t);
+                b.toggle(muteBox, "Alles aus „" + t + "“", muted.contains(t), on -> {
                     if (on) muted.add(t);
                     else muted.remove(t);
                 });
+                continue;
             }
+            b.toggle(muteBox, "  " + p[1], muted.contains(t), on -> {
+                if (on) muted.add(t);
+                else muted.remove(t);
+            });
         }
     }
 

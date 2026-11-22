@@ -7,12 +7,14 @@ android {
     compileSdk 34
 
     defaultConfig {
-        applicationId 'de.bergf3x.bgawidget'
+        applicationId 'de.bergf3x.bgawidget' + (System.getenv('DIRECT') == 'true' ? '.test' : '')
         minSdk 26
         targetSdk 34
         // CI: VERSION_CODE = Lauf-Nr., VERSION_NAME = 1.NN, BUILD_DATE = Datum; lokal Platzhalter
         versionCode = Integer.parseInt(System.getenv('VERSION_CODE') ?: '1')
         versionName = System.getenv('VERSION_NAME') ?: '1.00'
+        resValue('bool', 'direct_fetch', 'true') // Abruf direkt vom Handy (GitHub-Feed als Ersatz)
+        manifestPlaceholders = [appLabel: (System.getenv('DIRECT') == 'true' ? 'BGL Test' : '@string/app_name')]
         resValue('string', 'build_date', System.getenv('BUILD_DATE') ?: 'lokal')
     }
 

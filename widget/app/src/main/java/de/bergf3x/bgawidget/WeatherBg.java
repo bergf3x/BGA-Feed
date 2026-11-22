@@ -20,10 +20,35 @@ import java.util.Random;
 
 /** Hintergrundbild der Wetterzeile: Watzmann-Foto, je nach Wetter und Tageszeit eingefaerbt, mit Sonne, Mond, Wolken, Regen usw. */
 final class WeatherBg {
-    static final int W = 720;
-    static final int H = 130;
-    private static Bitmap cache;
-    private static String cacheKey = "";
+    /** Zeichenflaeche des aktuellen Laufs (Widget 720x130, App-Karte hoeher). */
+    static int W = 720;
+    static int H = 130;
+    private static final java.util.Map<String, Bitmap> CACHE = new java.util.LinkedHashMap<>();
+
+    /** Motiv je Ort (Reihenfolge wie Weather.PLACES). Fotos: Wikimedia Commons, Nachweise in Credits. */
+    private static final int[] PLACE_BG = {
+            R.drawable.bg_watzmann,        // Berchtesgaden
+            R.drawable.bg_hintersee,       // Ramsau
+            R.drawable.bg_watzmann,        // Bischofswiesen
+            R.drawable.bg_koenigssee,      // Schoenau am Koenigssee
+            R.drawable.bg_hochstaufen,     // Bad Reichenhall
+            R.drawable.bg_hochstaufen,     // Bayerisch Gmain
+            R.drawable.bg_hochstaufen,     // Piding
+            R.drawable.bg_hochstaufen_sued, // Anger
+            R.drawable.bg_thumsee,         // Schneizlreuth
+            R.drawable.bg_marktschellenberg, // Marktschellenberg
+            R.drawable.bg_untersberg,      // Ainring
+            R.drawable.bg_untersberg,      // Freilassing
+            R.drawable.bg_untersberg,      // Saaldorf-Surheim
+            R.drawable.bg_teisendorf,      // Teisendorf
+            R.drawable.bg_laufen,          // Laufen
+            R.drawable.bg_koenigssee,      // Koenigssee
+            R.drawable.bg_kehlstein,       // Obersalzberg
+    };
+
+    static int photo(int place) {
+        return place >= 0 && place < PLACE_BG.length ? PLACE_BG[place] : R.drawable.bg_watzmann;
+    }
 
     private WeatherBg() {}
 
@@ -38,18 +63,28 @@ final class WeatherBg {
         return c + (day ? "_d" : "_n");
     }
 
-    static synchronized Bitmap get(Context ctx, int code, boolean day, boolean light) {
+    /** Widget-Streifen (720x130). */
+    static Bitmap get(Context ctx, int code, boolean day, boolean light, int place) {
+        return get(ctx, code, day, light, place, 720, 130);
+    }
+
+    /** Hintergrund in beliebigem Format (App-Karte z. B. 900x500); Foto des Orts, schwarzweiss und abgedunkelt. */
+    static synchronized Bitmap get(Context ctx, int code, boolean day, boolean light, int place, int w, int h) {
         String key = category(code, day) + (light ? "L" : "");
-        if (cache != null && key.equals(cacheKey)) return cache;
+        String ck = key + "|" + place + "|" + w + "x" + h;
+        Bitmap hit = CACHE.get(ck);
+        if (hit != null) return hit;
         Bitmap b = null;
         try {
-            b = render(ctx, key);
+            W = w;
+            H = h;
+            b = render(ctx, key, photo(place));
         } catch (Throwable t) {
             // zu wenig Speicher o. ae.: dann eben ohne Hintergrund
         }
         if (b != null) {
-            cache = b;
-            cacheKey = key;
+            if (CACHE.size() >= 4) CACHE.remove(CACHE.keySet().iterator().next());
+            CACHE.put(ck, b);
         }
         return b;
     }
@@ -59,17 +94,19 @@ final class WeatherBg {
         return p;
     }
 
-    private static Bitmap render(Context ctx, String key0) {
+    private static Bitmap render(Context ctx, String key0, int res) {
         boolean light = key0.endsWith("L");
         String key = light ? key0.substring(0, key0.length() - 1) : key0;
         boolean day = key.endsWith("_d");
         String cat = key.substring(0, key.indexOf('_'));
-        Bitmap src = BitmapFactory.decodeResource(ctx.getResources(), R.drawable.watzmann);
+        BitmapFactory.Options op = new BitmapFactory.Options();
+        op.inPreferredConfig = Bitmap.Config.RGB_565;
+        Bitmap src = BitmapFactory.decodeResource(ctx.getResources(), res, op);
         if (src == null) return null;
         Bitmap out = Bitmap.createBitmap(W, H, Bitmap.Config.ARGB_8888);
         Canvas c = new Canvas(out);
         Path clip = new Path();
-        clip.addRoundRect(new RectF(0, 0, W, H), 42, 42, Path.Direction.CW);
+        clip.addRoundRect(new RectF(0, 0, W, H), 42f * W / 720f, 42f * W / 720f, Path.Direction.CW);
         c.clipPath(clip);
 
         // Foto einfaerben: Saettigung, Farbfaktoren, Helligkeit
@@ -86,6 +123,11 @@ final class WeatherBg {
                 else { sat = .5f; r = .28f; g = .38f; b = .9f; br = .42f; alpha = .66f; }
         }
         if (nightLook && !cat.equals("clear")) { r *= .6f; g *= .62f; b *= .8f; br *= .8f; alpha = .66f; }
+        // Schwarzweiss, dunkel: keine Farbe, Helligkeit je Wetter/Tageszeit, insgesamt gedaempft
+        sat = 0f;
+        float lum = (r + g + b) / 3f;
+        r = g = b = lum;
+        br = Math.max(br * 0.62f, cat.equals("rain") || cat.equals("storm") ? 0.46f : 0.38f); // Regen/Gewitter: Motiv heller, sonst kaum erkennbar
         ColorMatrix cm = new ColorMatrix();
         cm.setSaturation(sat);
         cm.postConcat(new ColorMatrix(new float[]{
@@ -95,7 +137,19 @@ final class WeatherBg {
                 0, 0, 0, 1, 0}));
         Paint ph = p();
         ph.setColorFilter(new ColorMatrixColorFilter(cm));
-        c.drawBitmap(src, null, new RectF(0, 0, W, H), ph);
+        // mittig zuschneiden statt verzerren
+        float sr = src.getWidth() / (float) src.getHeight(), dr = W / (float) H;
+        android.graphics.Rect crop;
+        if (sr > dr) {
+            int cw = Math.round(src.getHeight() * dr);
+            int x0 = (src.getWidth() - cw) / 2;
+            crop = new android.graphics.Rect(x0, 0, x0 + cw, src.getHeight());
+        } else {
+            int ch = Math.round(src.getWidth() / dr);
+            int y0 = Math.max(0, Math.round((src.getHeight() - ch) * 0.4f));
+            crop = new android.graphics.Rect(0, y0, src.getWidth(), y0 + ch);
+        }
+        c.drawBitmap(src, crop, new RectF(0, 0, W, H), ph);
         src.recycle();
 
         Random rnd = new Random(5);
@@ -107,14 +161,14 @@ final class WeatherBg {
             clouds(c, rnd, day ? 0xFFD2D8E4 : 0xFF3A4660, 235, 7, 8, 30);
             clouds(c, rnd, day ? 0xFF96A0B2 : 0xFF2A3350, 200, 40, 5, 34);
         } else if (cat.equals("rain")) {
-            clouds(c, rnd, 0xFF46506A, 245, 4, 9, 22);
-            rain(c, rnd, 300);
+            clouds(c, rnd, 0xFF46506A, H > 200 ? 140 : 245, 4, 9, 22);
+            rain(c, rnd, H > 200 ? 160 : 300);
         } else if (cat.equals("snow")) {
             clouds(c, rnd, day ? 0xFFE2E8F2 : 0xFF8794AC, 230, 6, 8, 26);
             snow(c, rnd, 170);
         } else if (cat.equals("storm")) {
-            clouds(c, rnd, 0xFF32344A, 250, 4, 10, 20);
-            rain(c, rnd, 220);
+            clouds(c, rnd, 0xFF32344A, H > 200 ? 150 : 250, 4, 10, 20);
+            rain(c, rnd, H > 200 ? 130 : 220);
             lightning(c);
         } else if (cat.equals("fog")) {
             clouds(c, rnd, 0xFFE6EAF0, 220, 30, 9, 40);
@@ -192,8 +246,9 @@ final class WeatherBg {
 
     private static void rain(Canvas c, Random rnd, int n) {
         Paint r = p();
-        r.setStrokeWidth(1.5f);
-        r.setColor(0x96D7E8FF);
+        boolean tall = H > 200;
+        r.setStrokeWidth(tall ? 1.2f : 1.5f);
+        r.setColor(tall ? 0x5CD7E8FF : 0x96D7E8FF); // in der grossen App-Karte zarter
         for (int i = 0; i < n; i++) {
             float x = rnd.nextFloat() * (W + 30), y = -10 + rnd.nextFloat() * H, l = 16 + rnd.nextFloat() * 14;
             c.drawLine(x, y, x - l * .32f, y + l, r);

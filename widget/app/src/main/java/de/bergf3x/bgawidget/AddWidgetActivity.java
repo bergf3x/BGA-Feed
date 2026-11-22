@@ -2,18 +2,34 @@ package de.bergf3x.bgawidget;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
-/** Blase "Widget hinzufuegen": Nachrichten- oder Wetter-Widget auf den Startbildschirm legen. */
+/** Blase "Widgets": nur Nachrichten, nur Wetter (mit Webcams) oder beides auf den Startbildschirm legen. */
 public class AddWidgetActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final Bubble b = new Bubble(this, 300, 12);
+        final Bubble b = new Bubble(this, 320, 12);
         b.header("Widget hinzufügen", b::close);
-        b.text("Mit einem Widget siehst du Nachrichten und Wetter direkt auf dem Startbildschirm.", 13, b.soft, false)
-                .setPadding(b.px(4), 0, b.px(4), b.px(10));
-        b.pillKeep("Nachrichten-Widget", true, () -> WidgetPin.pin(this, WidgetProvider.class));
-        b.pillKeep("Wetter-Widget", false, () -> WidgetPin.pin(this, WeatherWidgetProvider.class));
+        b.hint("Wähle, was das Widget auf dem Startbildschirm zeigen soll. Ändern kannst du es später in den Widget-Einstellungen.");
+        option(b, R.drawable.ic_news, "Nur Nachrichten", "Liste mit Reitern, ohne Wetter",
+                () -> WidgetPin.pin(this, WidgetProvider.class, 0));
+        option(b, R.drawable.ic_cloud, "Nur Wetter", "Ort, 3 Tage, Warnungen, Webcams",
+                () -> WidgetPin.pin(this, WeatherWidgetProvider.class, -1));
+        option(b, R.drawable.ic_widgets, "Beides", "Wetter oben, Nachrichten darunter",
+                () -> WidgetPin.pin(this, WidgetProvider.class, 1));
+        b.space(4);
         b.pill("Schließen", false, true, () -> { });
+    }
+
+    private void option(Bubble b, int icon, String title, String sub, Runnable go) {
+        b.tile(icon, title, sub, () -> {
+            Haptic.play(b.box, Haptic.TICK);
+            go.run();
+        });
     }
 }

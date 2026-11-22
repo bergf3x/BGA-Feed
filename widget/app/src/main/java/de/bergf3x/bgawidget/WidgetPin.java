@@ -9,10 +9,24 @@ final class WidgetPin {
     private WidgetPin() { }
 
     static void pin(final android.app.Activity act, Class<?> provider) {
+        pin(act, provider, -1);
+    }
+
+    /** withWeather: 1 = Nachrichten mit Wetter ("Beides"), 0 = nur Nachrichten, -1 = egal (Wetter-Widget). */
+    static void pin(final android.app.Activity act, Class<?> provider, int withWeather) {
         try {
             AppWidgetManager m = AppWidgetManager.getInstance(act);
+            android.app.PendingIntent cb = null;
+            if (withWeather >= 0) {
+                // nach dem Ablegen meldet das System die neue Widget-Nummer: dort die gewaehlte Variante einstellen
+                Intent done = new Intent(act, WidgetProvider.class).setAction(WidgetProvider.ACTION_PINNED)
+                        .putExtra("wx", withWeather == 1);
+                int fl = android.app.PendingIntent.FLAG_UPDATE_CURRENT
+                        | (android.os.Build.VERSION.SDK_INT >= 31 ? android.app.PendingIntent.FLAG_MUTABLE : 0);
+                cb = android.app.PendingIntent.getBroadcast(act, 40 + withWeather, done, fl);
+            }
             if (m.isRequestPinAppWidgetSupported()
-                    && m.requestPinAppWidget(new ComponentName(act, provider), null, null)) {
+                    && m.requestPinAppWidget(new ComponentName(act, provider), null, cb)) {
                 return;
             }
         } catch (Exception ignored) {

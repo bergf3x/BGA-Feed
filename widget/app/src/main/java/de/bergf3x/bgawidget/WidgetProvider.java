@@ -16,6 +16,7 @@ import java.util.Set;
 public class WidgetProvider extends AppWidgetProvider {
     static final String ACTION_REFRESH = "de.bergf3x.bgawidget.REFRESH";
     static final String ACTION_SET_TOPIC = "de.bergf3x.bgawidget.SET_TOPIC";
+    static final String ACTION_PINNED = "de.bergf3x.bgawidget.PINNED";
     private static final int[] P = {R.id.p0, R.id.p1, R.id.p2, R.id.p3, R.id.p4};
     private static final int[] P_ON = {R.id.p0_on, R.id.p1_on, R.id.p2_on, R.id.p3_on, R.id.p4_on};
     private static final int[] P_T = {R.id.p0_t, R.id.p1_t, R.id.p2_t, R.id.p3_t, R.id.p4_t};
@@ -45,6 +46,14 @@ public class WidgetProvider extends AppWidgetProvider {
             Updater.runAsync(ctx, true, goAsync());
             return;
         }
+        if (ACTION_PINNED.equals(action)) {
+            int id = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, 0);
+            if (id != 0) {
+                Prefs.setShowWeather(ctx, id, intent.getBooleanExtra("wx", true));
+                refresh(ctx, id);
+            }
+            return;
+        }
         if (ACTION_SET_TOPIC.equals(action)) {
             int id = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, 0);
             String t = intent.getStringExtra("topic");
@@ -72,7 +81,7 @@ public class WidgetProvider extends AppWidgetProvider {
 
         List<Catalog.Feed> all = Catalog.load(ctx);
         Set<String> selected = Catalog.effective(all, Prefs.feeds(ctx, id));
-        List<String> topics = Catalog.topicsFor(all, selected);
+        List<String> topics = Taxonomy.topics(ctx, id);
         String topic = Prefs.topic(ctx, id);
         if (!topic.isEmpty() && !topics.contains(topic)) {
             topic = "";
@@ -92,7 +101,7 @@ public class WidgetProvider extends AppWidgetProvider {
         applyWeather(ctx, rv, id, fg, Prefs.argb(rgb, tx, 0.7f), false);
 
         List<String> parents = new java.util.ArrayList<>();
-        for (String t : topics) if (t.indexOf('/') < 0) parents.add(t);
+        for (String t : topics) if (t.indexOf('/') < 0 && !t.equals(Taxonomy.OUT)) parents.add(t);
         String curParent = topic.isEmpty() ? "" : topic.split("/")[0];
         for (int i = 0; i < P.length; i++) {
             String value = i == 0 ? "" : (i - 1 < parents.size() ? parents.get(i - 1) : null);
@@ -105,7 +114,7 @@ public class WidgetProvider extends AppWidgetProvider {
             for (String t : topics) if (t.startsWith(value + "/") && !value.isEmpty()) hasSubs = true;
             int fresh = i == 0 ? ListService.freshUnread(ctx, id) : 0;
             String label = i == 0 ? (fresh > 0 ? "Alle (" + Math.min(fresh, 99) + ")" : "Alle") : value;
-            if (on && topic.indexOf('/') >= 0) label = topic.substring(topic.indexOf('/') + 1);
+            if (on && (topic.indexOf('/') >= 0 || Prefs.topicSel(ctx, id).size() > 1)) label = Prefs.topicLabel(ctx, id);
             if (hasSubs) label = label + " ▾";
             rv.setViewVisibility(P[i], android.view.View.VISIBLE);
             rv.setTextViewText(P_T[i], Style.font(ctx, id, label));
@@ -202,6 +211,8 @@ public class WidgetProvider extends AppWidgetProvider {
         }
         rv.setViewVisibility(R.id.btn_search, weatherWidget ? android.view.View.GONE : android.view.View.VISIBLE);
         rv.setViewVisibility(R.id.btn_saved, weatherWidget ? android.view.View.GONE : android.view.View.VISIBLE);
+        // reines Wetter-Widget hat einen eigenen, immer sichtbaren Webcam-Knopf oben rechts
+        rv.setViewVisibility(R.id.btn_cam, weatherWidget ? android.view.View.GONE : android.view.View.VISIBLE);
         Pal.text(ctx, id, rv, R.id.w_desc, cw, 0.7f);
         Pal.text(ctx, id, rv, R.id.w_temp, cw, 1f);
         Pal.text(ctx, id, rv, R.id.w_hi, cw, 1f);
@@ -216,8 +227,8 @@ public class WidgetProvider extends AppWidgetProvider {
             rv.setTextViewText(R.id.w_lo, "");
         } else {
             int th = Prefs.theme(ctx, id);
-            android.graphics.Bitmap bgD = on && th != 1 ? WeatherBg.get(ctx, w.code, w.day, false) : null;
-            android.graphics.Bitmap bgL = on && th != 0 ? WeatherBg.get(ctx, w.code, w.day, true) : null;
+            android.graphics.Bitmap bgD = on && th != 1 ? WeatherBg.get(ctx, w.code, w.day, false, Prefs.place(ctx, id)) : null;
+            android.graphics.Bitmap bgL = on && th != 0 ? WeatherBg.get(ctx, w.code, w.day, true, Prefs.place(ctx, id)) : null;
             rv.setInt(R.id.w_tint, "setColorFilter", 0);
             rv.setInt(R.id.w_tint_l, "setColorFilter", 0);
             rv.setFloat(R.id.w_tint, "setAlpha", th == 1 ? 0f : 1f);
@@ -294,8 +305,8 @@ public class WidgetProvider extends AppWidgetProvider {
         boolean ok = weatherWidget || Prefs.newsOk(ctx);
         String line;
         String sw = weatherWidget ? "" : Prefs.srcWarn(ctx);
-        if (ok) line = stand.isEmpty() ? "" : "Stand " + stand + (sw.isEmpty() ? "" : "  ·  " + sw);
-        else line = "Offline – " + (stand.isEmpty() ? "keine Daten" : "Stand " + stand);
+        if (ok) line = stand.isEmpty() ? "" : "Letzte Aktualisierung " + stand + (sw.isEmpty() ? "" : "  ·  " + sw);
+        else line = "Offline – " + (stand.isEmpty() ? "keine Daten" : "Letzte Aktualisierung " + stand);
         rv.setTextViewText(R.id.w_stand, line);
         if (ok) Pal.text(ctx, id, rv, R.id.w_stand, cw, 0.7f); else rv.setTextColor(R.id.w_stand, 0xFFFFB74D);
         rv.setViewVisibility(R.id.w_stand, line.isEmpty() || !plan.tools ? android.view.View.GONE : android.view.View.VISIBLE);

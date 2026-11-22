@@ -26,8 +26,11 @@ public class PlaceActivity extends Activity {
         for (int i = 0; i < order.length; i++) order[i] = i;
         final Collator col = Collator.getInstance(Locale.GERMANY);
         Arrays.sort(order, (x, y) -> col.compare(Weather.PLACES[x], Weather.PLACES[y]));
-        LinearLayout body = b.scrollBox(0.6f);
+        final LinearLayout body = b.scrollBox(0.6f);
+        int curRow = 0, n = 0;
         for (int idx : order) {
+            if (idx == cur) curRow = n;
+            n++;
             final int place = idx;
             b.row(body, Weather.PLACES[idx], idx == cur, () -> {
                 Prefs.setPlace(this, id, place);
@@ -39,6 +42,13 @@ public class PlaceActivity extends Activity {
                 }).start();
             }, true);
         }
+        // beim Oeffnen direkt zum aktuell gewaehlten Ort scrollen (etwa mittig)
+        final int target = curRow;
+        body.post(() -> {
+            android.view.View row = body.getChildAt(target);
+            android.view.View sv = (android.view.View) body.getParent();
+            if (row != null) sv.scrollTo(0, Math.max(0, row.getTop() - sv.getHeight() / 2 + row.getHeight() / 2));
+        });
         b.space(6);
         android.widget.TextView foot = b.text("", 12, b.soft, false);
         foot.setPadding(b.px(8), b.px(4), b.px(8), b.px(4));

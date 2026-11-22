@@ -13,10 +13,23 @@ import java.util.List;
 import java.util.Locale;
 
 final class FeedItem {
+    /** Wandelt HTML-Entities (&raquo;, &#8222; ...) in echte Zeichen um. */
+    static String unescape(String s) {
+        if (s == null || s.indexOf('&') < 0) return s == null ? "" : s;
+        for (int i = 0; i < 2 && s.indexOf('&') >= 0; i++) {
+            s = android.text.Html.fromHtml(s, android.text.Html.FROM_HTML_MODE_LEGACY).toString();
+        }
+        return s.replace('\u00A0', ' ').replace("\uFFFC", "");
+    }
+
     String title = "";
     String link = "";
     String category = "";
     String topic = "";
+    /** Rubrik, wie die Quelle sie liefert (vor der Einordnung). */
+    String rawTopic = "";
+    /** Pfad in der Zeitungs-Sicht ("Zeitungen/BGLand24/Berchtesgaden"). */
+    String paper = "";
     String description = "";
     String pubDate = "";
     String feedName = "";
@@ -27,8 +40,8 @@ final class FeedItem {
 
     /** "Region · vor 12 Min." fuer die Zeile unter dem Titel. */
     String meta() {
-        String leaf = topic.isEmpty() ? category.trim() : topic.substring(topic.lastIndexOf('/') + 1);
-        if (leaf.isEmpty()) leaf = topic.isEmpty() ? "Region" : leaf;
+        String leaf = Taxonomy.label(topic);
+        if (leaf.isEmpty()) leaf = category.trim();
         String t = timeText();
         return t.isEmpty() ? leaf : leaf + " · " + t;
     }
@@ -47,22 +60,58 @@ final class FeedItem {
     }
 
     /** Hausfarbe eines Mediums (nur die Farbe, kein Logo): Anzeiger blau, BGLand24 gelb, sonst Orange. */
+    /** Kurzname der Quelle fuer die Meta-Zeile. */
+    static String shortSource(String feedName) {
+        String low = feedName.toLowerCase(Locale.GERMANY);
+        if (low.contains("anzeiger")) return "Anzeiger";
+        if (low.contains("traunsteiner")) return "Tagblatt";
+        if (low.contains("bgland")) return "BGLand24";
+        if (low.contains("chiemgau")) return "chiemgau24";
+        if (low.contains("orf")) return "ORF";
+        if (low.contains("landratsamt")) return "Landratsamt";
+        if (low.contains("nationalpark")) return "Nationalpark";
+        if (low.contains("br24")) return "BR24";
+        if (low.contains("merkur")) return "Merkur";
+        return feedName;
+    }
+
+    private static final java.util.regex.Pattern BGL_PLACES = java.util.regex.Pattern.compile(
+            "Berchtesgaden|Reichenhall|Freilassing|Laufen|Bischofswiesen|Ramsau|Schönau|Königssee|Marktschellenberg|"
+            + "Piding|Ainring|Teisendorf|Bayerisch Gmain|Schneizlreuth|Saaldorf|Surheim|Anger\\b|Watzmann|Untersberg|"
+            + "Kehlstein|Obersalzberg|Jenner|Hochkalter|Hintersee|Predigtstuhl|Hochstaufen|Rupertiwinkel|BGL\\b");
+
+    /** Gehoert die Meldung ins Umland (Traunstein/Chiemgau, Salzburg, Bayern) statt ins Berchtesgadener Land? */
+    boolean isUmland() {
+        String t = topic.isEmpty() ? "Region" : topic;
+        boolean umland = t.startsWith("Bayern") || t.equals("Region/Traunstein") || t.equals("Region/Landkreis Traunstein")
+                || t.equals("Region/Salzburg") || t.equals("Region/Chiemsee") || t.equals("Region/Trostberg")
+                || t.equals("Region/Achental") || t.equals("Region/BGL & Chiemgau")
+                || ((feedName.toLowerCase(Locale.GERMANY).contains("chiemgau") || feedName.toLowerCase(Locale.GERMANY).contains("orf"))
+                && !t.equals("Region/Rupertiwinkel"));
+        return umland && !BGL_PLACES.matcher(title).find();
+    }
+
     static int mediumColor(String name) {
         String low = name.toLowerCase(Locale.GERMANY);
         if (low.contains("bgland")) return 0xFFF7DD45;
         if (low.contains("anzeiger")) return 0xFF459BDB;
+        if (low.contains("chiemgau")) return 0xFF5BBF8A;
+        if (low.contains("orf")) return 0xFFE5484D;
+        if (low.contains("traunsteiner")) return 0xFF1BA3D9;
+        if (low.contains("landratsamt")) return 0xFF3A6BB5;
+        if (low.contains("nationalpark")) return 0xFF2E8B6E;
+        if (low.contains("br24")) return 0xFF8C7AE6;
         return 0xFFF0997B;
     }
 
     int accentColor() {
-        String parent = topic.isEmpty() ? "Region" : topic.split("/")[0];
-        switch (parent) {
-            case "Region": return 0xFF5DCAA5;
-            case "Nachrichten": return 0xFF85B7EB;
-            case "Sport": return 0xFFF0997B;
-            case "Kultur": return 0xFFED93B1;
-            default: return 0xFFAFA9EC;
-        }
+        String leaf = topic.substring(topic.lastIndexOf('/') + 1);
+        if (leaf.equals("Sport")) return 0xFFF0997B;
+        if (leaf.equals("Kultur")) return 0xFFED93B1;
+        if (leaf.equals("Blaulicht")) return 0xFFE57373;
+        if (topic.startsWith(Taxonomy.BGL)) return 0xFF5DCAA5;
+        if (topic.startsWith(Taxonomy.OUT)) return 0xFFAFA9EC;
+        return 0xFF85B7EB;
     }
 
     String timeText() {
@@ -89,6 +138,7 @@ final class FeedItem {
 
     /** Gehoert der Artikel zu diesem Thema (gleich oder Unterthema)? */
     boolean inTopic(String t) {
+        if (t.startsWith(Taxonomy.PAPERS)) return paper.equals(t) || paper.startsWith(t + "/");
         String mine = topic.isEmpty() ? "Region" : topic;
         return mine.equals(t) || mine.startsWith(t + "/");
     }
@@ -116,7 +166,8 @@ final class FeedItem {
                     else if ("pubDate".equals(tag)) cur.pubDate += t;
                 } else if (e == XmlPullParser.END_TAG) {
                     if ("item".equals(p.getName()) && cur != null) {
-                        cur.title = cur.title.trim();
+                        cur.title = unescape(cur.title).trim();
+                        cur.description = unescape(cur.description);
                         if (cur.title.startsWith("\uD83D\uDD12")) {
                             cur.plus = true;
                             cur.title = cur.title.substring(2).trim();
@@ -125,6 +176,9 @@ final class FeedItem {
                         cur.topic = cur.topic.trim();
                         cur.description = cur.description.trim();
                         cur.feedName = feedName;
+                        cur.rawTopic = cur.topic;
+                        cur.topic = Taxonomy.classify(cur);
+                        cur.paper = Taxonomy.paper(cur);
                         try {
                             Date d = in.parse(cur.pubDate.trim());
                             if (d != null) cur.time = d.getTime();

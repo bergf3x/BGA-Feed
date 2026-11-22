@@ -39,7 +39,7 @@ public class ListService extends RemoteViewsService {
         return n;
     }
 
-    private static final Object FETCH_LOCK = new Object();
+    static final Object FETCH_LOCK = new Object();
     /** Grund, warum die letzte Abfrage keine Artikel ergab (fuer die Vollbild-App). */
     static volatile String emptyReason = "";
     private static volatile long lastFetchEnd = 0;
@@ -66,7 +66,7 @@ public class ListService extends RemoteViewsService {
             tasks.add(() -> {
                 Fetched r = new Fetched();
                 try {
-                    r.xml = Net.download(Net.fresh(f.url));
+                    r.xml = Direct.enabled(ctx) && Direct.handles(f) ? Direct.fetch(ctx, f) : Net.download(Net.fresh(f.url));
                     r.items = FeedItem.parse(r.xml, f.name);
                 } catch (Exception e) {
                     r.err = String.valueOf(e.getMessage() != null ? e.getMessage() : e);
@@ -80,7 +80,7 @@ public class ListService extends RemoteViewsService {
         tasks.add(() -> { Avalanche.refreshIfStale(ctx); return null; });
         java.util.concurrent.ExecutorService ex = java.util.concurrent.Executors.newFixedThreadPool(Math.min(5, tasks.size()));
         try {
-            List<java.util.concurrent.Future<Fetched>> fs = ex.invokeAll(tasks, 25, java.util.concurrent.TimeUnit.SECONDS);
+            List<java.util.concurrent.Future<Fetched>> fs = ex.invokeAll(tasks, Direct.enabled(ctx) ? 50 : 25, java.util.concurrent.TimeUnit.SECONDS);
             for (int i = 0; i < feedCount; i++) {
                 java.util.concurrent.Future<Fetched> fu = fs.get(i);
                 if (fu.isCancelled()) continue;
@@ -103,7 +103,7 @@ public class ListService extends RemoteViewsService {
         List<Catalog.Feed> all = Catalog.load(ctx);
         Set<String> selected = Catalog.effective(all, Prefs.feeds(ctx, id));
         String topic = Prefs.topic(ctx, id);
-        String topicFeed = Prefs.topicFeed(ctx, id);
+        List<String[]> sel = Prefs.topicSel(ctx, id);
         List<String> kw = Keywords.list(ctx);
         Set<String> muted = Prefs.muted(ctx, id);
         boolean anyOk = false;
@@ -132,7 +132,7 @@ public class ListService extends RemoteViewsService {
             if (parsed == null) parsed = FeedCache.items(ctx, f.id, f.name);
             long newest = 0;
             for (FeedItem it : parsed) newest = Math.max(newest, it.time);
-            if (newest > 0 && nowMs - newest > 24L * 3600000) {
+            if (newest > 0 && nowMs - newest > 24L * 3600000 && !Catalog.lowVolume(f.id)) {
                 if (stale.length() > 0) stale.append(", ");
                 stale.append(f.name).append(" ohne Neues seit ").append((nowMs - newest) / 3600000L).append(" Std.");
             }
@@ -141,8 +141,7 @@ public class ListService extends RemoteViewsService {
                 if (it.plus && !plusFeed) continue;
                 if (isMuted(it, muted, topic)) continue;
                 if (online && Keywords.matches(kw, it)) Notifier.keyword(ctx, it);
-                if (!topic.isEmpty() && !it.inTopic(topic)) continue;
-                if (!topicFeed.isEmpty() && !topicFeed.equals(f.name)) continue;
+                if (!Prefs.matchTopic(it, f.name, sel)) continue;
                 merged.add(it);
             }
         }
@@ -179,23 +178,45 @@ public class ListService extends RemoteViewsService {
 
     /** Gleiche Meldung aus zwei Quellen nur einmal zeigen (aehnlicher Titel, ueber 60 % gleiche Woerter). */
     private static List<FeedItem> dedupe(List<FeedItem> in) {
+        // Wort-Index statt Jeder-gegen-Jeden: bleibt auch bei 1000+ Meldungen aus vielen Quellen schnell
         List<FeedItem> out = new ArrayList<>();
         List<Set<String>> sets = new ArrayList<>();
+        java.util.Map<String, List<Integer>> index = new java.util.HashMap<>();
         for (FeedItem it : in) {
             Set<String> w = words(it.title);
             boolean dup = false;
-            for (int i = 0; i < out.size() && !dup; i++) {
-                if (out.get(i).feedName.equals(it.feedName)) continue;
-                Set<String> o = sets.get(i);
-                if (w.size() < 3 || o.size() < 3) continue;
-                int common = 0;
-                for (String x : w) if (o.contains(x)) common++;
-                int union = w.size() + o.size() - common;
-                if (union > 0 && common / (double) union >= 0.6) dup = true;
+            if (w.size() >= 3) {
+                java.util.Map<Integer, Integer> common = new java.util.HashMap<>();
+                for (String x : w) {
+                    List<Integer> hits = index.get(x);
+                    if (hits == null) continue;
+                    for (int i : hits) {
+                        Integer c = common.get(i);
+                        common.put(i, c == null ? 1 : c + 1);
+                    }
+                }
+                for (java.util.Map.Entry<Integer, Integer> e : common.entrySet()) {
+                    int i = e.getKey();
+                    if (out.get(i).feedName.equals(it.feedName) && !out.get(i).title.equals(it.title)) continue;
+                    Set<String> o = sets.get(i);
+                    if (o.size() < 3) continue;
+                    int c = e.getValue();
+                    int union = w.size() + o.size() - c;
+                    if (union > 0 && c / (double) union >= 0.6) {
+                        dup = true;
+                        break;
+                    }
+                }
             }
             if (dup) continue;
+            int pos = out.size();
             out.add(it);
             sets.add(w);
+            for (String x : w) {
+                List<Integer> l = index.get(x);
+                if (l == null) index.put(x, l = new ArrayList<>());
+                l.add(pos);
+            }
         }
         return out;
     }
@@ -216,6 +237,24 @@ public class ListService extends RemoteViewsService {
         return false;
     }
 
+    /** Abo-Artikel, die im gewaehlten Thema nur wegen "Abo ausblenden" fehlen; ids = betroffene Quellen. */
+    static int hiddenPlus(Context ctx, int id, List<String> ids) {
+        List<Catalog.Feed> all = Catalog.load(ctx);
+        Set<String> selected = Catalog.effective(all, Prefs.feeds(ctx, id));
+        List<String[]> sel = Prefs.topicSel(ctx, id);
+        int n = 0;
+        for (Catalog.Feed f : all) {
+            if (!selected.contains(f.id) || Prefs.showPlusFeed(ctx, id, f.id)) continue;
+            int k = 0;
+            for (FeedItem it : FeedCache.items(ctx, f.id, f.name)) {
+                if (it.plus && Prefs.matchTopic(it, f.name, sel)) k++;
+            }
+            if (k > 0 && ids != null) ids.add(f.id);
+            n += k;
+        }
+        return n;
+    }
+
     private static void showEmptyReason(Context ctx, int id, List<Catalog.Feed> all, Set<String> selected, String topic) {
         StringBuilder sb = new StringBuilder();
         for (Catalog.Feed f : all) {
@@ -226,6 +265,8 @@ public class ListService extends RemoteViewsService {
         if (sb.length() == 0) {
             sb.append(topic.isEmpty() ? "Keine Artikel gefunden"
                     : "Keine Artikel im Thema „" + topic.substring(topic.indexOf('/') + 1) + "“");
+            int hp = hiddenPlus(ctx, id, null);
+            if (hp > 0) sb.append("\n").append(hp).append(" Abo-Artikel ausgeblendet");
         }
         emptyReason = sb.toString().trim();
         if (id <= 0) return;
