@@ -23,3 +23,10 @@ jobs:
           git diff --cached --quiet || git commit -m "Feed aktualisiert"
           git pull --rebase origin main
           git push
+      - name: Spiegel bei jsDelivr auffrischen
+        continue-on-error: true
+        run: |
+          # jsDelivr haelt Dateien sonst bis zu 12 Std.; nach jedem Lauf frisch holen lassen (kein Konto noetig)
+          for f in feeds.json *.xml; do
+            curl -s -m 20 "https://purge.jsdelivr.net/gh/${{ github.repository }}@main/$f" > /dev/null || true
+          done
