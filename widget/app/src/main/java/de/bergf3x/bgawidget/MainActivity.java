@@ -1065,7 +1065,7 @@ public class MainActivity extends Activity {
         }
         if (savedTab()) {
             List<FeedItem> sv = ListService.savedItems(this);
-            Set<String> rd = new java.util.HashSet<>();
+            Set<String> rd = Prefs.savedReadSet(this);
             List<String> kw0 = Keywords.list(this);
             if (!sv.isEmpty()) {
                 // schmale Zeile: Aufbewahrung einstellen (Auswahl in der Blase, mit Uebernehmen/Abbrechen)

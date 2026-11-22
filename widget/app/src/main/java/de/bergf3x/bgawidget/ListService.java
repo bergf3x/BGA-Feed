@@ -509,7 +509,8 @@ public class ListService extends RemoteViewsService {
         }
 
         private List<FeedItem> load(boolean online, java.util.Map<String, Fetched> res) {
-            readSet = Prefs.readSet(ctx);
+            // Gemerkt-Ansicht: gelesen = nach dem Merken geoeffnet (gleich wie in der App)
+            readSet = Prefs.widgetShows(ctx, widgetId) == 2 ? Prefs.savedReadSet(ctx) : Prefs.readSet(ctx);
             hasSeen = Prefs.hasSeen(ctx);
             seenSet = Prefs.seenSet(ctx);
             kwList = Keywords.list(ctx);
@@ -568,7 +569,7 @@ public class ListService extends RemoteViewsService {
             if (hit) rv.setTextColor(R.id.item_title, Prefs.argb(0xFFD166, tx, dim)); else Pal.text(ctx, widgetId, rv, R.id.item_title, -1, dim);
             int sub = Prefs.colorSub(ctx, widgetId);
             Pal.set(ctx, widgetId, rv, R.id.item_meta, Style.font(ctx, widgetId, meta + " · " + FeedItem.shortSource(it.feedName)), sub, Prefs.colorSub2(ctx, widgetId), 0.7f * dim);
-            boolean isNew = isNew(hasSeen, seenSet, readSet, it);
+            boolean isNew = Prefs.widgetShows(ctx, widgetId) != 2 && isNew(hasSeen, seenSet, readSet, it);
             rv.setInt(R.id.item_accent, "setColorFilter", isNew ? 0xFFE53935 : it.accentColor());
             rv.setInt(R.id.item_accent, "setImageAlpha", read ? 90 : 255);
             rv.setViewVisibility(R.id.item_plus, it.plus ? android.view.View.VISIBLE : android.view.View.GONE);
