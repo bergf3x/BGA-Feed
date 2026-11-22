@@ -354,7 +354,8 @@ public class ConfigActivity extends Activity {
         etKw.setHintTextColor(b.soft);
         etKw.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         etKw.setTextColor(b.tx);
-        etKw.setBackgroundTintList(ColorStateList.valueOf(b.soft));
+        etKw.setBackground(Depth.sunken(b.light ? 0xFFE2E5EC : 0xFF17191E, b.px(10), b.d, b.light));
+        etKw.setPadding(b.px(10), b.px(8), b.px(10), b.px(8));
         body.addView(etKw, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         b.toggle(body, "Treffer als Benachrichtigung melden", kwNotifyOn, on -> {
             kwNotifyOn = on;
@@ -496,7 +497,8 @@ public class ConfigActivity extends Activity {
         etColor.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
         etColor.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         etColor.setTextColor(b.tx);
-        etColor.setBackgroundTintList(ColorStateList.valueOf(b.soft));
+        etColor.setBackground(Depth.sunken(b.light ? 0xFFE2E5EC : 0xFF17191E, b.px(10), b.d, b.light));
+        etColor.setPadding(b.px(10), b.px(8), b.px(10), b.px(8));
         body.addView(etColor, new LinearLayout.LayoutParams(b.px(120), ViewGroup.LayoutParams.WRAP_CONTENT));
         buildSwatches();
         setHex(color);

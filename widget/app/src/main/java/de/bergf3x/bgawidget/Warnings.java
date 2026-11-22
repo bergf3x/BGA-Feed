@@ -102,7 +102,7 @@ final class Warnings {
             for (String[] r : WeatherCards.WARN_REGIONS) {
                 String t = shown.get(r[0]);
                 int n = shownN.get(r[0]);
-                Prefs.setWarnRegion(c, r[0], t.isEmpty() ? "-" : t + (n > 1 ? " +" + (n - 1) : ""));
+                Prefs.setWarnRegion(c, r[0], t.isEmpty() ? "-" : t + (n > 1 ? " +" + (n - 1) : ""), shownLv.get(r[0]));
             }
             if (best == 0) {
                 Prefs.setWarn(c, 0, "");

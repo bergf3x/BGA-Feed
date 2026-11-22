@@ -459,8 +459,12 @@ final class Prefs {
         return sp(c).getString("warnr_" + ags, "");
     }
 
-    static void setWarnRegion(Context c, String ags, String text) {
-        sp(c).edit().putString("warnr_" + ags, text).apply();
+    static void setWarnRegion(Context c, String ags, String text, int level) {
+        sp(c).edit().putString("warnr_" + ags, text).putInt("warnl_" + ags, level).apply();
+    }
+
+    static int warnRegionLevel(Context c, String ags) {
+        return sp(c).getInt("warnl_" + ags, 0);
     }
 
     /** Aufbewahrung gemerkter Artikel in Tagen; 0 = dauerhaft. */

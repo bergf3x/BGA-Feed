@@ -204,6 +204,12 @@ final class Bubble {
     }
 
     private void pressable(View v, int fillColor, int rippleColor) {
+        if (fillColor != 0 && (fillColor >>> 24) != 0) {
+            int base = light ? 0xFFEDEFF3 : 0xFF2A2D34;
+            v.setBackground(Depth.raised(Depth.blend(fillColor, base), px(14), d, light));
+            v.setClickable(true);
+            return;
+        }
         GradientDrawable mask = rounded(0xFFFFFFFF, 14);
         v.setBackground(new RippleDrawable(ColorStateList.valueOf(rippleColor),
                 fillColor == 0 ? null : rounded(fillColor, 14), mask));
@@ -318,7 +324,7 @@ final class Bubble {
         t.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         t.setTextColor(primary ? hiTx : tx);
         t.setPadding(px(12), px(11), px(12), px(11));
-        pressable(t, primary ? hi : 0, primary ? 0x33000000 : ripple);
+        pressable(t, primary ? hi : (light ? 0x1A000000 : 0x26FFFFFF), primary ? 0x33000000 : ripple);
         if (!enabled) {
             t.setAlpha(0.4f);
         } else {
@@ -440,7 +446,7 @@ final class Bubble {
         Runnable paint = () -> {
             for (int i = 0; i < tv.length; i++) {
                 boolean on = i == sel[0];
-                pressable(tv[i], on ? hi : 0, on ? 0x33000000 : ripple);
+                pressable(tv[i], on ? hi : (light ? 0x14000000 : 0x1FFFFFFF), on ? 0x33000000 : ripple);
                 tv[i].setTextColor(on ? hiTx : tx);
             }
         };

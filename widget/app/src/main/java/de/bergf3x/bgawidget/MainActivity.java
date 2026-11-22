@@ -11,6 +11,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Bundle;
@@ -522,7 +523,7 @@ public class MainActivity extends Activity {
             root.addView(stack, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
             navBar = new LinearLayout(this);
             navBar.setOrientation(LinearLayout.HORIZONTAL);
-            navBar.setBackground(windowBg());
+            navBar.setBackground(Depth.sunken(Depth.blend(light ? 0x14000000 : 0x40000000, baseColor()), 0, d, light));
             navBar.setOnApplyWindowInsetsListener((v, ins) -> {
                 v.setPadding(0, 0, 0, ins.getSystemWindowInsetBottom());
                 return ins;
@@ -597,6 +598,7 @@ public class MainActivity extends Activity {
     /** Flache untere Leiste: News | Wetter | Gemerkt (nur der aktive Bereich zeigt seinen Namen). */
     private void updateNav() {
         if (navBar == null) return;
+        navBar.setBackground(Depth.sunken(Depth.blend(light ? 0x14000000 : 0x40000000, baseColor()), 0, d, light));
         navBar.removeAllViews();
         boolean wx = weatherTab();
         boolean sv = savedTab();
@@ -618,8 +620,15 @@ public class MainActivity extends Activity {
         it.setGravity(Gravity.CENTER);
         ImageView iv = new ImageView(this);
         iv.setImageResource(icon);
-        iv.setColorFilter(on ? tx : soft);
-        it.addView(iv, lp(24, 24, 0, 0, 0, 0));
+        iv.setColorFilter(on ? chipOnTx : soft);
+        if (on) {
+            // gewaehlter Reiter: erhabene Pille in Akzentfarbe hinter dem Symbol
+            iv.setBackground(Depth.raised(Depth.blend(chipOn, baseColor()), px(16), d, light));
+            iv.setPadding(px(18), px(5), px(18), px(7));
+            it.addView(iv, lp(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 0));
+        } else {
+            it.addView(iv, lp(24, 24, 0, 0, 0, 0));
+        }
         LinearLayout lab = new LinearLayout(this);
         lab.setOrientation(LinearLayout.HORIZONTAL);
         lab.setGravity(Gravity.CENTER);
@@ -658,7 +667,17 @@ public class MainActivity extends Activity {
         return g;
     }
 
+    private int baseColor() {
+        return winCols != null && winCols.length > 0 ? winCols[0] : (light ? 0xFFEFF1F5 : 0xFF1B1D24);
+    }
+
     private void press(View v, int fill, float rDp, int strokeColor) {
+        if (fill != 0 && rDp >= 14) {
+            // Tiefe: helle Oberkante, dunklere Unterkante, gedrueckt sinkt die Flaeche ein
+            v.setBackground(Depth.raised(Depth.blend(fill, baseColor()), px(rDp), d, light));
+            v.setClickable(true);
+            return;
+        }
         GradientDrawable mask = shape(0xFFFFFFFF, rDp, 0);
         v.setBackground(new RippleDrawable(ColorStateList.valueOf(light ? 0x33000000 : 0x40FFFFFF),
                 shape(fill, rDp, strokeColor), mask));
@@ -1042,9 +1061,10 @@ public class MainActivity extends Activity {
                 t.setGravity(Gravity.CENTER);
                 page.addView(t);
             }
-            for (FeedItem f : sv) page.addView(newsCard(f, rd, kw0));
+            for (FeedItem f : sv) page.addView(swipeCard(f, newsCard(f, rd, kw0)));
             return;
         }
+        warnRow();
         List<FeedItem> items = ListService.loadItems(this, ID, false, null);
         Set<String> read = Prefs.readSet(this);
         List<String> kw = Keywords.list(this);
@@ -1107,6 +1127,134 @@ public class MainActivity extends Activity {
         foldSection(Taxonomy.WORLD, world, read, kw);
     }
 
+    /** Gemerkte Karte: nach rechts wischen oeffnet den Artikel, nach links entfernt ihn aus Gemerkt. */
+    private View swipeCard(final FeedItem f, final View card) {
+        final FrameLayout fl = new FrameLayout(this);
+        final TextView open = text("Öffnen", 13, 0xFFFFFFFF, true);
+        open.setGravity(Gravity.CENTER_VERTICAL | Gravity.START);
+        open.setPadding(px(18), 0, 0, 0);
+        open.setBackground(shape(0xFF2F6FE0, 16, 0));
+        open.setVisibility(View.INVISIBLE);
+        final TextView del = text("Entfernen", 13, 0xFFFFFFFF, true);
+        del.setGravity(Gravity.CENTER_VERTICAL | Gravity.END);
+        del.setPadding(0, 0, px(18), 0);
+        del.setBackground(shape(0xFFC0392B, 16, 0));
+        del.setVisibility(View.INVISIBLE);
+        ViewGroup.LayoutParams outer = card.getLayoutParams();
+        card.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        fl.addView(open, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        fl.addView(del, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        fl.addView(card);
+        fl.setLayoutParams(outer);
+        final int slop = android.view.ViewConfiguration.get(this).getScaledTouchSlop();
+        card.setOnTouchListener(new View.OnTouchListener() {
+            float x0, y0;
+            boolean sw;
+
+            @Override
+            public boolean onTouch(View v, android.view.MotionEvent e) {
+                switch (e.getActionMasked()) {
+                    case android.view.MotionEvent.ACTION_DOWN:
+                        x0 = e.getRawX();
+                        y0 = e.getRawY();
+                        sw = false;
+                        return false;
+                    case android.view.MotionEvent.ACTION_MOVE: {
+                        float dx = e.getRawX() - x0, dy = e.getRawY() - y0;
+                        if (!sw && Math.abs(dx) > slop && Math.abs(dx) > Math.abs(dy) * 1.5f) {
+                            sw = true;
+                            v.getParent().requestDisallowInterceptTouchEvent(true);
+                            v.setPressed(false);
+                        }
+                        if (!sw) return false;
+                        v.setTranslationX(dx);
+                        open.setVisibility(dx > 0 ? View.VISIBLE : View.INVISIBLE);
+                        del.setVisibility(dx < 0 ? View.VISIBLE : View.INVISIBLE);
+                        return true;
+                    }
+                    case android.view.MotionEvent.ACTION_UP:
+                    case android.view.MotionEvent.ACTION_CANCEL: {
+                        if (!sw) return false;
+                        sw = false;
+                        float dx = v.getTranslationX();
+                        float w = v.getWidth();
+                        if (e.getActionMasked() == android.view.MotionEvent.ACTION_UP && dx < -w * 0.35f) {
+                            Haptic.play(v, Haptic.TICK);
+                            v.animate().translationX(-w).setDuration(140).withEndAction(() -> {
+                                Prefs.toggleSaved(MainActivity.this, f.title, "", "", f.link);
+                                build();
+                            }).start();
+                        } else if (e.getActionMasked() == android.view.MotionEvent.ACTION_UP && dx > w * 0.35f) {
+                            v.animate().translationX(0).setDuration(140).withEndAction(() -> {
+                                open.setVisibility(View.INVISIBLE);
+                                v.performClick();
+                            }).start();
+                        } else {
+                            v.animate().translationX(0).setDuration(140).withEndAction(() -> {
+                                open.setVisibility(View.INVISIBLE);
+                                del.setVisibility(View.INVISIBLE);
+                            }).start();
+                        }
+                        return true;
+                    }
+                    default:
+                        return false;
+                }
+            }
+        });
+        return fl;
+    }
+
+    /** Warnzeile ueber der Liste: nur bei aktiver DWD-Warnung ab Stufe 3 in einer der gewaehlten Regionen. */
+    private void warnRow() {
+        String[] best = null;
+        int lv = 0, n = 0;
+        java.util.Set<String> on = Prefs.warnRegions(this);
+        for (String[] r : WeatherCards.WARN_REGIONS) {
+            if (!on.contains(r[0])) continue;
+            int l = Prefs.warnRegionLevel(this, r[0]);
+            if (l < 3) continue;
+            n++;
+            if (l > lv) {
+                lv = l;
+                best = r;
+            }
+        }
+        if (best == null) return;
+        String wt = Prefs.warnRegion(this, best[0]);
+        if (wt.isEmpty() || wt.equals("-")) return;
+        final String ort = best[2];
+        int fill = lv >= 4 ? (lv >= 5 ? (light ? 0xFFFFD6D6 : 0xFF5C1E1E) : (light ? 0xFFFFE2C2 : 0xFF5A3510)) : (light ? 0xFFFFF0C2 : 0xFF5A4210);
+        int fg = light ? 0xFF3A2A05 : 0xFFF6E8C0;
+        LinearLayout row = new LinearLayout(this);
+        row.setOrientation(LinearLayout.HORIZONTAL);
+        row.setGravity(Gravity.CENTER_VERTICAL);
+        row.setPadding(px(12), px(10), px(12), px(12));
+        press(row, fill, 16, 0);
+        ImageView ic = new ImageView(this);
+        ic.setImageResource(R.drawable.ic_warn_tri);
+        ic.setColorFilter(lv >= 5 ? 0xFFE04848 : 0xFFF5A623);
+        row.addView(ic, lp(22, 22, 0, 0, 10, 0));
+        LinearLayout col = new LinearLayout(this);
+        col.setOrientation(LinearLayout.VERTICAL);
+        col.addView(text(wt, 14, fg, true));
+        TextView sub = text(best[1] + (n > 1 ? " · +" + (n - 1) + (n == 2 ? " weitere Region" : " weitere Regionen") : "")
+                + " · DWD · Stufe " + lv + " · Tippen für Details", 11.5f, fg, false);
+        sub.setAlpha(0.85f);
+        col.addView(sub);
+        row.addView(col, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+        row.setContentDescription("Wetterwarnung: " + wt + ", " + best[1]);
+        row.setOnClickListener(v -> {
+            Haptic.play(v, Haptic.TICK);
+            try {
+                startActivity(new Intent(Intent.ACTION_VIEW, android.net.Uri.parse(WeatherCards.DWD_WARN_ORT
+                        + java.net.URLEncoder.encode(ort, "UTF-8"))));
+            } catch (Exception ignored) {
+            }
+        });
+        page.addView(row, lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 10));
+    }
+
     /** Dezente Linie: alles darueber ist seit dem letzten Besuch neu. */
     private void newSinceDivider() {
         LinearLayout row = new LinearLayout(this);
@@ -1114,14 +1262,14 @@ public class MainActivity extends Activity {
         row.setGravity(Gravity.CENTER_VERTICAL);
         row.setPadding(px(2), px(4), px(2), px(12));
         View l1 = new View(this);
-        l1.setBackgroundColor(line);
+        l1.setBackgroundColor(chipOn);
         row.addView(l1, new LinearLayout.LayoutParams(0, Math.max(1, px(1)), 1f));
         String hh = new java.text.SimpleDateFormat("HH:mm", java.util.Locale.GERMANY).format(new java.util.Date(visitMark));
-        TextView t = text("Bis hier neu seit " + hh, 12, soft, false);
+        TextView t = text("Neu seit " + hh, 12, tx, true);
         t.setPadding(px(10), 0, px(10), 0);
         row.addView(t);
         View l2 = new View(this);
-        l2.setBackgroundColor(line);
+        l2.setBackgroundColor(chipOn);
         row.addView(l2, new LinearLayout.LayoutParams(0, Math.max(1, px(1)), 1f));
         page.addView(row);
     }
@@ -1221,14 +1369,27 @@ public class MainActivity extends Activity {
             }));
         }
         final int ps = Prefs.plusState(this, ID);
-        row.addView(chip("Abo: " + (ps == 1 ? "An" : ps == 0 ? "Aus" : "teils"), ps == 1, () -> {
+        int pn = ps == 0 ? 0 : ListService.plusCount(ID);
+        String aboLabel = (ps == 1 ? "Abo an" : ps == 0 ? "Abo aus" : "Abo teils") + (pn > 0 ? " · " + pn : "");
+        TextView abo = (TextView) chip(aboLabel, ps != 0, () -> {
             Prefs.setPlusAll(this, ID, ps != 1);
             build();
-        }));
+        });
+        Drawable lock = tinted(ps == 0 ? R.drawable.ic_lock_open : R.drawable.ic_lock, 16);
+        lock.setTint(ps != 0 ? chipOnTx : tx);
+        abo.setCompoundDrawables(lock, null, null, null);
+        abo.setCompoundDrawablePadding(px(6));
+        abo.setContentDescription(aboLabel + ", Abo-Artikel " + (ps == 0 ? "ausgeblendet" : "sichtbar") + ", antippen zum Umschalten");
         HorizontalScrollView hs = new HorizontalScrollView(this);
         hs.setHorizontalScrollBarEnabled(false);
         hs.addView(row);
-        page.addView(hs, lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 10));
+        // Abo-Schalter steht fest links, nur die Themen daneben scrollen
+        LinearLayout fixed = new LinearLayout(this);
+        fixed.setOrientation(LinearLayout.HORIZONTAL);
+        fixed.setGravity(Gravity.CENTER_VERTICAL);
+        fixed.addView(abo);
+        fixed.addView(hs, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+        page.addView(fixed, lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 10));
     }
 
     private android.graphics.drawable.Drawable tinted(int res, int dp) {

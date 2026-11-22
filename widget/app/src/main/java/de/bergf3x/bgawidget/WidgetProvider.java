@@ -171,6 +171,8 @@ public class WidgetProvider extends AppWidgetProvider {
             int[] nv = {R.id.nav_news, R.id.nav_wx, R.id.nav_saved};
             for (int k = 0; k < 3; k++) {
                 Pal.text(ctx, id, rv, nv[k], -1, k == shows ? 1f : 0.55f);
+                // gewaehlter Reiter: erhabene Pille
+                rv.setInt(nv[k], "setBackgroundResource", k == shows ? (Prefs.isLight(ctx, id) ? R.drawable.nav_on_light : R.drawable.nav_on) : 0);
                 Intent ni = new Intent(ctx, WidgetProvider.class).setAction(ACTION_SET_SHOWS);
                 ni.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id);
                 ni.putExtra("shows", k);

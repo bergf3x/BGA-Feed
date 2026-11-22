@@ -204,7 +204,8 @@ public class ColorsActivity extends Activity {
             e.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13);
             e.setTextColor(b.tx);
             e.setHintTextColor(b.soft);
-            e.setBackgroundTintList(ColorStateList.valueOf(b.soft));
+            e.setBackground(Depth.sunken(b.light ? 0xFFE2E5EC : 0xFF17191E, b.px(10), b.d, b.light));
+        e.setPadding(b.px(10), b.px(8), b.px(10), b.px(8));
             e.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int a, int c, int d) {}

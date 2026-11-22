@@ -168,6 +168,9 @@ public class ListService extends RemoteViewsService {
         }
         Prefs.setSrcWarn(ctx, stale.toString());
         final List<FeedItem> result = dedupe(merged);
+        int plusN = 0;
+        for (FeedItem it : result) if (it.plus) plusN++;
+        PLUS_N.put(id, plusN);
         if (online) {
             try {
                 checkSaved(ctx, merged);
@@ -238,6 +241,14 @@ public class ListService extends RemoteViewsService {
             }
         }
         Prefs.markSavedGone(ctx, gone, checked, imgs);
+    }
+
+    /** Anzahl Abo-Artikel in der zuletzt geladenen Liste je Widget/App. */
+    private static final java.util.Map<Integer, Integer> PLUS_N = new java.util.concurrent.ConcurrentHashMap<>();
+
+    static int plusCount(int id) {
+        Integer n = PLUS_N.get(id);
+        return n == null ? 0 : n;
     }
 
     static List<FeedItem> savedItems(Context ctx) {
