@@ -165,12 +165,82 @@ public class ConfigActivity extends Activity {
         return sb.toString();
     }
 
-    /** "Fertig" einer Unterseite: nur Text, hell sobald auf dieser Seite etwas geaendert wurde. */
-    private void done(Runnable back) {
+    /** Stand aller Entwurfswerte beim Betreten einer Unterseite, damit "Abbrechen" sie zuruecksetzen kann. */
+    private static final class St {
+        int bgPct, txPct, color, density, font, size, theme, bgMode, bgC1, bgC2, bgTint, bgSrc, accent, imgMode, showsIdx;
+        boolean plus, wxOn, warnOn, bgRound, kwNotifyOn, compact, notify, haptic, wcRegion, wcRegionShow, wBar;
+        String kw;
+        Set<String> selected, muted, wcBerg, wcWarn;
+        java.util.Map<String, Boolean> plusF;
+    }
+
+    private final java.util.HashMap<Integer, St> entries = new java.util.HashMap<>();
+
+    private St capture() {
+        St t = new St();
+        t.bgPct = bgPct; t.txPct = txPct; t.color = color; t.density = density; t.font = font; t.size = size;
+        t.theme = theme; t.bgMode = bgMode; t.bgC1 = bgC1; t.bgC2 = bgC2; t.bgTint = bgTint; t.bgSrc = bgSrc;
+        t.accent = accent; t.imgMode = imgMode; t.showsIdx = showsIdx; t.plus = plus; t.wxOn = wxOn;
+        t.warnOn = warnOn; t.bgRound = bgRound; t.kwNotifyOn = kwNotifyOn; t.compact = compact; t.notify = notify;
+        t.haptic = haptic; t.wcRegion = wcRegion; t.wcRegionShow = wcRegionShow; t.wBar = wBar;
+        t.kw = etKw != null ? etKw.getText().toString() : kwText;
+        t.selected = new HashSet<>(selected);
+        t.muted = new HashSet<>(muted);
+        t.wcBerg = new HashSet<>(wcBerg);
+        t.wcWarn = new HashSet<>(wcWarn);
+        t.plusF = new java.util.HashMap<>(plusF);
+        return t;
+    }
+
+    private void restore(St t) {
+        if (t == null) return;
+        bgPct = t.bgPct; txPct = t.txPct; color = t.color; density = t.density; font = t.font; size = t.size;
+        theme = t.theme; bgMode = t.bgMode; bgC1 = t.bgC1; bgC2 = t.bgC2; bgTint = t.bgTint; bgSrc = t.bgSrc;
+        accent = t.accent; imgMode = t.imgMode; showsIdx = t.showsIdx; plus = t.plus; wxOn = t.wxOn;
+        warnOn = t.warnOn; bgRound = t.bgRound; kwNotifyOn = t.kwNotifyOn; compact = t.compact; notify = t.notify;
+        wcRegion = t.wcRegion; wcRegionShow = t.wcRegionShow; wBar = t.wBar;
+        if (haptic != t.haptic) {
+            haptic = t.haptic;
+            Haptic.set(this, haptic);
+        }
+        kwText = t.kw;
+        if (etKw != null) etKw.setText(t.kw);
+        selected.clear(); selected.addAll(t.selected);
+        muted.clear(); muted.addAll(t.muted);
+        wcBerg = new HashSet<>(t.wcBerg);
+        wcWarn = new HashSet<>(t.wcWarn);
+        plusF.clear(); plusF.putAll(t.plusF);
+    }
+
+    /** Eine Ebene zurueck: Farben -> Darstellung, Themen ausblenden -> Nachrichten, sonst Hauptmenue. */
+    private void goBack(int pg) {
+        if (pg == P_COLORS) showDesign();
+        else if (pg == P_LIST) showSources();
+        else showMain();
+    }
+
+    /** Einheitliche Fusszeile einer Unterseite: "Abbrechen" setzt die Seite zurueck, "Uebernehmen" speichert sofort. */
+    private void done(final Runnable back) {
         final String base = snap();
-        TextView t = b.pillKeep("Fertig", false, back);
-        t.setTag(Boolean.FALSE);
-        b.watch(t, () -> !snap().equals(base));
+        final int pg = page;
+        TextView ok = b.footer(false, () -> cancelPage(pg), () -> {
+            save();
+            baseSnap = snap();
+            entries.remove(pg);
+            back.run();
+        });
+        b.watch(ok, () -> !snap().equals(base));
+    }
+
+    /** Aenderungen dieser Seite verwerfen (auch schon gespeicherte, falls eine untere Ebene sie uebernommen hatte). */
+    private void cancelPage(int pg) {
+        St t = entries.remove(pg);
+        restore(t);
+        if (t != null && !snap().equals(baseSnap)) {
+            save();
+            baseSnap = snap();
+        }
+        goBack(pg);
     }
 
     private boolean firstResume = true;
@@ -188,9 +258,7 @@ public class ConfigActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        if (page == P_COLORS) showDesign();
-        else if (page == P_LIST) showSources();
-        else if (page != P_MAIN) showMain();
+        if (page != P_MAIN) cancelPage(page);
         else super.onBackPressed();
     }
 
@@ -214,7 +282,8 @@ public class ConfigActivity extends Activity {
     private LinearLayout subPage(String title, int pg, float frac, boolean preview, Runnable back) {
         clear();
         page = pg;
-        b.header(title, back);
+        if (!entries.containsKey(pg)) entries.put(pg, capture());
+        b.header(title, () -> cancelPage(pg));
         if (preview) buildPreview();
         return b.scrollBox(frac);
     }
@@ -250,6 +319,7 @@ public class ConfigActivity extends Activity {
     /** Hauptmenue: Inhalte, Aussehen, System – wie in etablierten Nachrichten-Apps. */
     private void showMain() {
         clear();
+        entries.clear();
         page = P_MAIN;
         b.text("Einstellungen", 20, b.title, true).setPadding(b.px(4), 0, 0, b.px(2));
         LinearLayout body = b.scrollBox(0.9f);
@@ -299,9 +369,8 @@ public class ConfigActivity extends Activity {
                     () -> startActivity(new Intent(this, InfoActivity.class)));
         });
         b.space(6);
-        TextView ok = b.pillApply("Übernehmen", true, this::save);
+        TextView ok = b.footer(true, () -> { }, this::save);
         b.watch(ok, () -> !snap().equals(baseSnap));
-        b.pill("Abbrechen", false, true, () -> { });
     }
 
     /** Nachrichten: Quellen (mit Abo-Schalter je Zeitung) und Themen ausblenden. */

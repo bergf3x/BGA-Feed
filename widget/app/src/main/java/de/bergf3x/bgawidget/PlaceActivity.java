@@ -65,7 +65,7 @@ public class PlaceActivity extends Activity {
         foot.setText(sp);
         foot.setMovementMethod(android.text.method.LinkMovementMethod.getInstance());
         foot.setLinkTextColor(b.tx);
-        android.widget.TextView ok = b.pillApply("Übernehmen", true, () -> {
+        android.widget.TextView ok = b.footer(true, () -> { }, () -> {
             final int place = chosen[0];
             if (place == cur) return;
             Prefs.setPlace(this, id, place);
@@ -77,7 +77,6 @@ public class PlaceActivity extends Activity {
             }).start();
         });
         b.watch(ok, () -> chosen[0] != cur);
-        b.pill("Abbrechen", false, true, () -> { });
     }
 
     private void link(android.text.SpannableString sp, String full, String word, String url) {

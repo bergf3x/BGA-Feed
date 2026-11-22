@@ -25,6 +25,7 @@ public class WidgetProvider extends AppWidgetProvider {
     static final String ACTION_SET_TOPIC = "de.bergf3x.bgawidget.SET_TOPIC";
     static final String ACTION_PINNED = "de.bergf3x.bgawidget.PINNED";
     static final String ACTION_TOGGLE_WX = "de.bergf3x.bgawidget.TOGGLE_WX";
+    static final String ACTION_TOGGLE_ABO = "de.bergf3x.bgawidget.TOGGLE_ABO";
     private static final int[] P = {R.id.p0, R.id.p1, R.id.p2, R.id.p3, R.id.p4};
     private static final int[] P_ON = {R.id.p0_on, R.id.p1_on, R.id.p2_on, R.id.p3_on, R.id.p4_on};
     private static final int[] P_T = {R.id.p0_t, R.id.p1_t, R.id.p2_t, R.id.p3_t, R.id.p4_t};
@@ -67,6 +68,17 @@ public class WidgetProvider extends AppWidgetProvider {
             if (id != 0) {
                 Prefs.setFlag(ctx, "wxopen_" + id, !Prefs.flag(ctx, "wxopen_" + id));
                 refreshHeader(ctx, id);
+            }
+            return;
+        }
+        if (ACTION_TOGGLE_ABO.equals(action)) {
+            int id = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, 0);
+            if (id != 0) {
+                boolean on = Prefs.plusState(ctx, id) != 1;
+                Prefs.setPlusAll(ctx, id, on);
+                android.widget.Toast.makeText(ctx, on ? "Abo-Artikel werden angezeigt" : "Abo-Artikel sind ausgeblendet",
+                        android.widget.Toast.LENGTH_SHORT).show();
+                refresh(ctx, id);
             }
             return;
         }
@@ -259,6 +271,8 @@ public class WidgetProvider extends AppWidgetProvider {
             rv.setInt(tb, "setImageAlpha", Prefs.alpha(Prefs.text(ctx, id)));
         }
         rv.setViewVisibility(R.id.btn_saved, weatherWidget ? android.view.View.GONE : android.view.View.VISIBLE);
+        rv.setViewVisibility(R.id.btn_abo, weatherWidget ? android.view.View.GONE : android.view.View.VISIBLE);
+        if (!weatherWidget) aboButton(ctx, rv, id, R.id.btn_abo, 0xA0, cw);
         // reines Wetter-Widget hat einen eigenen, immer sichtbaren Webcam-Knopf oben rechts
         rv.setViewVisibility(R.id.btn_cam, weatherWidget ? android.view.View.GONE : android.view.View.VISIBLE);
         Pal.text(ctx, id, rv, R.id.w_desc, cw, 0.7f);
@@ -370,6 +384,8 @@ public class WidgetProvider extends AppWidgetProvider {
         if (ok) Pal.text(ctx, id, rv, R.id.w_sub, -1, 0.7f); else rv.setTextColor(R.id.w_sub, 0xFFFFB74D);
         rv.setViewVisibility(R.id.w_sub, small && !sub.isEmpty() ? android.view.View.VISIBLE : android.view.View.GONE);
         int hv = small ? android.view.View.VISIBLE : android.view.View.GONE;
+        rv.setViewVisibility(R.id.btn_habo, hv);
+        aboButton(ctx, rv, id, R.id.btn_habo, 0xA0, -1);
         rv.setViewVisibility(R.id.btn_hsaved, hv);
         rv.setViewVisibility(R.id.btn_hcam, hv);
         rv.setOnClickPendingIntent(R.id.btn_hsaved, activity(ctx, SavedActivity.class, id, 905, "saved"));
@@ -422,6 +438,22 @@ public class WidgetProvider extends AppWidgetProvider {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    /** Abo-Schalter im Widget: geschlossenes Schloss = Abo-Artikel sichtbar, offenes (blasser) = ausgeblendet. */
+    private static void aboButton(Context ctx, RemoteViews rv, int id, int viewId, int dimAlpha, int override) {
+        int ps = Prefs.plusState(ctx, id);
+        rv.setImageViewResource(viewId, ps == 0 ? R.drawable.ic_lock_open : R.drawable.ic_lock);
+        Pal.filter(ctx, id, rv, viewId, override);
+        int full = Prefs.alpha(Prefs.text(ctx, id));
+        rv.setInt(viewId, "setImageAlpha", ps == 0 ? Math.min(full, dimAlpha) : full);
+        rv.setContentDescription(viewId, ps == 0 ? "Abo-Artikel ausgeblendet, antippen zum Anzeigen"
+                : ps == 1 ? "Abo-Artikel sichtbar, antippen zum Ausblenden" : "Abo-Artikel teilweise sichtbar, antippen zum Anzeigen");
+        Intent tg = new Intent(ctx, WidgetProvider.class).setAction(ACTION_TOGGLE_ABO)
+                .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id)
+                .setData(Uri.parse("bgawidget://toggleabo/" + id + "/" + viewId));
+        rv.setOnClickPendingIntent(viewId, PendingIntent.getBroadcast(ctx, id * 1000 + 907 + (viewId & 7), tg,
+                PendingIntent.FLAG_UPDATE_CURRENT | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0)));
     }
 
     /** Nach Aenderung der Einstellungen: das richtige Widget komplett neu zeichnen. */

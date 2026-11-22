@@ -65,15 +65,15 @@ public class UpdateActivity extends Activity {
         }
         b.pillIn(body, "Berechtigungs-Hinweis wieder anzeigen", false, () -> {
             Prefs.setFlag(this, "perm_card_hidden", false);
+            for (String k : new String[]{"notify", "battery", "autostart"}) Prefs.setFlag(this, "perm_later_" + k, false);
             Perms.setAutostartDone(this, false);
             Prefs.setFlag(this, "perm_autostart_opened", false);
             Toast.makeText(this, "Der Hinweis erscheint wieder oben in der App, solange etwas offen ist.", Toast.LENGTH_LONG).show();
         });
         b.space(6);
         if (fromWidget) {
-            TextView ok = b.pillApply("Übernehmen", true, this::apply);
+            TextView ok = b.footer(true, () -> { }, this::apply);
             b.watch(ok, () -> (showNews && nSel != n0) || wSel != w0);
-            b.pill("Abbrechen", false, true, () -> { });
         } else {
             b.pill("Schließen", false, true, () -> { });
         }

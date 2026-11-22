@@ -25,14 +25,15 @@ public class SavedActivity extends Activity {
         b.header("Gemerkte Artikel", b::close);
         Prefs.pruneSaved(this);
         JSONArray a = Prefs.saved(this);
+        final int[] keep = {Prefs.savedKeepDays(this) == 0 ? 0 : 1};
+        final int keep0 = keep[0];
         if (a.length() == 0) {
             b.text("Noch nichts gemerkt. In der Artikel-Vorschau gibt es den Knopf „Merken“.", 14, b.tx, false)
                     .setPadding(b.px(10), b.px(4), b.px(10), b.px(10));
         } else {
             LinearLayout body = b.scrollBox(0.6f);
             b.label(body, "Aufbewahrung");
-            b.segment(body, new String[]{"Dauerhaft", "7 Tage"}, Prefs.savedKeepDays(this) == 0 ? 0 : 1,
-                    i -> Prefs.setSavedKeepDays(this, i == 0 ? 0 : 7));
+            b.segment(body, new String[]{"Dauerhaft", "7 Tage"}, keep[0], i -> keep[0] = i);
             for (int i = 0; i < a.length(); i++) {
                 final JSONObject o = a.optJSONObject(i);
                 if (o == null) continue;
@@ -65,7 +66,16 @@ public class SavedActivity extends Activity {
                 body.addView(card, lp);
             }
         }
-        b.pill("Schließen", false, true, () -> { });
+        if (a.length() == 0) {
+            b.pill("Schließen", false, true, () -> { });
+        } else {
+            // Aufbewahrung gilt erst mit "Uebernehmen"; zu alte Artikel werden erst dann entfernt
+            TextView ok = b.footer(true, () -> { }, () -> {
+                Prefs.setSavedKeepDays(this, keep[0] == 0 ? 0 : 7);
+                Prefs.pruneSaved(this);
+            });
+            b.watch(ok, () -> keep[0] != keep0);
+        }
     }
 
     private TextView line(Bubble b, String s, float sp, int color, boolean bold, int topDp) {

@@ -67,9 +67,8 @@ public class TopicActivity extends Activity {
         render();
         b.space(4);
         final java.util.Set<String> init = new java.util.HashSet<>(sel);
-        TextView ok = b.pillApply("Übernehmen", true, () -> save(sel));
+        TextView ok = b.footer(true, () -> { }, () -> save(sel));
         b.watch(ok, () -> !init.equals(new java.util.HashSet<>(sel)));
-        b.pill("Abbrechen", false, true, () -> { });
     }
 
     private List<String> children(String path) {

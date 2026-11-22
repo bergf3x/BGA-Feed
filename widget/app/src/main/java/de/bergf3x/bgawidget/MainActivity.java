@@ -45,7 +45,7 @@ public class MainActivity extends Activity {
     private final Handler ui = new Handler(Looper.getMainLooper());
     private ScrollView scroll;
     /** Wetterkarte gross / als schmale Zeile (beim Scrollen der Nachrichten). */
-    private View wxFull, wxMini, wxIn, wxCam, wxShield, hintCard;
+    private View wxFull, wxMini, wxIn, wxCam, wxShield;
     /** Halter der Wetterkarte in der Liste (feste Hoehe = volle Karte) und der Reiter-Streifen. */
     private FrameLayout wxBox;
     private View chipsWrap;
@@ -523,7 +523,8 @@ public class MainActivity extends Activity {
             root.addView(stack, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
             navBar = new LinearLayout(this);
             navBar.setOrientation(LinearLayout.HORIZONTAL);
-            navBar.setBackground(Depth.sunken(Depth.blend(light ? 0x14000000 : 0x40000000, baseColor()), 0, d, light));
+            navBar.setBackground(navBg());
+            navBar.setElevation(px(6));
             navBar.setOnApplyWindowInsetsListener((v, ins) -> {
                 v.setPadding(0, 0, 0, ins.getSystemWindowInsetBottom());
                 return ins;
@@ -545,13 +546,21 @@ public class MainActivity extends Activity {
         wxBox = null;
         wxShield = null;
         wxFullH = 0;
-        hintCard = null;
         chipsWrap = null;
         header();
         page = list;
-        if (widgetCount() == 0 && !Prefs.addCardHidden(this)) addWidgetCard(true);
-        permCard();
-        if (Prefs.showWeather(this, ID)) weatherCard();
+        int wc = widgetCount();
+        int seen = Prefs.intVal(this, "widget_seen", -1);
+        if (seen >= 0 && wc > seen) {
+            // neues Widget: Freigaben (Akku, Benachrichtigungen, Autostart) noch einmal anbieten
+            Prefs.setFlag(this, "perm_card_hidden", false);
+            for (String k : new String[]{"notify", "battery", "autostart"}) Prefs.setFlag(this, "perm_later_" + k, false);
+        }
+        if (seen != wc) Prefs.setInt(this, "widget_seen", wc);
+        boolean newsTab = !savedTab() && !weatherTab();
+        if (newsTab && wc == 0 && !Prefs.addCardHidden(this)) addWidgetCard();
+        if (newsTab && (wc > 0 || Prefs.addCardHidden(this))) permCard();
+        if (!savedTab() && Prefs.showWeather(this, ID)) weatherCard();
         int before = page.getChildCount();
         if (!savedTab()) newsChips();
         if (page.getChildCount() > before) {
@@ -571,8 +580,6 @@ public class MainActivity extends Activity {
             chipsWrap = wrap;
         }
         news();
-        addWidgetCard(false);
-        footer();
         updateNav();
         restore(keepY);
     }
@@ -598,7 +605,7 @@ public class MainActivity extends Activity {
     /** Flache untere Leiste: News | Wetter | Gemerkt (nur der aktive Bereich zeigt seinen Namen). */
     private void updateNav() {
         if (navBar == null) return;
-        navBar.setBackground(Depth.sunken(Depth.blend(light ? 0x14000000 : 0x40000000, baseColor()), 0, d, light));
+        navBar.setBackground(navBg());
         navBar.removeAllViews();
         boolean wx = weatherTab();
         boolean sv = savedTab();
@@ -612,6 +619,15 @@ public class MainActivity extends Activity {
         navBar.addView(navItem(R.drawable.ic_bookmark, "Gemerkt", sv, n > 0 ? String.valueOf(n) : "", () -> {
             if (!sv) switchTab(true, null); else if (scroll != null) scroll.smoothScrollTo(0, 0);
         }), new LinearLayout.LayoutParams(0, px(64), 1f));
+    }
+
+    /** Untere Leiste: Fensterfarbe der App, oben eine feine helle Kante. */
+    private android.graphics.drawable.Drawable navBg() {
+        android.graphics.drawable.LayerDrawable l = new android.graphics.drawable.LayerDrawable(
+                new android.graphics.drawable.Drawable[]{windowBg(), new android.graphics.drawable.ColorDrawable(light ? 0x1F000000 : 0x2EFFFFFF)});
+        l.setLayerGravity(1, Gravity.TOP);
+        l.setLayerHeight(1, Math.max(1, px(1)));
+        return l;
     }
 
     private View navItem(int icon, String label, boolean on, String badge, final Runnable click) {
@@ -1027,9 +1043,17 @@ public class MainActivity extends Activity {
             List<FeedItem> sv = ListService.savedItems(this);
             Set<String> rd = new java.util.HashSet<>();
             List<String> kw0 = Keywords.list(this);
-            TextView h = text(sv.isEmpty() ? "Gemerkt" : "Gemerkt · " + sv.size() + (sv.size() == 1 ? " Artikel" : " Artikel"), 13, soft, true);
-            h.setPadding(px(4), px(10), 0, px(8));
-            page.addView(h);
+            if (!sv.isEmpty()) {
+                // schmale Zeile: Aufbewahrung einstellen (Auswahl in der Blase, mit Uebernehmen/Abbrechen)
+                int keep = Prefs.savedKeepDays(this);
+                TextView h = text("Aufbewahrung: " + (keep == 0 ? "dauerhaft" : keep + " Tage") + "  ›", 12.5f, soft, false);
+                h.setPadding(px(6), px(10), px(6), px(10));
+                h.setMinHeight(px(40));
+                h.setGravity(Gravity.CENTER_VERTICAL);
+                h.setContentDescription("Aufbewahrung gemerkter Artikel: " + (keep == 0 ? "dauerhaft" : keep + " Tage") + ", antippen zum Ändern");
+                h.setOnClickListener(v -> startActivity(new Intent(this, SavedActivity.class)));
+                page.addView(h);
+            }
             if (sv.isEmpty()) {
                 TextView t = text("Noch nichts gemerkt. In der Artikel-Vorschau gibt es den Knopf „Merken“.", 14, soft, false);
                 t.setPadding(px(6), px(18), px(6), px(18));
@@ -1237,14 +1261,14 @@ public class MainActivity extends Activity {
         row.setGravity(Gravity.CENTER_VERTICAL);
         row.setPadding(px(2), px(4), px(2), px(12));
         View l1 = new View(this);
-        l1.setBackgroundColor(chipOn);
+        l1.setBackgroundColor((soft & 0xFFFFFF) | 0x66000000);
         row.addView(l1, new LinearLayout.LayoutParams(0, Math.max(1, px(1)), 1f));
         String hh = new java.text.SimpleDateFormat("HH:mm", java.util.Locale.GERMANY).format(new java.util.Date(visitMark));
-        TextView t = text("Neu seit " + hh, 12, tx, true);
+        TextView t = text("Neu seit " + hh, 12, soft, true);
         t.setPadding(px(10), 0, px(10), 0);
         row.addView(t);
         View l2 = new View(this);
-        l2.setBackgroundColor(chipOn);
+        l2.setBackgroundColor((soft & 0xFFFFFF) | 0x66000000);
         row.addView(l2, new LinearLayout.LayoutParams(0, Math.max(1, px(1)), 1f));
         page.addView(row);
     }
@@ -1357,6 +1381,10 @@ public class MainActivity extends Activity {
         abo.setContentDescription(aboLabel + ", Abo-Artikel " + (ps == 0 ? "ausgeblendet" : "sichtbar") + ", antippen zum Umschalten");
         HorizontalScrollView hs = new HorizontalScrollView(this);
         hs.setHorizontalScrollBarEnabled(false);
+        // Themen blenden am Rand weich aus, statt hart abgeschnitten zu werden
+        hs.setHorizontalFadingEdgeEnabled(true);
+        hs.setFadingEdgeLength(px(28));
+        hs.setOverScrollMode(View.OVER_SCROLL_NEVER);
         hs.addView(row);
         // Abo-Schalter steht fest links, nur die Themen daneben scrollen
         LinearLayout fixed = new LinearLayout(this);
@@ -1472,7 +1500,8 @@ public class MainActivity extends Activity {
     private static final String[] W_DESC = {"Nur die Nachrichten", "Wetter mit Webcams", "Wetter und Nachrichten"};
     private static final int[] W_ICON = {R.drawable.ic_news, R.drawable.ic_cloud, R.drawable.ic_layers};
 
-    private void addWidgetCard(boolean first) {
+    /** Karte ganz oben, solange noch kein Widget existiert: Art waehlen und auf den Startbildschirm legen. */
+    private void addWidgetCard() {
         LinearLayout box = new LinearLayout(this);
         box.setOrientation(LinearLayout.VERTICAL);
         box.setPadding(px(16), px(14), px(16), px(14));
@@ -1480,22 +1509,20 @@ public class MainActivity extends Activity {
         LinearLayout head = new LinearLayout(this);
         head.setOrientation(LinearLayout.HORIZONTAL);
         head.setGravity(Gravity.CENTER_VERTICAL);
-        head.addView(text(first ? "Widget auf den Startbildschirm" : "Weiteres Widget", 16, tx, true),
+        head.addView(text("Widget auf den Startbildschirm", 16, tx, true),
                 new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
         final Runnable hide = () -> {
             Prefs.setAddCardHidden(this, true);
             Toast.makeText(this, "Du findest „Widget hinzufügen“ in den Einstellungen.", Toast.LENGTH_LONG).show();
             build();
         };
-        if (first) {
-            TextView x = text("✕", 18, soft, false);
-            x.setPadding(px(12), px(4), px(4), px(4));
-            x.setContentDescription("Schließen");
-            x.setOnClickListener(v -> hide.run());
-            head.addView(x);
-        }
+        TextView x = text("✕", 18, soft, false);
+        x.setPadding(px(12), px(4), px(4), px(4));
+        x.setContentDescription("Schließen");
+        x.setOnClickListener(v -> hide.run());
+        head.addView(x);
         box.addView(head);
-        TextView sub = text(first ? "Welche Art von Widget?" : "Noch ein Widget auf den Startbildschirm legen.", 13, soft, false);
+        TextView sub = text("Welche Art von Widget?", 13, soft, false);
         sub.setPadding(0, px(4), 0, px(10));
         box.addView(sub);
 
@@ -1512,22 +1539,14 @@ public class MainActivity extends Activity {
 
         LinearLayout row = new LinearLayout(this);
         row.setOrientation(LinearLayout.HORIZONTAL);
-        row.addView(bigPill("Abbrechen", false, () -> {
-            if (first) hide.run();
-            else {
-                wSel = 0;
-                wOpen = false;
-                fillDropdown(dd);
-            }
-        }), lp(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 5, 0));
+        row.addView(bigPill("Abbrechen", false, hide), lp(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 5, 0));
         row.addView(bigPill("Hinzufügen", true, () -> {
             if (wSel == 1) WidgetPin.pin(this, WeatherWidgetProvider.class, -1);
             else WidgetPin.pin(this, WidgetProvider.class, wSel == 2 ? 1 : 0);
         }), lp(0, ViewGroup.LayoutParams.WRAP_CONTENT, 5, 0, 0, 0));
         for (int i = 0; i < 2; i++) ((LinearLayout.LayoutParams) row.getChildAt(i).getLayoutParams()).weight = 1f;
         box.addView(row, lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 12, 0, 0));
-        page.addView(box, lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, first ? 0 : 14, 0, 12));
-        if (first) hintCard = box;
+        page.addView(box, lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 12));
     }
 
     /** Zugeklappt: nur die gewaehlte Art mit Pfeil. Aufgeklappt: alle drei, die gewaehlte mit Haken. */
@@ -1607,25 +1626,28 @@ public class MainActivity extends Activity {
         x.setContentDescription("Schließen");
         x.setOnClickListener(v -> {
             Prefs.setFlag(this, "perm_card_hidden", true);
-            Toast.makeText(this, "Du findest das unter Einstellungen → Aktualisierung.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Ohne diese Freigaben läuft die App unter Umständen nicht korrekt. Du findest sie unter Einstellungen → Aktualisierung.", Toast.LENGTH_LONG).show();
             build();
         });
         head.addView(x);
         box.addView(head);
         int n = Perms.open(this);
-        TextView sub = text("Noch " + n + (n == 1 ? " Einstellung" : " Einstellungen") + " offen",
+        TextView sub = text("Noch " + n + (n == 1 ? " Einstellung" : " Einstellungen") + " offen. Ohne sie kann die App unter Umständen nicht korrekt funktionieren.",
                 12.5f, soft, false);
         sub.setPadding(0, px(4), 0, px(4));
         box.addView(sub);
 
-        permRow(box, R.drawable.ic_bell, "Benachrichtigungen", "Für Unwetter und Stichwörter",
+        permRow(box, "notify", R.drawable.ic_bell, "Benachrichtigungen", "Für Unwetter und Stichwörter",
+                "Ohne Benachrichtigungen kommen keine Unwetter- und Stichwort-Meldungen.",
                 Perms.notifyOk(this), "Erlauben", () -> Perms.askNotify(this), null, okC);
-        permRow(box, R.drawable.ic_battery, "Akku-Optimierung aus", "Damit das Widget aktuell bleibt",
-                Perms.batteryOk(this), "Einstellungen", () -> Perms.askBattery(this), null, okC);
+        permRow(box, "battery", R.drawable.ic_battery, "Akku-Optimierung aus", "Damit das Widget aktuell bleibt",
+                "Ohne diese Ausnahme wird das Widget im Hintergrund unter Umständen nicht aktualisiert.",
+                Perms.batteryOk(this), "Erlauben", () -> Perms.askBattery(this), null, okC);
         if (Perms.needsAutostart()) {
             boolean opened = Prefs.flag(this, "perm_autostart_opened");
-            permRow(box, R.drawable.ic_autostart, Perms.autostartTitle(), Perms.autostartHint(),
-                    Perms.autostartDone(this), opened ? "Erledigt" : "Einstellungen",
+            permRow(box, "autostart", R.drawable.ic_autostart, Perms.autostartTitle(), Perms.autostartHint(),
+                    "Ohne Autostart funktioniert das Widget nach einem Neustart unter Umständen nicht korrekt.",
+                    Perms.autostartDone(this), opened ? "Erledigt" : "Erlauben",
                     opened ? () -> {
                         Perms.setAutostartDone(this, true);
                         build();
@@ -1638,8 +1660,10 @@ public class MainActivity extends Activity {
         page.addView(box, lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 12));
     }
 
-    private void permRow(LinearLayout box, int icon, String title, String hint, boolean ok, String btn,
-                         final Runnable act, final Runnable reopen, int okC) {
+    private void permRow(LinearLayout box, final String key, int icon, String title, String hint, String warn, boolean ok,
+                         String btn, final Runnable act, final Runnable reopen, int okC) {
+        final boolean later = !ok && Prefs.flag(this, "perm_later_" + key);
+        final int warnC = light ? 0xFF9A6B12 : 0xFFE8C37A;
         if (box.getChildCount() > 2) {
             View sep = new View(this);
             sep.setBackgroundColor(line);
@@ -1656,7 +1680,7 @@ public class MainActivity extends Activity {
         LinearLayout col = new LinearLayout(this);
         col.setOrientation(LinearLayout.VERTICAL);
         col.addView(text(title, 14.5f, tx, true));
-        col.addView(text(hint, 12, soft, false));
+        col.addView(later ? text(warn, 12, warnC, false) : text(hint, 12, soft, false));
         r.addView(col, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
         if (ok) {
             LinearLayout done = new LinearLayout(this);
@@ -1668,6 +1692,17 @@ public class MainActivity extends Activity {
             done.addView(text("Erledigt", 12.5f, okC, true));
             r.addView(done);
         } else {
+            if (!later) {
+                TextView lt = text("Später", 12.5f, soft, true);
+                lt.setPadding(px(10), px(7), px(10), px(7));
+                press(lt, 0, 14, line);
+                lt.setOnClickListener(v -> {
+                    Haptic.play(v, Haptic.TICK);
+                    Prefs.setFlag(this, "perm_later_" + key, true);
+                    build();
+                });
+                r.addView(lt, lp(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 8, 0, 0, 0));
+            }
             if (reopen != null) {
                 TextView o = text("Öffnen", 12.5f, soft, true);
                 o.setPadding(px(10), px(7), px(10), px(7));
@@ -1694,19 +1729,5 @@ public class MainActivity extends Activity {
     public void onRequestPermissionsResult(int code, String[] perms, int[] res) {
         super.onRequestPermissionsResult(code, perms, res);
         if (code == Perms.REQ_NOTIFY) build();
-    }
-
-    /** Fragt den Launcher, das Widget auf dem Startbildschirm abzulegen. */
-    private void pin(Class<?> provider) {
-        WidgetPin.pin(this, provider);
-    }
-
-    private void footer() {
-        TextView up = text("Aktualisierung & Akku", 13, soft, false);
-        up.setGravity(Gravity.CENTER);
-        up.setPadding(px(10), px(12), px(10), px(12));
-        press(up, 0, 14, 0);
-        up.setOnClickListener(v -> open(UpdateActivity.class));
-        page.addView(up, lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 4, 0, 0));
     }
 }

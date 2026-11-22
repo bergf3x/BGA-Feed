@@ -349,6 +349,14 @@ final class Prefs {
         sp(c).edit().putBoolean(key, v).apply();
     }
 
+    static int intVal(Context c, String key, int def) {
+        return sp(c).getInt(key, def);
+    }
+
+    static void setInt(Context c, String key, int v) {
+        sp(c).edit().putInt(key, v).apply();
+    }
+
     static boolean addCardHidden(Context c) {
         return sp(c).getBoolean("addcard_hidden", false);
     }
