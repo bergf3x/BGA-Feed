@@ -353,7 +353,7 @@ public class ConfigActivity extends Activity {
             refreshPreview();
         });
         lblBg = b.label(body, "");
-        body.addView(seek(bgPct, p -> {
+        body.addView(seek(bgPct, 0, p -> {
             bgPct = p;
             refreshPreview();
         }));
@@ -560,15 +560,20 @@ public class ConfigActivity extends Activity {
     }
 
     private SeekBar seek(int pct, IntCb cb) {
+        return seek(pct, 1, cb);
+    }
+
+    /** Regler von min bis 100 %. */
+    private SeekBar seek(int pct, final int min, IntCb cb) {
         SeekBar sb = new SeekBar(this);
-        sb.setMax(99);
-        sb.setProgress(pct - 1);
+        sb.setMax(100 - min);
+        sb.setProgress(pct - min);
         sb.setProgressTintList(ColorStateList.valueOf(b.hi));
         sb.setThumbTintList(ColorStateList.valueOf(b.hi));
         sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar s, int p, boolean fromUser) {
-                cb.on(p + 1);
+                cb.on(p + min);
             }
 
             @Override
@@ -667,7 +672,7 @@ public class ConfigActivity extends Activity {
 
     private void refreshPreview() {
         if (prevFill == null) return;
-        if (lblBg != null) lblBg.setText("Hintergrund-Deckkraft: " + bgPct + " %");
+        if (lblBg != null) lblBg.setText("Hintergrund-Deckkraft: " + bgPct + " %" + (bgPct == 0 ? " (durchsichtig)" : ""));
         if (lblTx != null) lblTx.setText("Schrift-Deckkraft: " + txPct + " %");
         int[] fc = BgStyle.colors(this, bgMode, bgC1, bgC2, bgTint, lightNow(), bgSrc);
         int a = Prefs.alpha(bgPct);

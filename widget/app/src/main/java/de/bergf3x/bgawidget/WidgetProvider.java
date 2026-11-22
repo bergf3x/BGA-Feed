@@ -166,7 +166,7 @@ public class WidgetProvider extends AppWidgetProvider {
             rv.setInt(R.id.bg_border, "setImageAlpha", 0);
         } else {
             rv.setInt(on, "setImageAlpha", Prefs.alpha(bg));
-            rv.setInt(R.id.bg_border, "setImageAlpha", Math.round(Prefs.alpha(Math.max(bg, 20)) * 0.45f));
+            rv.setInt(R.id.bg_border, "setImageAlpha", bg <= 0 ? 0 : Math.round(Prefs.alpha(Math.max(bg, 20)) * 0.45f));
         }
     }
 
