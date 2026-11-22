@@ -33,6 +33,7 @@ final class Updater {
     }
 
     static synchronized void run(Context ctx, boolean force) {
+        Net.init(ctx);
         AppWidgetManager mgr = AppWidgetManager.getInstance(ctx);
         int[] news = mgr.getAppWidgetIds(new ComponentName(ctx, WidgetProvider.class));
         int[] wx = mgr.getAppWidgetIds(new ComponentName(ctx, WeatherWidgetProvider.class));
@@ -41,33 +42,39 @@ final class Updater {
             if (force) ListService.syncApp(ctx, true);
             return;
         }
+        // Ohne Netz im Hintergrund gar nicht erst versuchen: spart Funk und Zeitueberschreitungen
+        if (!force && !Net.online(ctx)) {
+            android.util.Log.i("BGAstat", "Abruf uebersprungen: kein Netz");
+            return;
+        }
         Prefs.takeLocalOnly(ctx);
         if (force) {
             Prefs.invalidateWeather(ctx);
             Prefs.invalidateWarn(ctx);
         }
-        long now = System.currentTimeMillis();
-        boolean newsDue = force || now - Prefs.newsTry(ctx) >= Prefs.newsMs(ctx);
-        if (news.length > 0 && newsDue) {
+        long t0 = System.currentTimeMillis();
+        Net.resetStats();
+        long now = t0;
+        // Nachrichten: auf Knopfdruck, nach Intervall (Automatik) oder einmalig, solange noch gar nichts geladen wurde
+        boolean newsDue = news.length > 0 && (force || Prefs.newsTime(ctx) == 0
+                || (Prefs.newsAuto(ctx) && now - Prefs.newsTry(ctx) >= Prefs.newsMs(ctx)));
+        if (newsDue) {
             Prefs.setNewsTry(ctx, now);
-            // erstes Widget laedt Feeds, Wetter und Warnungen; die Feeds liegen danach im gemeinsamen Cache
-            new ListService.Factory(ctx, news[0]).sync(true);
-            for (int i = 1; i < news.length; i++) {
-                Weather.refreshIfStale(ctx, Prefs.place(ctx, news[i]));
-                WidgetProvider.refreshHeader(ctx, news[i]);
-            }
+            ListService.syncWidgets(ctx, news);
+            // weitere Orte: Wetter nachziehen (nach Einstellung; manuell nur, wenn noch nichts da ist)
+            for (int i = 1; i < news.length; i++) Weather.refreshIfStale(ctx, Prefs.place(ctx, news[i]));
         } else {
             Warnings.refreshIfStale(ctx);
             Avalanche.refreshIfStale(ctx);
-            for (int id : news) {
-                Weather.refreshIfStale(ctx, Prefs.place(ctx, id));
-                WidgetProvider.refreshHeader(ctx, id);
-            }
+            for (int id : news) Weather.refreshIfStale(ctx, Prefs.place(ctx, id));
         }
+        for (int id : news) WidgetProvider.refreshHeader(ctx, id);
         for (int id : wx) Weather.refreshIfStale(ctx, Prefs.place(ctx, id));
         for (int id : wx) WeatherWidgetProvider.update(ctx, mgr, id);
-        if (news.length > 0 && newsDue) {
+        if (newsDue) {
             for (int id : news) mgr.notifyAppWidgetViewDataChanged(id, R.id.list);
         }
+        android.util.Log.i("BGAstat", "Abruf " + (force ? "manuell" : "automatisch") + ": Nachrichten=" + newsDue
+                + " " + Net.stats() + " in " + (System.currentTimeMillis() - t0) + " ms");
     }
 }

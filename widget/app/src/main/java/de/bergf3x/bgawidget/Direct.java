@@ -732,7 +732,7 @@ final class Direct {
         for (final Map<String, Object> it : todo) {
             tasks.add(() -> {
                 try {
-                    String page = Net.download((String) it.get("url"));
+                    String page = Net.download((String) it.get("url"), false);
                     if (!it.containsKey("pub")) {
                         long t = parseTime(page);
                         if (t > 0) it.put("pub", t);

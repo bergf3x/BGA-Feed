@@ -45,17 +45,55 @@
             android:orientation="horizontal"
             android:paddingLeft="4dp">
 
-            <TextView
-                android:id="@+id/w_title"
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:text="BGL Wetter &amp; News"
-                android:textColor="#FFFFFFFF"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/w_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="BGL Wetter &amp; News"
+                    android:textColor="#FFFFFFFF"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/w_sub"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textColor="#B3FFFFFF"
+                    android:textSize="10sp"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/btn_hsaved"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:layout_marginRight="6dp"
+                android:background="@drawable/btn_round"
+                android:contentDescription="Gemerkt"
+                android:padding="8dp"
+                android:src="@drawable/ic_bookmark"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/btn_hcam"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:layout_marginRight="6dp"
+                android:background="@drawable/btn_round"
+                android:contentDescription="Webcams"
+                android:padding="8dp"
+                android:src="@drawable/ic_cam"
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/btn_refresh"
@@ -148,6 +186,16 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/w_warn_ic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="6dp"
+                android:text="⚠"
+                android:textColor="#FFFFB74D"
+                android:textSize="16sp"
+                android:visibility="gone" />
+
+            <TextView
                 android:id="@+id/w_temp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -180,6 +228,17 @@
                     android:textColor="#FFFFFFFF"
                     android:textSize="13sp" />
             </LinearLayout>
+
+            <ImageView
+                android:id="@+id/w_more"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="6dp"
+                android:background="@drawable/ripple_circle"
+                android:contentDescription="Wetter aufklappen"
+                android:padding="4dp"
+                android:src="@drawable/ic_chevron_down"
+                android:visibility="gone" />
         </LinearLayout>
         </FrameLayout>
 

@@ -106,10 +106,14 @@ final class Weather {
 
     /** Im Hintergrund-Thread aufrufen. true, wenn neue Daten gespeichert wurden. */
     static boolean refreshIfStale(Context c, int place) {
+        return refreshIfStale(c, place, Prefs.wxMaxAge(c));
+    }
+
+    static boolean refreshIfStale(Context c, int place, long maxAge) {
         String cached = Prefs.weather(c, place);
         // Alter Stand ohne die neuen Felder (Wind/Regenrisiko) gilt als veraltet
         boolean fresh = cached != null && cached.contains("sunrise") && cached.contains("\"peak\"")
-                && System.currentTimeMillis() - Prefs.weatherTime(c, place) < Prefs.wxMs(c);
+                && Prefs.fresh(Prefs.weatherTime(c, place), maxAge);
         if (fresh) return false;
         try {
             String json;

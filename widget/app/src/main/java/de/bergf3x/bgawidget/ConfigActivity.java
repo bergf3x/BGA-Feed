@@ -191,6 +191,14 @@ public class ConfigActivity extends Activity {
         return Prefs.INTERVAL_NAMES[idx];
     }
 
+    /** Untertitel der Kachel "Aktualisierung": im Widget die Intervalle (oder manuell), in der App nur die Werkzeuge. */
+    private String ivSummary() {
+        if (widgetId == Prefs.APP) return "Jetzt aktualisieren · Akku · Berechtigungen";
+        String w = "Wetter " + (Prefs.wxAuto(this) ? ivName(Prefs.wxIdx(this)) : "manuell");
+        if (WidgetProvider.isWeatherWidget(this, widgetId)) return w;
+        return "Nachrichten " + (Prefs.newsAuto(this) ? ivName(Prefs.newsIdx(this)) : "manuell") + " · " + w;
+    }
+
     private int savedCount() {
         try {
             return Prefs.saved(this).length();
@@ -236,7 +244,7 @@ public class ConfigActivity extends Activity {
                         () -> startActivity(new Intent(this, AddWidgetActivity.class)));
             }
             b.group("System");
-            b.tile(R.drawable.ic_refresh, "Aktualisierung", "Nachrichten " + ivName(Prefs.newsIdx(this)) + " · Wetter " + ivName(Prefs.wxIdx(this)), () -> {
+            b.tile(R.drawable.ic_refresh, "Aktualisierung", ivSummary(), () -> {
                 Intent in = new Intent(this, UpdateActivity.class);
                 in.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
                 startActivity(in);
@@ -604,6 +612,7 @@ public class ConfigActivity extends Activity {
         Prefs.setKeywords(this, etKw != null ? etKw.getText().toString() : kwText, kwNotifyOn);
         for (java.util.Map.Entry<String, Boolean> e : plusF.entrySet()) Prefs.setPlusFeed(this, widgetId, e.getKey(), e.getValue());
         WidgetProvider.updateAny(this, widgetId);
+        Scheduler.schedule(this);
         Intent result = new Intent();
         result.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
         setResult(RESULT_OK, result);
