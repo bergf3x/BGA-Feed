@@ -5,6 +5,9 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.02",
+                    "+ Über die App: Quellen, Open-Meteo und DWD als Links",
+                    "~ Über die App: „Schließen“ bleibt immer sichtbar"},
             {"1.01",
                     "~ Widget: eigene Kopfzeile mit Aktualisieren und Einstellungen",
                     "~ Widget: Quelle kurz („Anzeiger“), Lupe entfernt, kein doppelter Mond",

@@ -25,21 +25,24 @@ public class InfoActivity extends Activity {
         b.text("Entwickelt von bergf3x", 13, b.soft, false).setPadding(b.px(4), 0, 0, b.px(8));
 
         b.divider();
-        android.widget.LinearLayout log = section(b, "Neuigkeiten", 0.45f);
+        android.widget.LinearLayout log = section(b, "Neuigkeiten", 0.28f);
         for (String[] v : Changelog.LOG) {
             log.addView(line(b, "Version " + v[0], 14, b.title, true, 8));
             for (int i = 1; i < v.length; i++) log.addView(line(b, v[i], 13, b.tx, false, 1));
         }
 
         b.divider();
-        android.widget.LinearLayout src = section(b, "Quellen", 0.35f);
+        android.widget.LinearLayout src = section(b, "Quellen", 0.28f);
         src.addView(line(b, "Die App zeigt Überschriften und kurze Anrisse und verlinkt immer auf den Originalartikel. "
                 + "Alle Rechte an den Inhalten liegen bei den jeweiligen Verlagen und Stellen.", 12, b.soft, false, 2));
-        for (Catalog.Feed f : Catalog.load(this)) src.addView(line(b, "• " + f.name, 13, b.tx, false, 3));
-        src.addView(line(b, "Wetter: Open-Meteo · Warnungen: Deutscher Wetterdienst · Webcams: jeweilige Betreiber", 12, b.soft, false, 8));
+        for (Catalog.Feed f : Catalog.load(this)) src.addView(link(b, f.name, homepage(f.id)));
+        src.addView(line(b, "Wetter und Warnungen", 12, b.soft, false, 10));
+        src.addView(link(b, "Open-Meteo (Wetterdaten)", "https://open-meteo.com"));
+        src.addView(link(b, "DWD – Deutscher Wetterdienst (Warnungen)", "https://www.dwd.de"));
+        src.addView(line(b, "Webcams: jeweilige Betreiber, Link in der Webcam-Ansicht", 12, b.soft, false, 8));
 
         b.divider();
-        android.widget.LinearLayout cb = section(b, "Bildnachweise", 0.35f);
+        android.widget.LinearLayout cb = section(b, "Bildnachweise", 0.26f);
         cb.addView(line(b, "Wetter-Hintergründe: Fotos von Wikimedia Commons, bearbeitet (zugeschnitten, schwarzweiß, abgedunkelt).", 12, b.soft, false, 2));
         for (final String[] c : Credits.PHOTOS) {
             cb.addView(line(b, c[0], 13, b.tx, true, 8));
@@ -55,11 +58,44 @@ public class InfoActivity extends Activity {
 
         if (Direct.enabled(this)) {
             b.divider();
-            android.widget.LinearLayout tech = section(b, "Technisches Protokoll", 0.35f);
+            android.widget.LinearLayout tech = section(b, "Technisches Protokoll", 0.26f);
             tech.addView(line(b, Direct.logText(this), 11, b.soft, false, 2));
         }
         b.space(4);
         b.pill("Schließen", false, true, () -> { });
+    }
+
+    /** Startseite der Quelle (fuer den Link unter "Quellen"). */
+    private static String homepage(String id) {
+        switch (id) {
+            case "bga": return "https://www.berchtesgadener-anzeiger.de";
+            case "bgland24": return "https://www.bgland24.de";
+            case "chiemgau24": return "https://www.chiemgau24.de";
+            case "orf_salzburg": return "https://salzburg.orf.at";
+            case "tt": return "https://www.traunsteiner-tagblatt.de";
+            case "lra_bgl": return "https://www.lra-bgl.de";
+            case "npv": return "https://www.nationalpark-berchtesgaden.bayern.de";
+            case "br24": return "https://www.br.de/nachrichten/";
+            case "merkur": return "https://www.merkur.de";
+            default: return "";
+        }
+    }
+
+    /** Antippbare Zeile, die die Seite im Browser oeffnet. */
+    private android.widget.TextView link(Bubble b, String label, final String url) {
+        android.widget.TextView t = line(b, url.isEmpty() ? "• " + label : label + "  ↗", 13.5f, b.tx, false, 2);
+        if (url.isEmpty()) return t;
+        t.setPaintFlags(t.getPaintFlags() | android.graphics.Paint.UNDERLINE_TEXT_FLAG);
+        t.setPadding(b.px(4), b.px(7), b.px(4), b.px(7));
+        t.setContentDescription(label + ", Webseite öffnen");
+        t.setOnClickListener(x -> {
+            Haptic.play(x, Haptic.TICK);
+            try {
+                startActivity(new android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(url)));
+            } catch (Exception ignored) {
+            }
+        });
+        return t;
     }
 
     private final java.util.List<Runnable> sections = new java.util.ArrayList<>();
