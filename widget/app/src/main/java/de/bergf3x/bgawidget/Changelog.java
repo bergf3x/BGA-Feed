@@ -10,6 +10,12 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.22",
+                    "~ „Zurück“ oben links in allen Fenstern entfernt – Schließen, Abbrechen und Übernehmen unten reichen",
+                    "~ Akku: „Gesehen“-Liste wird nur noch geschrieben, wenn sich etwas geändert hat; Layout-Neuaufbau nach Update läuft nur einmal"},
+            {"1.21",
+                    "~ „Alle“ ohne Zahl (in App und Widget); stattdessen roter Punkt, wenn es irgendwo Neues gibt",
+                    "~ Themen-Chips im Widget bekommen mehr Platz; Zähler an „Gemerkt“ verdeckt den Text nicht mehr"},
             {"1.20",
                     "~ Gemerkt: gelesen heißt jetzt, dass du den Artikel nach dem Merken aus Gemerkt geöffnet hast; App und Widget zeigen dasselbe (gelesene Karten blasser, Zähler rot oder grau)",
                     "~ Widget: Der Zähler saß außerhalb des sichtbaren Bereichs, jetzt an der oberen rechten Ecke des Reiters"},

@@ -1371,7 +1371,8 @@ public class MainActivity extends Activity {
         row.setOrientation(LinearLayout.HORIZONTAL);
         newTop = warmed ? ListService.newTopics(this, ID) : new java.util.HashSet<String>();
         int fresh = warmed ? ListService.freshUnread(this, ID) : 0;
-        row.addView(chip(fresh > 0 ? "Alle (" + Math.min(fresh, 99) + ")" : "Alle", curParent.isEmpty(), () -> setTopic("")));
+        View allChip = chip("Alle", curParent.isEmpty(), () -> setTopic(""));
+        row.addView(newTop.isEmpty() ? allChip : withDot(allChip));
         for (final String p : parents) {
             boolean hasSubs = false;
             for (String t : topics) if (t.startsWith(p + "/")) hasSubs = true;

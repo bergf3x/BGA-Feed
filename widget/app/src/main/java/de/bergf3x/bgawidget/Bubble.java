@@ -368,11 +368,8 @@ final class Bubble {
         box.addView(r, lp);
     }
 
-    /** Kopf eines Untermenues: Zurueck-Zeile und Titel. */
+    /** Kopf eines Untermenues: nur der Titel (Zurueck erledigen die Knoepfe unten). */
     void header(String title, Runnable onBack) {
-        TextView back = text("‹  Zurück", 14, soft, false);
-        back.setPadding(px(4), px(2), px(14), px(8));
-        back.setOnClickListener(v -> onBack.run());
         text(title, 18, this.title, true).setPadding(px(4), 0, 0, px(8));
     }
 
