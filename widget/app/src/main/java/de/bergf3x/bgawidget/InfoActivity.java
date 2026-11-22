@@ -19,6 +19,8 @@ public class InfoActivity extends Activity {
         } catch (Exception ignored) {
         }
         b.text("BGL Wetter & News", 18, b.title, true).setPadding(b.px(4), b.px(2), 0, b.px(2));
+        b.text("Nachrichten aus dem Berchtesgadener Land und Bayern, Wetter und Webcams aus der Region.", 13, b.tx, false)
+                .setPadding(b.px(4), b.px(2), b.px(4), b.px(6));
         b.text("Version " + ver + " · " + getString(R.string.build_date), 13, b.soft, false).setPadding(b.px(4), 0, 0, b.px(2));
         b.text("Entwickelt von bergf3x", 13, b.soft, false).setPadding(b.px(4), 0, 0, b.px(8));
 
