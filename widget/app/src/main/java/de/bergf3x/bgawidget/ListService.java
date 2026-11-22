@@ -71,7 +71,7 @@ public class ListService extends RemoteViewsService {
             tasks.add(() -> {
                 Fetched r = new Fetched();
                 try {
-                    r.xml = Direct.enabled(ctx) && Direct.handles(f) ? Direct.fetch(ctx, f) : Net.download(Net.fresh(f.url));
+                    r.xml = Direct.enabled(ctx) && Direct.handles(f) ? Direct.fetch(ctx, f) : Net.downloadFeed(f.url);
                     r.items = FeedItem.parse(r.xml, f.name);
                 } catch (Exception e) {
                     r.err = String.valueOf(e.getMessage() != null ? e.getMessage() : e);
