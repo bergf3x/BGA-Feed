@@ -25,8 +25,9 @@ public class PlaceActivity extends Activity {
             return;
         }
         final Bubble b = new Bubble(this, 300, 12);
-        b.header("Wetter-Ort", b::close);
-        int cur = Prefs.place(this, id);
+        final boolean second = getIntent().getBooleanExtra("second", false);
+        b.header(second ? "Zweiter Ort" : "Wetter-Ort", b::close);
+        int cur = second ? Prefs.place2(this, id) : Prefs.place(this, id);
         Integer[] order = new Integer[Weather.PLACES.length];
         for (int i = 0; i < order.length; i++) order[i] = i;
         final Collator col = Collator.getInstance(Locale.GERMANY);
@@ -36,6 +37,10 @@ public class PlaceActivity extends Activity {
         final Runnable[] render = new Runnable[1];
         render[0] = () -> {
             body.removeAllViews();
+            if (second) b.row(body, "Keiner (nur ein Ort)", chosen[0] < 0, () -> {
+                chosen[0] = -1;
+                render[0].run();
+            }, false);
             for (int idx : order) {
                 final int place = idx;
                 b.row(body, Weather.PLACES[idx], idx == chosen[0], () -> {
@@ -68,12 +73,19 @@ public class PlaceActivity extends Activity {
         android.widget.TextView ok = b.footer(true, () -> { }, () -> {
             final int place = chosen[0];
             if (place == cur) return;
-            Prefs.setPlace(this, id, place);
-            WidgetProvider.refreshHeader(this, id);
+            if (second) Prefs.setPlace2(this, id, place); else Prefs.setPlace(this, id, place);
+            if (WidgetProvider.isWeatherWidget(this, id)) WeatherWidgetProvider.update(this,
+                    android.appwidget.AppWidgetManager.getInstance(this), id);
+            else WidgetProvider.refreshHeader(this, id);
+            if (place < 0) return;
             // nur das Wetter des neuen Ortes holen (ohne die Nachrichten) und gleich danach neu zeichnen
             final android.content.Context app = getApplicationContext();
             new Thread(() -> {
-                if (Weather.refreshIfStale(app, place)) WidgetProvider.refreshHeader(app, id);
+                if (Weather.refreshIfStale(app, place)) {
+                    if (WidgetProvider.isWeatherWidget(app, id)) WeatherWidgetProvider.update(app,
+                            android.appwidget.AppWidgetManager.getInstance(app), id);
+                    else WidgetProvider.refreshHeader(app, id);
+                }
             }).start();
         });
         b.watch(ok, () -> chosen[0] != cur);

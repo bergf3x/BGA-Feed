@@ -69,7 +69,6 @@ public class ConfigActivity extends Activity {
     private boolean notify;
     private int showsIdx;
     private boolean wcRegionShow;
-    private boolean wBar;
     private java.util.Set<String> wcBerg;
     private boolean wcRegion;
     private java.util.Set<String> wcWarn;
@@ -106,7 +105,6 @@ public class ConfigActivity extends Activity {
         notify = Prefs.warnNotify(this);
         showsIdx = Prefs.widgetShows(this, widgetId);
         wcRegionShow = Prefs.topic(this, widgetId).equals(WeatherCards.REGION);
-        wBar = Prefs.widgetBar(this, widgetId);
         wcBerg = Prefs.bergRegions(this);
         wcRegion = Prefs.regionCards(this);
         wcWarn = Prefs.warnRegions(this);
@@ -161,14 +159,14 @@ public class ConfigActivity extends Activity {
                 .append(etKw != null ? etKw.getText().toString() : kwText).append('|')
                 .append(new java.util.TreeSet<>(selected)).append('|').append(new java.util.TreeSet<>(muted)).append('|')
                 .append(new java.util.TreeMap<>(plusF)).append(new java.util.TreeSet<>(wcBerg)).append(wcRegion)
-                .append(new java.util.TreeSet<>(wcWarn)).append(showsIdx).append(wcRegionShow).append(wBar);
+                .append(new java.util.TreeSet<>(wcWarn)).append(showsIdx).append(wcRegionShow);
         return sb.toString();
     }
 
     /** Stand aller Entwurfswerte beim Betreten einer Unterseite, damit "Abbrechen" sie zuruecksetzen kann. */
     private static final class St {
         int bgPct, txPct, color, density, font, size, theme, bgMode, bgC1, bgC2, bgTint, bgSrc, accent, imgMode, showsIdx;
-        boolean plus, wxOn, warnOn, bgRound, kwNotifyOn, compact, notify, haptic, wcRegion, wcRegionShow, wBar;
+        boolean plus, wxOn, warnOn, bgRound, kwNotifyOn, compact, notify, haptic, wcRegion, wcRegionShow;
         String kw;
         Set<String> selected, muted, wcBerg, wcWarn;
         java.util.Map<String, Boolean> plusF;
@@ -182,7 +180,7 @@ public class ConfigActivity extends Activity {
         t.theme = theme; t.bgMode = bgMode; t.bgC1 = bgC1; t.bgC2 = bgC2; t.bgTint = bgTint; t.bgSrc = bgSrc;
         t.accent = accent; t.imgMode = imgMode; t.showsIdx = showsIdx; t.plus = plus; t.wxOn = wxOn;
         t.warnOn = warnOn; t.bgRound = bgRound; t.kwNotifyOn = kwNotifyOn; t.compact = compact; t.notify = notify;
-        t.haptic = haptic; t.wcRegion = wcRegion; t.wcRegionShow = wcRegionShow; t.wBar = wBar;
+        t.haptic = haptic; t.wcRegion = wcRegion; t.wcRegionShow = wcRegionShow;
         t.kw = etKw != null ? etKw.getText().toString() : kwText;
         t.selected = new HashSet<>(selected);
         t.muted = new HashSet<>(muted);
@@ -198,7 +196,7 @@ public class ConfigActivity extends Activity {
         theme = t.theme; bgMode = t.bgMode; bgC1 = t.bgC1; bgC2 = t.bgC2; bgTint = t.bgTint; bgSrc = t.bgSrc;
         accent = t.accent; imgMode = t.imgMode; showsIdx = t.showsIdx; plus = t.plus; wxOn = t.wxOn;
         warnOn = t.warnOn; bgRound = t.bgRound; kwNotifyOn = t.kwNotifyOn; compact = t.compact; notify = t.notify;
-        wcRegion = t.wcRegion; wcRegionShow = t.wcRegionShow; wBar = t.wBar;
+        wcRegion = t.wcRegion; wcRegionShow = t.wcRegionShow;
         if (haptic != t.haptic) {
             haptic = t.haptic;
             Haptic.set(this, haptic);
@@ -348,8 +346,8 @@ public class ConfigActivity extends Activity {
             b.tile(R.drawable.ic_bell, "Stichwörter", kwNotifyOn ? "An" : "Aus", this::showNotify);
             if (widgetId != Prefs.APP) {
                 b.group("Dieses Widget");
-                b.tile(R.drawable.ic_widgets, "Inhalt und Leiste", SHOWS[showsIdx] + (showsIdx == 1 ? " · " + (wcRegionShow ? "Region" : "Bergwetter") : "")
-                        + (wBar ? " · Leiste an" : " · Leiste aus"), this::showShows);
+                b.tile(R.drawable.ic_widgets, "Inhalt", SHOWS[showsIdx] + (showsIdx == 1 ? " · " + (wcRegionShow ? "Region" : "Bergwetter") : ""),
+                        this::showShows);
             }
             b.group("Aussehen");
             b.tile(R.drawable.ic_palette, "Darstellung", (theme == 1 ? "Hell" : "Dunkel") + " · "
@@ -464,14 +462,11 @@ public class ConfigActivity extends Activity {
     private static final String[] SHOWS = {"Nachrichten", "Wetter", "Gemerkt"};
 
     private void showShows() {
-        LinearLayout body = subPage("Inhalt und Leiste", P_SHOWS, 0.6f, false);
+        LinearLayout body = subPage("Inhalt", P_SHOWS, 0.6f, false);
         b.label(body, "Dieses Widget zeigt");
         b.segment(body, SHOWS, showsIdx, i -> showsIdx = i);
         b.label(body, "Wenn Wetter");
         b.segment(body, new String[]{"Bergwetter", "Region"}, wcRegionShow ? 1 : 0, i -> wcRegionShow = i == 1);
-        b.label(body, "Leiste");
-        b.toggle(body, "Untere Leiste bei großem Widget", wBar, on -> wBar = on);
-        b.hint("Die Leiste erscheint erst, wenn das Widget etwa so hoch ist wie die App.");
         done(this::showMain);
     }
 
@@ -486,6 +481,16 @@ public class ConfigActivity extends Activity {
             in.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
             startActivity(in);
         });
+        if (widgetId != Prefs.APP && WidgetProvider.isWeatherWidget(this, widgetId)) {
+            int p2 = Prefs.place2(this, widgetId);
+            b.label(body, "Zweiter Ort (nebeneinander, ab ca. " + WeatherWidgetProvider.DUAL_MIN_DP + " dp Höhe)");
+            b.pillKeep((p2 < 0 ? "Keiner" : Weather.PLACES[p2]) + "  ▾", false, () -> {
+                Intent in = new Intent(this, PlaceActivity.class);
+                in.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
+                in.putExtra("second", true);
+                startActivity(in);
+            });
+        }
         b.label(body, "Anzeige");
         b.toggle(body, "Wetterbereich anzeigen", wxOn, on -> wxOn = on);
         b.toggle(body, "Wetter kompakt (ohne Vorschau und Zusatzzeilen)", compact, on -> compact = on);
@@ -763,7 +768,7 @@ public class ConfigActivity extends Activity {
         Prefs.setAccent(this, widgetId, accent);
         Prefs.setImgMode(this, imgMode);
         Prefs.setWeatherCards(this, wcBerg, wcRegion, wcWarn);
-        if (widgetId != Prefs.APP) Prefs.setWidgetShows(this, widgetId, showsIdx, wcRegionShow, wBar);
+        if (widgetId != Prefs.APP) Prefs.setWidgetShows(this, widgetId, showsIdx, wcRegionShow);
         Prefs.setKeywords(this, etKw != null ? etKw.getText().toString() : kwText, kwNotifyOn);
         for (java.util.Map.Entry<String, Boolean> e : plusF.entrySet()) Prefs.setPlusFeed(this, widgetId, e.getKey(), e.getValue());
         WidgetProvider.updateAny(this, widgetId);

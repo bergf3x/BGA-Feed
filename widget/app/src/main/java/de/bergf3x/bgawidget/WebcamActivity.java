@@ -191,13 +191,19 @@ public class WebcamActivity extends Activity {
         holder.addView(prevImg, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER));
         spin = new ProgressBar(this);
         holder.addView(spin, new FrameLayout.LayoutParams(b.px(32), b.px(32), Gravity.CENTER));
-        holder.setOnClickListener(v -> openFull());
+        // Tipp aufs Bild: Original-Seite der Webcam (Vollbild hat einen eigenen Knopf)
+        holder.setOnClickListener(v -> {
+            try {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(cam.page)).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+            } catch (Exception ignored) {
+            }
+        });
         b.flex(holder, 90);
         b.box.addView(holder, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
         prevStatus = b.text("Lade …", 12.5f, b.tx, false);
         prevStatus.setPadding(b.px(4), b.px(8), b.px(4), 0);
-        b.text("Tippe aufs Bild für Vollbild  ·  Quelle: " + cam.source, 11, b.soft, false).setPadding(b.px(4), b.px(2), b.px(4), b.px(6));
+        b.text("Tippe aufs Bild für die Original-Seite  ·  Quelle: " + cam.source, 11, b.soft, false).setPadding(b.px(4), b.px(2), b.px(4), b.px(6));
         if (cam.small) {
             b.text("Hinweis: von dieser Quelle gibt es nur ein kleines Vorschaubild.", 11, b.soft, false).setPadding(b.px(4), 0, b.px(4), b.px(4));
         }

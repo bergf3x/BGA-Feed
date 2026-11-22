@@ -19,8 +19,6 @@ import java.util.Set;
 
 public class WidgetProvider extends AppWidgetProvider {
     static final String ACTION_SET_SHOWS = "de.bergf3x.bgawidget.SET_SHOWS";
-    /** Ab dieser Hoehe (dp) erscheint die untere Leiste; Richtwert, auf dem Geraet zu pruefen. */
-    static final int NAV_MIN_DP = 480;
     static final String ACTION_REFRESH = "de.bergf3x.bgawidget.REFRESH";
     static final String ACTION_SET_TOPIC = "de.bergf3x.bgawidget.SET_TOPIC";
     static final String ACTION_PINNED = "de.bergf3x.bgawidget.PINNED";
@@ -87,7 +85,7 @@ public class WidgetProvider extends AppWidgetProvider {
             int k = intent.getIntExtra("shows", 0);
             if (id != 0) {
                 boolean region = Prefs.topic(ctx, id).equals(WeatherCards.REGION);
-                Prefs.setWidgetShows(ctx, id, k, region, Prefs.widgetBar(ctx, id));
+                Prefs.setWidgetShows(ctx, id, k, region);
                 refresh(ctx, id);
             }
             return;
@@ -176,9 +174,15 @@ public class WidgetProvider extends AppWidgetProvider {
                     : topicBroadcast(ctx, id, 100 + i, value, immutable));
         }
         if (shows == 2) rv.setViewVisibility(R.id.row_p, android.view.View.GONE);
-        boolean bar = Prefs.widgetBar(ctx, id) && Plan.heightDp(ctx, id) >= NAV_MIN_DP;
-        rv.setViewVisibility(R.id.nav_row, bar ? android.view.View.VISIBLE : android.view.View.GONE);
-        if (bar) {
+        // Untere Leiste ist immer da (das Widget ist mindestens 400 dp hoch): News | Wetter | Gemerkt mit Zaehler
+        rv.setViewVisibility(R.id.nav_row, android.view.View.VISIBLE);
+        int savedN = 0;
+        try {
+            savedN = Prefs.saved(ctx).length();
+        } catch (Exception ignored) {
+        }
+        rv.setTextViewText(R.id.nav_saved, savedN > 0 ? "Gemerkt · " + savedN : "Gemerkt");
+        {
             int[] nv = {R.id.nav_news, R.id.nav_wx, R.id.nav_saved};
             for (int k = 0; k < 3; k++) {
                 Pal.text(ctx, id, rv, nv[k], -1, k == shows ? 1f : 0.55f);
