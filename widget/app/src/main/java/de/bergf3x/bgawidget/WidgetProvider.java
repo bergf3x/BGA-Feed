@@ -19,6 +19,9 @@ import java.util.List;
 import java.util.Set;
 
 public class WidgetProvider extends AppWidgetProvider {
+    static final String ACTION_SET_SHOWS = "de.bergf3x.bgawidget.SET_SHOWS";
+    /** Ab dieser Hoehe (dp) erscheint die untere Leiste; Richtwert, auf dem Geraet zu pruefen. */
+    static final int NAV_MIN_DP = 480;
     static final String ACTION_REFRESH = "de.bergf3x.bgawidget.REFRESH";
     static final String ACTION_SET_TOPIC = "de.bergf3x.bgawidget.SET_TOPIC";
     static final String ACTION_PINNED = "de.bergf3x.bgawidget.PINNED";
@@ -68,6 +71,16 @@ public class WidgetProvider extends AppWidgetProvider {
             }
             return;
         }
+        if (ACTION_SET_SHOWS.equals(action)) {
+            int id = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, 0);
+            int k = intent.getIntExtra("shows", 0);
+            if (id != 0) {
+                boolean region = Prefs.topic(ctx, id).equals(WeatherCards.REGION);
+                Prefs.setWidgetShows(ctx, id, k, region, Prefs.widgetBar(ctx, id));
+                refresh(ctx, id);
+            }
+            return;
+        }
         if (ACTION_SET_TOPIC.equals(action)) {
             int id = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, 0);
             String t = intent.getStringExtra("topic");
@@ -114,21 +127,28 @@ public class WidgetProvider extends AppWidgetProvider {
 
         applyWeather(ctx, rv, id, fg, Prefs.argb(rgb, tx, 0.7f), false);
 
+        final boolean wxm = topic.startsWith(Taxonomy.WETTER);
+        final int shows = Prefs.widgetShows(ctx, id);
         List<String> parents = new java.util.ArrayList<>();
-        for (String t : topics) if (t.indexOf('/') < 0 && !t.equals(Taxonomy.OUT)) parents.add(t);
+        if (wxm) {
+            parents.add(WeatherCards.BERG);
+            parents.add(WeatherCards.REGION);
+        } else {
+            for (String t : topics) if (t.indexOf('/') < 0 && !t.equals(Taxonomy.OUT) && !t.equals(Taxonomy.WETTER)) parents.add(t);
+        }
         String curParent = topic.isEmpty() ? "" : topic.split("/")[0];
         for (int i = 0; i < P.length; i++) {
-            String value = i == 0 ? "" : (i - 1 < parents.size() ? parents.get(i - 1) : null);
+            String value = wxm ? (i < parents.size() ? parents.get(i) : null) : (i == 0 ? "" : (i - 1 < parents.size() ? parents.get(i - 1) : null));
             if (value == null || topics.isEmpty()) {
                 rv.setViewVisibility(P[i], android.view.View.GONE);
                 continue;
             }
-            boolean on = value.equals(curParent);
+            boolean on = wxm ? value.equals(topic) : value.equals(curParent);
             boolean hasSubs = false;
-            for (String t : topics) if (t.startsWith(value + "/") && !value.isEmpty()) hasSubs = true;
-            int fresh = i == 0 ? ListService.freshUnread(ctx, id) : 0;
-            String label = i == 0 ? (fresh > 0 ? "Alle (" + Math.min(fresh, 99) + ")" : "Alle") : value;
-            if (on && (topic.indexOf('/') >= 0 || Prefs.topicSel(ctx, id).size() > 1)) label = Prefs.topicLabel(ctx, id);
+            if (!wxm) for (String t : topics) if (t.startsWith(value + "/") && !value.isEmpty()) hasSubs = true;
+            int fresh = !wxm && i == 0 ? ListService.freshUnread(ctx, id) : 0;
+            String label = wxm ? (i == 0 ? "Bergwetter" : "Region") : (i == 0 ? (fresh > 0 ? "Alle (" + Math.min(fresh, 99) + ")" : "Alle") : value);
+            if (!wxm && on && (topic.indexOf('/') >= 0 || Prefs.topicSel(ctx, id).size() > 1)) label = Prefs.topicLabel(ctx, id);
             if (hasSubs) label = label + " ▾";
             rv.setViewVisibility(P[i], android.view.View.VISIBLE);
             rv.setTextViewText(P_T[i], Style.font(ctx, id, label));
@@ -143,6 +163,20 @@ public class WidgetProvider extends AppWidgetProvider {
             rv.setOnClickPendingIntent(P[i], hasSubs
                     ? topicPending(ctx, id, 100 + i, value, true, immutable)
                     : topicBroadcast(ctx, id, 100 + i, value, immutable));
+        }
+        if (shows == 2) rv.setViewVisibility(R.id.row_p, android.view.View.GONE);
+        boolean bar = Prefs.widgetBar(ctx, id) && Plan.heightDp(ctx, id) >= NAV_MIN_DP;
+        rv.setViewVisibility(R.id.nav_row, bar ? android.view.View.VISIBLE : android.view.View.GONE);
+        if (bar) {
+            int[] nv = {R.id.nav_news, R.id.nav_wx, R.id.nav_saved};
+            for (int k = 0; k < 3; k++) {
+                Pal.text(ctx, id, rv, nv[k], -1, k == shows ? 1f : 0.55f);
+                Intent ni = new Intent(ctx, WidgetProvider.class).setAction(ACTION_SET_SHOWS);
+                ni.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id);
+                ni.putExtra("shows", k);
+                ni.setData(Uri.parse("bgawidget://shows/" + id + "/" + k));
+                rv.setOnClickPendingIntent(nv[k], PendingIntent.getBroadcast(ctx, 0, ni, PendingIntent.FLAG_UPDATE_CURRENT | immutable));
+            }
         }
         Pal.filter(ctx, id, rv, R.id.btn_refresh, -1);
         Pal.filter(ctx, id, rv, R.id.btn_settings, -1);

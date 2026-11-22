@@ -52,6 +52,7 @@ public class MainActivity extends Activity {
     private int[] winCols = {0xFF101010};
     private LinearLayout page;
     private LinearLayout top;
+    private LinearLayout navBar;
     private float d;
     private boolean light;
     private int tx, soft, line, cardFill, chipOn, chipOnTx, accentBar;
@@ -118,6 +119,7 @@ public class MainActivity extends Activity {
         android.content.IntentFilter flt = new android.content.IntentFilter(Direct.DATA_CHANGED);
         if (android.os.Build.VERSION.SDK_INT >= 33) registerReceiver(dataChanged, flt, android.content.Context.RECEIVER_NOT_EXPORTED);
         else registerReceiver(dataChanged, flt);
+        updateNav();
         int y = scroll == null ? 0 : scroll.getScrollY();
         // anderes Thema gewaehlt (Auswahl-Blase): Liste von oben zeigen, nicht an der alten Stelle
         String tp = Prefs.topicRaw(this, ID);
@@ -516,6 +518,14 @@ public class MainActivity extends Activity {
             scroll.setOverScrollMode(View.OVER_SCROLL_NEVER);
             stack.addView(buildPull(), new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.TOP));
             root.addView(stack, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
+            navBar = new LinearLayout(this);
+            navBar.setOrientation(LinearLayout.HORIZONTAL);
+            navBar.setBackground(windowBg());
+            navBar.setOnApplyWindowInsetsListener((v, ins) -> {
+                v.setPadding(0, 0, 0, ins.getSystemWindowInsetBottom());
+                return ins;
+            });
+            root.addView(navBar, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             setContentView(root);
         } else {
             keepY = scroll.getScrollY();
@@ -560,7 +570,51 @@ public class MainActivity extends Activity {
         news();
         addWidgetCard(false);
         footer();
+        updateNav();
         restore(keepY);
+    }
+
+    private boolean weatherTab() {
+        return Prefs.topic(this, ID).startsWith(Taxonomy.WETTER);
+    }
+
+    /** Flache untere Leiste: News | Wetter | Gemerkt (nur der aktive Bereich zeigt seinen Namen). */
+    private void updateNav() {
+        if (navBar == null) return;
+        navBar.removeAllViews();
+        boolean wx = weatherTab();
+        int n = Prefs.saved(this).length();
+        navBar.addView(navItem(R.drawable.ic_news, "News", !wx, "", () -> {
+            if (wx) setTopic(""); else if (scroll != null) scroll.smoothScrollTo(0, 0);
+        }), new LinearLayout.LayoutParams(0, px(44), 1f));
+        navBar.addView(navItem(R.drawable.ic_cloud, "Wetter", wx, "", () -> {
+            if (!wx) setTopic(WeatherCards.BERG); else if (scroll != null) scroll.smoothScrollTo(0, 0);
+        }), new LinearLayout.LayoutParams(0, px(44), 1f));
+        navBar.addView(navItem(R.drawable.ic_bookmark, "Gemerkt", false, n > 0 ? String.valueOf(n) : "",
+                () -> open(SavedActivity.class)), new LinearLayout.LayoutParams(0, px(44), 1f));
+    }
+
+    private View navItem(int icon, String label, boolean on, String badge, final Runnable click) {
+        LinearLayout it = new LinearLayout(this);
+        it.setOrientation(LinearLayout.HORIZONTAL);
+        it.setGravity(Gravity.CENTER);
+        ImageView iv = new ImageView(this);
+        iv.setImageResource(icon);
+        iv.setColorFilter(on ? tx : soft);
+        it.addView(iv, lp(20, 20, 0, 0, 0, 0));
+        if (on) it.addView(text(label, 12.5f, tx, true), lp(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 6, 0, 0, 0));
+        if (!badge.isEmpty()) {
+            TextView b = text(badge, 11, chipOnTx, true);
+            b.setPadding(px(6), px(1), px(6), px(1));
+            press(b, chipOn, 8, 0);
+            it.addView(b, lp(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 5, 0, 0, 0));
+        }
+        it.setContentDescription(label + (on ? ", ausgewählt" : "") + (badge.isEmpty() ? "" : ", " + badge));
+        it.setOnClickListener(v -> {
+            Haptic.play(v, Haptic.TICK);
+            click.run();
+        });
+        return it;
     }
 
     // ------------------------------------------------------------------ Bausteine
@@ -1089,8 +1143,19 @@ public class MainActivity extends Activity {
     }
 
     private void chips(List<String> topics, final String topic) {
+        if (weatherTab()) {
+            LinearLayout wrow = new LinearLayout(this);
+            wrow.setOrientation(LinearLayout.HORIZONTAL);
+            wrow.addView(chip("Bergwetter", !topic.equals(WeatherCards.REGION), () -> setTopic(WeatherCards.BERG)));
+            wrow.addView(chip("Region", topic.equals(WeatherCards.REGION), () -> setTopic(WeatherCards.REGION)));
+            HorizontalScrollView wh = new HorizontalScrollView(this);
+            wh.setHorizontalScrollBarEnabled(false);
+            wh.addView(wrow);
+            page.addView(wh, lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 10));
+            return;
+        }
         List<String> parents = new ArrayList<>();
-        for (String t : topics) if (t.indexOf('/') < 0 && !t.equals(Taxonomy.OUT)) parents.add(t);
+        for (String t : topics) if (t.indexOf('/') < 0 && !t.equals(Taxonomy.OUT) && !t.equals(Taxonomy.WETTER)) parents.add(t);
         if (parents.isEmpty()) return;
         String curParent = topic.isEmpty() ? "" : topic.split("/")[0];
         LinearLayout row = new LinearLayout(this);
@@ -1117,11 +1182,6 @@ public class MainActivity extends Activity {
                 }
             }));
         }
-        View saved = chip("Gemerkt", false, () -> open(SavedActivity.class));
-        ((TextView) saved).setCompoundDrawablesRelativeWithIntrinsicBounds(tinted(R.drawable.ic_bookmark, 16), null, null, null);
-        ((TextView) saved).setCompoundDrawablePadding(px(6));
-        saved.setContentDescription("Gemerkte Artikel");
-        row.addView(saved);
         HorizontalScrollView hs = new HorizontalScrollView(this);
         hs.setHorizontalScrollBarEnabled(false);
         hs.addView(row);

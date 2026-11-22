@@ -70,12 +70,14 @@ public class PreviewActivity extends Activity {
             } catch (Exception ignored) {
             }
         });
-        final TextView save = b.pillKeep(Prefs.isSaved(this, link) ? "Gemerkt ✓ (tippen zum Entfernen)" : "Merken", false, () -> { });
-        save.setOnClickListener(v -> {
-            boolean now = Prefs.toggleSaved(this, title, meta, text, link);
-            save.setText(now ? "Gemerkt ✓ (tippen zum Entfernen)" : "Merken");
-            Haptic.play(save, now ? Haptic.CONFIRM : Haptic.TICK);
-        });
+        if (!wx) {
+            final TextView save = b.pillKeep(Prefs.isSaved(this, link) ? "Gemerkt ✓ (tippen zum Entfernen)" : "Merken", false, () -> { });
+            save.setOnClickListener(v -> {
+                boolean now = Prefs.toggleSaved(this, title, meta, text, link);
+                save.setText(now ? "Gemerkt ✓ (tippen zum Entfernen)" : "Merken");
+                Haptic.play(save, now ? Haptic.CONFIRM : Haptic.TICK);
+            });
+        }
         b.pillKeep("Teilen", false, () -> {
             try {
                 Intent send = new Intent(Intent.ACTION_SEND);

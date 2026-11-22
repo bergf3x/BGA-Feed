@@ -685,5 +685,44 @@
                 android:textColor="#FFFFFFFF"
                 android:textSize="13sp" />
         </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/nav_row"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/nav_news"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="News"
+                android:textColor="#FFFFFFFF"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/nav_wx"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Wetter"
+                android:textColor="#FFFFFFFF"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/nav_saved"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Gemerkt"
+                android:textColor="#FFFFFFFF"
+                android:textSize="13sp" />
+        </LinearLayout>
     </LinearLayout>
 </FrameLayout>
