@@ -147,7 +147,7 @@ public class ConfigActivity extends Activity {
 
     private String baseSnap = "";
 
-    /** Alle Entwurfswerte als Text: Aenderung = Knopf "Uebernehmen" wird hell. */
+    /** Alle Entwurfswerte als Text: Aenderung = Knopf "OK" wird hell. */
     private String snap() {
         StringBuilder sb = new StringBuilder();
         sb.append(bgPct).append('|').append(txPct).append('|').append(color).append('|').append(plus).append('|')
@@ -217,7 +217,7 @@ public class ConfigActivity extends Activity {
         else showMain();
     }
 
-    /** Einheitliche Fusszeile einer Unterseite: "Abbrechen" setzt die Seite zurueck, "Uebernehmen" speichert sofort. */
+    /** Einheitliche Fusszeile einer Unterseite: "Abbrechen" setzt die Seite zurueck, "OK" speichert sofort. */
     private void done(final Runnable back) {
         final String base = snap();
         final int pg = page;

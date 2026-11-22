@@ -10,6 +10,8 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.25",
+                    "~ Einheitlich „Abbrechen“ und „OK“ statt „Übernehmen“ in allen Fenstern (App und Widget)"},
             {"1.23",
                     "~ Widget: Bei „Berchtesgadener Anzeiger“ und anderen Überschriften erschien beim Scrollen ein fremdes Vorschaubild; Zeilen werden jetzt sauber zurückgesetzt"},
             {"1.22",

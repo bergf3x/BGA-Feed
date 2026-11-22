@@ -616,8 +616,8 @@ final class Bubble {
     }
 
     /**
-     * Einheitliche Fusszeile fuer alles, was Einstellungen aendert: links "Abbrechen", rechts "Uebernehmen".
-     * "Uebernehmen" ist erst hell, wenn etwas geaendert ist (mit watch()). closeAfter = Blase danach schliessen.
+     * Einheitliche Fusszeile fuer alles, was Einstellungen aendert: links "Abbrechen", rechts "OK".
+     * "OK" ist erst hell, wenn etwas geaendert ist (mit watch()). closeAfter = Blase danach schliessen.
      */
     TextView footer(boolean closeAfter, Runnable onCancel, Runnable onApply) {
         LinearLayout row = new LinearLayout(act);
@@ -626,7 +626,7 @@ final class Bubble {
             onCancel.run();
             if (closeAfter) close();
         });
-        TextView ok = pillIn(row, "Übernehmen", false, () -> {
+        TextView ok = pillIn(row, "OK", false, () -> {
             onApply.run();
             if (closeAfter) close();
         });
