@@ -35,6 +35,25 @@ def main():
             if t or d:
                 print(f"{y:5} | {t[:70]} | {d[:100]}")
         return
+    if cmd == "tapin":
+        # Text enthaelt arg (z. B. Quelle in der Meta-Zeile); 3. Argument = laufende Nummer. Tippt links neben das Textende (Karte).
+        hits = [(t, x, y) for t, d, x, y in nodes() if arg in t and 450 < y < 2250]
+        if len(hits) > nth:
+            t, x, y = hits[nth]
+            subprocess.run(["adb", "shell", "input", "tap", "300", str(y)])
+            print(f"getippt (enthaelt): {arg} @ 300,{y} | {t[:70]}")
+        else:
+            print(f"NICHT GEFUNDEN: {arg}")
+        return
+    if cmd == "imgs":
+        n = tot = 0
+        for m in re.finditer(r'class="android.widget.ImageView"[^>]*?bounds="\[(\d+),(\d+)\]\[(\d+),(\d+)\]"', dump()):
+            x1, y1, x2, y2 = map(int, m.groups())
+            tot += 1
+            if 150 <= x2 - x1 <= 320 and 110 <= y2 - y1 <= 240:
+                n += 1
+        print(f"Miniaturen sichtbar: {n} (ImageViews gesamt {tot})")
+        return
     ns = list(nodes())
     exact = [n for n in ns if arg and (n[0] == arg or n[1] == arg)]
     loose = [n for n in ns if arg and (arg in n[1] or n[0].startswith(arg))]

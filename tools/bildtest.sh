@@ -12,8 +12,24 @@ adb install -r -g app.apk | tail -1 | tee -a $R
 adb shell setprop log.tag.BGAclass DEBUG
 adb shell setprop log.tag.BGAimg INFO
 adb logcat -c
+adb shell am start -W -n $ACT >/dev/null; sleep 10
+adb shell am force-stop $PKG
+# alle Quellen einschalten (Vollbild-App = Kennung -1)
+adb shell run-as $PKG cat shared_prefs/bga_widget.xml > /tmp/p.xml 2>/dev/null
+python3 - <<'PY'
+import re
+x=open('/tmp/p.xml').read() if True else ''
+if '<map' not in x: x="<?xml version='1.0' encoding='utf-8' standalone='yes' ?>\n<map>\n</map>\n"
+x=re.sub(r'<set name="fd_-1">.*?</set>\s*','',x,flags=re.S)
+ids=["bga","tt","bgland24","chiemgau24","orf_salzburg","lra_bgl","npv","br24","merkur"]
+x=x.replace('</map>','<set name="fd_-1">'+''.join(f'<string>{i}</string>' for i in ids)+'</set>\n</map>')
+open('/tmp/p2.xml','w').write(x)
+PY
+adb shell "run-as $PKG sh -c 'cat > shared_prefs/bga_widget.xml'" < /tmp/p2.xml
+adb shell run-as $PKG grep -c 'fd_-1' shared_prefs/bga_widget.xml | tee -a $R
+adb logcat -c
 adb shell am start -W -n $ACT >/dev/null
-sleep 70
+sleep 90
 shot b1_liste
 log "== Bilder je Host (Logcat BGAimg) =="
 adb logcat -d -s BGAimg:I > $OUT/img.txt
