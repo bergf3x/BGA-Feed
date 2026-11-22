@@ -10,6 +10,7 @@ public class InfoActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final Bubble b = new Bubble(this, 320, 12);
+        b.high();
         b.header("Über die App", b::close);
         String ver = "?";
         try {
@@ -22,7 +23,7 @@ public class InfoActivity extends Activity {
         b.text("Entwickelt von bergf3x", 13, b.soft, false).setPadding(b.px(4), 0, 0, b.px(8));
 
         b.divider();
-        android.widget.LinearLayout log = section(b, "Neuigkeiten", 0.4f);
+        android.widget.LinearLayout log = section(b, "Neuigkeiten", 0.45f);
         for (String[] v : Changelog.LOG) {
             log.addView(line(b, "Version " + v[0], 14, b.title, true, 8));
             for (int i = 1; i < v.length; i++) log.addView(line(b, v[i], 13, b.tx, false, 1));
@@ -59,6 +60,8 @@ public class InfoActivity extends Activity {
         b.pill("Schließen", false, true, () -> { });
     }
 
+    private final java.util.List<Runnable> sections = new java.util.ArrayList<>();
+
     /** Aufklappbarer Abschnitt; liefert den Inhaltsbereich. */
     private android.widget.LinearLayout section(Bubble b, final String title, float frac) {
         final android.widget.TextView head = b.text(title + "  ▾", 15, b.title, true);
@@ -66,8 +69,15 @@ public class InfoActivity extends Activity {
         final android.widget.LinearLayout body = b.scrollBox(frac);
         final android.view.View sv = (android.view.View) body.getParent();
         sv.setVisibility(android.view.View.GONE);
+        final Runnable close = () -> {
+            sv.setVisibility(android.view.View.GONE);
+            head.setText(title + "  ▾");
+        };
+        sections.add(close);
         head.setOnClickListener(x -> {
             boolean open = sv.getVisibility() != android.view.View.VISIBLE;
+            // immer nur ein Abschnitt offen, damit "Schließen" sichtbar bleibt
+            for (Runnable r : sections) r.run();
             sv.setVisibility(open ? android.view.View.VISIBLE : android.view.View.GONE);
             head.setText(title + (open ? "  ▴" : "  ▾"));
             Haptic.play(x, Haptic.TICK);
