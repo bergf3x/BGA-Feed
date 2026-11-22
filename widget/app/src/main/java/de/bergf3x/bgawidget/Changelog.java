@@ -10,6 +10,10 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.09",
+                    "+ Vorschaubilder in der Nachrichtenliste (App und Widget) und im Vorschau-Fenster; Schalter Aus / Nur WLAN / Immer unter Darstellung",
+                    "+ Quellen-Wächter: unter Info > Quellen steht je Quelle, ob sie sauber läuft (Abruf, Menge, Bilder, Neues); bei Ausfall Hinweis oben",
+                    "~ Bessere Einsortierung: Straftaten und Notfälle landen in Blaulicht statt in Leute, Wirtschaft und Wissen erkennt man auch am Titel"},
             {"1.08",
                     "~ „Übernehmen“ und „Fertig“ sind zunächst grau und werden erst hell, wenn etwas geändert wurde (App und Widget, alle Menüs)"},
             {"1.07",

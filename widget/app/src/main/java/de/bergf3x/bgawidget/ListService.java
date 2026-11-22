@@ -158,8 +158,24 @@ public class ListService extends RemoteViewsService {
         if (online && merged.isEmpty()) showEmptyReason(ctx, id, all, selected, topic);
         // Gleiche Zeit (z. B. erster Lauf): Reihenfolge innerhalb des Feeds bleibt erhalten
         Collections.sort(merged, (a, b) -> Long.compare(b.time, a.time));
+        String bad = Watch.badSummary(ctx);
+        if (!bad.isEmpty()) {
+            if (stale.length() > 0) stale.append(" · ");
+            stale.append(bad);
+        }
         Prefs.setSrcWarn(ctx, stale.toString());
-        return dedupe(merged);
+        final List<FeedItem> result = dedupe(merged);
+        if (online && id != Prefs.APP) {
+            // Widget: Bilder der obersten Meldungen im WLAN vorladen, danach die Liste neu zeichnen
+            final Context app = ctx.getApplicationContext();
+            ImageStore.prefetch(app, result, 20, () -> {
+                android.appwidget.AppWidgetManager mgr = android.appwidget.AppWidgetManager.getInstance(app);
+                for (int wid : mgr.getAppWidgetIds(new android.content.ComponentName(app, WidgetProvider.class))) {
+                    mgr.notifyAppWidgetViewDataChanged(wid, R.id.list);
+                }
+            });
+        }
+        return result;
     }
 
     /**
@@ -420,7 +436,17 @@ public class ListService extends RemoteViewsService {
             fill.putExtra(PreviewActivity.EXTRA_META, meta);
             fill.putExtra(PreviewActivity.EXTRA_TEXT, it.description);
             fill.putExtra(PreviewActivity.EXTRA_LINK, it.link);
+            fill.putExtra(PreviewActivity.EXTRA_IMAGE, it.image);
             rv.setOnClickFillInIntent(R.id.item_root, fill);
+            // Vorschaubild nur aus dem Speicher (kein Netz im Widget-Aufbau); ohne Bild bleibt die Zeile wie vorher
+            android.graphics.Bitmap th = it.image.isEmpty() ? null : ImageStore.cached(ctx, it.image, 140);
+            if (th != null) {
+                rv.setImageViewBitmap(R.id.item_thumb, ImageStore.square(th, Math.round(46 * dp), 8 * dp));
+                rv.setViewVisibility(R.id.item_thumb, android.view.View.VISIBLE);
+                rv.setInt(R.id.item_thumb, "setImageAlpha", read ? 130 : 255);
+            } else {
+                rv.setViewVisibility(R.id.item_thumb, android.view.View.GONE);
+            }
             return rv;
         }
 

@@ -77,6 +77,10 @@ final class Direct {
     private static final Pattern A_ANY = Pattern.compile("<a\\b[^>]*?href=\"([^\"]+)\"[^>]*>(.*?)</a>", Pattern.DOTALL);
     private static final Pattern HEAD = Pattern.compile("<h[1-4][^>]*>(.*?)</h[1-4]>", Pattern.DOTALL);
     private static final Pattern PARA = Pattern.compile("<p[^>]*>(.*?)</p>", Pattern.DOTALL);
+    /** Teaser-Bild im Anzeiger-System: verzoegert geladen, die echte Adresse steht in data-src. */
+    private static final Pattern IMG_LAZY = Pattern.compile("<img\\b[^>]*?data-src=\"([^\"]*?/cms_media/[^\"]+)\"", Pattern.DOTALL);
+    private static final Pattern MEDIA_URL = Pattern.compile(
+            "<(?:media:thumbnail|media:content|enclosure)\\b[^>]*?\\burl=\"([^\"]+)\"[^>]*>", Pattern.DOTALL);
 
     /** Quellseiten des Anzeigers: Pfad, Thema, optional nur URLs mit diesem Teil. */
     private static final String[][] BGA_SOURCES = {
@@ -164,12 +168,17 @@ final class Direct {
                 th.setDaemon(true);
                 th.start();
             }
+            int imgN = 0;
+            for (Map<String, Object> it : found) if (it.get("img") != null && !String.valueOf(it.get("img")).isEmpty()) imgN++;
+            Integer freshN = NEWN.get(f.id);
+            Watch.ok(ctx, f.id, found.size(), imgN, freshN == null ? 0 : freshN);
             int regionN = 0;
             for (Map<String, Object> it : found) if (String.valueOf(it.get("topic")).startsWith("Region")) regionN++;
             log(ctx, f.name + ": " + found.size() + " Artikel direkt (davon Region " + regionN + "), " + timed + " Zeiten, "
                     + (System.currentTimeMillis() - t0) / 1000 + " s" + (bga ? "" : " | " + rep));
             return xml;
         } catch (Exception e) {
+            Watch.fail(ctx, f.id, e.getMessage() == null ? e.toString() : e.getMessage());
             log(ctx, f.name + ": FEHLER direkt (" + e + ") - nehme GitHub-Feed");
             Net.lastMirror = false;
             String x = Net.downloadFeed(f.url);
@@ -267,11 +276,19 @@ final class Direct {
             }
             if (title.isEmpty()) continue;
             boolean plus = Pattern.compile("<img[^>]*plus|class=\"[^\"]*plus", Pattern.CASE_INSENSITIVE).matcher(inner).find();
+            String img = "";
+            Matcher im = IMG_LAZY.matcher(inner);
+            if (im.find()) {
+                String u = im.group(1).trim();
+                img = u.startsWith("http") ? u : base + (u.startsWith("/") ? "" : "/") + u;
+            }
             Map<String, Object> prev = items.get(sid);
             if (prev != null) {
                 plus = plus || (Boolean) prev.get("plus");
+                if (img.isEmpty()) img = (String) prev.get("img");
                 if (((String) prev.get("teaser")).length() >= teaser.length()) {
                     prev.put("plus", plus);
+                    prev.put("img", img);
                     continue;
                 }
             }
@@ -282,6 +299,7 @@ final class Direct {
             it.put("teaser", teaser);
             it.put("category", category);
             it.put("plus", plus);
+            it.put("img", img);
             items.put(sid, it);
         }
         return new ArrayList<>(items.values());
@@ -535,6 +553,20 @@ final class Direct {
         return v.trim();
     }
 
+    /** Bild-Adresse eines RSS-Eintrags (media:thumbnail, media:content oder enclosure vom Typ Bild); leer, wenn keine. */
+    private static String rssImage(String blk) {
+        Matcher m = MEDIA_URL.matcher(blk);
+        while (m.find()) {
+            String tag = m.group(0);
+            String u = FeedItem.unescape(m.group(1)).trim();
+            if (!u.startsWith("http")) continue;
+            boolean isImg = tag.contains("image") || u.matches("(?i).*\\.(jpe?g|png|webp)(\\?.*)?$");
+            if (tag.startsWith("<enclosure") && !isImg) continue;
+            return u;
+        }
+        return "";
+    }
+
     /** RSS 2.0 / RDF / Atom tolerant lesen (nur echte Artikel-Links). */
     static List<Map<String, Object>> parseRss(String xml, boolean art) throws IOException {
         List<Map<String, Object>> out = new ArrayList<>();
@@ -562,6 +594,7 @@ final class Direct {
             it.put("category", clean(rssTag(blk, "category")));
             it.put("topic", bgTopic(link));
             it.put("plus", false);
+            it.put("img", rssImage(blk));
             String raw = rssTag(blk, "pubDate");
             long t = -1;
             try {
@@ -763,6 +796,9 @@ final class Direct {
 
     // ------------------------------------------------------------------ Zustand + RSS
 
+    /** Neue Meldungen beim letzten Abgleich je Quelle (fuer den Quellen-Waechter). */
+    private static final Map<String, Integer> NEWN = new java.util.concurrent.ConcurrentHashMap<>();
+
     private static String merge(Context ctx, Catalog.Feed f, boolean bga, List<Map<String, Object>> found) {
         SharedPreferences sp = ctx.getSharedPreferences("direct", Context.MODE_PRIVATE);
         Map<String, JSONObject> state = new java.util.LinkedHashMap<>();
@@ -784,11 +820,13 @@ final class Direct {
             }
         }
         long now = System.currentTimeMillis();
+        int newCount = 0;
         try {
             for (Map<String, Object> it : found) {
                 String key = String.valueOf(it.get("sid"));
                 JSONObject o = state.get(key);
                 if (o == null) {
+                    newCount++;
                     o = new JSONObject();
                     o.put("sid", it.get("sid"));
                     o.put("url", it.get("url"));
@@ -807,9 +845,12 @@ final class Direct {
                 o.put("category", it.get("category"));
                 o.put("topic", it.get("topic"));
                 o.put("plus", o.optBoolean("plus") || (Boolean) it.get("plus"));
+                String img = it.get("img") == null ? "" : String.valueOf(it.get("img"));
+                if (!img.isEmpty()) o.put("img", img);
             }
         } catch (Exception ignored) {
         }
+        NEWN.put(f.id, newCount);
         estimateTimes(state, bga, now);
         List<JSONObject> sorted = new ArrayList<>(state.values());
         final boolean byId = bga;
@@ -836,7 +877,9 @@ final class Direct {
                     .append("</guid><pubDate>").append(fmt.format(new Date(o.optLong("first", now))))
                     .append("</pubDate><category>").append(esc(o.optString("category"))).append("</category><topic>")
                     .append(esc(o.optString("topic", "Region"))).append("</topic><description>")
-                    .append(esc(o.optString("teaser"))).append("</description></item>\n");
+                    .append(esc(o.optString("teaser"))).append("</description>")
+                    .append(o.optString("img").isEmpty() ? "" : "<enclosure url=\"" + esc(o.optString("img")) + "\" type=\"image/jpeg\"/>")
+                    .append("</item>\n");
         }
         xml.append("</channel></rss>\n");
         sp.edit().putString("state_" + f.id, save.toString()).apply();
