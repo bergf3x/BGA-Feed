@@ -226,8 +226,8 @@ public class WebcamActivity extends Activity {
             } catch (Exception ignored) {
             }
         });
-        // "Zur Liste": zurueck in die Auswahl; erst dort schliesst "Schliessen" das Fenster
-        b.pillKeep("Zur Liste", false, this::showList);
+        // "Schliessen": schliesst nur die Ansicht, man ist wieder in der Auswahl; dort schliesst "Schliessen" das Fenster
+        b.pillKeep("Schließen", false, this::showList);
         load();
     }
 
