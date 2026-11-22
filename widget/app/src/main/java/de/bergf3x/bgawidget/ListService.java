@@ -534,9 +534,6 @@ public class ListService extends RemoteViewsService {
             rv.setViewVisibility(R.id.item_meta, android.view.View.GONE);
             rv.setViewVisibility(R.id.item_dot, android.view.View.GONE);
             rv.setViewVisibility(R.id.item_plus, android.view.View.GONE);
-            // Zeilen werden vom Widget wiederverwendet: Vorschaubild einer frueheren Zeile darf nicht stehen bleiben
-            rv.setViewVisibility(R.id.item_thumb, android.view.View.GONE);
-            rv.setImageViewBitmap(R.id.item_thumb, null);
             rv.setTextViewText(R.id.item_title, Style.font(ctx, widgetId, it.title.toUpperCase(java.util.Locale.GERMANY)));
             rv.setTextViewTextSize(R.id.item_title, android.util.TypedValue.COMPLEX_UNIT_SP, 12f);
             Pal.text(ctx, widgetId, rv, R.id.item_title, -1, 0.8f);
@@ -564,9 +561,6 @@ public class ListService extends RemoteViewsService {
             float dim = read ? 0.55f : 1f;
             String meta = it.meta();
             boolean hit = Keywords.matches(kwList, it);
-            // wiederverwendete Zeile kann vorher eine Ueberschrift gewesen sein: alles ausdruecklich zuruecksetzen
-            rv.setViewVisibility(R.id.item_accent, android.view.View.VISIBLE);
-            rv.setViewVisibility(R.id.item_meta, android.view.View.VISIBLE);
             rv.setTextViewText(R.id.item_title, Style.font(ctx, widgetId, hit ? "★ " + it.title : it.title));
             
             rv.setTextViewTextSize(R.id.item_title, android.util.TypedValue.COMPLEX_UNIT_SP, Style.titleSp(sizeIdx));
@@ -600,7 +594,6 @@ public class ListService extends RemoteViewsService {
                 rv.setInt(R.id.item_thumb, "setImageAlpha", read ? 130 : 255);
             } else {
                 rv.setViewVisibility(R.id.item_thumb, android.view.View.GONE);
-                rv.setImageViewBitmap(R.id.item_thumb, null);
             }
             return rv;
         }
