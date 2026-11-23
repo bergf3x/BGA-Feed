@@ -40,7 +40,7 @@ import java.util.Set;
 public class MainActivity extends Activity {
     private static final int ID = Prefs.APP;
     private static final long STALE_MS = 5 * 60000L;
-    private static final int MAX_ITEMS = 60;
+    private static final int MAX_ITEMS = 100;
 
     private final Handler ui = new Handler(Looper.getMainLooper());
     private ScrollView scroll;
@@ -1522,6 +1522,25 @@ public class MainActivity extends Activity {
 
         final String metaText = it.meta();
         card.setOnClickListener(v -> {
+            if (it.link.startsWith(WeatherCards.OPEN)) {
+                // Bergwetter-Region auf- oder zuklappen, Stelle in der Liste behalten
+                Prefs.toggleBergOpen(this, it.link.substring(WeatherCards.OPEN.length()));
+                final int y = scroll == null ? 0 : scroll.getScrollY();
+                Prefs.setLocalOnly(this);
+                AppWidgetManager wm = AppWidgetManager.getInstance(this);
+                for (int wid : wm.getAppWidgetIds(new ComponentName(this, WidgetProvider.class)))
+                    wm.notifyAppWidgetViewDataChanged(wid, R.id.list);
+                build();
+                if (scroll != null) scroll.post(() -> scroll.scrollTo(0, y));
+                return;
+            }
+            if (WeatherCards.isStationLink(it.link)) {
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, android.net.Uri.parse(it.link)));
+                } catch (Exception ignored) {
+                }
+                return;
+            }
             Intent in = new Intent(this, PreviewActivity.class);
             in.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, ID);
             in.putExtra(PreviewActivity.EXTRA_TITLE, it.title);

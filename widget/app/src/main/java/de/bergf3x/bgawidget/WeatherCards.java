@@ -39,6 +39,41 @@ final class WeatherCards {
             {"berner", "Berner Alpen, Glarner Alpen, Voralpen", "Schweiz", "Weitere Alpenregionen", DAV + "/alpen/berner-alpen-glarner-alpen-schweizer-voralpen"},
             {"aosta", "Aosta, Walliser Alpen, Tessin", "Schweiz, Italien", "Weitere Alpenregionen", DAV + "/alpen/aosta-walliser-alpen-tessin"},
     };
+
+    /** Gipfel und Orte je Region (Adressen von den DAV-Regionsseiten, 23.11.2026): Region-ID -> {Name, Adressende, G = Gipfel / O = Ort}. */
+    static final java.util.Map<String, String[][]> BERG_STATIONS = new java.util.HashMap<>();
+    static {
+        BERG_STATIONS.put("bay_ost", new String[][]{
+                {"Watzmann", "watzmann", "G"}, {"Wendelstein", "wendelstein", "G"}, {"Kampenwand", "kampenwand", "G"},
+                {"Wilder Kaiser", "wilder-kaiser", "G"}, {"Hochkönig", "hochkonig", "G"}, {"Dachstein", "dachstein", "G"},
+                {"Totes Gebirge", "totes-gebirge", "G"}, {"Großer Rettenstein", "grosser-rettenstein", "G"},
+                {"Berchtesgaden", "berchtesgaden", "O"}, {"Lofer", "lofer", "O"}, {"Salzburg", "salzburg", "O"},
+                {"Chiemsee", "chiemsee", "O"}, {"Tegernsee", "tegernsee", "O"}, {"Kitzbühel", "kitzbuhel", "O"},
+                {"Kelchsau", "kelchsau", "O"}, {"Salzkammergut", "salzkammergut", "O"}});
+        BERG_STATIONS.put("bay_west", new String[][]{
+                {"Zugspitze", "zugspitze", "G"}, {"Hochvogel", "hochvogel", "G"}, {"Benediktenwand", "benediktenwand", "G"},
+                {"Birkkarspitze", "birkkarspitze", "G"}, {"Hohe Munde", "hohe-munde", "G"}, {"Kanisfluh", "kanisfluh", "G"},
+                {"Parseierspitze", "parseierspitze", "G"}, {"Schesaplana", "schesaplana", "G"},
+                {"München", "munchen", "O"}, {"Oberstdorf", "oberstdorf", "O"}, {"Füssen", "fussen", "O"},
+                {"Kempten", "kempten", "O"}, {"Oberammergau", "oberammergau", "O"}, {"Innsbruck", "innsbruck", "O"},
+                {"Achensee", "achensee", "O"}, {"Lech", "lech", "O"}, {"Mittelberg", "mittelberg", "O"},
+                {"Bludenz", "bludenz", "O"}, {"Bregenz", "bregenz", "O"}});
+        BERG_STATIONS.put("zillertal", new String[][]{
+                {"Glocknergruppe", "glocknergruppe", "G"}, {"Großvenediger", "grossvenediger", "G"},
+                {"Hoher Sonnblick", "hoher-sonnblick", "G"}, {"Kitzsteinhorn", "kitzsteinhorn", "G"},
+                {"Hochalmspitze", "hochalmspitze", "G"}, {"Großer Löffler", "grosser-loffler", "G"},
+                {"Hochfeilergruppe", "hochfeilergruppe", "G"}, {"Kreuzeckgruppe", "kreuzeckgruppe", "G"},
+                {"Petzeck", "petzeck", "G"}, {"Rastkogel", "rastkogel", "G"}, {"Rieserfernergruppe", "rieserfernergruppe", "G"},
+                {"Villgratner Berge", "villgratner-berge", "G"},
+                {"Zillertal", "zillertal", "O"}, {"Badgastein", "badgastein", "O"}, {"Mallnitz", "mallnitz", "O"},
+                {"Brenner", "brenner", "O"}});
+        BERG_STATIONS.put("oetztal_nord", new String[][]{
+                {"Piz Buin", "piz-buin", "G"}, {"Piz Ela", "piz-ela", "G"}, {"Kaunergrat", "kaunergrat", "G"},
+                {"Zuckerhütl", "zuckerhutl", "G"},
+                {"St. Moritz", "st-moritz", "O"}, {"Chur", "chur", "O"}, {"Oetz", "oetz", "O"},
+                {"Stubaital (Neustift)", "stubaital-neustift", "O"}});
+    }
+    static final String OPEN = "oeffnen:";
     static final Set<String> BERG_DEFAULT = new LinkedHashSet<>(java.util.Arrays.asList("bay_ost", "bay_west", "zillertal", "oetztal_nord"));
 
     /** Warn-Regionen (DWD, Kreis): Schluessel, Name, Ort fuer die DWD-Suche. */
@@ -71,11 +106,32 @@ final class WeatherCards {
             out.add(card(BERG, "Wochenende", "Bergbericht fürs Wochenende", "DAV · erscheint zum Wochenende",
                     "Der Bergbericht des Deutschen Alpenvereins für das kommende Wochenende. Er erscheint auf der Seite des DAV.",
                     "https://www.alpenverein.de/thema/bergbericht"));
+            Set<String> open = Prefs.bergOpen(c);
             for (String[] r : BERG_REGIONS) {
                 if (!berg.contains(r[0])) continue;
-                out.add(card(BERG, r[3], r[1], r[2],
-                        "Die aktuelle Vorhersage mit Schneefallgrenze, Wind, Gewitterrisiko und den Tagen bis Samstag steht auf der Seite des Deutschen Alpenvereins.",
-                        r[4]));
+                String[][] st = BERG_STATIONS.get(r[0]);
+                if (st == null) {
+                    out.add(card(BERG, r[3], r[1], r[2],
+                            "Die aktuelle Vorhersage mit Schneefallgrenze, Wind, Gewitterrisiko und den Tagen bis Samstag steht auf der Seite des Deutschen Alpenvereins.",
+                            r[4]));
+                    continue;
+                }
+                boolean isOpen = open.contains(r[0]);
+                // Regionskarte klappt Gipfel und Orte auf oder zu (Link beginnt mit "oeffnen:")
+                out.add(card(BERG, r[3], r[1], r[2] + " · " + st.length + " Links " + (isOpen ? "▴" : "▾"),
+                        "Tippen klappt die Gipfel und Orte dieser Region auf oder zu.", OPEN + r[0]));
+                if (!isOpen) continue;
+                out.add(card(BERG, r[3], "Übersicht: " + r[1], "Alle Stationen auf alpenverein.de",
+                        "Die Übersicht dieser Region steht auf der Seite des Deutschen Alpenvereins.", r[4]));
+                for (int pass = 0; pass < 2; pass++) {
+                    String kind = pass == 0 ? "G" : "O";
+                    for (String[] x : st) {
+                        if (!x[2].equals(kind)) continue;
+                        out.add(card(BERG, r[3], x[0], (pass == 0 ? "Gipfel" : "Ort") + " · DAV Bergwetter",
+                                "Die Vorhersage für " + x[0] + " steht auf der Seite des Deutschen Alpenvereins.",
+                                r[4] + "/" + x[1]));
+                    }
+                }
             }
         }
         if (Prefs.regionCards(c)) {
@@ -99,6 +155,11 @@ final class WeatherCards {
             }
         }
         return out;
+    }
+
+    /** Direktlink auf einen Gipfel oder Ort (oder eine ganze Region) des DAV-Bergwetters. */
+    static boolean isStationLink(String link) {
+        return link.startsWith(DAV + "/alpen/");
     }
 
     /** Gehoert der Link zu einer Wetter-Karte? Dann nicht als gelesen abdunkeln. */

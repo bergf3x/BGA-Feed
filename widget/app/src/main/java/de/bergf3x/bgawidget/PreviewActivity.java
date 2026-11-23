@@ -33,6 +33,27 @@ public class PreviewActivity extends Activity {
             return;
         }
 
+        // Regionskarte im Bergwetter: auf- oder zuklappen, Liste neu zeichnen, kein Fenster zeigen
+        if (link.startsWith(WeatherCards.OPEN)) {
+            Prefs.toggleBergOpen(this, link.substring(WeatherCards.OPEN.length()));
+            Prefs.setLocalOnly(this);
+            android.appwidget.AppWidgetManager m = android.appwidget.AppWidgetManager.getInstance(this);
+            for (int id : m.getAppWidgetIds(new android.content.ComponentName(this, WidgetProvider.class)))
+                m.notifyAppWidgetViewDataChanged(id, R.id.list);
+            sendBroadcast(new Intent(Direct.DATA_CHANGED).setPackage(getPackageName()));
+            finish();
+            return;
+        }
+        // Gipfel oder Ort im Bergwetter: direkt die DAV-Seite im Browser oeffnen
+        if (WeatherCards.isStationLink(link)) {
+            try {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(link)));
+            } catch (Exception ignored) {
+            }
+            finish();
+            return;
+        }
+
         // als gelesen markieren; Liste nur aus dem Cache neu zeichnen (kein Netz, kein Flackern)
         final boolean wx = WeatherCards.isCardLink(this, link);
         if (!link.isEmpty() && !wx) {
