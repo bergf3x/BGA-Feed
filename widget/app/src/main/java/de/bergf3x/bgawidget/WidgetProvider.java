@@ -120,10 +120,7 @@ public class WidgetProvider extends AppWidgetProvider {
         Set<String> selected = Catalog.effective(all, Prefs.feeds(ctx, id));
         List<String> topics = Taxonomy.topics(ctx, id);
         String topic = Prefs.topic(ctx, id);
-        if (!topic.isEmpty() && !topics.contains(topic)) {
-            topic = "";
-            Prefs.setTopic(ctx, id, "");
-        }
+        // Gespeicherte Auswahl nie automatisch loeschen: ein Thema ohne aktuelle Artikel bleibt gewaehlt
         int immutable = Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0;
         int fg = Prefs.argb(rgb, tx, 1f);
         int dark = 0xFF1B1F22;

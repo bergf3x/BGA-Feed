@@ -1073,10 +1073,7 @@ public class MainActivity extends Activity {
         Set<String> selected = Catalog.effective(all, Prefs.feeds(this, ID));
         List<String> topics = Taxonomy.topics(this, ID);
         String topic = Prefs.topic(this, ID);
-        if (!topic.isEmpty() && !topics.contains(topic)) {
-            topic = "";
-            Prefs.setTopic(this, ID, "");
-        }
+        // Gespeicherte Auswahl bleibt erhalten, auch wenn das Thema gerade keine Artikel hat (z. B. Abo aus, Neuabruf)
         chips(topics, topic);
         markAllBar();
     }

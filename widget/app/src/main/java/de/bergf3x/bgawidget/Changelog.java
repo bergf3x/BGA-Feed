@@ -10,6 +10,8 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.32",
+                    "~ Die gewählte Zeitungs- und Themenauswahl bleibt jetzt dauerhaft gespeichert (App und Widget): sie wird nicht mehr automatisch auf „Alle“ zurückgesetzt, wenn das Thema gerade keine Artikel hat"},
             {"1.31",
                     "+ „Alle als gelesen markieren“: Leiste über der Nachrichtenliste mit Anzahl der Ungelesenen, in App und Widget synchron; sie erscheint nur, solange es Neues gibt",
                     "~ Behoben: Beim Öffnen eines Artikels verschwand die Markierung „Neu“ bei allen anderen Nachrichten. Jetzt endet „Neu“ nur für den geöffneten Artikel (App und Widget)"},
