@@ -137,6 +137,7 @@ public class ColorsActivity extends Activity {
     }
 
     private void fillRows(LinearLayout host, int cur, String firstLbl, IntCb pick) {
+        Bubble.soft(host);
         host.removeAllViews();
         int[] all = new int[PAL.length + 1];
         all[0] = -1;

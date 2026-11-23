@@ -86,6 +86,7 @@ public class UpdateActivity extends Activity {
 
     /** Baut Intervallauswahl neu auf (nach "Ausgeglichen"). */
     private void renderIntervals() {
+        Bubble.soft(ivBox);
         ivBox.removeAllViews();
         boolean bal = wSel == BAL && (!showNews || nSel == BAL);
         b.pillIn(ivBox, bal ? "✓ Ausgeglichen: 3 Std, spart bei Automatik am meisten Akku" : "Ausgeglichen (sparsamste Automatik, 3 Std)",

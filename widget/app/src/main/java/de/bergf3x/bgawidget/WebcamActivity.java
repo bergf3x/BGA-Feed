@@ -83,6 +83,7 @@ public class WebcamActivity extends Activity {
         cur = -1;
         gen++;
         ui.removeCallbacks(tick);
+        Bubble.soft(b.box);
         b.box.removeAllViews();
         b.text("Webcams", 11, b.soft, false).setPadding(b.px(10), b.px(4), b.px(10), b.px(6));
         LinearLayout body = b.scrollBox(0.62f);
@@ -171,6 +172,7 @@ public class WebcamActivity extends Activity {
         cur = i;
         final Webcams.Cam cam = Webcams.CAMS[i];
         gen++;
+        Bubble.soft(b.box);
         b.box.removeAllViews();
         b.header(cam.name, this::showList);
 

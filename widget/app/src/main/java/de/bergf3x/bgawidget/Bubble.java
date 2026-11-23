@@ -74,7 +74,9 @@ final class Bubble {
         line = light ? 0x331B1F22 : 0x2EFFFFFF;
         int bgPct = Math.max(wid != 0 ? Prefs.bg(act, wid) : 80, 94);
         act.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-        act.getWindow().setDimAmount(light ? 0.40f : 0.60f);
+        dimMax = light ? 0.40f : 0.60f;
+        act.getWindow().setDimAmount(0f);
+        dim(0f, dimMax, OPEN_MS);
 
         FrameLayout root = new FrameLayout(act);
         root.setOnClickListener(v -> close());
@@ -103,8 +105,41 @@ final class Bubble {
         box.setScaleY(0.88f);
         box.setPivotX(w / 2f);
         box.setPivotY(0f);
-        box.animate().alpha(1f).scaleX(1f).scaleY(1f).setDuration(190)
+        box.animate().alpha(1f).scaleX(1f).scaleY(1f).setDuration(OPEN_MS)
                 .setInterpolator(new DecelerateInterpolator()).start();
+        // Inhaltswechsel (Reiter, Untermenues) spaeter weich einblenden
+        box.post(() -> soft(box));
+    }
+
+    /** Einheitliche Zeiten fuer alle Fenster (ms). */
+    static final int OPEN_MS = 180, CLOSE_MS = 140, SWAP_MS = 140;
+    private float dimMax;
+
+    private void dim(float from, float to, int ms) {
+        android.animation.ValueAnimator va = android.animation.ValueAnimator.ofFloat(from, to);
+        va.setDuration(ms);
+        va.setInterpolator(new DecelerateInterpolator());
+        va.addUpdateListener(a -> act.getWindow().setDimAmount((float) a.getAnimatedValue()));
+        va.start();
+    }
+
+    /**
+     * Neu aufgebauter Inhalt blendet weich ein (kein Aufblitzen): nur "neue Kinder" werden animiert,
+     * Entfernen geschieht sofort. Mehrfacher Aufruf ist unschaedlich.
+     */
+    static void soft(ViewGroup g) {
+        if (g == null || g.getLayoutTransition() != null) return;
+        android.animation.LayoutTransition t = new android.animation.LayoutTransition();
+        t.setAnimator(android.animation.LayoutTransition.APPEARING,
+                android.animation.ObjectAnimator.ofFloat(null, "alpha", 0f, 1f));
+        t.setDuration(android.animation.LayoutTransition.APPEARING, SWAP_MS);
+        t.setStartDelay(android.animation.LayoutTransition.APPEARING, 0);
+        t.setInterpolator(android.animation.LayoutTransition.APPEARING, new DecelerateInterpolator());
+        t.disableTransitionType(android.animation.LayoutTransition.DISAPPEARING);
+        t.disableTransitionType(android.animation.LayoutTransition.CHANGE_APPEARING);
+        t.disableTransitionType(android.animation.LayoutTransition.CHANGE_DISAPPEARING);
+        t.disableTransitionType(android.animation.LayoutTransition.CHANGING);
+        g.setLayoutTransition(t);
     }
 
     /** ScrollView, das bei Platzmangel schrumpft (siehe FitBox): so bleiben die Knoepfe darunter immer sichtbar. */
@@ -255,7 +290,9 @@ final class Bubble {
     void close() {
         if (closing) return;
         closing = true;
-        box.animate().alpha(0f).scaleX(0.94f).scaleY(0.94f).setDuration(120)
+        dim(dimMax, 0f, CLOSE_MS);
+        box.animate().alpha(0f).scaleX(0.96f).scaleY(0.96f).setDuration(CLOSE_MS)
+                .setInterpolator(new DecelerateInterpolator())
                 .withEndAction(() -> {
                     act.finish();
                     act.overridePendingTransition(0, 0);

@@ -91,6 +91,7 @@ public class TopicActivity extends Activity {
     }
 
     private void render() {
+        Bubble.soft(body);
         body.removeAllViews();
         String all = parent.equals(Taxonomy.PAPERS) ? "Alle Zeitungen gemischt" : "Alles in „" + parent + "“";
         b.row(body, all + " (" + count(parent) + ")", sel.contains(parent), () -> {

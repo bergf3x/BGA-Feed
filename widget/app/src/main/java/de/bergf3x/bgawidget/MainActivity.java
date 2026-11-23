@@ -600,8 +600,18 @@ public class MainActivity extends Activity {
         return !savedTab() && Prefs.topic(this, ID).startsWith(Taxonomy.WETTER);
     }
 
+    /** Reiterwechsel: Liste blendet kurz und weich neu ein statt hart umzuspringen. */
+    private void fadeTabs() {
+        if (scroll == null) return;
+        scroll.animate().cancel();
+        scroll.setAlpha(0f);
+        scroll.animate().alpha(1f).setDuration(Bubble.SWAP_MS).setStartDelay(30)
+                .setInterpolator(new android.view.animation.DecelerateInterpolator()).start();
+    }
+
     private void switchTab(boolean saved, String topic) {
         Prefs.setFlag(this, "tab_saved", saved);
+        fadeTabs();
         if (topic == null) {
             build();
             if (scroll != null) scroll.post(() -> scroll.scrollTo(0, 0));

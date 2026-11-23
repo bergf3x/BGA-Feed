@@ -10,6 +10,9 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.29",
+                    "~ Weichere Übergänge: Abdunklung blendet beim Öffnen und Schließen mit dem Fenster ein und aus (kein Aufblitzen mehr), einheitliche Zeiten in allen Fenstern",
+                    "~ Reiter- und Untermenüwechsel in App und Widget blenden den Inhalt kurz weich ein statt hart umzuspringen"},
             {"1.26",
                     "+ Bergwetter: Tipp auf eine Region öffnet ein Fenster mit den Reitern „Orte“ und „Gipfel“ (z. B. Watzmann, Zugspitze, Großvenediger) als Direktlinks zum Alpenverein; „Ganze Region“ und „Schließen“ bleiben unten stehen (App und Widget)",
                     "~ Über die App → Quellen: Verweis und rechtlicher Hinweis zum Deutschen Alpenverein ergänzt"},

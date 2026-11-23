@@ -36,6 +36,7 @@ public class PlaceActivity extends Activity {
         final int[] chosen = {cur};
         final Runnable[] render = new Runnable[1];
         render[0] = () -> {
+            Bubble.soft(body);
             body.removeAllViews();
             if (second) b.row(body, "Keiner (nur ein Ort)", chosen[0] < 0, () -> {
                 chosen[0] = -1;

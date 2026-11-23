@@ -270,6 +270,7 @@ public class ConfigActivity extends Activity {
         lblBg = null;
         lblTx = null;
         bgBox = null;
+        Bubble.soft(b.box);
         b.box.removeAllViews();
     }
 
@@ -613,6 +614,7 @@ public class ConfigActivity extends Activity {
     }
 
     private void buildAccent(final LinearLayout box) {
+        Bubble.soft(box);
         box.removeAllViews();
         box.addView(swatches(accent, true, c -> {
             accent = c;
@@ -627,6 +629,7 @@ public class ConfigActivity extends Activity {
 
     private void buildBgBox() {
         if (bgBox == null) return;
+        Bubble.soft(bgBox);
         bgBox.removeAllViews();
         if (bgMode == BgStyle.FIXED) {
             b.label(bgBox, "Farbe");
@@ -779,6 +782,7 @@ public class ConfigActivity extends Activity {
     }
 
     private void buildSwatches() {
+        Bubble.soft(swatchBox);
         swatchBox.removeAllViews();
         int size = b.px(34);
         for (int c : COLORS) {
@@ -809,6 +813,7 @@ public class ConfigActivity extends Activity {
 
     private void buildFeeds() {
         if (feedBox == null) return;
+        Bubble.soft(feedBox);
         feedBox.removeAllViews();
         int paid = 0, paidOn = 0;
         for (Catalog.Feed f : Catalog.load(this)) {
@@ -840,6 +845,7 @@ public class ConfigActivity extends Activity {
 
     private void buildMutes() {
         if (muteBox == null) return;
+        Bubble.soft(muteBox);
         muteBox.removeAllViews();
         for (String t : Taxonomy.topics(this, widgetId)) {
             String[] p = t.split("/");

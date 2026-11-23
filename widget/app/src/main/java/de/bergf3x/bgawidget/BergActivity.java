@@ -51,6 +51,7 @@ public class BergActivity extends Activity {
     }
 
     private void fill(int tab) {
+        Bubble.soft(body);
         body.removeAllViews();
         String kind = tab == 0 ? "O" : "G";
         for (final String[] s : stations) {
