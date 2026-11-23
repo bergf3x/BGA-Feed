@@ -1,5 +1,16 @@
 {
  "items": {
+  "1593951072": {
+   "sid": 1593951072,
+   "url": "https://www.nationalpark-berchtesgaden.bayern.de/service/presse/pressemitteilungen/pressemitteilung.htm?PMNr=46/26",
+   "title": "Austauschtreffen zur Erholungsnutzung im Nationalpark",
+   "teaser": "",
+   "category": "",
+   "topic": "Region/Nationalpark",
+   "plus": false,
+   "date": "2026-11-23T11:00:00+00:00",
+   "first_seen": "2026-11-23T11:00:00+00:00"
+  },
   "1303669902": {
    "sid": 1303669902,
    "url": "https://www.nationalpark-berchtesgaden.bayern.de/service/presse/pressemitteilungen/pressemitteilung.htm?PMNr=45/26",
@@ -428,17 +439,6 @@
    "plus": false,
    "date": "2026-03-02T11:00:00+00:00",
    "first_seen": "2026-03-02T11:00:00+00:00"
-  },
-  "1483427766": {
-   "sid": 1483427766,
-   "url": "https://www.nationalpark-berchtesgaden.bayern.de/service/presse/pressemitteilungen/pressemitteilung.htm?PMNr=5/26",
-   "title": "Winter-Vortragsreihe am Donnerstag, 5. März: Ameisen - Gemeinschaften im Verborgenen",
-   "teaser": "",
-   "category": "",
-   "topic": "Region/Nationalpark",
-   "plus": false,
-   "date": "2026-02-27T11:00:00+00:00",
-   "first_seen": "2026-02-27T11:00:00+00:00"
   }
  }
 }

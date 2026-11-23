@@ -1,5 +1,93 @@
 {
  "items": {
+  "420651171": {
+   "sid": 420651171,
+   "url": "https://salzburg.orf.at/stories/3380753/",
+   "title": "Insolvente Heutallifte machen vorerst weiter",
+   "teaser": "Die insolventen Heutallifte in Unken (Pinzgau) können unter Führung des Masseverwalters weitermachen. Das wurde am Montagvormittag bei der ersten Gläubigerversammlung am Salzburger Landesgericht beschlossen.",
+   "category": "Wirtschaft",
+   "topic": "Region/Salzburg",
+   "plus": false,
+   "date": "2026-11-23T13:13:45+00:00",
+   "first_seen": "2026-11-23T13:13:45+00:00"
+  },
+  "1330120485": {
+   "sid": 1330120485,
+   "url": "https://salzburg.orf.at/stories/3380755/",
+   "title": "Zehn Jahre Haft nach versuchtem Mord an Tochter",
+   "teaser": "Der Berufungssenat am Landesgericht Salzburg hat die Strafe für eine 87-Jährige am Montag deutlich erhöht. Die Frau soll versucht haben, ihre schwer beeinträchtigte Tochter mit Schlaftabletten zu töten.",
+   "category": "Chronik",
+   "topic": "Region/Salzburg",
+   "plus": false,
+   "date": "2026-11-23T13:05:00+00:00",
+   "first_seen": "2026-11-23T13:05:00+00:00"
+  },
+  "2054671739": {
+   "sid": 2054671739,
+   "url": "https://salzburg.orf.at/stories/3380717/",
+   "title": "Postenvergaben im Land Salzburg sollen geprüft werden",
+   "teaser": "Die Opposition im Salzburger Landtag will die Vergabe von Spitzenposten in der Landesverwaltung und in landesnahen Unternehmen überprüfen lassen. Anlass ist das Debakel bei der Bestellung einer neuen Geschäftsführung für den Salzburger Flughafen. Über das geeignete Kontrollinstrument gibt es jedoch ",
+   "category": "Politik Inland",
+   "topic": "Region/Salzburg",
+   "plus": false,
+   "date": "2026-11-23T11:45:00+00:00",
+   "first_seen": "2026-11-23T11:45:00+00:00"
+  },
+  "2592234528": {
+   "sid": 2592234528,
+   "url": "https://salzburg.orf.at/stories/3380691/",
+   "title": "Haftstrafe nach Vergewaltigungen auf 14 Jahre erhöht",
+   "teaser": "Die Haftstrafe für einen 41-jährigen Österreicher ist am späten Montagvormittag von zwölf auf 14 Jahre erhöht worden. Er hatte seine ehemalige Lebensgefährtin vergewaltigt und im Internet für Vergewaltigungen angeboten.",
+   "category": "Chronik",
+   "topic": "Region/Salzburg",
+   "plus": false,
+   "date": "2026-11-23T11:20:00+00:00",
+   "first_seen": "2026-11-23T11:20:00+00:00"
+  },
+  "2720666536": {
+   "sid": 2720666536,
+   "url": "https://salzburg.orf.at/stories/3380673/",
+   "title": "Erste Erentrudisglocke für Salzburg in Adnet geweiht",
+   "teaser": "In der Pfarrkirche Adnet (Tennengau) ist am Sonntag die erste Erentrudisglocke Salzburgs geweiht und in den Turm gezogen worden. Die Weihe nahm Erzbischof Franz Lackner vor. Veronika Kronlachner, Äbtissin des Benediktinerinnenstifts Nonnberg, schlug die Glocke erstmals an.",
+   "category": "Religion",
+   "topic": "Region/Salzburg",
+   "plus": false,
+   "date": "2026-11-23T09:27:00+00:00",
+   "first_seen": "2026-11-23T09:27:00+00:00"
+  },
+  "2447252253": {
+   "sid": 2447252253,
+   "url": "https://salzburg.orf.at/stories/3380661/",
+   "title": "Flachgauer Tafel hat zu wenige Abnehmer",
+   "teaser": "Man habe zu wenige Abnehmer für gespendete Lebensmittel. Diese bemerkenswerte Beobachtung kommt von der Hilfsorganisation für Bedürftige, der „Flachgauer Tafel“. Gleichzeitig sind eineinhalb Millionen Österreicher armutsgefährdet.",
+   "category": "Wirtschaft",
+   "topic": "Region/Salzburg",
+   "plus": false,
+   "date": "2026-11-23T06:00:00+00:00",
+   "first_seen": "2026-11-23T06:00:00+00:00"
+  },
+  "3650495750": {
+   "sid": 3650495750,
+   "url": "https://salzburg.orf.at/stories/3380626/",
+   "title": "Interimslösungen für Festspiele kosten 34 Mio. Euro",
+   "teaser": "Im Stadtsenat sollen am Montag die Kosten für die Interimsspielstätten und Werkstätten der Salzburger Festspiele beschlossen werden. Sie belaufen sich auf knapp 34 Millionen Euro und bleiben damit unter dem beschlossenen Kostendeckel von 34,8 Millionen. Eine Überschreitung würde eine Redimensionieru",
+   "category": "Wirtschaft",
+   "topic": "Region/Salzburg",
+   "plus": false,
+   "date": "2026-11-23T05:15:00+00:00",
+   "first_seen": "2026-11-23T05:15:00+00:00"
+  },
+  "4072371909": {
+   "sid": 4072371909,
+   "url": "https://salzburg.orf.at/stories/3380625/",
+   "title": "Bürgermeister fordert Kommunalsteuer für Homeoffice",
+   "teaser": "Homeoffice sollte auch jenen Gemeinden finanziell zugutekommen, in denen die Beschäftigten arbeiten. Dafür müsste die Kommunalsteuer von den Unternehmen direkt an diese Gemeinden fließen, fordert der Bürgermeister von Ebenau, Johannes Fürstaller (ÖVP). Manche Firmen zahlen freiwillig an seine Gemein",
+   "category": "Politik Inland",
+   "topic": "Region/Salzburg",
+   "plus": false,
+   "date": "2026-11-23T05:00:00+00:00",
+   "first_seen": "2026-11-23T05:00:00+00:00"
+  },
   "2383341751": {
    "sid": 2383341751,
    "url": "https://salzburg.orf.at/stories/3380630/",
@@ -14,7 +102,7 @@
   "2455424883": {
    "sid": 2455424883,
    "url": "https://salzburg.orf.at/stories/3380641/",
-   "title": "Drogenhandel im Pongau: Fünf Beschuldigte ausgeforscht",
+   "title": "Drogennetzwerk im Pongau aufgedeckt",
    "teaser": "Die Polizei hat ein Drogennetzwerk im Pongau zerschlagen: Hauptverdächtiger ist ein dort lebender Spanier. Er soll jahrelang Suchtmittel und psychotrope Stoffe verkauft haben, organisiert über das Internet. Laut Polizei hatte er zumindest 43 Abnehmer. Vier weitere Personen wurden ausgeforscht, einer",
    "category": "Chronik",
    "topic": "Region/Salzburg",
