@@ -257,7 +257,7 @@ public class ConfigActivity extends Activity {
     @Override
     public void onBackPressed() {
         if (page != P_MAIN) cancelPage(page);
-        else super.onBackPressed();
+        else b.close();
     }
 
     private void clear() {

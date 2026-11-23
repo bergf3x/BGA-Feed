@@ -10,6 +10,9 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.30",
+                    "~ Fenster wachsen aus der angetippten Karte bzw. dem Menüpunkt heraus, während der Hintergrund leicht kleiner wird, und zoomen beim Schließen (auch mit Zurück) wieder hinein – einheitlich für alle Menüs, Kategorien und Untermenüs",
+                    "~ Beim Schließen eines Fensters wird die Liste nicht mehr neu aufgebaut, wenn sich nichts geändert hat (kein Aufblitzen mehr)"},
             {"1.29",
                     "~ Weichere Übergänge: Abdunklung blendet beim Öffnen und Schließen mit dem Fenster ein und aus (kein Aufblitzen mehr), einheitliche Zeiten in allen Fenstern",
                     "~ Reiter- und Untermenüwechsel in App und Widget blenden den Inhalt kurz weich ein statt hart umzuspringen"},

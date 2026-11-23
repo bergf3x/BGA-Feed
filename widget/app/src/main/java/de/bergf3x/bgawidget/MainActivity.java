@@ -61,11 +61,15 @@ public class MainActivity extends Activity {
     private Typeface face;
     private boolean syncing;
     private boolean firstResume = true;
+    /** Zustand beim Verlassen: kehrt man aus einem Fenster zurueck und nichts hat sich geaendert, bleibt die Liste unangetastet. */
+    private int pausedSig;
+    private boolean stopped;
     private long lastSync;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bubble.track(this, null);
         Prefs.setFlag(this, "tab_saved", false);
         d = getResources().getDisplayMetrics().density;
         // "Neu seit deinem letzten Besuch": Zeitpunkt, als die App zuletzt verlassen wurde
@@ -126,10 +130,14 @@ public class MainActivity extends Activity {
         if (android.os.Build.VERSION.SDK_INT >= 33) registerReceiver(dataChanged, flt, android.content.Context.RECEIVER_NOT_EXPORTED);
         else registerReceiver(dataChanged, flt);
         // "Neu" = seit dem letzten Verlassen der App dazugekommen (oder nach dem Aktualisieren)
-        hasSeen = Prefs.hasSeen(this);
-        seenSnap = Prefs.seenSet(this);
-        updateNav();
-        if (savedTab() && warmed) build();
+        final boolean unchanged = scroll != null && !stopped && pausedSig == Prefs.sp(this).getAll().hashCode();
+        stopped = false;
+        if (!unchanged) {
+            hasSeen = Prefs.hasSeen(this);
+            seenSnap = Prefs.seenSet(this);
+            updateNav();
+        }
+        if (savedTab() && warmed && !unchanged) build();
         int y = scroll == null ? 0 : scroll.getScrollY();
         // anderes Thema gewaehlt (Auswahl-Blase): Liste von oben zeigen, nicht an der alten Stelle
         String tp = Prefs.topicRaw(this, ID);
@@ -142,7 +150,7 @@ public class MainActivity extends Activity {
         boolean due = (firstResume || stale || missing) && !syncing;
         firstResume = false;
         if (due) startSync(missing, y);
-        else {
+        else if (!unchanged) {
             build();
             restore(y);
         }
@@ -158,6 +166,13 @@ public class MainActivity extends Activity {
             unregisterReceiver(dataChanged);
         } catch (Exception ignored) {
         }
+        pausedSig = Prefs.sp(this).getAll().hashCode();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        stopped = true;
     }
 
     private void restore(final int y) {

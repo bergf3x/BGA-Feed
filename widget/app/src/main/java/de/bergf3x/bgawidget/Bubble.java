@@ -99,21 +99,159 @@ final class Bubble {
         root.addView(box, lp);
         act.setContentView(root);
 
-        // weich aufgehen: leicht kleiner und durchsichtig -> voll
+        track(act, backHandler());
+        takeOrigin();
+        registerBackCallback();
         box.setAlpha(0f);
-        box.setScaleX(0.88f);
-        box.setScaleY(0.88f);
-        box.setPivotX(w / 2f);
-        box.setPivotY(0f);
-        box.animate().alpha(1f).scaleX(1f).scaleY(1f).setDuration(OPEN_MS)
-                .setInterpolator(new DecelerateInterpolator()).start();
+        box.getViewTreeObserver().addOnPreDrawListener(new android.view.ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                box.getViewTreeObserver().removeOnPreDrawListener(this);
+                playOpen();
+                return true;
+            }
+        });
         // Inhaltswechsel (Reiter, Untermenues) spaeter weich einblenden
         box.post(() -> soft(box));
     }
 
     /** Einheitliche Zeiten fuer alle Fenster (ms). */
-    static final int OPEN_MS = 180, CLOSE_MS = 140, SWAP_MS = 140;
+    static final int OPEN_MS = 220, CLOSE_MS = 180, SWAP_MS = 140;
+    /** Wie stark der Hintergrund schrumpft, solange ein Fenster offen ist. */
+    private static final float DEPTH = 0.95f;
+    private static final android.view.animation.Interpolator ZOOM_IN = new android.view.animation.PathInterpolator(0.2f, 0.8f, 0.2f, 1f);
+    private static final android.view.animation.Interpolator ZOOM_OUT = new android.view.animation.PathInterpolator(0.4f, 0f, 0.6f, 1f);
     private float dimMax;
+    /** Angetippte Karte (Bildschirmkoordinaten): daraus waechst das Fenster und dorthin schrumpft es zurueck. */
+    private android.graphics.Rect origin;
+    /** Inhalt des Fensters, aus dem geoeffnet wurde: schrumpft leicht, solange dieses Fenster offen ist. */
+    private View depth;
+    private int baseX, baseY;
+
+    // ---- letzter Tipp (fuer den Zoom aus der angetippten Karte)
+    private static android.graphics.Rect tapRect;
+    private static java.lang.ref.WeakReference<View> tapContent;
+    private static long tapTime;
+
+    /**
+     * Merkt sich bei jedem Antippen die angetippte Karte und das Fenster darunter; optional faengt es die Zurueck-Taste ab.
+     * Wird von der App und von jedem Fenster einmal aufgerufen.
+     */
+    static void track(final Activity a, final Runnable back) {
+        final android.view.Window w = a.getWindow();
+        final android.view.Window.Callback orig = w.getCallback();
+        if (orig == null) return;
+        w.setCallback((android.view.Window.Callback) java.lang.reflect.Proxy.newProxyInstance(
+                android.view.Window.Callback.class.getClassLoader(), new Class<?>[]{android.view.Window.Callback.class},
+                (proxy, m, args) -> {
+                    String n = m.getName();
+                    if (n.equals("dispatchTouchEvent") && args[0] instanceof android.view.MotionEvent
+                            && ((android.view.MotionEvent) args[0]).getActionMasked() == android.view.MotionEvent.ACTION_DOWN) {
+                        android.view.MotionEvent e = (android.view.MotionEvent) args[0];
+                        noteTap(a, Math.round(e.getRawX()), Math.round(e.getRawY()));
+                    } else if (n.equals("onWindowFocusChanged") && (Boolean) args[0]) {
+                        View c = a.findViewById(android.R.id.content);
+                        if (c != null && c.getScaleX() != 1f) {
+                            c.animate().cancel();
+                            c.setScaleX(1f);
+                            c.setScaleY(1f);
+                        }
+                    } else if (back != null && n.equals("dispatchKeyEvent") && args[0] instanceof android.view.KeyEvent
+                            && ((android.view.KeyEvent) args[0]).getKeyCode() == android.view.KeyEvent.KEYCODE_BACK) {
+                        android.view.KeyEvent k = (android.view.KeyEvent) args[0];
+                        if (k.getAction() == android.view.KeyEvent.ACTION_UP && !k.isCanceled()) back.run();
+                        return true;
+                    }
+                    try {
+                        return m.invoke(orig, args);
+                    } catch (java.lang.reflect.InvocationTargetException ex) {
+                        throw ex.getCause();
+                    }
+                }));
+    }
+
+    private static void noteTap(Activity a, int x, int y) {
+        tapRect = null;
+        View hit = hitClickable(a.getWindow().getDecorView(), x, y);
+        android.util.DisplayMetrics dm = a.getResources().getDisplayMetrics();
+        if (hit != null && hit.getWidth() > 0 && hit.getHeight() > 0
+                && hit.getWidth() < dm.widthPixels * 0.98f && hit.getHeight() < dm.heightPixels * 0.5f) {
+            int[] l = new int[2];
+            hit.getLocationOnScreen(l);
+            tapRect = new android.graphics.Rect(l[0], l[1], l[0] + hit.getWidth(), l[1] + hit.getHeight());
+        }
+        tapContent = new java.lang.ref.WeakReference<>(a.findViewById(android.R.id.content));
+        tapTime = android.os.SystemClock.uptimeMillis();
+    }
+
+    /** Tiefstes anklickbares Element an dieser Stelle. */
+    private static View hitClickable(View v, int x, int y) {
+        if (v.getVisibility() != View.VISIBLE) return null;
+        int[] l = new int[2];
+        v.getLocationOnScreen(l);
+        if (x < l[0] || y < l[1] || x >= l[0] + v.getWidth() || y >= l[1] + v.getHeight()) return null;
+        if (v instanceof ViewGroup) {
+            ViewGroup g = (ViewGroup) v;
+            for (int i = g.getChildCount() - 1; i >= 0; i--) {
+                View r = hitClickable(g.getChildAt(i), x, y);
+                if (r != null) return r;
+            }
+        }
+        return v.isClickable() ? v : null;
+    }
+
+    /** Uebernimmt den letzten Tipp, wenn das Fenster direkt danach geoeffnet wurde. */
+    private void takeOrigin() {
+        if (android.os.SystemClock.uptimeMillis() - tapTime < 1500) {
+            origin = tapRect;
+            View c = tapContent == null ? null : tapContent.get();
+            if (c != null && c.getContext() != act) depth = c;
+        }
+        tapRect = null;
+        tapContent = null;
+        tapTime = 0;
+    }
+
+    /** Zurueck-Taste soll das Fenster mit Animation schliessen, ausser die Activity regelt Zurueck selbst. */
+    private Runnable backHandler() {
+        try {
+            if (act.getClass().getMethod("onBackPressed").getDeclaringClass() != Activity.class) return null;
+        } catch (NoSuchMethodException e) {
+            return null;
+        }
+        return this::close;
+    }
+
+    private void registerBackCallback() {
+        if (android.os.Build.VERSION.SDK_INT >= 33 && backHandler() != null) {
+            act.getOnBackInvokedDispatcher().registerOnBackInvokedCallback(
+                    android.window.OnBackInvokedDispatcher.PRIORITY_DEFAULT, this::close);
+        }
+    }
+
+    private void playOpen() {
+        int[] l = new int[2];
+        box.getLocationOnScreen(l);
+        baseX = l[0];
+        baseY = l[1];
+        if (origin != null && box.getWidth() > 0 && box.getHeight() > 0) {
+            box.setPivotX(0f);
+            box.setPivotY(0f);
+            box.setTranslationX(origin.left - baseX);
+            box.setTranslationY(origin.top - baseY);
+            box.setScaleX(origin.width() / (float) box.getWidth());
+            box.setScaleY(origin.height() / (float) box.getHeight());
+        } else {
+            box.setPivotX(box.getWidth() / 2f);
+            box.setPivotY(0f);
+            box.setScaleX(0.88f);
+            box.setScaleY(0.88f);
+        }
+        box.animate().translationX(0f).translationY(0f).scaleX(1f).scaleY(1f)
+                .setDuration(OPEN_MS).setInterpolator(ZOOM_IN).start();
+        android.animation.ObjectAnimator.ofFloat(box, View.ALPHA, 0f, 1f).setDuration(140).start();
+        if (depth != null) depth.animate().scaleX(DEPTH).scaleY(DEPTH).setDuration(OPEN_MS).setInterpolator(ZOOM_IN).start();
+    }
 
     private void dim(float from, float to, int ms) {
         android.animation.ValueAnimator va = android.animation.ValueAnimator.ofFloat(from, to);
@@ -286,17 +424,23 @@ final class Bubble {
         return Math.round(dp * d);
     }
 
-    /** Sanft schliessen, danach die Activity beenden. */
+    /** Zurueck in die Karte zoomen (bzw. sanft ausblenden), danach die Activity beenden. */
     void close() {
         if (closing) return;
         closing = true;
         dim(dimMax, 0f, CLOSE_MS);
-        box.animate().alpha(0f).scaleX(0.96f).scaleY(0.96f).setDuration(CLOSE_MS)
-                .setInterpolator(new DecelerateInterpolator())
-                .withEndAction(() -> {
-                    act.finish();
-                    act.overridePendingTransition(0, 0);
-                }).start();
+        android.view.ViewPropertyAnimator a = box.animate().setDuration(CLOSE_MS).setInterpolator(ZOOM_OUT);
+        if (origin != null && box.getWidth() > 0 && box.getHeight() > 0) {
+            a.translationX(origin.left - baseX).translationY(origin.top - baseY)
+                    .scaleX(origin.width() / (float) box.getWidth()).scaleY(origin.height() / (float) box.getHeight());
+        } else {
+            a.scaleX(0.96f).scaleY(0.96f);
+        }
+        a.alpha(0f).withEndAction(() -> {
+            act.finish();
+            act.overridePendingTransition(0, 0);
+        }).start();
+        if (depth != null) depth.animate().scaleX(1f).scaleY(1f).setDuration(CLOSE_MS).setInterpolator(ZOOM_OUT).start();
     }
 
     TextView text(String s, float sp, int color, boolean bold) {
