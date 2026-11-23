@@ -149,6 +149,13 @@
             android:theme="@style/BubbleTheme" />
 
         <activity
+            android:name=".BergActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:taskAffinity="${applicationId}.bubble"
+            android:theme="@style/BubbleTheme" />
+
+        <activity
             android:name=".PreviewActivity"
             android:exported="false"
             android:excludeFromRecents="true"

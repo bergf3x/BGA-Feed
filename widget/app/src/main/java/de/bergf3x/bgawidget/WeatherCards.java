@@ -106,7 +106,6 @@ final class WeatherCards {
             out.add(card(BERG, "Wochenende", "Bergbericht fürs Wochenende", "DAV · erscheint zum Wochenende",
                     "Der Bergbericht des Deutschen Alpenvereins für das kommende Wochenende. Er erscheint auf der Seite des DAV.",
                     "https://www.alpenverein.de/thema/bergbericht"));
-            Set<String> open = Prefs.bergOpen(c);
             for (String[] r : BERG_REGIONS) {
                 if (!berg.contains(r[0])) continue;
                 String[][] st = BERG_STATIONS.get(r[0]);
@@ -116,22 +115,9 @@ final class WeatherCards {
                             r[4]));
                     continue;
                 }
-                boolean isOpen = open.contains(r[0]);
-                // Regionskarte klappt Gipfel und Orte auf oder zu (Link beginnt mit "oeffnen:")
-                out.add(card(BERG, r[3], r[1], r[2] + " · " + st.length + " Links " + (isOpen ? "▴" : "▾"),
-                        "Tippen klappt die Gipfel und Orte dieser Region auf oder zu.", OPEN + r[0]));
-                if (!isOpen) continue;
-                out.add(card(BERG, r[3], "Übersicht: " + r[1], "Alle Stationen auf alpenverein.de",
-                        "Die Übersicht dieser Region steht auf der Seite des Deutschen Alpenvereins.", r[4]));
-                for (int pass = 0; pass < 2; pass++) {
-                    String kind = pass == 0 ? "G" : "O";
-                    for (String[] x : st) {
-                        if (!x[2].equals(kind)) continue;
-                        out.add(card(BERG, r[3], x[0], (pass == 0 ? "Gipfel" : "Ort") + " · DAV Bergwetter",
-                                "Die Vorhersage für " + x[0] + " steht auf der Seite des Deutschen Alpenvereins.",
-                                r[4] + "/" + x[1]));
-                    }
-                }
+                // Tipp oeffnet das Fenster mit den Reitern Orte und Gipfel (Link beginnt mit "oeffnen:")
+                out.add(card(BERG, r[3], r[1], r[2] + " · " + st.length + " Links",
+                        "Orte und Gipfel dieser Region mit Direktlinks zum Alpenverein.", OPEN + r[0]));
             }
         }
         if (Prefs.regionCards(c)) {
@@ -155,6 +141,17 @@ final class WeatherCards {
             }
         }
         return out;
+    }
+
+    static String[] region(String id) {
+        if (id == null) return null;
+        for (String[] r : BERG_REGIONS) if (r[0].equals(id)) return r;
+        return null;
+    }
+
+    static String stationUrl(String regionId, String slug) {
+        String[] r = region(regionId);
+        return r == null ? DAV : r[4] + "/" + slug;
     }
 
     /** Direktlink auf einen Gipfel oder Ort (oder eine ganze Region) des DAV-Bergwetters. */

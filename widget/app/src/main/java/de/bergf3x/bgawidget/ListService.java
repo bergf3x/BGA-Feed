@@ -519,7 +519,7 @@ public class ListService extends RemoteViewsService {
             lightTheme = Prefs.isLight(ctx, widgetId);
             if (Prefs.widgetShows(ctx, widgetId) == 2) return savedItems(ctx);
             List<FeedItem> all = loadItems(ctx, widgetId, online, res);
-            return grouped(ctx, new ArrayList<>(all.subList(0, Math.min(all.size(), 100))));
+            return grouped(ctx, new ArrayList<>(all.subList(0, Math.min(all.size(), 60))));
         }
 
         @Override
@@ -549,7 +549,7 @@ public class ListService extends RemoteViewsService {
 
         @Override
         public int getCount() {
-            return Math.min(items.size(), 100);
+            return Math.min(items.size(), 60);
         }
 
         @Override

@@ -89,17 +89,6 @@ final class Prefs {
         return new java.util.LinkedHashSet<>(sp(c).getStringSet("wc_berg", WeatherCards.BERG_DEFAULT));
     }
 
-    /** Regionen im Bergwetter, die aufgeklappt sind (zeigen ihre Gipfel und Orte). Zu Beginn die erste. */
-    static java.util.Set<String> bergOpen(Context c) {
-        return new java.util.LinkedHashSet<>(sp(c).getStringSet("wc_open", new java.util.LinkedHashSet<>(java.util.Arrays.asList("bay_ost"))));
-    }
-
-    static void toggleBergOpen(Context c, String id) {
-        java.util.Set<String> s = bergOpen(c);
-        if (!s.remove(id)) s.add(id);
-        sp(c).edit().putStringSet("wc_open", s).apply();
-    }
-
     static boolean regionCards(Context c) {
         return sp(c).getBoolean("wc_region", true);
     }
