@@ -54,6 +54,12 @@ public class InfoActivity extends Activity {
         src.addView(line(b, "Wetter und Warnungen", 12, b.soft, false, 10));
         src.addView(link(b, "Open-Meteo (Wetterdaten)", "https://open-meteo.com"));
         src.addView(link(b, "DWD – Deutscher Wetterdienst (Warnungen)", "https://www.dwd.de"));
+        src.addView(link(b, "Deutscher Alpenverein (DAV) – Bergwetter", "https://www.alpenverein.de/bergwetter"));
+        src.addView(line(b, "Bergwetter: Die Karten, Gipfel und Orte öffnen die Bergwetter-Seiten des Deutschen Alpenvereins e. V. (DAV) "
+                + "im Browser. Die App übernimmt, speichert oder verändert keine Prognosen, Texte oder Bilder des DAV. "
+                + "Alle Rechte an den Inhalten und Marken liegen beim DAV und seinen Datenpartnern. "
+                + "Die App ist nicht vom DAV, steht in keiner Verbindung zu ihm und wird von ihm weder betrieben noch empfohlen. "
+                + "Bergwetter ersetzt keine eigene Tourenplanung; maßgeblich ist die Originalseite.", 12, b.soft, false, 2));
         src.addView(line(b, "Webcams: jeweilige Betreiber, Link in der Webcam-Ansicht", 12, b.soft, false, 8));
 
         b.divider();

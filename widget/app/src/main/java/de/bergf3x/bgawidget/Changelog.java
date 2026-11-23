@@ -12,7 +12,8 @@ final class Changelog {
     static final String[][] LOG = {
             {"1.26",
                     "+ Bergwetter: Jede Region lässt sich aufklappen und zeigt ihre Gipfel und Orte (z. B. Watzmann, Zugspitze, Großvenediger) als Direktlinks zur Seite des Alpenvereins (App und Widget)",
-                    "~ Die Regionskarte klappt auf oder zu; „Übersicht“ darin öffnet die ganze Region"},
+                    "~ Die Regionskarte klappt auf oder zu; „Übersicht“ darin öffnet die ganze Region",
+                    "~ Über die App → Quellen: Verweis und rechtlicher Hinweis zum Deutschen Alpenverein ergänzt"},
             {"1.25",
                     "~ Einheitlich „Abbrechen“ und „OK“ statt „Übernehmen“ in allen Fenstern (App und Widget)"},
             {"1.23",
