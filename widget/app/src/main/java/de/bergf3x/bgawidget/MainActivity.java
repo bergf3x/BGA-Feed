@@ -111,6 +111,8 @@ public class MainActivity extends Activity {
                 pullRebuild = true; // erst nach der Animation neu aufbauen, sonst ruckelt es
                 return;
             }
+            hasSeen = Prefs.hasSeen(MainActivity.this);
+            seenSnap = Prefs.seenSet(MainActivity.this);
             int y = scroll == null ? 0 : scroll.getScrollY();
             build();
             restore(y);
@@ -161,7 +163,6 @@ public class MainActivity extends Activity {
     protected void onPause() {
         super.onPause();
         getSharedPreferences("bga_widget", MODE_PRIVATE).edit().putLong("last_visit", System.currentTimeMillis()).apply();
-        if (warmed) ListService.markSeen(this);
         try {
             unregisterReceiver(dataChanged);
         } catch (Exception ignored) {
@@ -1077,6 +1078,35 @@ public class MainActivity extends Activity {
             Prefs.setTopic(this, ID, "");
         }
         chips(topics, topic);
+        markAllBar();
+    }
+
+    /** Leiste "n ungelesen · Alle als gelesen markieren": nur sichtbar, solange es Neues gibt. */
+    private void markAllBar() {
+        if (!warmed || !hasSeen) return;
+        final int n = ListService.newItems(this, ID).size();
+        if (n == 0) return;
+        LinearLayout bar = new LinearLayout(this);
+        bar.setOrientation(LinearLayout.HORIZONTAL);
+        bar.setGravity(Gravity.CENTER_VERTICAL);
+        bar.setPadding(px(14), px(4), px(4), px(4));
+        press(bar, cardFill, 14, line);
+        TextView cnt = text(n + " ungelesen", 13, soft, false);
+        cnt.setSingleLine(true);
+        cnt.setEllipsize(android.text.TextUtils.TruncateAt.END);
+        bar.addView(cnt, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+        TextView act = text("Alle als gelesen markieren", 13, chipOnTx, true);
+        act.setPadding(px(12), px(8), px(12), px(8));
+        act.setMinHeight(px(36));
+        act.setGravity(Gravity.CENTER);
+        press(act, chipOn, 11, 0);
+        act.setContentDescription("Alle " + n + " ungelesenen Nachrichten als gelesen markieren");
+        act.setOnClickListener(v -> {
+            Haptic.play(v, Haptic.CONFIRM);
+            ListService.markAllRead(this);
+        });
+        bar.addView(act);
+        page.addView(bar, lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 10));
     }
 
     /** Nachrichtenliste (scrollt). */

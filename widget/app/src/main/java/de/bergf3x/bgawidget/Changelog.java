@@ -10,6 +10,9 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.31",
+                    "+ „Alle als gelesen markieren“: Leiste über der Nachrichtenliste mit Anzahl der Ungelesenen, in App und Widget synchron; sie erscheint nur, solange es Neues gibt",
+                    "~ Behoben: Beim Öffnen eines Artikels verschwand die Markierung „Neu“ bei allen anderen Nachrichten. Jetzt endet „Neu“ nur für den geöffneten Artikel (App und Widget)"},
             {"1.30",
                     "~ Fenster wachsen aus der angetippten Karte bzw. dem Menüpunkt heraus, während der Hintergrund leicht kleiner wird, und zoomen beim Schließen (auch mit Zurück) wieder hinein – einheitlich für alle Menüs, Kategorien und Untermenüs",
                     "~ Beim Schließen eines Fensters wird die Liste nicht mehr neu aufgebaut, wenn sich nichts geändert hat (kein Aufblitzen mehr)"},

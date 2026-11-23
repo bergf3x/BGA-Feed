@@ -494,6 +494,11 @@ final class Prefs {
             app.sendBroadcast(new android.content.Intent(Direct.DATA_CHANGED).setPackage(app.getPackageName()));
         } catch (Exception ignored) {
         }
+        refreshWidgets(app);
+    }
+
+    /** Alle Nachrichten-Widgets neu zeichnen (ohne die App zu benachrichtigen). */
+    static void refreshWidgets(Context app) {
         try {
             android.appwidget.AppWidgetManager m = android.appwidget.AppWidgetManager.getInstance(app);
             for (int wid : m.getAppWidgetIds(new android.content.ComponentName(app, WidgetProvider.class))) {

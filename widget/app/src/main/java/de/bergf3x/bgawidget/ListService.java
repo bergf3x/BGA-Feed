@@ -44,6 +44,20 @@ public class ListService extends RemoteViewsService {
         return n;
     }
 
+    /** Marker der "Alle als gelesen markieren"-Zeile im Widget. */
+    static final String MARK_ALL = "markall:";
+
+    /** Alles Aktuelle als gelesen markieren und App sowie Widgets neu zeichnen. */
+    static void markAllRead(Context ctx) {
+        markSeen(ctx);
+        Prefs.setLocalOnly(ctx);
+        Prefs.refreshWidgets(ctx.getApplicationContext());
+        try {
+            ctx.sendBroadcast(new Intent(Direct.DATA_CHANGED).setPackage(ctx.getPackageName()));
+        } catch (Exception ignored) {
+        }
+    }
+
     /** Alle Links im Zwischenspeicher aller Quellen. */
     static Set<String> allLinks(Context ctx) {
         Set<String> out = new java.util.HashSet<>();
@@ -64,9 +78,9 @@ public class ListService extends RemoteViewsService {
         return hasSeen && !it.weather() && !it.link.isEmpty() && !seen.contains(it.link) && !Prefs.isRead(read, it.link);
     }
 
-    /** Oberthemen (und Zeitungs-Wurzel), in denen es Neues gibt. */
-    static Set<String> newTopics(Context ctx, int widgetId) {
-        Set<String> out = new java.util.HashSet<>();
+    /** Alle ungelesenen neuen Artikel, die in diesem Widget bzw. der App sichtbar sind. */
+    static List<FeedItem> newItems(Context ctx, int widgetId) {
+        List<FeedItem> out = new java.util.ArrayList<>();
         if (!Prefs.hasSeen(ctx)) return out;
         Set<String> seen = Prefs.seenSet(ctx);
         Set<String> read = Prefs.readSet(ctx);
@@ -81,10 +95,18 @@ public class ListService extends RemoteViewsService {
                 if (it.plus && !plusFeed) continue;
                 boolean hide = false;
                 for (String m : muted) if (it.inTopic(m)) hide = true;
-                if (hide) continue;
-                out.add((it.topic.isEmpty() ? "Region" : it.topic).split("/")[0]);
-                if (!it.paper.isEmpty()) out.add(it.paper.split("/")[0]);
+                if (!hide) out.add(it);
             }
+        }
+        return out;
+    }
+
+    /** Oberthemen (und Zeitungs-Wurzel), in denen es Neues gibt. */
+    static Set<String> newTopics(Context ctx, int widgetId) {
+        Set<String> out = new java.util.HashSet<>();
+        for (FeedItem it : newItems(ctx, widgetId)) {
+            out.add((it.topic.isEmpty() ? "Region" : it.topic).split("/")[0]);
+            if (!it.paper.isEmpty()) out.add(it.paper.split("/")[0]);
         }
         return out;
     }
@@ -519,12 +541,49 @@ public class ListService extends RemoteViewsService {
             lightTheme = Prefs.isLight(ctx, widgetId);
             if (Prefs.widgetShows(ctx, widgetId) == 2) return savedItems(ctx);
             List<FeedItem> all = loadItems(ctx, widgetId, online, res);
-            return grouped(ctx, new ArrayList<>(all.subList(0, Math.min(all.size(), 60))));
+            List<FeedItem> list = grouped(ctx, new ArrayList<>(all.subList(0, Math.min(all.size(), 60))));
+            // gleiche Leiste wie in der App: "n ungelesen" + "Alle als gelesen markieren", nur solange es Neues gibt
+            int fresh = hasSeen ? newItems(ctx, widgetId).size() : 0;
+            if (fresh > 0) {
+                FeedItem bar = new FeedItem();
+                bar.header = true;
+                bar.link = MARK_ALL;
+                bar.title = String.valueOf(fresh);
+                list.add(0, bar);
+            }
+            return list;
         }
 
         @Override
         public void onDestroy() {
             items.clear();
+        }
+
+        /** Erste Zeile der Liste: Anzahl Ungelesener und Knopf "Alle als gelesen markieren". */
+        private RemoteViews markAllView(FeedItem it) {
+            RemoteViews rv = new RemoteViews(ctx.getPackageName(), R.layout.widget_item);
+            rv.setInt(R.id.item_card, "setBackgroundResource", Pal.cardBg(ctx, widgetId));
+            rv.setViewVisibility(R.id.item_accent, android.view.View.GONE);
+            rv.setViewVisibility(R.id.item_meta, android.view.View.VISIBLE);
+            rv.setViewVisibility(R.id.item_dot, android.view.View.GONE);
+            rv.setViewVisibility(R.id.item_plus, android.view.View.GONE);
+            rv.setViewVisibility(R.id.item_thumb, android.view.View.GONE);
+            rv.setImageViewBitmap(R.id.item_thumb, null);
+            rv.setTextViewText(R.id.item_title, Style.font(ctx, widgetId, "\u2713 Alle als gelesen markieren"));
+            rv.setTextViewTextSize(R.id.item_title, android.util.TypedValue.COMPLEX_UNIT_SP, Style.titleSp(sizeIdx));
+            Pal.text(ctx, widgetId, rv, R.id.item_title, -1, 1f);
+            rv.setTextViewTextSize(R.id.item_meta, android.util.TypedValue.COMPLEX_UNIT_SP, Style.metaSp(sizeIdx));
+            Pal.set(ctx, widgetId, rv, R.id.item_meta, Style.font(ctx, widgetId, it.title + " ungelesen"),
+                    Prefs.colorSub(ctx, widgetId), Prefs.colorSub2(ctx, widgetId), 0.7f);
+            float dp = ctx.getResources().getDisplayMetrics().density;
+            int cardPad = Math.round((airy ? 13 : 8) * dp);
+            int rowPad = Math.round((airy ? 5 : 3) * dp);
+            rv.setViewPadding(R.id.item_card, cardPad, cardPad, cardPad, cardPad);
+            rv.setViewPadding(R.id.item_root, 0, rowPad, 0, rowPad);
+            Intent fill = new Intent();
+            fill.putExtra(PreviewActivity.EXTRA_LINK, MARK_ALL);
+            rv.setOnClickFillInIntent(R.id.item_root, fill);
+            return rv;
         }
 
         private RemoteViews headerView(FeedItem it) {
@@ -557,7 +616,7 @@ public class ListService extends RemoteViewsService {
             RemoteViews rv = new RemoteViews(ctx.getPackageName(), R.layout.widget_item);
             if (position < 0 || position >= items.size()) return rv;
             FeedItem it = items.get(position);
-            if (it.header) return headerView(it);
+            if (it.header) return MARK_ALL.equals(it.link) ? markAllView(it) : headerView(it);
             int tx = Prefs.text(ctx, widgetId);
             int rgb = Prefs.color(ctx, widgetId);
             boolean read = Prefs.isRead(readSet, it.link);
