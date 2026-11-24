@@ -1,5 +1,57 @@
 {
  "items": {
+  "4200123584": {
+   "sid": 4200123584,
+   "url": "https://www.chiemgau24.de/chiemgau/rupertiwinkel/ainring-ort46431/ainring-neue-details-zur-gewalttat-um-toten-mann-65-mitterfelden-94605924.html",
+   "title": "War es Heimtücke? Gewalttat um toten Mann (†65) in Ainring sorgt für „große Bestürzung“",
+   "teaser": "Ein mutmaßliches Gewaltverbrechen in Ainring beschäftigt die Behörden: Ein 65-jähriger Mann wurde am Sonntagmittag (22. November) mit tödlichen Verletzungen aufgefunden. Seine Ehefrau steht jetzt unter Mordverdacht. Auf Nachfrage gibt die Polizei neue Details bekannt.",
+   "category": "",
+   "topic": "Region/Rupertiwinkel",
+   "plus": true,
+   "date": "2026-11-24T16:09:00+00:00",
+   "sec": "/chiemgau/",
+   "pc": 2,
+   "first_seen": "2026-11-24T16:09:00+00:00"
+  },
+  "2172731803": {
+   "sid": 2172731803,
+   "url": "https://www.chiemgau24.de/chiemgau/chiemsee/chiemsee-ort28526/familiensache-christkindlmarkt-fraueninsel-chiemsee-von-babys-zwergen-und-anderen-neuigkeiten-94604095.html",
+   "title": "Christkindlmarkt als Familiensache: Von Babys, Zwergen und anderen Neuigkeiten auf der Fraueninsel",
+   "teaser": "Der Christkindlmarkt auf der Fraueninsel gehört zu den beliebtesten Weihnachts-Attraktionen in ganz Bayern. Organisator Emanuel von Oy erzählt vor der diesjährigen Ausgabe, warum ein privates Glücksereignis ihm dieses Mal noch mehr Stress machte. Und was es bei dem von seiner ganzen Familie organisi",
+   "category": "",
+   "topic": "Region/Chiemsee",
+   "plus": true,
+   "date": "2026-11-24T16:06:00+00:00",
+   "sec": "/chiemgau/",
+   "pc": 2,
+   "first_seen": "2026-11-24T16:06:00+00:00"
+  },
+  "1487553942": {
+   "sid": 1487553942,
+   "url": "https://www.chiemgau24.de/chiemgau/polizeimeldungen/traunstein-fahrer-25-verfolgt-seniorin-80-nach-unfall-94606013.html",
+   "title": "Bis zum Einkaufsmarkt verfolgt: Autofahrer (25) stellt Unfallflüchtige (80) in Traunstein",
+   "teaser": "Nach einem Zusammenstoß in Traunstein verfolgte ein Autofahrer (25) eine Seniorin (80) bis zum Parkplatz eines Einkaufsmarktes und stellte sie dort.",
+   "category": "",
+   "topic": "Region/Polizeimeldungen",
+   "plus": false,
+   "date": "2026-11-24T15:30:00+00:00",
+   "sec": "/chiemgau/",
+   "pc": 2,
+   "first_seen": "2026-11-24T15:30:00+00:00"
+  },
+  "328478530": {
+   "sid": 328478530,
+   "url": "https://www.chiemgau24.de/chiemgau/polizeimeldungen/chieming-trostbergerin-18-uebersieht-einmuendung-und-rammt-schild-94606009.html",
+   "title": "Unfall am Morgen bei Chieming: Fahranfängerin (18) übersieht Einmündung und rammt Schild",
+   "teaser": "Glück im Unglück im morgendlichen Berufsverkehr: Auf der Kreisstraße TS 11 bei Chieming ist eine 18-jährige Autofahrerin aus Trostberg am Dienstagmorgen (24. November) mit einem Wegweiser zusammengestoßen.",
+   "category": "",
+   "topic": "Region/Polizeimeldungen",
+   "plus": false,
+   "date": "2026-11-24T14:20:22+00:00",
+   "sec": "/chiemgau/",
+   "pc": 2,
+   "first_seen": "2026-11-24T14:20:22+00:00"
+  },
   "3699455665": {
    "sid": 3699455665,
    "url": "https://www.chiemgau24.de/chiemgau/traunstein/inzell-ort28849/inzell-wiedervernaessung-der-filzen-zeigt-wirkung-94605451.html",
@@ -2171,19 +2223,6 @@
    "first_seen": "2026-11-06T10:03:00+00:00",
    "pc": 2
   },
-  "1632238834": {
-   "sid": 1632238834,
-   "url": "https://www.chiemgau24.de/chiemgau/chiemsee/chiemsee-ort28526/herreninsel-erinnerungsfotos-an-wirtschaftsminister-hubert-aiwanger-94575418.html",
-   "title": "Nach dem Tod von Hubert Aiwanger: Fotograf zeigt Bilder von der Herreninsel",
-   "teaser": "Die Nachricht vom Ableben Hubert Aiwangers macht fassungslos. Ein Fotograf blickt auf Momente mit dem Politiker auf der Herreninsel zurück und teilt persönliche Erinnerungen sowie Eindrücke von zwei Schleppjagden.",
-   "category": "",
-   "topic": "Region/Chiemsee",
-   "plus": true,
-   "date": "2026-11-05T11:23:14+00:00",
-   "sec": "/chiemgau/chiemsee/",
-   "first_seen": "2026-11-05T11:23:14+00:00",
-   "pc": 2
-  },
   "3244973931": {
    "sid": 3244973931,
    "url": "https://www.chiemgau24.de/chiemgau/polizeimeldungen/waging-am-see-unbekannter-bricht-zwei-autos-auf-polizei-sucht-dieb-94575069.html",
@@ -2535,19 +2574,6 @@
    "first_seen": "2026-10-29T10:05:00+00:00",
    "pc": 2
   },
-  "4139096740": {
-   "sid": 4139096740,
-   "url": "https://www.chiemgau24.de/chiemgau/polizeimeldungen/wilde-scooter-flucht-vor-der-polizei-durch-pittenhart-endet-mit-sturz-94563867.html",
-   "title": "Wilde E-Scooter-Flucht vor der Polizei durch Pittenhart endet mit Sturz",
-   "teaser": "Zwei Jugendliche flüchteten in Pittenhart mit einem E-Scooter vor einer Polizeikontrolle. Die Verfolgungsfahrt endete mit einem Sturz.",
-   "category": "",
-   "topic": "Region/Polizeimeldungen",
-   "plus": false,
-   "date": "2026-10-29T09:18:44+00:00",
-   "sec": "/chiemgau/polizeimeldungen/",
-   "first_seen": "2026-10-29T09:18:44+00:00",
-   "pc": 2
-  },
   "3135549192": {
    "sid": 3135549192,
    "url": "https://www.chiemgau24.de/chiemgau/rupertiwinkel/teisendorf-ort45305/auto-prallt-in-lkw-fahrer-bei-unfall-in-teisendorf-im-glueck-94563378.html",
@@ -2559,19 +2585,6 @@
    "date": "2026-10-28T18:58:19+00:00",
    "sec": "/chiemgau/rupertiwinkel/",
    "first_seen": "2026-10-28T18:58:19+00:00",
-   "pc": 2
-  },
-  "4112008402": {
-   "sid": 4112008402,
-   "url": "https://www.chiemgau24.de/chiemgau/polizeimeldungen/feuer-in-mehrfamilienhaus-in-grassau-verursacht-hohen-schaden-94561973.html",
-   "title": "Feuer in Mehrfamilienhaus in Grassau verursacht hohen Schaden",
-   "teaser": "Bei einem Wohnungsbrand in Grassau ist am Dienstag (27. Oktober) eine Frau leicht verletzt worden. Die Kriminalpolizei ermittelt zur Ursache.",
-   "category": "",
-   "topic": "Region/Polizeimeldungen",
-   "plus": false,
-   "date": "2026-10-28T09:22:32+00:00",
-   "sec": "/chiemgau/polizeimeldungen/",
-   "first_seen": "2026-10-28T09:22:32+00:00",
    "pc": 2
   },
   "1493024291": {

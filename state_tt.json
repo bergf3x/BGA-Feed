@@ -1,5 +1,15 @@
 {
  "items": {
+  "1028306": {
+   "sid": 1028306,
+   "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein_artikel,-drei-unfaelle-am-dienstag-wegweiser-uebersehen-rueckwaertsgang-eingelegt-und-pedale-verwechselt-_arid,1028306.html",
+   "title": "Drei Unfälle am Dienstag: Wegweiser übersehen, Rückwärtsgang eingelegt und Pedale verwechselt",
+   "teaser": "Gleich drei Verkehrsunfälle haben die Polizei Traunstein am Dienstagvormittag beschäftigt. In Chieming prallte eine junge Autofahrerin an einen Wegweiser, in Traunstein verfolgte ein ...",
+   "category": "Landkreis Traunstein",
+   "plus": false,
+   "topic": "Region/Landkreis Traunstein",
+   "first_seen": "2026-11-24T22:46:50+00:00"
+  },
   "1028251": {
    "sid": 1028251,
    "url": "https://www.traunsteiner-tagblatt.de/region/kultur_artikel,-moepse-erobern-die-ehemalige-wuerstlbude-ausstellung-tribute-to-schorschi-ein-voller-erfolg-_arid,1028251.html",
@@ -9,6 +19,16 @@
    "plus": false,
    "topic": "Kultur",
    "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028155": {
+   "sid": 1028155,
+   "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein/schleching_artikel,-ein-vierteljahrhundert-fuer-schleching-im-einsatz-peter-oster-gewuerdigt-_arid,1028155.html",
+   "title": "Ein Vierteljahrhundert für Schleching im Einsatz – Peter Oster gewürdigt",
+   "teaser": "",
+   "category": "Schleching",
+   "plus": true,
+   "topic": "Region/Landkreis Traunstein",
+   "first_seen": "2026-11-24T22:46:50+00:00"
   },
   "1028144": {
    "sid": 1028144,
@@ -54,11 +74,21 @@
    "sid": 1028140,
    "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein/traunstein_artikel,-ein-stueck-traunsteiner-weihnachtsgeschichte-langjaehrige-standbetreiber-auf-dem-christkindlmarkt-geeh-_arid,1028140.html",
    "title": "Ein Stück Traunsteiner Weihnachtsgeschichte: Langjährige Standbetreiber auf dem Christkindlmarkt geehrt",
-   "teaser": "Traunstein – Die Freude bei den »Standlern« war groß, denn ihre langjährige Treue wurde am Montag belohnt: Bei einem Rundgang über den Traunsteiner Christkindlmarkt überreichten ...",
-   "category": "\"Ehrung langjähriger Standbetreiber auf dem 50. Christkindlmarkt - Einige sind von Beginn an dabei\"",
+   "teaser": "",
+   "category": "Traunstein",
    "plus": true,
    "topic": "Region/Landkreis Traunstein",
    "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028139": {
+   "sid": 1028139,
+   "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein/traunstein_artikel,-aus-intensivstation-wird-entbindungsklinik-athletes-for-ukraine-raeumte-im-traunsteiner-klinikum-aus-_arid,1028139.html",
+   "title": "Aus Intensivstation wird Entbindungsklinik: Athletes for Ukraine räumte im Traunsteiner Klinikum aus",
+   "teaser": "Traunstein – Der von Biathlon-Olympiasieger Jens Steinigen gegründete Verein »Athletes for Ukraine« (A4U) hat in seinem fast fünfjährigen Bestehen Hilfslieferungen mit einem Volumen ...",
+   "category": "\"Athletes for Ukraine räumte im Traunsteiner Klinikum aus und lieferte Inventar nach Odessa\"",
+   "plus": true,
+   "topic": "Region/Landkreis Traunstein",
+   "first_seen": "2026-11-24T22:46:50+00:00"
   },
   "1028137": {
    "sid": 1028137,
@@ -115,7 +145,7 @@
    "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein/traunstein_artikel,-podiumsdiskussion-anlaesslich-des-demokratiefests-wie-gefaehrdet-ist-unsere-demokratie-_arid,1027978.html",
    "title": "Podiumsdiskussion anlässlich des Demokratiefests: »Wie gefährdet ist unsere Demokratie?«",
    "teaser": "",
-   "category": "Traunstein",
+   "category": "",
    "plus": true,
    "topic": "Region/Landkreis Traunstein",
    "first_seen": "2026-11-23T04:02:03+00:00"
@@ -527,36 +557,6 @@
    "teaser": "Obing – Bei einem Arbeitsunfall in einem Fuhrunternehmen in Obing ist ein 30-jähriger Kfz-Mechatroniker schwer verletzt worden. Das teilte die Polizei Trostberg am Freitag mit.",
    "category": "Obing",
    "plus": false,
-   "topic": "Region/Landkreis Traunstein",
-   "first_seen": "2026-11-21T17:12:25+00:00"
-  },
-  "1027568": {
-   "sid": 1027568,
-   "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein/grassau_artikel,-nach-ueberflutungen-grassau-plant-neue-pumpstation-fuer-zwei-millionen-euro-_arid,1027568.html",
-   "title": "Nach Überflutungen: Grassau plant neue Pumpstation für zwei Millionen Euro",
-   "teaser": "Grassau – » Es war ein langer Weg.« Das erklärte Bürgermeister Stefan Kattari im Gemeinderat, als die fertiggestellte Studie zur Abwasserentsorgung Brandstätt und Grafing vorgestellt ...",
-   "category": "Grassau",
-   "plus": false,
-   "topic": "Region/Landkreis Traunstein",
-   "first_seen": "2026-11-21T17:12:25+00:00"
-  },
-  "1027567": {
-   "sid": 1027567,
-   "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein/siegsdorf_artikel,-mammutmuseum-siegsdorf-foerderverein-ehrt-dr-darga-sowie-gabi-und-hans-steiner-_arid,1027567.html",
-   "title": "Mammutmuseum Siegsdorf: Förderverein ehrt Dr. Darga sowie Gabi und Hans Steiner",
-   "teaser": "",
-   "category": "Siegsdorf",
-   "plus": true,
-   "topic": "Region/Landkreis Traunstein",
-   "first_seen": "2026-11-21T17:12:25+00:00"
-  },
-  "1027565": {
-   "sid": 1027565,
-   "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein/surberg_artikel,-abwassergebuehren-in-surberg-steigen-auch-nachzahlung-fuer-klaeranlage-zugestimmt-_arid,1027565.html",
-   "title": "Abwassergebühren in Surberg steigen – Auch Nachzahlung für Kläranlage zugestimmt",
-   "teaser": "",
-   "category": "Surberg",
-   "plus": true,
    "topic": "Region/Landkreis Traunstein",
    "first_seen": "2026-11-21T17:12:25+00:00"
   },
