@@ -1,5 +1,395 @@
 {
  "items": {
+  "1028279": {
+   "sid": 1028279,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-undav-und-der-vfb-mit-torfrust-in-den-fussballtempel-_arid,1028279.html",
+   "title": "Undav und der VfB: Mit Tor-Frust in den Fußball-Tempel",
+   "teaser": "Mailand (dpa) - Stuttgarts Offensive sorgt vor dem Königsklassen-Kracher bei Inter Mailand für Diskussionen. Die Stimmung wirkt nach der Nullnummer auf Schalke gereizt. Gibt's im ...",
+   "category": "Fußball",
+   "plus": false,
+   "topic": "Sport/Fußball",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028278": {
+   "sid": 1028278,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-fuechsestar-lichtlein-droht-wmaus-das-wird-knapp-_arid,1028278.html",
+   "title": "Füchse-Star Lichtlein droht WM-Aus - »Das wird knapp«",
+   "teaser": "Berlin (dpa) - Anfang Dezember sollte der an der Schulter verletzte Nils Lichtlein sein Comeback feiern. Daraus wird nichts. Nun könnte es auch für die Heim-WM eng werden.",
+   "category": "Sport",
+   "plus": false,
+   "topic": "Sport",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028277": {
+   "sid": 1028277,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-industrie-draengt-auf-tempo-bei-reformen-ki-als-chance-_arid,1028277.html",
+   "title": "Industrie drängt auf Tempo bei Reformen - KI als Chance",
+   "teaser": "Berlin (dpa) - In der Industrie rückt die Nutzung Künstlicher Intelligenz zunehmend in den Mittelpunkt. Dazu braucht es Geschwindigkeit - auch bei Reformen, fordert der BDI.",
+   "category": "Wirtschaft",
+   "plus": false,
+   "topic": "Nachrichten/Wirtschaft",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028272": {
+   "sid": 1028272,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-wetterdienst-erwartet-milderen-winter-was-bedeutet-das-_arid,1028272.html",
+   "title": "Wetterdienst erwartet milderen Winter - was bedeutet das?",
+   "teaser": "",
+   "category": "",
+   "plus": false,
+   "topic": "Nachrichten/Boulevard",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028267": {
+   "sid": 1028267,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-rostock-spart-bei-der-weihnachtstanne-besucher-sind-empoert-_arid,1028267.html",
+   "title": "Rostock spart bei der Weihnachtstanne - Besucher sind empört",
+   "teaser": "",
+   "category": "",
+   "plus": false,
+   "topic": "Nachrichten/Boulevard",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028264": {
+   "sid": 1028264,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-spendenrat-zieht-bilanz-deutsche-spenden-wieder-mehr-_arid,1028264.html",
+   "title": "Spendenrat zieht Bilanz: Deutsche spenden wieder mehr",
+   "teaser": "",
+   "category": "",
+   "plus": false,
+   "topic": "Nachrichten/Boulevard",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028262": {
+   "sid": 1028262,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-vereinigung-cockpit-beraet-ueber-neue-tarifforderungen-_arid,1028262.html",
+   "title": "Vereinigung Cockpit berät über neue Tarif-Forderungen",
+   "teaser": "Frankfurt/Main (dpa) - Streiks, Schlichtung, Mediation: Lufthansa und ihre Piloten kommen nicht weiter. Die Vereinigung Cockpit verzichtet zunächst auf weitere Streikdrohungen, ...",
+   "category": "Wirtschaft",
+   "plus": false,
+   "topic": "Nachrichten/Wirtschaft",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028261": {
+   "sid": 1028261,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-abschliessender-vwdieselprozess-in-braunschweig-begonnen-_arid,1028261.html",
+   "title": "Abschließender VW-Dieselprozess in Braunschweig begonnen",
+   "teaser": "Braunschweig (dpa) - Mehr als elf Jahre nach Aufdeckung der VW-Dieselaffäre wird in Braunschweig immer noch fast täglich über den Skandal verhandelt. Immerhin läuft nun auch das ...",
+   "category": "Wirtschaft",
+   "plus": false,
+   "topic": "Nachrichten/Wirtschaft",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028258": {
+   "sid": 1028258,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-vier-von-fuenf-nutzen-ki-auch-firmen-ziehen-nach-_arid,1028258.html",
+   "title": "Vier von fünf nutzen KI - auch Firmen ziehen nach",
+   "teaser": "Berlin/Wiesbaden (dpa) - Vier Jahre nach dem Start von ChatGPT nutzen bereits vier von fünf Menschen hierzulande generative KI - und auch in deutschen Unternehmen zieht die Technik ...",
+   "category": "Digitales",
+   "plus": false,
+   "topic": "Nachrichten/Digital",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028254": {
+   "sid": 1028254,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-wadephul-schockiert-ueber-trumpeingreifen-bei-nvidia-_arid,1028254.html",
+   "title": "Wadephul schockiert über Trump-Eingreifen bei Nvidia",
+   "teaser": "Berlin (dpa) - Der US-Präsident will nach eigener Darstellung dafür gesorgt haben, dass Jensen Huang wieder an die Spitze des Chip-Riesen Nvidia zurückgekehrt ist. Wie der ...",
+   "category": "Digitales",
+   "plus": false,
+   "topic": "Nachrichten/Digital",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028252": {
+   "sid": 1028252,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-saisonstart-biathletin-puff-faellt-erkrankt-aus-_arid,1028252.html",
+   "title": "Saisonstart: Biathletin Puff fällt erkrankt aus",
+   "teaser": "Kontiolahti (dpa) - Nach einer Herzmuskelentzündung kämpft sich Johanna Puff mit viel Ehrgeiz zurück – doch nun verpasst sie den Weltcup-Auftakt. Wer rückt für sie ins Team?",
+   "category": "Biathlon-Weltcup",
+   "plus": false,
+   "topic": "Sport/Wintersport",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028251": {
+   "sid": 1028251,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-moepse-erobern-die-ehemalige-wuerstlbude-ausstellung-tribute-to-schorschi-ein-voller-erfolg-_arid,1028251.html",
+   "title": "Möpse erobern die ehemalige Würstlbude: Ausstellung »Tribute to Schorschi« ein voller Erfolg",
+   "teaser": "Sie hat die beiden Stadtbrände von 1704 und 1851 überlebt, unzählige Traunsteiner legten dort über 50 Jahre lang öfters einen Stopp ein, um ein Paar Würstl zu essen, seit den ...",
+   "category": "Kultur aus der Region",
+   "plus": false,
+   "topic": "Kultur",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028249": {
+   "sid": 1028249,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-fast-200000-frauen-opfer-haeuslicher-gewalt-_arid,1028249.html",
+   "title": "Fast 200.000 Frauen Opfer häuslicher Gewalt",
+   "teaser": "",
+   "category": "",
+   "plus": false,
+   "topic": "Nachrichten/Boulevard",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028244": {
+   "sid": 1028244,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-haischutzkonferenz-stillstand-statt-durchbruch-_arid,1028244.html",
+   "title": "Haischutzkonferenz: »Stillstand« statt Durchbruch",
+   "teaser": "Lissabon/Madrid (dpa) - Bedrohte Haie brauchen dringend besseren Schutz. Doch trotz eindringlicher Appelle bringt ein internationales Treffen nur begrenzte Fortschritte. Am Ende ist ...",
+   "category": "Wissenschaft",
+   "plus": false,
+   "topic": "Nachrichten/Wissenschaft",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028243": {
+   "sid": 1028243,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-die-welt-der-laura-dahlmeier-zdf-erinnert-an-biathlonstar-_arid,1028243.html",
+   "title": "»Die Welt der Laura Dahlmeier«: ZDF erinnert an Biathlonstar",
+   "teaser": "Berlin (dpa) - Am Laila Peak in Pakistan endet Laura Dahlmeiers Leben jäh. Das ZDF will mit einem Film kein Trauerstück zeigen, sondern ein selbstbestimmtes Leben feiern. Was erzählen ...",
+   "category": "Biathlon-Weltcup",
+   "plus": false,
+   "topic": "Sport/Wintersport",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028242": {
+   "sid": 1028242,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-umbruch-drei-reitsportolympiasieger-aus-kader-gestrichen-_arid,1028242.html",
+   "title": "Umbruch: Drei Reitsport-Olympiasieger aus Kader gestrichen",
+   "teaser": "Warendorf (dpa) - Erfolgreiche Reiter verlieren ihre Kaderplätze. Bei Michael Jung und Jessica von Bredow-Werndl spielen ihre Pferde eine Rolle – was hinter dem Umbruch steckt.",
+   "category": "Sport",
+   "plus": false,
+   "topic": "Sport",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028238": {
+   "sid": 1028238,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-ifogeschaeftsklima-steigt-auf-hoechststand-seit-fruehjahr-2023-_arid,1028238.html",
+   "title": "Ifo-Geschäftsklima steigt auf Höchststand seit Frühjahr 2023",
+   "teaser": "",
+   "category": "Wirtschaft",
+   "plus": false,
+   "topic": "Nachrichten/Wirtschaft",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028236": {
+   "sid": 1028236,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-preuss-mahnt-bei-deutschen-biathletinnen-zu-geduld-_arid,1028236.html",
+   "title": "Preuß mahnt bei deutschen Biathletinnen zu Geduld",
+   "teaser": "",
+   "category": "Biathlon-Weltcup",
+   "plus": false,
+   "topic": "Sport/Wintersport",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028233": {
+   "sid": 1028233,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-vietnam-sechs-tote-bei-explosion-in-restaurant-_arid,1028233.html",
+   "title": "Vietnam: Sechs Tote bei Explosion in Restaurant",
+   "teaser": "",
+   "category": "",
+   "plus": false,
+   "topic": "Nachrichten/Boulevard",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028228": {
+   "sid": 1028228,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-preise-fuer-computer-und-konsolen-steigen-deutlich-_arid,1028228.html",
+   "title": "Preise für Computer und Konsolen steigen deutlich",
+   "teaser": "Wiesbaden (dpa) - Laptops, Desktop-PCs und Spielekonsolen kosten Verbraucher spürbar mehr als vor einem Jahr. Das Statistische Bundesamt sieht einen Zusammenhang mit dem KI-Boom. ...",
+   "category": "Digitales",
+   "plus": false,
+   "topic": "Nachrichten/Digital",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028227": {
+   "sid": 1028227,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-ryanair-knuepft-grossen-wachstumsplan-an-steuersenkung-_arid,1028227.html",
+   "title": "Ryanair knüpft großen Wachstumsplan an Steuersenkung",
+   "teaser": "",
+   "category": "Wirtschaft",
+   "plus": false,
+   "topic": "Nachrichten/Wirtschaft",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028224": {
+   "sid": 1028224,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-sanofi-kauft-usbiotechfirma-fuer-41-milliarden-dollar-_arid,1028224.html",
+   "title": "Sanofi kauft US-Biotechfirma für 41 Milliarden Dollar",
+   "teaser": "",
+   "category": "Wirtschaft",
+   "plus": false,
+   "topic": "Nachrichten/Wirtschaft",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028223": {
+   "sid": 1028223,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-wie-es-der-wintersport-mit-russlands-athleten-haelt-_arid,1028223.html",
+   "title": "Wie es der Wintersport mit Russlands Athleten hält",
+   "teaser": "Berlin (dpa) - Das IOC erlaubt Russlands Athleten wieder Starts mit Flagge und Hymne. Viele Wintersportverbände bleiben zurückhaltender - und einige Gastgeberländer ziehen harte ...",
+   "category": "Sport",
+   "plus": false,
+   "topic": "Sport",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028221": {
+   "sid": 1028221,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-drohne-dringt-in-luftraum-ueber-polen-ein-_arid,1028221.html",
+   "title": "Drohne dringt in Luftraum über Polen ein",
+   "teaser": "",
+   "category": "",
+   "plus": false,
+   "topic": "Nachrichten/Boulevard",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028218": {
+   "sid": 1028218,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-nach-lichtausfall-commanders-schocken-bengals-kurz-vor-ende-_arid,1028218.html",
+   "title": "Nach Lichtausfall: Commanders schocken Bengals kurz vor Ende",
+   "teaser": "Landover (dpa) - Ein Field Goal mit Ablauf der Uhr sorgt für einen Überraschungserfolg der Washington Commanders. Mitten im Spiel wird es plötzlich dunkel.",
+   "category": "Sport",
+   "plus": false,
+   "topic": "Sport",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028217": {
+   "sid": 1028217,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-ing-deutschland-fuehrt-kreditkarte-ein-aber-nicht-fuer-alle-_arid,1028217.html",
+   "title": "ING Deutschland führt Kreditkarte ein - aber nicht für alle",
+   "teaser": "",
+   "category": "Wirtschaft",
+   "plus": false,
+   "topic": "Nachrichten/Wirtschaft",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028214": {
+   "sid": 1028214,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-dick-brave-bringt-rocknroll-in-die-weihnachtszeit-_arid,1028214.html",
+   "title": "Dick Brave bringt Rock'n'Roll in die Weihnachtszeit",
+   "teaser": "Hamburg (dpa) - Mit diesem Weihnachtsalbum hat sich Musiker Sasha einen langgehegten Wunsch erfüllt. Doch er singt nicht als Sasha, sondern als Dick Brave – und bringt Rock'n'Roll in ...",
+   "category": "Boulevard",
+   "plus": false,
+   "topic": "Nachrichten/Boulevard",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028213": {
+   "sid": 1028213,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-nba-hornets-trotz-andersons-bestleistung-weiter-schwach-_arid,1028213.html",
+   "title": "NBA: Hornets trotz Andersons Bestleistung weiter schwach",
+   "teaser": "Charlotte (dpa) - Der Negativtrend der Hornets in der NBA setzt sich trotz der Gala eines deutschen Liga-Neulings fort. Auch Moritz Wagner und Isaiah Hartenstein verlieren.",
+   "category": "Sport",
+   "plus": false,
+   "topic": "Sport",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028207": {
+   "sid": 1028207,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-schlaege-angriffe-mord-zehntausende-frauen-erleiden-gewalt-_arid,1028207.html",
+   "title": "Schläge, Angriffe, Mord: Zehntausende Frauen erleiden Gewalt",
+   "teaser": "Berlin (dpa) - Bundesinnenminister Alexander Dobrindt veröffentlicht die jüngste Statistik für das Jahr 2025. Welches Martyrium hinter den Zahlen steht, können wohl die wenigsten ...",
+   "category": "Brennpunkt",
+   "plus": false,
+   "topic": "Nachrichten/Deutschland & Welt",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028206": {
+   "sid": 1028206,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-von-zitronen-und-anderen-beleidigungen-in-spaniens-wahlkampf-_arid,1028206.html",
+   "title": "Von Zitronen und anderen Beleidigungen in Spaniens Wahlkampf",
+   "teaser": "Madrid (dpa) - »Mafia«, »Gestapo-Imitat«, »Kollaborateure«: Spaniens Politiker hantieren mit immer drastischeren Vorwürfen. Was droht der ...",
+   "category": "Brennpunkt",
+   "plus": false,
+   "topic": "Nachrichten/Deutschland & Welt",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028203": {
+   "sid": 1028203,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-ig-metall-zu-vwtarifauftakt-bewegen-uns-keinen-millimeter-_arid,1028203.html",
+   "title": "IG Metall zu VW-Tarifauftakt: Bewegen uns keinen Millimeter",
+   "teaser": "Emden (dpa) - Mitten in der Krise beginnt die Tarifrunde bei Volkswagen. Der Autobauer fordert weitreichende Einschnitte von seinen Beschäftigten. Die IG Metall wehrt sich – und stellt ...",
+   "category": "Wirtschaft",
+   "plus": false,
+   "topic": "Nachrichten/Wirtschaft",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028202": {
+   "sid": 1028202,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-zwei-20jaehrige-beim-juengsten-wmduell-der-schachgeschichte-_arid,1028202.html",
+   "title": "Zwei 20-Jährige beim jüngsten WM-Duell der Schach-Geschichte",
+   "teaser": "Neu-Delhi (dpa) - Vor zwei Jahren wurde Dommaraju Gukesh mit 18 Schachweltmeister – nun muss er seinen Titel gegen den formstarken Javokhir Sindarov verteidigen. Warum Experten ...",
+   "category": "Sport",
+   "plus": false,
+   "topic": "Sport",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028199": {
+   "sid": 1028199,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-wie-die-opposition-die-haushaltsplaene-der-regierung-zerreisst-_arid,1028199.html",
+   "title": "Wie die Opposition die Haushaltspläne der Regierung zerreißt",
+   "teaser": "Berlin (dpa) - Die Haushaltswoche im Bundestag ist speziell. In diesem Jahr ganz besonders. Zum Auftakt müssen Kanzler und Vizekanzler einstecken.",
+   "category": "Brennpunkt",
+   "plus": false,
+   "topic": "Nachrichten/Deutschland & Welt",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028198": {
+   "sid": 1028198,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-fraktionsausschluss-von-emde-berliner-linke-entscheidet-_arid,1028198.html",
+   "title": "Fraktionsausschluss von Emde? – Berliner Linke entscheidet",
+   "teaser": "Berlin (dpa) - Die Berliner Linke Vanessa Emde holte ein Direktmandat, doch ihr Verhältnis zur eigenen Fraktionsspitze ist zerrüttet. Bei der Abstimmung über ihren Ausschluss steht ...",
+   "category": "Brennpunkt",
+   "plus": false,
+   "topic": "Nachrichten/Deutschland & Welt",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028196": {
+   "sid": 1028196,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-viel-weniger-autos-in-deutschland-gestohlen-_arid,1028196.html",
+   "title": "Viel weniger Autos in Deutschland gestohlen",
+   "teaser": "Berlin (dpa) - Nur etwa 3 von 10.000 Pkw wurden im vergangenen Jahr in Deutschland gestohlen - deutlich weniger als zuvor. Dahinter steckt ein naheliegender Grund.",
+   "category": "Brennpunkt",
+   "plus": false,
+   "topic": "Nachrichten/Deutschland & Welt",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028195": {
+   "sid": 1028195,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-bswspitze-sucht-kompromiss-im-streit-ueber-afd-_arid,1028195.html",
+   "title": "BSW-Spitze sucht Kompromiss im Streit über AfD",
+   "teaser": "Berlin/Magdeburg (dpa) - In der jungen Partei gibt es Unmut über die Art der Zusammenarbeit mit der AfD in Sachsen-Anhalt. Kann ein neuer Vorschlag die Lage entschärfen?",
+   "category": "Brennpunkt",
+   "plus": false,
+   "topic": "Nachrichten/Deutschland & Welt",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028194": {
+   "sid": 1028194,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-adam-seiner-rasse-gene-von-stier-comet-weit-verbreitet-_arid,1028194.html",
+   "title": "»Adam« seiner Rasse: Gene von Stier »Comet« weit verbreitet",
+   "teaser": "Dublin (dpa) - Unter Nutztieren gibt es echte Superstars. Ein früher Vertreter war »Comet«, nach Ansicht damaliger Rinderzüchter ein Bild von einem Bullen. Das hat Folgen ...",
+   "category": "Wissenschaft",
+   "plus": false,
+   "topic": "Nachrichten/Wissenschaft",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028193": {
+   "sid": 1028193,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-fuenf-tote-in-kehl-zwei-kinder-weiter-in-kritischem-zustand-_arid,1028193.html",
+   "title": "Fünf Tote in Kehl – zwei Kinder weiter in kritischem Zustand",
+   "teaser": "Kehl (dpa) - In Kehl spielen sich am Montagvormittag dramatische Szenen ab. Fünf Menschen sterben - zwei Kinder kämpfen weiter um ihr Leben.",
+   "category": "Brennpunkt",
+   "plus": false,
+   "topic": "Nachrichten/Deutschland & Welt",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028191": {
+   "sid": 1028191,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-china-will-erstmals-auslaender-auf-raumstation-schicken-_arid,1028191.html",
+   "title": "China will erstmals Ausländer auf Raumstation schicken",
+   "teaser": "Jiuquan (dpa) - Zweimal im Jahr tauscht China auf seiner Weltraumstation »Tiangong« die Crew aus. Nun steht mit der »Shenzhou 24«-Mission ein weiterer Wechsel ...",
+   "category": "Wissenschaft",
+   "plus": false,
+   "topic": "Nachrichten/Wissenschaft",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
   "1028189": {
    "sid": 1028189,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-junge-sehen-aktien-als-gute-altersvorsorge-aeltere-zoegern-_arid,1028189.html",
@@ -24,30 +414,30 @@
    "sid": 1028187,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-polen-wendet-sich-nach-raketenvorfaellen-an-visegradgruppe-_arid,1028187.html",
    "title": "Polen wendet sich nach Raketenvorfällen an Visegrad-Gruppe",
-   "teaser": "",
-   "category": "",
+   "teaser": "Brüssel/Warschau (dpa) - Drei russische Marschflugkörper dringen in den polnischen Luftraum ein und stürzen ab. Die Nato reagiert mit zusätzlicher Überwachung. Am Abend gibt es erneut ...",
+   "category": "Brennpunkt",
    "plus": false,
-   "topic": "Nachrichten/Boulevard",
+   "topic": "Nachrichten/Deutschland & Welt",
    "first_seen": "2026-11-24T01:56:26+00:00"
   },
   "1028185": {
    "sid": 1028185,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-trump-attackiert-newsom-bei-rede-im-justizministerium-_arid,1028185.html",
    "title": "Trump attackiert Newsom bei Rede im Justizministerium",
-   "teaser": "",
-   "category": "",
+   "teaser": "Washington (dpa) - Kaliforniens Gouverneur gilt als möglicher Kandidat der Demokraten für die Präsidentenwahl 2028. Der US-Präsident greift in häufiger verbal an. Nun tut er das an ...",
+   "category": "Brennpunkt",
    "plus": false,
-   "topic": "Nachrichten/Boulevard",
+   "topic": "Nachrichten/Deutschland & Welt",
    "first_seen": "2026-11-24T01:56:26+00:00"
   },
   "1028183": {
    "sid": 1028183,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-luftalarm-in-polen-anwohner-sollen-schutzraeume-aufsuchen-_arid,1028183.html",
-   "title": "Luftalarm in Polen - Anwohner sollen Schutzräume aufsuchen",
-   "teaser": "",
-   "category": "",
+   "title": "Papst Franziskus beschrieb in Tagebuch Visionen des Teufels",
+   "teaser": "Rom (dpa) - Bedrohliche Augen, eine triumphierende Stimme und lautes Röcheln: Papst Franziskus hielt drei angebliche Begegnungen mit dem Teufel in seinem nun in Teilen veröffentlichten ...",
+   "category": "Brennpunkt",
    "plus": false,
-   "topic": "Nachrichten/Boulevard",
+   "topic": "Nachrichten/Deutschland & Welt",
    "first_seen": "2026-11-24T01:56:26+00:00"
   },
   "1028180": {
@@ -74,31 +464,81 @@
    "sid": 1028176,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-weihnachtsbaum-und-truthaehne-feststimmung-im-weissen-haus-_arid,1028176.html",
    "title": "Weihnachtsbaum und Truthähne: Feststimmung im Weißen Haus",
+   "teaser": "Washington (dpa) - Das Weiße Haus bereitet sich auf gleich zwei Feiertage vor: Für Weihnachten wird ein großer Baum angeliefert, und für zwei Truthähne läuft eine besondere Abstimmung.",
+   "category": "Brennpunkt",
+   "plus": false,
+   "topic": "Nachrichten/Deutschland & Welt",
+   "first_seen": "2026-11-24T01:56:26+00:00"
+  },
+  "1028175": {
+   "sid": 1028175,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-kleine-sportler-ganz-gross-39-sportabzeichen-beim-tsv-berchtesgaden-verliehen-_arid,1028175.html",
+   "title": "Kleine Sportler ganz groß: 39 Sportabzeichen beim TSV Berchtesgaden verliehen",
+   "teaser": "",
+   "category": "Regionalsport BGD",
+   "plus": false,
+   "topic": "Sport/Sport aus der Region",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028172": {
+   "sid": 1028172,
+   "url": "https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land/berchtesgaden_artikel,-das-kehlsteinhaus-hat-ein-notdach-kran-bleibt-ueber-den-winter-stehen-_arid,1028172.html",
+   "title": "Das Kehlsteinhaus hat ein Not-Dach – Kran bleibt über den Winter stehen",
    "teaser": "",
    "category": "",
    "plus": false,
-   "topic": "Nachrichten/Boulevard",
-   "first_seen": "2026-11-24T01:56:26+00:00"
+   "topic": "Region/Berchtesgadener Land",
+   "first_seen": "2026-11-24T12:32:05+00:00"
   },
   "1028169": {
    "sid": 1028169,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-union-femizide-haerter-bestrafen-_arid,1028169.html",
    "title": "Union: Femizide härter bestrafen",
-   "teaser": "",
-   "category": "",
+   "teaser": "Berlin (dpa) - Jedes Jahr werden Dutzende Frauen in Deutschland umgebracht, weil sie Frauen sind. Die Justizministerin will strikter gegen solche Taten vorgehen. In der Unionsfraktion ...",
+   "category": "Brennpunkt",
    "plus": false,
-   "topic": "Nachrichten/Boulevard",
+   "topic": "Nachrichten/Deutschland & Welt",
    "first_seen": "2026-11-24T01:56:26+00:00"
   },
   "1028168": {
    "sid": 1028168,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-65jaehriger-in-ainring-getoetet-ehefrau-unter-mordverdacht-in-untersuchungshaft-_arid,1028168.html",
    "title": "65-Jähriger in Ainring getötet – Ehefrau unter Mordverdacht in Untersuchungshaft",
-   "teaser": "",
-   "category": "",
+   "teaser": "Ainring – Eine 61-jährige Frau steht im dringenden Verdacht, ihren 65-jährigen Ehemann in Ainring getötet zu haben. Der Mann wurde am Sonntagmittag leblos in seiner Wohnung gefunden. ...",
+   "category": "Regional",
    "plus": false,
    "topic": "Region/Berchtesgadener Land",
    "first_seen": "2026-11-24T01:56:26+00:00"
+  },
+  "1028164": {
+   "sid": 1028164,
+   "url": "https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land/bischofswiesen_artikel,-schwarzecker-bach-fuehrte-laut-naturschuetzern-zu-wenig-wasser-reservoir-war-ende-oktober-halb-voll-_arid,1028164.html",
+   "title": "Schwarzecker Bach führte laut Naturschützern zu wenig Wasser – Reservoir war Ende Oktober halb voll",
+   "teaser": "",
+   "category": "",
+   "plus": true,
+   "topic": "Region/Berchtesgadener Land",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028163": {
+   "sid": 1028163,
+   "url": "https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land/berchtesgaden_artikel,-alexander-resch-kinder-senioren-und-bildung-sind-mir-wichtig-_arid,1028163.html",
+   "title": "Alexander Resch: »Kinder, Senioren und Bildung sind mir wichtig«",
+   "teaser": "",
+   "category": "",
+   "plus": true,
+   "topic": "Region/Berchtesgadener Land",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028162": {
+   "sid": 1028162,
+   "url": "https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land/berchtesgaden_artikel,-weniger-straftaten-mehr-verkehrsunfaelle-kriminalitaets-und-unfallstatistik-bei-buergerversammlung-praes-_arid,1028162.html",
+   "title": "Weniger Straftaten, mehr Verkehrsunfälle: Kriminalitäts- und Unfallstatistik bei Bürgerversammlung präsentiert",
+   "teaser": "",
+   "category": "",
+   "plus": true,
+   "topic": "Region/Berchtesgadener Land",
+   "first_seen": "2026-11-24T12:32:05+00:00"
   },
   "1028161": {
    "sid": 1028161,
@@ -110,6 +550,16 @@
    "topic": "Nachrichten/Wirtschaft",
    "first_seen": "2026-11-24T01:56:26+00:00"
   },
+  "1028160": {
+   "sid": 1028160,
+   "url": "https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land/ramsau_artikel,-oma-ole-in-ramsau-laienbuehne-provisorium-kehrt-zu-ihren-einaktern-zurueck-_arid,1028160.html",
+   "title": "Oma olé in Ramsau: Laienbühne »Provisorium« kehrt zu ihren Einaktern zurück",
+   "teaser": "Ramsau – Während draußen der November über der Ramsau hängt, herrscht im Rathaussaal Hochsaison. Die Laienbühne »Provisorium« hat vor vollem Haus zwei Einakter gezeigt: »Spanien olé« ...",
+   "category": "Ramsau",
+   "plus": false,
+   "topic": "Region/Berchtesgadener Land",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
   "1028158": {
    "sid": 1028158,
    "url": "https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land/schoenau-am-koenigssee_artikel,-ueber-1000-euro-fuer-polsterreinigung-bezahlt-polizei-warnt-vor-dubiosen-angeboten-_arid,1028158.html",
@@ -119,6 +569,16 @@
    "plus": false,
    "topic": "Region/Berchtesgadener Land",
    "first_seen": "2026-11-24T01:56:26+00:00"
+  },
+  "1028157": {
+   "sid": 1028157,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-gute-laune-beim-ainringer-crosslauf-145-laeufer-trotzen-unwirtlichen-bedingungen-_arid,1028157.html",
+   "title": "Gute Laune beim Ainringer Crosslauf: 145 Läufer trotzen unwirtlichen Bedingungen",
+   "teaser": "",
+   "category": "Regionalsport BGD",
+   "plus": false,
+   "topic": "Sport/Sport aus der Region",
+   "first_seen": "2026-11-24T12:32:05+00:00"
   },
   "1028156": {
    "sid": 1028156,
@@ -130,12 +590,22 @@
    "topic": "Sport/Fußball",
    "first_seen": "2026-11-24T01:56:26+00:00"
   },
+  "1028153": {
+   "sid": 1028153,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-verdoppelung-der-muellgebuehren-im-jahr-2028-droht-verwaltung-im-landratsamt-stellt-erste-prognose-_arid,1028153.html",
+   "title": "Verdoppelung der Müllgebühren im Jahr 2028 droht – Verwaltung im Landratsamt stellt erste Prognose",
+   "teaser": "Über den Köpfen der Bürger braut sich etwas zusammen: Sie müssen mit einer deutlichen Erhöhung der Müllgebühren im Jahr 2028 rechnen. Einen ersten Einblick, wo die Reise möglicherweise ...",
+   "category": "\"Verwaltung im Landratsamt in Traunstein stellt erste Prognose - Neukalkulation im Frühsommer 2027\"",
+   "plus": false,
+   "topic": "Region/Landkreis Traunstein",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
   "1028150": {
    "sid": 1028150,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-nach-fast-20-jahren-altes-akropolismuseum-wiedereroeffnet-_arid,1028150.html",
    "title": "Nach fast 20 Jahren: Altes Akropolismuseum wiedereröffnet",
-   "teaser": "",
-   "category": "",
+   "teaser": "Athen (dpa) - Es liegt unmittelbar neben dem berühmten Parthenontempel auf der Athener Akropolis und kann künftig wieder besucht werden: das historische Akropolismuseum aus dem 19. ...",
+   "category": "Boulevard",
    "plus": false,
    "topic": "Nachrichten/Boulevard",
    "first_seen": "2026-11-24T01:56:26+00:00"
@@ -150,6 +620,46 @@
    "topic": "Nachrichten/Deutschland & Welt",
    "first_seen": "2026-11-24T01:56:26+00:00"
   },
+  "1028144": {
+   "sid": 1028144,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-fsg-traunstein-erhaelt-die-sportplakette-des-bundespraesidenten-_arid,1028144.html",
+   "title": "FSG Traunstein erhält die Sportplakette des Bundespräsidenten",
+   "teaser": "Bayerns Innen- und Sportminister Joachim Herrmann hat in der Orangerie der Ansbacher Residenz die Sportplakette des Bundespräsidenten an vier bayerische Schützenvereine und zwölf ...",
+   "category": "Regionalsport TS",
+   "plus": false,
+   "topic": "Sport/Sport aus der Region",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028142": {
+   "sid": 1028142,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-dramatische-wende-eishockeybezirksligist-dec-inzell-bezwingt-bisherigen-tabellenfuehrer-mit-43-_arid,1028142.html",
+   "title": "Dramatische Wende: Eishockey-Bezirksligist DEC Inzell bezwingt bisherigen Tabellenführer mit 4:3",
+   "teaser": "",
+   "category": "Regionalsport TS",
+   "plus": false,
+   "topic": "Sport/Sport aus der Region",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028141": {
+   "sid": 1028141,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-befreiungsschlag-fuer-die-djkbasketballer-_arid,1028141.html",
+   "title": "Befreiungsschlag für die DJK-Basketballer",
+   "teaser": "",
+   "category": "Regionalsport TS",
+   "plus": false,
+   "topic": "Sport/Sport aus der Region",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
+  "1028140": {
+   "sid": 1028140,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-ein-stueck-traunsteiner-weihnachtsgeschichte-langjaehrige-standbetreiber-auf-dem-christkindlmarkt-geeh-_arid,1028140.html",
+   "title": "Ein Stück Traunsteiner Weihnachtsgeschichte: Langjährige Standbetreiber auf dem Christkindlmarkt geehrt",
+   "teaser": "",
+   "category": "",
+   "plus": false,
+   "topic": "Region/Landkreis Traunstein",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
   "1028136": {
    "sid": 1028136,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-gta-vihacker-zu-sieben-jahren-haft-verurteilt-_arid,1028136.html",
@@ -159,6 +669,16 @@
    "plus": false,
    "topic": "Nachrichten/Digital",
    "first_seen": "2026-11-24T01:56:26+00:00"
+  },
+  "1028134": {
+   "sid": 1028134,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-25jaehriger-vor-dem-landgericht-traunstein-er-soll-seine-ehefrau-vergewaltigt-haben-_arid,1028134.html",
+   "title": "25-Jähriger vor dem Landgericht Traunstein: Er soll seine Ehefrau vergewaltigt haben",
+   "teaser": "",
+   "category": "",
+   "plus": false,
+   "topic": "Nachrichten/Boulevard",
+   "first_seen": "2026-11-24T12:32:05+00:00"
   },
   "1028132": {
    "sid": 1028132,
@@ -190,6 +710,16 @@
    "topic": "Nachrichten/Deutschland & Welt",
    "first_seen": "2026-11-24T01:56:26+00:00"
   },
+  "1028124": {
+   "sid": 1028124,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-sparta-prag-trennt-sich-von-exdortmunder-rosicky-_arid,1028124.html",
+   "title": "Sparta Prag trennt sich von Ex-Dortmunder Rosicky",
+   "teaser": "Prag (dpa) - Der frühere Borussia-Spieler Rosicky muss seinen Posten als Sportdirektor bei Sparta Prag räumen. Auch Trainer Brian Priske geht - was steckt hinter dem personellen ...",
+   "category": "Fußball",
+   "plus": false,
+   "topic": "Sport/Fußball",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
   "1028121": {
    "sid": 1028121,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-merz-berichte-ueber-moskaus-atomplaene-im-all-schockierend-_arid,1028121.html",
@@ -214,7 +744,7 @@
    "sid": 1028119,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-nvidia-holt-firmenchef-huang-zurueck-_arid,1028119.html",
    "title": "Nach Trump-Eingreifen: Nvidia holt Firmenchef Huang zurück",
-   "teaser": "Santa Clara (dpa) - Jensen Huang war das Gesicht von Nvidia - und ist es jetzt wieder: Noch kürzlich hieß es, der Mitgründer werde nicht zum Chip-Riesen zurückkehren. Jetzt will Donald ...",
+   "teaser": "",
    "category": "Digitales",
    "plus": false,
    "topic": "Nachrichten/Digital",
@@ -244,7 +774,7 @@
    "sid": 1028109,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-megadeal-itsicherheitsfirma-crowdstrike-uebernimmt-zscaler-_arid,1028109.html",
    "title": "Mega-Deal: IT-Sicherheitsfirma Crowdstrike übernimmt Zscaler",
-   "teaser": "Austin/Santa Clara (dpa) - Cyberangriffe durch KI und neue Sicherheitsbedenken beschleunigen die Konsolidierung in der IT-Branche. Jetzt gibt eine große Fusion.",
+   "teaser": "",
    "category": "Digitales",
    "plus": false,
    "topic": "Nachrichten/Digital",
@@ -254,7 +784,7 @@
    "sid": 1028106,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-ein-gruener-haelt-sich-unter-schwarzrot-im-chefsessel-_arid,1028106.html",
    "title": "Ein Grüner hält sich unter Schwarz-Rot im Chefsessel",
-   "teaser": "",
+   "teaser": "Bonn (dpa) - CDU, CSU und SPD regieren im Bund, doch bei einer einflussreichen Behörde hat ein Grüner das Sagen. Ein Überbleibsel aus der Ampelzeit? Weit gefehlt: Schwarz-Rot möchte ...",
    "category": "Wirtschaft",
    "plus": false,
    "topic": "Nachrichten/Wirtschaft",
@@ -264,7 +794,7 @@
    "sid": 1028104,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-bundesnetzagenturpraesident-soll-bis-2032-im-amt-bleiben-_arid,1028104.html",
    "title": "Bundesnetzagentur-Präsident soll bis 2032 im Amt bleiben",
-   "teaser": "",
+   "teaser": "Berlin/Bonn (dpa) - An einer Adresse namens Tulpenfeld befindet sich in Bonn eine Bundesbehörde, die seit knapp fünf Jahren von einem Grünen geleitet wird. Das soll so bleiben, finden ...",
    "category": "Wirtschaft",
    "plus": false,
    "topic": "Nachrichten/Wirtschaft",
@@ -284,7 +814,7 @@
    "sid": 1028100,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-spritpreise-auf-talfahrt-_arid,1028100.html",
    "title": "Spritpreise auf Talfahrt",
-   "teaser": "",
+   "teaser": "München/Berlin (dpa) - Tanken wird seit Oktober wieder billiger. Im Tagesdurchschnitt hat Superbenzin der Sorte E10 eine wichtige Marke erreicht. Währenddessen gehen die Pläne für den ...",
    "category": "Wirtschaft",
    "plus": false,
    "topic": "Nachrichten/Wirtschaft",
@@ -304,7 +834,7 @@
    "sid": 1028094,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-sehr-schwere-pakete-verdi-fordert-entlastung-fuer-paketboten-_arid,1028094.html",
    "title": "Sehr schwere Pakete: Verdi fordert Entlastung für Paketboten",
-   "teaser": "",
+   "teaser": "Berlin (dpa) - Bis Weihnachten dauert es nicht mehr lange. Das bekommt auch die Paketbranche zu spüren, die Versandmengen steigen an. Bei Paketboten kann das auf die Knochen gehen. ...",
    "category": "Wirtschaft",
    "plus": false,
    "topic": "Nachrichten/Wirtschaft",
@@ -314,10 +844,10 @@
    "sid": 1028092,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-kaum-zuwachs-bei-den-woelfen-in-deutschland-_arid,1028092.html",
    "title": "Kaum Zuwachs bei den Wölfen in Deutschland",
-   "teaser": "Berlin (dpa) - Die Wolfpopulation in Deutschland legt im zweiten Jahr in Folge kaum noch zu. Mehrere Tiere wurden illegal getötet.",
-   "category": "Wissenschaft",
+   "teaser": "",
+   "category": "",
    "plus": false,
-   "topic": "Nachrichten/Wissenschaft",
+   "topic": "Nachrichten/Deutschland & Welt",
    "first_seen": "2026-11-23T14:43:22+00:00"
   },
   "1028089": {
@@ -334,7 +864,7 @@
    "sid": 1028088,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-cramer-geschlossenheit-wichtiger-als-rheinmetallvertrag-_arid,1028088.html",
    "title": "Cramer: Geschlossenheit wichtiger als Rheinmetall-Vertrag",
-   "teaser": "",
+   "teaser": "Dortmund (dpa) - Der Unternehmenschef ist persönlich für die Zusammenarbeit mit dem Rüstungsunternehmen – trotzdem läuft der Vertrag aus. Grund: Angst vor Spaltung der BVB-Familie.",
    "category": "Wirtschaft",
    "plus": false,
    "topic": "Nachrichten/Wirtschaft",
@@ -670,6 +1200,16 @@
    "topic": "Nachrichten/Wirtschaft",
    "first_seen": "2026-11-23T04:02:03+00:00"
   },
+  "1028008": {
+   "sid": 1028008,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-schmerzen-stolz-und-trotz-zverevs-emotionales-saisonfinale-_arid,1028008.html",
+   "title": "Schmerzen, Stolz und Trotz: Zverevs emotionales Saisonfinale",
+   "teaser": "Turin (dpa) - Alexander Zverev verpasst bei den ATP Finals die Krönung und wird weiter von Zweifeln begleitet. 2026 ist dennoch ein Traumjahr für ihn. Ein letztes Ziel bleibt ihm noch: ...",
+   "category": "Tennis",
+   "plus": false,
+   "topic": "Sport",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
   "1028007": {
    "sid": 1028007,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-kartenzahlung-auf-maerkten-oft-unmoeglich-kunden-unzufrieden-_arid,1028007.html",
@@ -684,7 +1224,7 @@
    "sid": 1028006,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-neue-methode-verlaengert-nachweis-von-kotropfen-deutlich-_arid,1028006.html",
    "title": "Neue Methode verlängert Nachweis von K.-o.-Tropfen deutlich",
-   "teaser": "Freiburg/Zürich (dpa) - Wer den Verdacht hat, mit K.-o.-Tropfen betäubt worden zu sein, kommt oft zu spät zur Untersuchung. Denn GHB ist nach wenigen Stunden nicht mehr nachweisbar. ...",
+   "teaser": "",
    "category": "Wissenschaft",
    "plus": false,
    "topic": "Nachrichten/Wissenschaft",
@@ -725,9 +1265,9 @@
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-mehr-menschen-fuerchten-sich-vor-krebs-demenz-und-unfall-_arid,1027998.html",
    "title": "Mehr Menschen fürchten sich vor Krebs, Demenz und Unfall",
    "teaser": "",
-   "category": "",
+   "category": "Wissenschaft",
    "plus": false,
-   "topic": "Nachrichten/Deutschland & Welt",
+   "topic": "Nachrichten/Wissenschaft",
    "first_seen": "2026-11-23T04:02:03+00:00"
   },
   "1027997": {
@@ -790,11 +1330,21 @@
    "topic": "Sport/Fußball",
    "first_seen": "2026-11-22T23:37:47+00:00"
   },
+  "1027988": {
+   "sid": 1027988,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-keine-kroenung-zverev-mit-finalpleite-gegen-alcaraz-_arid,1027988.html",
+   "title": "Keine Krönung: Zverev mit Final-Pleite gegen Alcaraz",
+   "teaser": "Turin (dpa) - Schwach gestartet, stark gekämpft - am Ende aber verloren: Alexander Zverev muss sich im Endspiel der ATP Finals gegen Carlos Alcaraz geschlagen geben. Sein Aufschlag ist ...",
+   "category": "Tennis",
+   "plus": false,
+   "topic": "Sport",
+   "first_seen": "2026-11-24T12:32:05+00:00"
+  },
   "1027987": {
    "sid": 1027987,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-strahlend-in-weiss-miley-cyrus-postet-hochzeitsbilder-_arid,1027987.html",
    "title": "Strahlend in Weiß: Miley Cyrus postet Hochzeitsbilder",
-   "teaser": "Palm Springs (dpa) - Die US-Sängerin Miley Cyrus zeigt sich im Hochzeitsglück mit Schlagzeuger Maxx Morando. Selbst ein Vierbeiner ist festlich gekleidet.",
+   "teaser": "",
    "category": "Boulevard",
    "plus": false,
    "topic": "Nachrichten/Boulevard",
@@ -874,8 +1424,8 @@
    "sid": 1027966,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-ein-abend-voller-erinnerungen-in-traunstein-bienenzuchtverein-feierte-125jaehriges-bestehen-_arid,1027966.html",
    "title": "Ein Abend voller Erinnerungen in Traunstein: Bienenzuchtverein feierte 125-jähriges Bestehen",
-   "teaser": "Traunstein – 843 Bienenvölker, 161 Mitglieder und eine 125-jährige Vereinsgeschichte: Der Bienenzuchtverein Traunstein hat allen Grund zum Feiern. Sein Jubiläum beging der Vereinim ...",
-   "category": "\"Ein Abend voller Erinnerungen in Traunstein: Von den Anfängen mit 21 Mitgliedern bis zu Imkerreisen um die Welt\"",
+   "teaser": "",
+   "category": "",
    "plus": false,
    "topic": "Region/Landkreis Traunstein",
    "first_seen": "2026-11-23T14:43:22+00:00"
@@ -884,7 +1434,7 @@
    "sid": 1027962,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-sb-chiemgau-feiert-souveraenen-erfolg-bei-tuerkguecue-muenchen-_arid,1027962.html",
    "title": "SB Chiemgau feiert souveränen Erfolg bei Türkgücü München",
-   "teaser": "",
+   "teaser": "Der SB Chiemgau Traunstein hat in der Fußball-Landesliga Südost einen souveränen Erfolg gefeiert. Im Duell mit dem SV Türkgücü München setzten sich die Gäste auf dem Kunstrasen der ...",
    "category": "Regionalsport TS",
    "plus": false,
    "topic": "Sport/Sport aus der Region",
@@ -904,7 +1454,7 @@
    "sid": 1027960,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-kirchanschoering-verliert-beim-tsv-wasserburg-vielleicht-fehlt-es-auch-an-der-erfahrung-_arid,1027960.html",
    "title": "Kirchanschöring verliert beim TSV Wasserburg: »Vielleicht fehlt es auch an der Erfahrung«",
-   "teaser": "",
+   "teaser": "Der SV Kirchanschöring hat im Abstiegskampf in der Fußball-Bayernliga Süd einen Punktgewinn beim favorisierten TSV Wasserburg nur knapp verfehlt. Erst in der Schlussphase kassierte der ...",
    "category": "Regionalsport TS",
    "plus": false,
    "topic": "Sport/Sport aus der Region",
@@ -914,7 +1464,7 @@
    "sid": 1027959,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-schnupperrodeln-mit-65-kindern-_arid,1027959.html",
    "title": "Schnupperrodeln mit 65 Kindern",
-   "teaser": "",
+   "teaser": "Ganz offensichtlich hat die Wiedereröffnung der Kunsteisbahn am Königssee zu Beginn des Monats für eine Aufbruchsstimmung gesorgt. Denn nicht weniger als 65 Kinder kamen in Begleitung ...",
    "category": "Regionalsport BGD",
    "plus": false,
    "topic": "Sport/Sport aus der Region",
@@ -924,7 +1474,7 @@
    "sid": 1027958,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-sieg-und-niederlage-ringer-verlieren-in-kelheim-und-gewinnen-in-traunstein-_arid,1027958.html",
    "title": "Sieg und Niederlage: Ringer verlieren in Kelheim und gewinnen in Traunstein",
-   "teaser": "",
+   "teaser": "Unterschiedlich verliefen die Kämpfe der beiden Berchtesgadener Ringermannschaften bei ihren Auswärtseinsätzen. Während die erste Mannschaft in Kelheim wie erwartet eine klare ...",
    "category": "Regionalsport BGD",
    "plus": false,
    "topic": "Sport/Sport aus der Region",
@@ -934,18 +1484,28 @@
    "sid": 1027957,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-tabellenfuehrer-gestuerzt-ev-berchtesgaden-gewinnt-gegen-den-ehc-waldkraiburg-1b-_arid,1027957.html",
    "title": "Tabellenführer gestürzt:  EV Berchtesgaden gewinnt gegen den EHC Waldkraiburg 1b",
-   "teaser": "",
-   "category": "",
+   "teaser": "Die Berchtesgadener Eishockeymannschaft holte gegen den Tabellenführer EHC Waldkraiburg »Die Löwen« 1b zwei Punkte, da das Stöckl-Team nach 7:7 (3:5/2:2/2:0) im Penaltyschießen das ...",
+   "category": "Regionalsport BGD",
    "plus": false,
-   "topic": "Sport/Fußball",
+   "topic": "Sport/Sport aus der Region",
    "first_seen": "2026-11-23T14:43:22+00:00"
+  },
+  "1027955": {
+   "sid": 1027955,
+   "url": "https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land/berchtesgaden_artikel,-european-outdoor-film-tour-abenteuer-auf-der-leinwand-_arid,1027955.html",
+   "title": "European Outdoor Film Tour: Abenteuer auf der Leinwand",
+   "teaser": "Berchtesgaden – Ein Abend mit den besten Abenteuerdokus des Jahres, ein Brüderpaar auf dem (See-) Weg zu einer felsigen Herausforderung mitten in der Ägäis, eine weibliche Seilschaft, ...",
+   "category": "Berchtesgaden",
+   "plus": false,
+   "topic": "Region/Berchtesgadener Land",
+   "first_seen": "2026-11-24T12:32:05+00:00"
   },
   "1027954": {
    "sid": 1027954,
    "url": "https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land/berchtesgaden_artikel,-villa-schoen-wird-fuer-die-forschung-umgebaut-_arid,1027954.html",
    "title": "Villa Schön wird für die Forschung umgebaut",
-   "teaser": "",
-   "category": "",
+   "teaser": "Berchtesgaden – Vor der Villa Schön stehen zwei Baucontainer, an der Zufahrt ist das Pflaster aufgerissen. Ein Bagger ist im Einsatz. Auch drinnen wird gearbeitet. Der Nationalpark ...",
+   "category": "Berchtesgaden",
    "plus": false,
    "topic": "Region/Berchtesgadener Land",
    "first_seen": "2026-11-23T04:02:03+00:00"
@@ -975,7 +1535,7 @@
    "url": "https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land/berchtesgaden_artikel,-50-huetten-regionale-schmankerl-und-liebevolle-handwerkskunst-berchtesgaden-ist-im-adventsfieber-_arid,1027949.html",
    "title": "50 Hütten, regionale Schmankerl und liebevolle Handwerkskunst: Berchtesgaden ist im Adventsfieber",
    "teaser": "",
-   "category": "Berchtesgaden",
+   "category": "",
    "plus": true,
    "topic": "Region/Berchtesgadener Land",
    "first_seen": "2026-11-23T14:43:22+00:00"
@@ -1064,7 +1624,7 @@
    "sid": 1027937,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-nach-aicher-auch-skiroutinier-strasser-in-gurgl-abgehaengt-_arid,1027937.html",
    "title": "Nach Aicher: Auch Ski-Routinier Straßer in Gurgl abgehängt",
-   "teaser": "Gurgl (dpa) - Am dritten Weltcup-Wochenende der alpinen Ski-Saison gibt es für die deutschen Rennfahrer nichts zu holen. Was Favoritin Emma Aicher ausbremste - und welches Fazit ...",
+   "teaser": "",
    "category": "Ski-Alpin",
    "plus": false,
    "topic": "Sport/Wintersport",
@@ -1210,16 +1770,6 @@
    "topic": "Sport/Fußball",
    "first_seen": "2026-11-22T10:21:35+00:00"
   },
-  "1027901": {
-   "sid": 1027901,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-mehrere-unfaelle-wegen-glaette-_arid,1027901.html",
-   "title": "Frostige Nacht - der Montagmorgen kann glatt werden",
-   "teaser": "Offenbach (dpa) - Die Temperaturen sinken in der Nacht vielerorts unter null Grad. Es kann zum Wochenstart glatt werden. Vor allem in Alpennähe und im Schwarzwald kündigt sich Schnee ...",
-   "category": "Brennpunkt",
-   "plus": false,
-   "topic": "Nachrichten/Deutschland & Welt",
-   "first_seen": "2026-11-22T10:21:35+00:00"
-  },
   "1027900": {
    "sid": 1027900,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-realstars-bilden-spalier-fuer-familie-von-totem-fussballer-_arid,1027900.html",
@@ -1237,7 +1787,7 @@
    "teaser": "Paris (dpa) - Paris Saint-Germain zahlt einen hohen Preis für den Sieg in Nizza. Désiré Doué wird unter Tränen vom Platz getragen. Jetzt liegt die Diagnose vor - und bestätigt die ...",
    "category": "Fußball",
    "plus": false,
-   "topic": "Sport/Fußball",
+   "topic": "Sport",
    "first_seen": "2026-11-22T18:03:52+00:00"
   },
   "1027894": {
@@ -1334,7 +1884,7 @@
    "sid": 1027882,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-vogelgrippefaelle-nehmen-zu-vor-allem-im-norden-_arid,1027882.html",
    "title": "Vogelgrippe-Fälle nehmen zu, vor allem im Norden",
-   "teaser": "Greifswald (dpa) - Wieder mehr Vogelgrippe-Fälle landen im Labor. So stark wie im vergangenen Jahr ist das Geschehen aber aktuell nicht. Und das ist nicht der einzige Unterschied.",
+   "teaser": "",
    "category": "Wissenschaft",
    "plus": false,
    "topic": "Nachrichten/Wissenschaft",
@@ -1348,16 +1898,6 @@
    "category": "1. Fußball Bundesliga",
    "plus": false,
    "topic": "Sport/Fußball",
-   "first_seen": "2026-11-22T10:21:35+00:00"
-  },
-  "1027880": {
-   "sid": 1027880,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-tausende-weihnachtsmaerkte-wie-es-um-die-sicherheit-steht-_arid,1027880.html",
-   "title": "Tausende Weihnachtsmärkte: Wie es um die Sicherheit steht",
-   "teaser": "Berlin (dpa) - Zwischen Glühwein, heißen Maronen und Betonpollern: Mehr als 3.000 Weihnachtsmärkte starten in die Saison. Werden Essen und Getränke teurer, weil die Sicherheitskosten ...",
-   "category": "Brennpunkt",
-   "plus": false,
-   "topic": "Nachrichten/Deutschland & Welt",
    "first_seen": "2026-11-22T10:21:35+00:00"
   },
   "1027878": {
@@ -1380,16 +1920,6 @@
    "topic": "Sport/Fußball",
    "first_seen": "2026-11-22T10:21:35+00:00"
   },
-  "1027876": {
-   "sid": 1027876,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-klimagipfel-neuer-textentwurf-erwaehnt-oel-und-gas-nicht-_arid,1027876.html",
-   "title": "Wut und Frust in Antalya: Klimagipfel schafft keine Einigung",
-   "teaser": "Antalya (dpa) - Zwei Wochen haben Tausende Diplomaten aus knapp 200 Staaten über Wege zur Eindämmung der Erderwärmung debattiert. Trotzdem endet der Gipfel ohne angemessene Antwort auf ...",
-   "category": "Brennpunkt",
-   "plus": false,
-   "topic": "Nachrichten/Deutschland & Welt",
-   "first_seen": "2026-11-22T10:21:35+00:00"
-  },
   "1027875": {
    "sid": 1027875,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-heizen-mit-holz-preise-gestiegen-so-laesst-sich-sparen-_arid,1027875.html",
@@ -1398,16 +1928,6 @@
    "category": "Wirtschaft",
    "plus": false,
    "topic": "Nachrichten/Wirtschaft",
-   "first_seen": "2026-11-22T10:21:35+00:00"
-  },
-  "1027874": {
-   "sid": 1027874,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-viele-singles-wollen-in-der-liebe-erst-mal-getrennt-wohnen-_arid,1027874.html",
-   "title": "Viele Singles wollen in der Liebe erst mal getrennt wohnen",
-   "teaser": "Berlin (dpa) - Für eine Beziehung den Wohnort wechseln oder berufliche Pläne anpassen? Dazu sind nur wenige Singles bereit. Die Vorstellungen von Frauen und Männern gehen hier ...",
-   "category": "Brennpunkt",
-   "plus": false,
-   "topic": "Nachrichten/Deutschland & Welt",
    "first_seen": "2026-11-22T10:21:35+00:00"
   },
   "1027872": {
@@ -1448,26 +1968,6 @@
    "category": "Fußball",
    "plus": false,
    "topic": "Sport",
-   "first_seen": "2026-11-22T02:40:38+00:00"
-  },
-  "1027863": {
-   "sid": 1027863,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-nach-kritik-trump-bezeichnet-putin-erneut-als-freund-_arid,1027863.html",
-   "title": "Nach Kritik: Trump bezeichnet Putin erneut als »Freund«",
-   "teaser": "Washington (dpa) - US-Präsident Trump sorgte mit seinen warmen Worten an Kremlchef Putin für Aufsehen und Kritik. Nun hat er eine umstrittene Bezeichnung wiederholt.",
-   "category": "Brennpunkt",
-   "plus": false,
-   "topic": "Nachrichten/Deutschland & Welt",
-   "first_seen": "2026-11-22T02:40:38+00:00"
-  },
-  "1027861": {
-   "sid": 1027861,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-mexiko-festnahme-von-drogenboss-loest-toedliche-gewalt-aus-_arid,1027861.html",
-   "title": "Mexiko: Festnahme von Drogenboss löst tödliche Gewalt aus",
-   "teaser": "Guasave (dpa) - Er steht auf der FBI-Liste der zehn meistgesuchten Flüchtigen. Mexikos Militär hat den Drogenboss nun bei einem Großeinsatz festgenommen. Dabei kommen mehrere Menschen ...",
-   "category": "Brennpunkt",
-   "plus": false,
-   "topic": "Nachrichten/Deutschland & Welt",
    "first_seen": "2026-11-22T02:40:38+00:00"
   },
   "1027859": {
@@ -1570,41 +2070,21 @@
    "topic": "Sport",
    "first_seen": "2026-11-23T14:43:22+00:00"
   },
-  "1027844": {
-   "sid": 1027844,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-excosta-concordiakapitaen-kommt-aus-dem-gefaengnis-_arid,1027844.html",
-   "title": "Ex-»Costa Concordia«-Kapitän kommt aus dem Gefängnis",
-   "teaser": "Rom (dpa) - Beim Untergang der »Costa Concordia« kamen 32 Menschen ums Leben. Nun darf Francesco Schettino seine Haftstrafe außerhalb des Gefängnisses fortsetzen - ein ...",
-   "category": "Brennpunkt",
-   "plus": false,
-   "topic": "Nachrichten/Deutschland & Welt",
-   "first_seen": "2026-11-21T15:31:58+00:00"
-  },
   "1027842": {
    "sid": 1027842,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-prinzessin-kate-gibt-in-doku-einblick-in-umgang-mit-krebs-_arid,1027842.html",
    "title": "Prinzessin Kate gibt in Doku Einblick in Umgang mit Krebs",
-   "teaser": "",
+   "teaser": "London (dpa) - In einer neuen BBC-Doku spricht Prinzessin Kate offen über die Folgen ihrer Krebsdiagnose und zeigt sich bei einer besonderen Herausforderung. Dabei wird es auch ...",
    "category": "Boulevard",
    "plus": false,
    "topic": "Nachrichten/Boulevard",
-   "first_seen": "2026-11-21T15:31:58+00:00"
-  },
-  "1027839": {
-   "sid": 1027839,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-ki-soll-beruehmtestes-problem-der-mathematik-geloest-haben-_arid,1027839.html",
-   "title": "KI soll berühmtestes Problem der Mathematik gelöst haben",
-   "teaser": "San Francisco (dpa) - Der »Heilige Gral« der Mathematik könnte gefunden sein. Das Problem: Der Beweis wäre für Menschen mehr als 250.000 Seiten lang – und selbst ihr ...",
-   "category": "Brennpunkt",
-   "plus": false,
-   "topic": "Nachrichten/Deutschland & Welt",
    "first_seen": "2026-11-21T15:31:58+00:00"
   },
   "1027838": {
    "sid": 1027838,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-zu-viel-gechillt-skiass-aicher-im-slalom-nur-achte-_arid,1027838.html",
    "title": "»Zu viel gechillt«: Ski-Ass Aicher im Slalom nur Achte",
-   "teaser": "Gurgl (dpa) - Emma Aicher ärgert sich in Gurgl eine Woche nach ihrem Premieren-Sieg im Slalom über einen verpatzten ersten Durchgang. Eine Konkurrentin aus Albanien gewinnt.",
+   "teaser": "",
    "category": "Ski-Alpin",
    "plus": false,
    "topic": "Sport/Wintersport",
@@ -1670,16 +2150,6 @@
    "topic": "Nachrichten/Boulevard",
    "first_seen": "2026-11-21T12:07:46+00:00"
   },
-  "1027824": {
-   "sid": 1027824,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-schneeflocken-und-graupelkoerner-mischen-sich-in-den-regen-_arid,1027824.html",
-   "title": "Schneeflocken und Graupelkörner mischen sich in den Regen",
-   "teaser": "Offenbach (dpa) - Langsam wird es Winter. Obwohl es tagsüber meist bei Plus-Temperaturen bleibt und auch die Sonne scheint, nimmt das Weiß zu.",
-   "category": "Brennpunkt",
-   "plus": false,
-   "topic": "Nachrichten/Deutschland & Welt",
-   "first_seen": "2026-11-21T12:07:46+00:00"
-  },
   "1027823": {
    "sid": 1027823,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-reiche-will-autobahntankstellen-von-preisdeckel-ausnehmen-_arid,1027823.html",
@@ -1694,7 +2164,7 @@
    "sid": 1027820,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-livestream-zeigt-leben-der-kegelrobben-auf-helgolaender-duene-_arid,1027820.html",
    "title": "Livestream zeigt Leben der Kegelrobben auf Helgoländer Düne",
-   "teaser": "",
+   "teaser": "Helgoland (dpa) - Ein Robbenbaby unternimmt seine ersten Kriechversuche, eine Robbenmutter säugt ihr Junges: Ein Livestream des NDR zeigt spannende Aufnahmen von der Helgoländer Düne. ...",
    "category": "Wissenschaft",
    "plus": false,
    "topic": "Nachrichten/Wissenschaft",
@@ -1704,40 +2174,10 @@
    "sid": 1027819,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-hausaerzte-klagen-zu-wenig-grippeimpfstoff-_arid,1027819.html",
    "title": "Hausärzte klagen: Zu wenig Grippe-Impfstoff",
-   "teaser": "",
+   "teaser": "Augsburg (dpa) - Eigentlich war die Impfung vereinbart, doch dann meldet sich die Praxis: Wir müssen den Termin verschieben, es ist kein Impfstoff da. Diese Erfahrung mussten offenbar ...",
    "category": "Wissenschaft",
    "plus": false,
    "topic": "Nachrichten/Wissenschaft",
-   "first_seen": "2026-11-21T12:07:46+00:00"
-  },
-  "1027818": {
-   "sid": 1027818,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-streit-um-eubudget-costa-kuerzt-nach-kritik-von-merz-_arid,1027818.html",
-   "title": "Neue EU-Digitalsteuer soll Streit um Haushalt entschärfen",
-   "teaser": "Brüssel (dpa) - Eine neue EU-Digitalsteuer soll nach dem Willen EU-Ratspräsident Costa künftig zur Finanzierung der EU beitragen. Der Vorschlag ist Teil eines neuen ...",
-   "category": "Brennpunkt",
-   "plus": false,
-   "topic": "Nachrichten/Deutschland & Welt",
-   "first_seen": "2026-11-21T12:07:46+00:00"
-  },
-  "1027816": {
-   "sid": 1027816,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-umfrage-fast-jeder-zweite-fuer-kuerzung-der-ukrainehilfen-_arid,1027816.html",
-   "title": "Umfrage: Fast jeder Zweite für Kürzung der Ukraine-Hilfen",
-   "teaser": "Berlin (dpa) - Die Unterstützung für die Ukraine spaltet das Land. Genauso wie die Frage, wann und ob der Kanzler mit dem russischen Präsidenten sprechen sollte.",
-   "category": "Brennpunkt",
-   "plus": false,
-   "topic": "Nachrichten/Deutschland & Welt",
-   "first_seen": "2026-11-21T12:07:46+00:00"
-  },
-  "1027814": {
-   "sid": 1027814,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-justiz-zieht-bilanz-mehr-als-27000-zwangsraeumungen-2025-_arid,1027814.html",
-   "title": "Justiz zieht Bilanz: Mehr als 27.000 Zwangsräumungen 2025",
-   "teaser": "Berlin (dpa) - 2025 wurden bundesweit mehr als 27.000 Räumungen vollstreckt. Wegen einer geänderten Erfassung lassen sich die Zahlen allerdings nur eingeschränkt mit früheren Jahren ...",
-   "category": "Brennpunkt",
-   "plus": false,
-   "topic": "Nachrichten/Deutschland & Welt",
    "first_seen": "2026-11-21T12:07:46+00:00"
   },
   "1027812": {
@@ -1794,7 +2234,7 @@
    "sid": 1027792,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-sind-vaeter-in-elternzeit-gluecklicher-_arid,1027792.html",
    "title": "Sind Väter in Elternzeit glücklicher?",
-   "teaser": "",
+   "teaser": "Berlin (dpa) - Elternzeit kann die psychische Gesundheit von Männern stärken, wie Studien nahelegen. Doch in Deutschland bleiben viele Väter hinter ihren Wünschen zurück. Woran liegt ...",
    "category": "Wissenschaft",
    "plus": false,
    "topic": "Nachrichten/Wissenschaft",
@@ -1854,7 +2294,7 @@
    "sid": 1027778,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-bayers-glyphosatsammelvergleich-von-richter-genehmigt-_arid,1027778.html",
    "title": "Bayers Glyphosat-Sammelvergleich von Richter genehmigt",
-   "teaser": "St. Louis (dpa) - Nach dem Erfolg vor dem Obersten Gericht der USA kann Bayer ein weiteres Kapitel seiner Glyphosat-Rechtsstreitigkeiten abschließen. Ein Richter gibt einen ...",
+   "teaser": "",
    "category": "Digitales",
    "plus": false,
    "topic": "Nachrichten/Digital",
@@ -1884,7 +2324,7 @@
    "sid": 1027774,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-gta-6-spielte-am-ersten-tag-379-milliarden-usdollar-ein-_arid,1027774.html",
    "title": "GTA 6 spielte am ersten Tag 3,79 Milliarden US-Dollar ein",
-   "teaser": "",
+   "teaser": "New York (dpa) - Kein Videospiel wurde von Fans mit so großer Spannung erwartet. GTA 6 ist der erste neue Titel der populären Reihe seit 13 Jahren – und das schlägt sich auch im ...",
    "category": "Digitales",
    "plus": false,
    "topic": "Nachrichten/Digital",
@@ -1904,7 +2344,7 @@
    "sid": 1027767,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-trump-droht-usfirmen-wegen-rechenzentren-im-ausland-_arid,1027767.html",
    "title": "Trump droht US-Firmen wegen Rechenzentren im Ausland",
-   "teaser": "",
+   "teaser": "Washington (dpa) - Viele Amerikaner lehnen riesige Rechenzentren ab. Den Demokraten verhalf das mit zum Erdrutsch-Sieg bei der Kongresswahl. Präsident Trump will jedoch weiterhin, dass ...",
    "category": "Digitales",
    "plus": false,
    "topic": "Nachrichten/Digital",
@@ -1964,7 +2404,7 @@
    "sid": 1027748,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-anthropicaktie-faellt-am-zweiten-handelstag-deutlich-_arid,1027748.html",
    "title": "Anthropic-Aktie fällt am zweiten Handelstag deutlich",
-   "teaser": "",
+   "teaser": "New York (dpa) - Die KI-Firma Anthropic startete an der Börse mit einem Kurssprung von 34 Prozent und einer Bewertung von zwei Billionen Dollar. Doch die Euphorie währte nur kurz.",
    "category": "Digitales",
    "plus": false,
    "topic": "Nachrichten/Digital",
@@ -2240,26 +2680,6 @@
    "topic": "Region/Berchtesgadener Land",
    "first_seen": "2026-11-21T12:07:46+00:00"
   },
-  "1027699": {
-   "sid": 1027699,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-trotz-spionageaffaere-southampton-verlaengert-mit-eckert-_arid,1027699.html",
-   "title": "Trotz Spionage-Affäre: Southampton verlängert mit Eckert",
-   "teaser": "Southampton (dpa) - Der deutsche Coach Tonda Eckert bleibt trotz Strafe und Punktabzug langfristig Trainer des FC Southampton. Der Club setzt damit nach der Spionage-Affäre ein klares ...",
-   "category": "Fußball",
-   "plus": false,
-   "topic": "Sport",
-   "first_seen": "2026-11-20T17:45:57+00:00"
-  },
-  "1027698": {
-   "sid": 1027698,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-zehn-fussballer-in-polen-wegen-moeglichen-betrugs-gesperrt-_arid,1027698.html",
-   "title": "Zehn Fußballer in Polen wegen möglichen Betrugs gesperrt",
-   "teaser": "Warschau (dpa) - Zehn Spieler aus unteren polnischen Ligen stehen unter Verdacht des Spielbetrugs. Der Verband wurde mit neuer Technik auf sie aufmerksam.",
-   "category": "Fußball",
-   "plus": false,
-   "topic": "Sport",
-   "first_seen": "2026-11-20T17:45:57+00:00"
-  },
   "1027697": {
    "sid": 1027697,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-komische-oper-intendanten-draengen-auf-schnelle-sanierung-_arid,1027697.html",
@@ -2310,16 +2730,6 @@
    "topic": "Kultur",
    "first_seen": "2026-11-21T12:07:46+00:00"
   },
-  "1027659": {
-   "sid": 1027659,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-tennislegende-jimmy-connors-an-krebs-erkrankt-_arid,1027659.html",
-   "title": "Tennis-Legende Jimmy Connors an Krebs erkrankt",
-   "teaser": "Berlin (dpa) - Im Podcast mit seinem Sohn zeigt Tennis-Legende Jimmy Connors sein bandagiertes Ohr und macht seine Krebserkrankung öffentlich. Der 74-Jährige richtet eine Warnung an ...",
-   "category": "Tennis",
-   "plus": false,
-   "topic": "Sport",
-   "first_seen": "2026-11-22T10:21:35+00:00"
-  },
   "1027654": {
    "sid": 1027654,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-metalltarifkonflikt-arbeitgeber-dringen-auf-gespraeche-_arid,1027654.html",
@@ -2340,26 +2750,6 @@
    "topic": "Nachrichten/Wirtschaft",
    "first_seen": "2026-11-20T17:45:57+00:00"
   },
-  "1027648": {
-   "sid": 1027648,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-wenn-nerv-reinknallt-zverev-trotz-schmerzen-auf-titelkurs-_arid,1027648.html",
-   "title": "Wenn »Nerv reinknallt«: Zverev trotz Schmerzen auf Titelkurs",
-   "teaser": "Turin (dpa) - In der Gruppenphase liefert Alexander Zverev ab und zeigt auch Kämpfer-Qualitäten. Jetzt kommen die entscheidenden Duelle um den Titel bei den ATP Finals. Was Boris ...",
-   "category": "Tennis",
-   "plus": false,
-   "topic": "Sport",
-   "first_seen": "2026-11-22T10:21:35+00:00"
-  },
-  "1027634": {
-   "sid": 1027634,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-pochettino-und-die-schwierige-aufgabe-bei-manchester-united-_arid,1027634.html",
-   "title": "Pochettino und die schwierige Aufgabe bei Manchester United",
-   "teaser": "Manchester (dpa) - Ausgerechnet beim Erzrivalen gibt Coach Mauricio Pochettino am Wochenende seinen Einstand bei Manchester United. Seit Alex Fergusons Abschied 2013 blieb kein Trainer ...",
-   "category": "Fußball",
-   "plus": false,
-   "topic": "Sport",
-   "first_seen": "2026-11-20T17:45:57+00:00"
-  },
   "1027631": {
    "sid": 1027631,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-bahn-passt-verkehrskonzept-zwischen-berlin-und-hannover-an-_arid,1027631.html",
@@ -2369,46 +2759,6 @@
    "plus": false,
    "topic": "Nachrichten/Wirtschaft",
    "first_seen": "2026-11-20T17:45:57+00:00"
-  },
-  "1027630": {
-   "sid": 1027630,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-gestresst-am-start-wie-die-formel-1-noch-glaeserner-wird-_arid,1027630.html",
-   "title": "Gestresst am Start? Wie die Formel 1 noch gläserner wird",
-   "teaser": "Las Vegas (dpa) - Wer ist aufgeregter am Start? Wie hoch ist der Puls beim Überholen? Sind Regenfahrten nervenaufreibender? Die Formel 1 will ihren Fans zukünftig noch mehr Daten ...",
-   "category": "Formel 1",
-   "plus": false,
-   "topic": "Sport",
-   "first_seen": "2026-11-22T10:21:35+00:00"
-  },
-  "1027626": {
-   "sid": 1027626,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-antisemitismusvorwuerfe-nfl-sperrt-profi-nacua-_arid,1027626.html",
-   "title": "Antisemitismus-Vorwürfe: NFL sperrt Profi Nacua",
-   "teaser": "Inglewood (dpa) - Puka Nacua von den Los Angeles Rams muss in der NFL eine Sperre absitzen. Ihm werden unter anderem antisemitische Bemerkungen vorgeworfen.",
-   "category": "Sport",
-   "plus": false,
-   "topic": "Sport",
-   "first_seen": "2026-11-20T17:32:48+00:00"
-  },
-  "1027624": {
-   "sid": 1027624,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-strafe-fuer-antonelli-weltmeister-startet-weiter-hinten-_arid,1027624.html",
-   "title": "Strafe für Antonelli: Weltmeister startet weiter hinten",
-   "teaser": "Las Vegas (dpa) - Schon vor der Qualifikation ist klar: Von der Pole Position wird der neue Weltmeister Kimi Antonelli in Las Vegas nicht starten. Der Mercedes-Fahrer ist nicht alleine ...",
-   "category": "Formel 1",
-   "plus": false,
-   "topic": "Sport",
-   "first_seen": "2026-11-22T10:21:35+00:00"
-  },
-  "1027623": {
-   "sid": 1027623,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-mcdavids-serie-endet-draisaitls-oilers-verlieren-in-tampa-_arid,1027623.html",
-   "title": "McDavids Serie endet: Draisaitls Oilers verlieren in Tampa",
-   "teaser": "Tampa (dpa) - Nach 23 Spielen am Stück punktet Eishockey-Superstar Connor McDavid zum ersten Mal nicht für die Edmonton Oilers. Für das Team um Leon Draisaitl endet in Tampa ...",
-   "category": "Sport",
-   "plus": false,
-   "topic": "Sport",
-   "first_seen": "2026-11-20T17:32:48+00:00"
   },
   "1027620": {
    "sid": 1027620,
@@ -2440,26 +2790,6 @@
    "topic": "Nachrichten/Wissenschaft",
    "first_seen": "2026-11-20T17:32:48+00:00"
   },
-  "1027597": {
-   "sid": 1027597,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-tarifstreit-bei-vw-was-auf-beschaeftigte-zukommen-koennte-_arid,1027597.html",
-   "title": "Tarifstreit bei VW: Was auf Beschäftigte zukommen könnte",
-   "teaser": "Wolfsburg (dpa) - Nullrunden, längere Arbeitszeiten und gestrichene Zulagen: VW verlangt von seiner Belegschaft deutliche Zugeständnisse in der anstehenden Tarifrunde. Was steckt ...",
-   "category": "Wirtschaft",
-   "plus": false,
-   "topic": "Nachrichten/Wirtschaft",
-   "first_seen": "2026-11-20T17:45:57+00:00"
-  },
-  "1027594": {
-   "sid": 1027594,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-so-viel-koennten-die-vwforderungen-die-beschaeftigten-kosten-_arid,1027594.html",
-   "title": "So viel könnten die VW-Forderungen die Beschäftigten kosten",
-   "teaser": "Wolfsburg (dpa) - In den anstehenden Tarifverhandlungen will Volkswagen harte Einschnitte durchsetzen. IG Metall und Betriebsrat sprechen von einem »Katalog des Grauens«. ...",
-   "category": "Wirtschaft",
-   "plus": false,
-   "topic": "Nachrichten/Wirtschaft",
-   "first_seen": "2026-11-20T22:57:40+00:00"
-  },
   "1027589": {
    "sid": 1027589,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-kalifornien-will-von-nvidia-aufklaerung-zu-chinalieferungen-_arid,1027589.html",
@@ -2468,26 +2798,6 @@
    "category": "Digitales",
    "plus": false,
    "topic": "Nachrichten/Digital",
-   "first_seen": "2026-11-20T17:45:57+00:00"
-  },
-  "1027586": {
-   "sid": 1027586,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-eu-ab-jetzt-arbeiten-frauen-symbolisch-kostenlos-_arid,1027586.html",
-   "title": "EU: Ab jetzt arbeiten Frauen symbolisch kostenlos",
-   "teaser": "Brüssel (dpa) - Frauen gehen am Ende des Monats mit weniger Gehalt nach Hause. Das soll sich ändern. Die EU-Kommission kritisiert Verzögerungen in Ländern wie Deutschland, die seit ...",
-   "category": "Wirtschaft",
-   "plus": false,
-   "topic": "Nachrichten/Wirtschaft",
-   "first_seen": "2026-11-20T17:45:57+00:00"
-  },
-  "1027583": {
-   "sid": 1027583,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-lufthansa-will-1000-stellen-an-drehkreuzen-streichen-_arid,1027583.html",
-   "title": "Lufthansa will 1.000 Stellen an Drehkreuzen streichen",
-   "teaser": "Frankfurt/Main (dpa) - Rund 1.000 Stellen an den Lufthansa-Drehkreuzen Frankfurt und München sollen wegfallen – wann und auf welchem Weg, ist noch offen.",
-   "category": "Wirtschaft",
-   "plus": false,
-   "topic": "Nachrichten/Wirtschaft",
    "first_seen": "2026-11-20T17:45:57+00:00"
   },
   "1027574": {
@@ -2603,7 +2913,7 @@
   "1027548": {
    "sid": 1027548,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-spitzenspiel-in-der-akgsportarena-tvtbasketballer-empfange-den-punktgleichen-verfolger-ts-jahn-muench-_arid,1027548.html",
-   "title": "Spitzenspiel in der AKG-Sportarena: TVT-Basketballer empfange den punktgleichen Verfolger TS Jahn München II",
+   "title": "Spitzenspiel in der AKG-Sportarena: TVT-Basketballer empfange den punktgleichen Verfolger TS Jahn München II",
    "teaser": "Erster gegen Zweiter, beide mit fünf Siegen aus sechs Spielen: Jetzt kommt es am morgigen Samstag um 18.30 Uhr in der 2. Regionalliga Süd zum Spitzenspiel. Die Chiemgau Panthers ...",
    "category": "Regionalsport TS",
    "plus": false,
@@ -2670,36 +2980,6 @@
    "topic": "Nachrichten/Wissenschaft",
    "first_seen": "2026-11-20T17:32:48+00:00"
   },
-  "1027526": {
-   "sid": 1027526,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-basf-beendet-uebernahmepoker-um-evonik-zuvor-zwei-angebote-_arid,1027526.html",
-   "title": "BASF beendet Übernahmepoker um Evonik - Zuvor zwei Angebote",
-   "teaser": "Ludwigshafen/Essen (dpa) - Der Ludwigshafener Chemieriese warb lange um den Essener Spezialchemiekonzern. Warum das Bemühen nun offiziell ein Ende hat.",
-   "category": "Wirtschaft",
-   "plus": false,
-   "topic": "Nachrichten/Wirtschaft",
-   "first_seen": "2026-11-20T17:45:57+00:00"
-  },
-  "1027508": {
-   "sid": 1027508,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-ezb-sieht-banken-robust-trotz-krisen-und-spricht-warnung-aus-_arid,1027508.html",
-   "title": "EZB sieht Banken robust trotz Krisen und spricht Warnung aus",
-   "teaser": "Frankfurt/Main (dpa) - Die Großbanken im Euroraum sind nach Einschätzung der EZB für Krisen gewappnet. Doch die Aufsicht warnt Geldhäuser, sich auf ihren gestiegenen Gewinnen ...",
-   "category": "Wirtschaft",
-   "plus": false,
-   "topic": "Nachrichten/Wirtschaft",
-   "first_seen": "2026-11-20T17:45:57+00:00"
-  },
-  "1027505": {
-   "sid": 1027505,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-deutsche-telekom-beteiligt-sich-an-mistral-ai-_arid,1027505.html",
-   "title": "Deutsche Telekom beteiligt sich an Mistral AI",
-   "teaser": "Bonn (dpa) - Mistral positioniert sich als europäischer Gegenentwurf zu OpenAI, Google oder Anthropic. Das französische KI-Start-up hat nun einen weiteren prominenten Partner gefunden.",
-   "category": "Wirtschaft",
-   "plus": false,
-   "topic": "Nachrichten/Wirtschaft",
-   "first_seen": "2026-11-20T17:45:57+00:00"
-  },
   "1027498": {
    "sid": 1027498,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-ureinwohner-bitten-um-nahrung-_arid,1027498.html",
@@ -2709,16 +2989,6 @@
    "plus": false,
    "topic": "Nachrichten/Wissenschaft",
    "first_seen": "2026-11-23T14:43:22+00:00"
-  },
-  "1027496": {
-   "sid": 1027496,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-bundesbank-erwartet-inflationsschub-nach-jahreswechsel-_arid,1027496.html",
-   "title": "Bundesbank erwartet Inflationsschub nach Jahreswechsel",
-   "teaser": "Frankfurt/Main (dpa) - Der Tankrabatt dämpft die Inflation in Deutschland, doch zum Jahreswechsel läuft er aus. Für Verbraucher dürfte das Folgen haben, schreibt die Bundesbank.",
-   "category": "Wirtschaft",
-   "plus": false,
-   "topic": "Nachrichten/Wirtschaft",
-   "first_seen": "2026-11-20T17:45:57+00:00"
   },
   "1027463": {
    "sid": 1027463,
@@ -2990,36 +3260,6 @@
    "topic": "Region/Berchtesgadener Land",
    "first_seen": "2026-11-20T17:45:57+00:00"
   },
-  "1027335": {
-   "sid": 1027335,
-   "url": "https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land/bischofswiesen_artikel,-gelaende-der-ehemaligen-kurklinik-gesperrt-_arid,1027335.html",
-   "title": "Gelände der ehemaligen Kurklinik gesperrt",
-   "teaser": "",
-   "category": "Bischofswiesen",
-   "plus": true,
-   "topic": "Region/Berchtesgadener Land",
-   "first_seen": "2026-11-20T17:45:57+00:00"
-  },
-  "1027334": {
-   "sid": 1027334,
-   "url": "https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land/bad-reichenhall_artikel,-zwischen-himmel-und-opernbuehne-_arid,1027334.html",
-   "title": "»Zwischen Himmel und Opernbühne«",
-   "teaser": "Bad Reichenhall – Der Chor der Universität Mozarteum Salzburg und das Alpenbaroque-Orchester bringen Wolfgang Amadeus Mozarts Kantate »Davide penitente« im Theater Bad Reichenhall zur ...",
-   "category": "Bad Reichenhall",
-   "plus": false,
-   "topic": "Region/Berchtesgadener Land",
-   "first_seen": "2026-11-20T17:45:57+00:00"
-  },
-  "1027333": {
-   "sid": 1027333,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-die-zeit-der-wilden-gestalten-200-perchten-und-krampusgruppen-laufen-im-salzburger-land-_arid,1027333.html",
-   "title": "Die Zeit der wilden Gestalten: 200 Perchten- und Krampusgruppen laufen im Salzburger Land",
-   "teaser": "Salzburg – Bald beginnen die traditionellen Krampus- und Perchtenläufe in Salzburg und Umgebung. Ein Krampus- oder Perchtenlauf ist ein besonderes Erlebnis und gehört zur ...",
-   "category": "Salzburg",
-   "plus": false,
-   "topic": "Region/Berchtesgadener Land",
-   "first_seen": "2026-11-20T17:45:57+00:00"
-  },
   "1027332": {
    "sid": 1027332,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-ringer-des-tsv-berchtesgaden-wollen-die-drohende-niederlage-in-grenzen-halten-_arid,1027332.html",
@@ -3070,16 +3310,6 @@
    "topic": "Nachrichten/Boulevard",
    "first_seen": "2026-11-20T17:45:57+00:00"
   },
-  "1027311": {
-   "sid": 1027311,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-bibliotheken-kabinett-bringt-sonntagsoeffnung-auf-den-weg-_arid,1027311.html",
-   "title": "Bibliotheken: Kabinett bringt Sonntagsöffnung auf den Weg",
-   "teaser": "Berlin (dpa) - Mal eben ein Buch oder ein Spiel ausleihen? Viele müssen jonglieren, um die Öffnungszeiten von Bibliotheken einzuhalten. Nun soll es etwas mehr Spielraum geben.",
-   "category": "Boulevard",
-   "plus": false,
-   "topic": "Nachrichten/Boulevard",
-   "first_seen": "2026-11-20T17:45:57+00:00"
-  },
   "1027299": {
    "sid": 1027299,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-neustart-mit-schmaeh-wer-ist-skisprungtrainer-mitter-_arid,1027299.html",
@@ -3100,16 +3330,6 @@
    "topic": "Nachrichten/Digital",
    "first_seen": "2026-11-20T17:45:57+00:00"
   },
-  "1027277": {
-   "sid": 1027277,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-aerger-um-pyroshow-leipzig-prueft-schritte-gegen-tokio-hotel-_arid,1027277.html",
-   "title": "Ärger um Pyroshow - Leipzig prüft Schritte gegen Tokio Hotel",
-   "teaser": "Leipzig (dpa) - Tokio-Hotel-Sänger Bill Kaulitz schimpft bei einer Show in Leipzig über nicht genehmigte Pyroeffekte. Weil er dabei den vollen Namen eines Sachbearbeiters nennt, droht ...",
-   "category": "Boulevard",
-   "plus": false,
-   "topic": "Nachrichten/Boulevard",
-   "first_seen": "2026-11-20T17:45:57+00:00"
-  },
   "1027268": {
    "sid": 1027268,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-die-fransenfledermaus-ist-tier-des-jahres-2027-_arid,1027268.html",
@@ -3128,16 +3348,6 @@
    "category": "Wissenschaft",
    "plus": false,
    "topic": "Nachrichten/Wissenschaft",
-   "first_seen": "2026-11-20T17:45:57+00:00"
-  },
-  "1027262": {
-   "sid": 1027262,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-beckhamprodukte-am-wuehltisch-millionenklage-in-den-usa-_arid,1027262.html",
-   "title": "Beckham-Produkte am Wühltisch? Millionenklage in den USA",
-   "teaser": "London/Darmstadt (dpa) - Der Name des früheren Fußballstars David Beckham ist eine globale Marke. Dass seine Produkte an Wühltischen gelandet sein sollen, beschäftigt ein Gericht in ...",
-   "category": "Boulevard",
-   "plus": false,
-   "topic": "Nachrichten/Boulevard",
    "first_seen": "2026-11-20T17:45:57+00:00"
   },
   "1027236": {
@@ -3240,16 +3450,6 @@
    "topic": "Sport/Sport aus der Region",
    "first_seen": "2026-11-20T17:45:57+00:00"
   },
-  "1027166": {
-   "sid": 1027166,
-   "url": "https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land_artikel,-bildungszentrum-fuer-integration-setzt-auf-gruenes-klassenzimmer-mit-dem-almprojekt-auf-die-buergermei-_arid,1027166.html",
-   "title": "Bildungszentrum für Integration setzt auf »Grünes Klassenzimmer« – Mit dem A.L.M.-Projekt auf die Bürgermeisterhöhe",
-   "teaser": "",
-   "category": "Berchtesgadener Land",
-   "plus": true,
-   "topic": "Region/Berchtesgadener Land",
-   "first_seen": "2026-11-20T17:45:57+00:00"
-  },
   "1027147": {
    "sid": 1027147,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-sbchandballer-bleiben-auf-erfolgskurs-3026erfolg-beim-bezirksligaderby-in-prien-_arid,1027147.html",
@@ -3324,7 +3524,7 @@
    "sid": 1027006,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-neue-useinschraenkungen-fuer-export-von-kichips-_arid,1027006.html",
    "title": "Neue US-Einschränkungen für Export von KI-Chips",
-   "teaser": "Washington (dpa) - Die US-Regierung verbietet den Export moderner Chips etwa von Nvidia nach China. Und doch haben chinesische Stellen manchmal Zugriff darauf. Verschärfte Exportregeln ...",
+   "teaser": "",
    "category": "Digitales",
    "plus": false,
    "topic": "Nachrichten/Digital",
@@ -3399,16 +3599,6 @@
    "plus": false,
    "topic": "Sport/Sport aus der Region",
    "first_seen": "2026-11-21T12:07:46+00:00"
-  },
-  "1026955": {
-   "sid": 1026955,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-chiemgau-panthers-uebernehmen-die-tabellenfuehrung-spitzenspiel-am-kommenden-samstag-_arid,1026955.html",
-   "title": "Chiemgau Panthers übernehmen die Tabellenführung – Spitzenspiel am kommenden Samstag",
-   "teaser": "Nach einem 93:59 (49:32) bei der BG Leitershofen/ Stadtbergen II stehen die Chiemgau Panthers nun auf Platz eins der 2. Regionalliga Süd. Die Basketballer des TV Traunstein teilen sich ...",
-   "category": "Regionalsport TS",
-   "plus": false,
-   "topic": "Sport/Sport aus der Region",
-   "first_seen": "2026-11-20T17:50:08+00:00"
   },
   "1026925": {
    "sid": 1026925,
@@ -3490,56 +3680,6 @@
    "topic": "Nachrichten/Digital",
    "first_seen": "2026-11-20T22:57:40+00:00"
   },
-  "1026790": {
-   "sid": 1026790,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-sbcmittelfeldmann-pelypenko-verraet-im-interview-das-erfolgsgeheimnis-des-sbc-traunstein-_arid,1026790.html",
-   "title": "SBC-Mittelfeldmann Pelypenko verrät im Interview das Erfolgsgeheimnis des SBC Traunstein",
-   "teaser": "Seit Sommer 2023 spielt Andrii Pelypenko beim SB Chiemgau Traunstein. Der Mittelfeldmann gehört im Team von Gerry Straßhofer zu den Führungsspielern. Wir haben nach der Partie gegen ...",
-   "category": "Regionalsport TS",
-   "plus": false,
-   "topic": "Sport/Sport aus der Region",
-   "first_seen": "2026-11-20T17:50:08+00:00"
-  },
-  "1026787": {
-   "sid": 1026787,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-befreiungsschlag-fuer-den-sv-kirchanschoering-_arid,1026787.html",
-   "title": "Befreiungsschlag für den SV Kirchanschöring",
-   "teaser": "Das war ein Befreiungsschlag: Drei enorm wichtige Zähler holten die Bayernliga-Kicker des SV Kirchanschöring im ersten Heimspiel der Rückrunde vor 504 Zuschauern gegen den ...",
-   "category": "Regionalsport TS",
-   "plus": false,
-   "topic": "Sport/Sport aus der Region",
-   "first_seen": "2026-11-20T17:50:08+00:00"
-  },
-  "1026776": {
-   "sid": 1026776,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-ev-berchtesgaden-wieder-knapp-an-einem-erfolg-vorbeigeschrammt-_arid,1026776.html",
-   "title": "EV Berchtesgaden wieder knapp an einem Erfolg vorbeigeschrammt",
-   "teaser": "Nach bisher vier Niederlagen verpasste der EV Berchtesgaden auch im fünften Saisonspiel gegen den ESV Dachau einen möglichen Sieg. Nachdem der EVB im zweiten Drittel schon mit 1:3 ...",
-   "category": "Regionalsport BGD",
-   "plus": false,
-   "topic": "Sport/Sport aus der Region",
-   "first_seen": "2026-11-20T17:50:08+00:00"
-  },
-  "1026775": {
-   "sid": 1026775,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-auftakt-in-siegsdorf-dorfschiessen-dauert-noch-bis-zum-samstag-_arid,1026775.html",
-   "title": "Auftakt in Siegsdorf: Dorfschießen dauert noch bis zum Samstag",
-   "teaser": "Das 16. Siegsdorfer Dorfschießen – organisiert von der Schützengesellschaft Fortuna Siegsdorf – wurde am Familientag mit dem Lichtgewehrschießen für Kinder von 6 bis 11 Jahren ...",
-   "category": "Regionalsport TS",
-   "plus": false,
-   "topic": "Sport/Sport aus der Region",
-   "first_seen": "2026-11-20T17:50:08+00:00"
-  },
-  "1026774": {
-   "sid": 1026774,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-klinger-und-schnee-gewinnen-beim-alzauenlauf-_arid,1026774.html",
-   "title": "Klinger und Schnee gewinnen beim Alzauenlauf",
-   "teaser": "Ein voller Erfolg war der 39. Trostberger Alzauenlauf, der traditionell mit den Nachwuchsläufen begann und mit dem zehn Kilometer langen Hauptlauf durch die Trostberger Alzauen endete. ...",
-   "category": "Regionalsport TS",
-   "plus": false,
-   "topic": "Sport/Sport aus der Region",
-   "first_seen": "2026-11-20T17:50:08+00:00"
-  },
   "1026762": {
    "sid": 1026762,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-skiass-strasser-verpasst-bei-saisoneinstieg-die-top-ten-_arid,1026762.html",
@@ -3574,7 +3714,7 @@
    "sid": 1026731,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-usa-verlieren-status-masernfrei-wie-ernst-ist-die-lage-_arid,1026731.html",
    "title": "USA verlieren Status »masernfrei« - Wie ernst ist die Lage?",
-   "teaser": "Washington (dpa) - Deutschland war noch nie offiziell als frei von Masern eingestuft. Die USA hingegen können sich damit seit mehr als 25 Jahren rühmen. Nun aber wird der Status wohl ...",
+   "teaser": "",
    "category": "Wissenschaft",
    "plus": false,
    "topic": "Nachrichten/Wissenschaft",
@@ -3670,26 +3810,6 @@
    "topic": "Nachrichten/Wissenschaft",
    "first_seen": "2026-11-20T17:50:08+00:00"
   },
-  "1026600": {
-   "sid": 1026600,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-microsoft-stoerung-ging-auf-netzwerkupgrade-zurueck-_arid,1026600.html",
-   "title": "Microsoft: Störung ging auf Netzwerk-Upgrade zurück",
-   "teaser": "Redmond (dpa) - Eine stundenlange Störung bei Cloud-Diensten von Microsoft traf viele Unternehmen und Verbraucher. Der Software-Riese äußert sich nun zu den Gründen.",
-   "category": "Digitales",
-   "plus": false,
-   "topic": "Nachrichten/Digital",
-   "first_seen": "2026-11-20T17:50:08+00:00"
-  },
-  "1026495": {
-   "sid": 1026495,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-microsoftausfall-zeigt-risiken-digitaler-abhaengigkeit-_arid,1026495.html",
-   "title": "Microsoft-Ausfall zeigt Risiken digitaler Abhängigkeit",
-   "teaser": "",
-   "category": "Digitales",
-   "plus": false,
-   "topic": "Nachrichten/Digital",
-   "first_seen": "2026-11-20T17:50:08+00:00"
-  },
   "1026461": {
    "sid": 1026461,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-rodeln-russen-bei-teamwettbewerben-weiter-ausgeschlossen-_arid,1026461.html",
@@ -3744,36 +3864,6 @@
    "sid": 1026328,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-who-tuberkuloseziele-verfehlt-113-millionen-tote-_arid,1026328.html",
    "title": "WHO: Tuberkulose-Ziele verfehlt - 1,13 Millionen Tote",
-   "teaser": "",
-   "category": "Wissenschaft",
-   "plus": false,
-   "topic": "Nachrichten/Wissenschaft",
-   "first_seen": "2026-11-20T17:50:08+00:00"
-  },
-  "1026326": {
-   "sid": 1026326,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-telefonangst-und-warum-man-sie-nicht-wegdruecken-sollte-_arid,1026326.html",
-   "title": "Telefonangst – und warum man sie nicht wegdrücken sollte",
-   "teaser": "Koblenz (dpa) - Schon vor dem Wählen bekam Annika Herzrasen und weinte. Eine Koblenzer Studie zeigt, wer besonders von Telefonangst betroffen ist – und wie Anrufe leichter werden ...",
-   "category": "Wissenschaft",
-   "plus": false,
-   "topic": "Nachrichten/Wissenschaft",
-   "first_seen": "2026-11-20T17:50:08+00:00"
-  },
-  "1026317": {
-   "sid": 1026317,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-aeskulapnatter-ist-reptil-des-jahres-_arid,1026317.html",
-   "title": "Äskulapnatter ist »Reptil des Jahres«",
-   "teaser": "",
-   "category": "Wissenschaft",
-   "plus": false,
-   "topic": "Nachrichten/Wissenschaft",
-   "first_seen": "2026-11-20T17:50:08+00:00"
-  },
-  "1026310": {
-   "sid": 1026310,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-esa-grundstein-fuer-groesste-3dkarte-des-kosmos-gelegt-_arid,1026310.html",
-   "title": "Esa: Grundstein für größte 3D-Karte des Kosmos gelegt",
    "teaser": "",
    "category": "Wissenschaft",
    "plus": false,
@@ -3907,96 +3997,6 @@
    "teaser": "Publikums-Begrüßungen können weit mehr sein als Pflichtübungen. Andreas Baumgartner, Hausherr in der Villa Sawallisch, formt die drei bis vier Minuten vor Beginn des Konzerts oft zu ...",
    "category": "Kultur aus der Region",
    "plus": false,
-   "topic": "Kultur",
-   "first_seen": "2026-11-20T17:50:08+00:00"
-  },
-  "1023222": {
-   "sid": 1023222,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-signale-in-soelden-skijuwel-aicher-eroeffnet-den-kugelkampf-_arid,1023222.html",
-   "title": "Signale in Sölden: Ski-Juwel Aicher eröffnet den Kugel-Kampf",
-   "teaser": "",
-   "category": "Ski-Alpin",
-   "plus": false,
-   "topic": "Sport/Wintersport",
-   "first_seen": "2026-11-20T17:50:08+00:00"
-  },
-  "1023209": {
-   "sid": 1023209,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-brasilianer-pinheiro-braathen-gewinnt-skiauftakt-in-soelden-_arid,1023209.html",
-   "title": "Brasilianer Pinheiro Braathen gewinnt Ski-Auftakt in Sölden",
-   "teaser": "",
-   "category": "Ski-Alpin",
-   "plus": false,
-   "topic": "Sport/Wintersport",
-   "first_seen": "2026-11-20T17:50:08+00:00"
-  },
-  "1023096": {
-   "sid": 1023096,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-jagd-eroeffnet-skijuwel-aicher-rast-direkt-auf-das-podest-_arid,1023096.html",
-   "title": "Jagd eröffnet: Ski-Juwel Aicher rast direkt auf das Podest",
-   "teaser": "",
-   "category": "Ski-Alpin",
-   "plus": false,
-   "topic": "Sport/Wintersport",
-   "first_seen": "2026-11-20T17:50:08+00:00"
-  },
-  "1023079": {
-   "sid": 1023079,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-praesident-ospelt-erklaert-finanznot-beim-skiweltverband-_arid,1023079.html",
-   "title": "Präsident Ospelt erklärt Finanz-Not beim Ski-Weltverband",
-   "teaser": "",
-   "category": "Ski-Alpin",
-   "plus": false,
-   "topic": "Sport/Wintersport",
-   "first_seen": "2026-11-20T17:50:08+00:00"
-  },
-  "1022950": {
-   "sid": 1022950,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-dominatoren-unter-druck-spannung-vor-dem-skisaisonstart-_arid,1022950.html",
-   "title": "Dominatoren unter Druck: Spannung vor dem Ski-Saisonstart",
-   "teaser": "",
-   "category": "Ski-Alpin",
-   "plus": false,
-   "topic": "Sport/Wintersport",
-   "first_seen": "2026-11-20T17:50:08+00:00"
-  },
-  "1022920": {
-   "sid": 1022920,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-usskistar-vonn-neue-einblicke-in-reha-nach-olympiasturz-_arid,1022920.html",
-   "title": "US-Skistar Vonn: Neue Einblicke in Reha nach Olympia-Sturz",
-   "teaser": "",
-   "category": "Ski-Alpin",
-   "plus": false,
-   "topic": "Sport/Wintersport",
-   "first_seen": "2026-11-20T17:50:08+00:00"
-  },
-  "1022900": {
-   "sid": 1022900,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-olympiadrama-skiass-duerr-wieder-angriffslustig-_arid,1022900.html",
-   "title": "Olympia-Drama? Ski-Ass Dürr wieder angriffslustig",
-   "teaser": "",
-   "category": "Ski-Alpin",
-   "plus": false,
-   "topic": "Sport/Wintersport",
-   "first_seen": "2026-11-20T17:50:08+00:00"
-  },
-  "1022530": {
-   "sid": 1022530,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-musikkabarettist-roland-hefter-begeistert-in-der-ausverkauften-traunreuter-theaterfabrik-_arid,1022530.html",
-   "title": "Musikkabarettist Roland Hefter begeistert in der ausverkauften Traunreuter Theaterfabrik",
-   "teaser": "",
-   "category": "Kultur aus der Region",
-   "plus": true,
-   "topic": "Kultur",
-   "first_seen": "2026-11-20T17:50:08+00:00"
-  },
-  "1022202": {
-   "sid": 1022202,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-tiroler-fotograf-lois-hechenblaikner-zeigt-kehrseite-des-skitourismus-volles-haus-bei-kunstsprechstu-_arid,1022202.html",
-   "title": "Tiroler Fotograf Lois Hechenblaikner zeigt Kehrseite des Skitourismus: Volles Haus bei Kunstsprechstunde",
-   "teaser": "",
-   "category": "Kultur aus der Region",
-   "plus": true,
    "topic": "Kultur",
    "first_seen": "2026-11-20T17:50:08+00:00"
   }

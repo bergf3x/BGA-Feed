@@ -1,10 +1,263 @@
 {
  "items": {
+  "3950315203": {
+   "sid": 3950315203,
+   "url": "https://www.br.de/nachrichten/wirtschaft/nvidia-huang-ist-zurueck-aber-viele-sorgen-bleiben,VbnsVDy",
+   "title": "Nvidia: Huang ist zurück, aber viele Sorgen bleiben",
+   "teaser": "Erst das Low und jetzt wieder High? Jensen Huangs Rückkehr als Nvidia-Chef hat viel Vertrauen in den gesamten KI-Sektor zurückgebracht. Aber reicht das den Anlegern, um das Börsenjahr 2027 zu retten?",
+   "category": "Wirtschaft",
+   "topic": "Nachrichten/Wirtschaft",
+   "plus": false,
+   "date": "2026-11-24T12:29:24+00:00",
+   "first_seen": "2026-11-24T12:29:24+00:00"
+  },
+  "2326601913": {
+   "sid": 2326601913,
+   "url": "https://www.br.de/nachrichten/deutschland-welt/geld-fuer-den-guten-zweck-vor-allem-junge-menschen-spenden-mehr,VbtA1Xm",
+   "title": "Geld für den guten Zweck: Vor allem junge Menschen spenden mehr",
+   "teaser": "Die Menschen in Deutschland haben in den ersten neun Monaten 2026 mehr Geld gespendet als im Vorjahreszeitraum. Auffällig ist, dass Jüngere mehr spenden. Besonders hoch fielen Summen für örtliche Projekte aus, auch in der Not- und Katastrophenhilfe.",
+   "category": "Deutschland & Welt",
+   "topic": "Nachrichten/Deutschland & Welt",
+   "plus": false,
+   "date": "2026-11-24T12:05:47+00:00",
+   "first_seen": "2026-11-24T12:05:47+00:00"
+  },
+  "2820836661": {
+   "sid": 2820836661,
+   "url": "https://www.br.de/nachrichten/kultur/john-turturro-als-taschendieb-im-bargeldlosen-new-york,VbsydNS",
+   "title": "John Turturro als Taschendieb im bargeldlosen New York",
+   "teaser": "Auf deutschen Weihnachtsmärkten sollte man besser ein bisschen Bargeld dabei haben, sonst aber wird der Alltag zunehmend bargeldfrei. Schlechte Zeiten für Taschendiebe also. Jetzt gibt's den Film zum Thema: \"The Only Living Pickpocket in New York\".",
+   "category": "Kultur",
+   "topic": "Kultur",
+   "plus": false,
+   "date": "2026-11-24T11:34:05+00:00",
+   "first_seen": "2026-11-24T11:34:05+00:00"
+  },
+  "759089110": {
+   "sid": 759089110,
+   "url": "https://www.br.de/nachrichten/bayern/beleidigung-von-strack-zimmermann-mann-zu-geldstrafe-verurteilt,VbswKFa",
+   "title": "Beleidigung von Strack-Zimmermann: Mann zu Geldstrafe verurteilt",
+   "teaser": "Weil er die FDP-Politikerin Marie-Agnes Strack-Zimmermann als \"dreckige Kriegstreiberin\" beleidigt hat, muss ein Mann aus dem Landkreis Miesbach 2.800 Euro Geldstrafe zahlen. Das hat das Bayerische Oberste Landgericht nun entschieden.",
+   "category": "Bayern",
+   "topic": "Bayern",
+   "plus": false,
+   "date": "2026-11-24T11:33:40+00:00",
+   "first_seen": "2026-11-24T11:33:40+00:00"
+  },
+  "2294849279": {
+   "sid": 2294849279,
+   "url": "https://www.br.de/nachrichten/kultur/geschwister-scholl-preis-fuer-schriftstellerin-ines-geipel,VXRNUsW",
+   "title": "Heute Abend bekommt Ines Geipel den Geschwister-Scholl-Preis",
+   "teaser": "Für ihr Buch \"Landschaft ohne Zeugen\" erhält die Publizistin Ines Geipel den Geschwister-Scholl-Preis. Das Buch handelt von der Gewalt unter den Häftlingen im Konzentrationslager Buchenwald. Heute Abend wird der Preis an der LMU München verliehen.",
+   "category": "Kultur",
+   "topic": "Kultur",
+   "plus": false,
+   "date": "2026-11-24T10:33:39+00:00",
+   "first_seen": "2026-11-24T10:33:39+00:00"
+  },
+  "2635993230": {
+   "sid": 2635993230,
+   "url": "https://www.br.de/nachrichten/sport/champions-league-fc-bayern-gegner-osc-lille-alte-bekannte-grosse-namen,Vbo5cn9",
+   "title": "FC-Bayern-Gegner OSC Lille: alte Bekannte und große Namen",
+   "teaser": "Schon einmal traf der FC Bayern München in der Champions League auf den OSC Lille. Vor 14 Jahren feierte man gegen den französischen Klub zwei Siege. Der ist in der Ligue 1 zwar Dritter, wartet aber in der Königsklasse noch auf einen Sieg.",
+   "category": "Sport",
+   "topic": "Sport",
+   "plus": false,
+   "date": "2026-11-24T10:24:59+00:00",
+   "first_seen": "2026-11-24T10:24:59+00:00"
+  },
+  "448737155": {
+   "sid": 448737155,
+   "url": "https://www.br.de/nachrichten/bayern/vertrauliche-spurensicherung-wo-gibt-es-hilfe-in-bayern,VbsTP5S",
+   "title": "Vertrauliche Spurensicherung: Wo gibt es Hilfe in Bayern?",
+   "teaser": "Nach sexualisierter Gewalt können Betroffene in Bayern Spuren sichern lassen, ohne sofort Anzeige zu erstatten. Wo gibt es Hilfe und was müssen Betroffene wissen? Die wichtigsten Fragen und Antworten.",
+   "category": "Bayern",
+   "topic": "Bayern",
+   "plus": false,
+   "date": "2026-11-24T10:18:51+00:00",
+   "first_seen": "2026-11-24T10:18:51+00:00"
+  },
+  "986140179": {
+   "sid": 986140179,
+   "url": "https://www.br.de/nachrichten/deutschland-welt/mathematik-it-und-technik-deutschland-fehlen-die-fachkraefte,VbsVXf0",
+   "title": "Mathematik, IT und Technik: Deutschland fehlen die Fachkräfte",
+   "teaser": "Die Wirtschaft zieht wieder an – und mit ihr der Bedarf an Fachkräften: In Mathematik, IT, Naturwissenschaften und Technik fehlen in Deutschland inzwischen rund 170.000 Beschäftigte. Der demografische Wandel dürfte die Lage weiter verschärfen.",
+   "category": "Deutschland & Welt",
+   "topic": "Nachrichten/Deutschland & Welt",
+   "plus": false,
+   "date": "2026-11-24T10:07:57+00:00",
+   "first_seen": "2026-11-24T10:07:57+00:00"
+  },
+  "1283253049": {
+   "sid": 1283253049,
+   "url": "https://www.br.de/nachrichten/bayern/neuer-wirtschaftsminister-gotthardt-will-vieles-gleich-machen,VbsK8vI",
+   "title": "Wirtschaftsminister Gotthardt: Ehrgeiziges Ziel fürs Ministerium",
+   "teaser": "Der designierte bayerische Wirtschaftsminister Tobias Gotthardt kündigte im BR-Interview an, den Kurs seines verstorbenen Vorgängers Hubert Aiwanger fortzuführen. Dazu zählt auch ein besonders ehrgeiziges Ziel für das Ministerium.",
+   "category": "Bayern",
+   "topic": "Bayern",
+   "plus": false,
+   "date": "2026-11-24T09:16:31+00:00",
+   "first_seen": "2026-11-24T09:16:31+00:00"
+  },
+  "4253010334": {
+   "sid": 4253010334,
+   "url": "https://www.br.de/nachrichten/sport/champions-league-lille-osc-fc-bayern-in-der-livereportage-und-im-ticker,VboF38x",
+   "title": "Champions League: Lille - Bayern | 25.11., 21 Uhr| Livereportage",
+   "teaser": "Champions League statt Nebengeräusche: Der FC Bayern will beim OSC Lille nach dem Kane-Schock und den Debatten um Jamal Musiala sportlich die richtige Antwort geben. BR24Sport überträgt die Partie live in der Radioreportage.",
+   "category": "Sport",
+   "topic": "Sport",
+   "plus": false,
+   "date": "2026-11-24T09:01:13+00:00",
+   "first_seen": "2026-11-24T09:01:13+00:00"
+  },
+  "399707651": {
+   "sid": 399707651,
+   "url": "https://www.br.de/nachrichten/wissen/winterdepression-symptome-behandlung-vorbeugen,R9qckEu",
+   "title": "Was hilft gegen Winterblues und Winterdepression?",
+   "teaser": "Winterblues oder schon Depression? Wenn Dunkelheit, Müdigkeit und schlechte Stimmung den Alltag bestimmen, kann mehr dahinterstecken. Woran man eine Winterdepression erkennt und was gegen das saisonale Tief hilft.",
+   "category": "Wissen",
+   "topic": "Nachrichten/Wissenschaft",
+   "plus": false,
+   "date": "2026-11-24T08:53:26+00:00",
+   "first_seen": "2026-11-24T08:53:26+00:00"
+  },
+  "1796739807": {
+   "sid": 1796739807,
+   "url": "https://www.br.de/nachrichten/wissen/protein-eiweiss-muskel-aufbau-so-viel-brauchen-sportler,VCoH4ac",
+   "title": "Protein-Hype: Brauchen Sportler wirklich so viel Eiweiß?",
+   "teaser": "Eiweißreiche Ernährung, Proteinriegel und Nahrungsergänzungsmittel sollen gerade bei Sportlern die Leistungsfähigkeit steigern und den Muskelaufbau fördern. Doch ist zusätzliche Proteinzufuhr wirklich nötig – oder deckt die Ernährung den Bedarf ab?",
+   "category": "Wissen",
+   "topic": "Nachrichten/Wissenschaft",
+   "plus": false,
+   "date": "2026-11-24T08:51:40+00:00",
+   "first_seen": "2026-11-24T08:51:40+00:00"
+  },
+  "1553852833": {
+   "sid": 1553852833,
+   "url": "https://www.br.de/nachrichten/sport/3-liga-wuerzburger-kickers-fortuna-duesseldorf-livestream-und-br-fernsehen,VbnsJsj",
+   "title": "3. Liga: Würzburg - Düsseldorf | 28.11., 14 Uhr | Stream & TV",
+   "teaser": "Zwei Teams auf der Suche nach dem Befreiungsschlag: Der FC Würzburger Kickers empfängt Fortuna Düsseldorf am 15. Spieltag der 3. Liga. Verfolgen Sie die Partie live am Samstag, 28.11., ab 14 Uhr live im Stream und im BR Fernsehen.",
+   "category": "Sport",
+   "topic": "Sport",
+   "plus": false,
+   "date": "2026-11-24T08:11:48+00:00",
+   "first_seen": "2026-11-24T08:11:48+00:00"
+  },
+  "787767799": {
+   "sid": 787767799,
+   "url": "https://www.br.de/nachrichten/kultur/deutsche-doku-gewinnt-internationalen-emmy-award,VbsAx4E",
+   "title": "Deutsche Doku gewinnt Internationalen Emmy Award",
+   "teaser": "Unglaublich, aber wahr: Zwei Filmemachern wird der Film geklaut – von einem Fremden aus dem Netz heruntergeladen und unter eigenem Namen bei Festivals eingereicht. Julius Drost und Moritz Henneberg machen daraus eine Doku: \"Der talentierte Mr. F.\"",
+   "category": "Kultur",
+   "topic": "Kultur",
+   "plus": false,
+   "date": "2026-11-24T08:10:22+00:00",
+   "first_seen": "2026-11-24T08:10:22+00:00"
+  },
+  "4248359719": {
+   "sid": 4248359719,
+   "url": "https://www.br.de/nachrichten/deutschland-welt/autodiebstaehle-in-bayern-sind-autos-besonders-sicher,VbrgVEr",
+   "title": "Autodiebstähle: In Bayern sind Autos besonders sicher",
+   "teaser": "Während in Berlin etwa jedes 333. versicherte Auto gestohlen wurde, war es in Bayern nur jedes 10.000. Bundesweit verzeichnen Versicherer einen deutlichen Rückgang der Autodiebstähle. Das könnte auch die Beiträge zur Kfz-Versicherung beeinflussen.",
+   "category": "Deutschland & Welt",
+   "topic": "Nachrichten/Deutschland & Welt",
+   "plus": false,
+   "date": "2026-11-24T06:52:20+00:00",
+   "first_seen": "2026-11-24T06:52:20+00:00"
+  },
+  "1355699303": {
+   "sid": 1355699303,
+   "url": "https://www.br.de/nachrichten/kultur/angriff-auf-putins-flotte-russland-muss-die-fenster-eintreten,Vbpd7Dz",
+   "title": "Angriff auf Putins Flotte: \"Russland muss die Fenster eintreten\"",
+   "teaser": "Der Ukraine gelang es offenbar, russische Schiffe in der Ostsee und im Mittelmeer mit Seedrohnen anzugreifen. Das empört russische Beobachter, die sich mangels Alternativen mit \"Kaperfahrten\" rächen wollen, wie sie im 16. Jahrhundert üblich waren.",
+   "category": "Kultur",
+   "topic": "Kultur",
+   "plus": false,
+   "date": "2026-11-24T05:56:16+00:00",
+   "first_seen": "2026-11-24T05:56:16+00:00"
+  },
+  "3604552886": {
+   "sid": 3604552886,
+   "url": "https://www.br.de/nachrichten/bayern/wehrhafte-demokratie-spd-will-besseren-schutz-fuer-beamte,VbWiGW5",
+   "title": "\"Wehrhafte Demokratie\": SPD will besseren Schutz für Beamte",
+   "teaser": "Beamte, die Zweifel an der Rechtmäßigkeit einer Anweisung äußern, sollen dabei keine Angst haben. Angesichts wachsender Befürchtungen von Beamten in Sachsen-Anhalt will die Bayern-SPD Staatsdiener aber besser vor beruflichen Nachteilen schützen.",
+   "category": "Bayern",
+   "topic": "Bayern",
+   "plus": false,
+   "date": "2026-11-24T05:49:24+00:00",
+   "first_seen": "2026-11-24T05:49:24+00:00"
+  },
+  "2894980156": {
+   "sid": 2894980156,
+   "url": "https://www.br.de/nachrichten/wissen/supermond-heute-24-november-groesster-vollmond-2026,VWo5efG",
+   "title": "Supermond im November: Einer der größten Vollmonde des Jahres",
+   "teaser": "Am 24. November 2026 ist Vollmond – und der Mond der Erde gleichzeitig besonders nah. Einen \"Supermond\" gibt es aber nur in den Schlagzeilen zu sehen. Die wahre Größe des Mondes bleibt unserem Auge verborgen.",
+   "category": "Wissen",
+   "topic": "Nachrichten/Wissenschaft",
+   "plus": false,
+   "date": "2026-11-24T05:29:16+00:00",
+   "first_seen": "2026-11-24T05:29:16+00:00"
+  },
+  "2639800154": {
+   "sid": 2639800154,
+   "url": "https://www.br.de/nachrichten/bayern/verfassungsschutz-wann-geraten-moscheen-ins-visier,VbnAUhF",
+   "title": "Verfassungsschutz: Wann geraten Moscheen ins Visier?",
+   "teaser": "In einer Rosenheimer Moschee traten nach BR-Recherchen zuletzt Prediger auf, die der Verfassungsschutz kritisch sieht. Doch wann wird aus einem umstrittenen Gast ein Problem für die Gemeinde? Und welche Folgen kann das für Moschee-Besucher haben?",
+   "category": "Bayern",
+   "topic": "Bayern",
+   "plus": false,
+   "date": "2026-11-24T04:29:12+00:00",
+   "first_seen": "2026-11-24T04:29:12+00:00"
+  },
+  "505898559": {
+   "sid": 505898559,
+   "url": "https://www.br.de/nachrichten/bayern/autobahn-finanzierung-kommt-die-pkw-maut-fuer-alle,Vbo0uTy",
+   "title": "Autobahn-Finanzierung: Kommt die Pkw-Maut für alle?",
+   "teaser": "Instandhaltung und Sanierung des Autobahnnetzes in Deutschland werden mehr und mehr zum Kraftakt. Bereits in den 2030er-Jahren drohen Finanzierungslücken in Milliardenhöhe. Ein vertrauliches Gutachten empfiehlt die Pkw-Maut für alle.",
+   "category": "Bayern",
+   "topic": "Bayern",
+   "plus": false,
+   "date": "2026-11-24T04:26:11+00:00",
+   "first_seen": "2026-11-24T04:26:11+00:00"
+  },
+  "3946175483": {
+   "sid": 3946175483,
+   "url": "https://www.br.de/nachrichten/wirtschaft/adac-testet-park-and-ride-anlagen-welche-ueberzeugen,Vbo6kHD",
+   "title": "ADAC testet \"Park and Ride\"-Anlagen: Welche überzeugen?",
+   "teaser": "Für viele Pendler und Ausflügler sind Park-and-Ride-Anlagen eine große Hilfe. Doch wie gut sind die Angebote wirklich? Das wollte der ADAC herausfinden. Testsieger ist ein Stellpatz in München.",
+   "category": "Wirtschaft",
+   "topic": "Nachrichten/Wirtschaft",
+   "plus": false,
+   "date": "2026-11-24T04:23:55+00:00",
+   "first_seen": "2026-11-24T04:23:55+00:00"
+  },
+  "3429844581": {
+   "sid": 3429844581,
+   "url": "https://www.br.de/nachrichten/deutschland-welt/black-week-uvp-streichpreis-30-tage-regel-so-pruefen-sie-wie-gut-der-rabatt-wirklich-ist,Vbmy9Ms",
+   "title": "Black Week: So prüfen Sie, wie gut der Rabatt wirklich ist",
+   "teaser": "Wer während der Black Week kauft, spart – oder? Ob Schnäppchen oder leeres Marketingversprechen ist meist nicht auf den ersten Blick ersichtlich. Was Fachleute raten und was es mit UVP, Streichpreis und der 30-Tage-Regel auf sich hat.",
+   "category": "Deutschland & Welt",
+   "topic": "Nachrichten/Deutschland & Welt",
+   "plus": false,
+   "date": "2026-11-24T04:16:56+00:00",
+   "first_seen": "2026-11-24T04:16:56+00:00"
+  },
+  "1939156157": {
+   "sid": 1939156157,
+   "url": "https://www.br.de/nachrichten/wirtschaft/kalte-progression-was-von-der-lohnerhoehung-wirklich-uebrigbleibt,Vbnyh7E",
+   "title": "Kalte Progression: Was von der Lohnerhöhung wirklich übrigbleibt",
+   "teaser": "Mehr Lohn und trotzdem weniger Kaufkraft? Die kalte Progression kann dazu beitragen. CSU-Chef Markus Söder will sie bei der Lohnsteuer ausgleichen. Wie funktioniert die kalte Progression? Und was würde helfen, um sie abzuschwächen?",
+   "category": "Wirtschaft",
+   "topic": "Nachrichten/Wirtschaft",
+   "plus": false,
+   "date": "2026-11-24T04:13:08+00:00",
+   "first_seen": "2026-11-24T04:13:08+00:00"
+  },
   "294291404": {
    "sid": 294291404,
    "url": "https://www.br.de/nachrichten/sport/fc-bayern-frauen-knapper-sieg-bei-oberdorf-comeback,VboyV97",
    "title": "FC Bayern Frauen: Knapper Sieg bei Oberdorf-Comeback",
-   "teaser": "Die FC Bayern Frauen haben mit dem 53. Ligaspiel nacheinander ohne Niederlage den Rekord ihrer männlichen Vereinskollegen eingestellt. Gegen eine mutige TSG Hoffenheim reichte den Münchnerinnen ein frühes Tor von Edna Imade zum knappen 1:0-Heimsieg.",
+   "teaser": "Die FC Bayern Frauen bleiben auch im 53. Ligaspiel in Folge ungeschlagen und erreichen damit die Bestmarke der Männer. Gegen Hoffenheim genügte ein frühes Tor von Edna Imade zum 1:0, während Lena Oberdorf ihr lang ersehntes Pflichtspiel-Comeback gab.",
    "category": "Sport",
    "topic": "Sport",
    "plus": false,
@@ -135,8 +388,8 @@
   "4269389650": {
    "sid": 4269389650,
    "url": "https://www.br.de/nachrichten/deutschland-welt/ukraine-ticker-ukraine-versenkt-russisches-kriegsschiff,VbnccDe",
-   "title": "Ukraine-Ticker: Merz warnt Moskau vor \"Provokationen\"",
-   "teaser": "Bundeskanzler Friedrich Merz hat nach dem Absturz russischer Marschflugkörper in Polen Moskau aufgefordert, solche \"gefährlichen Provokationen\" einzustellen. Die Nato werde notfalls \"natürlich jeden Fuß Territorium verteidigen\". Alle News im Ticker.",
+   "title": "Ukraine-Ticker: Luftalarm in Polen - Leute sollen in Schutzräume",
+   "teaser": "Wenige Tage nach dem Absturz dreier russischer Marschflugkörper hat es in Polen kurzzeitig Luftalarm gegeben. Das Krisenzentrum der Regierung forderte die Bewohner der grenznahen Gebiete im Südosten auf, Schutzräume aufzusuchen. Alle News im Ticker.",
    "category": "Deutschland & Welt",
    "topic": "Nachrichten/Deutschland & Welt",
    "plus": false,
@@ -179,8 +432,8 @@
   "542351858": {
    "sid": 542351858,
    "url": "https://www.br.de/nachrichten/deutschland-welt/usa-israel-iran-krieg-im-news-ticker-vom-23-november-bis-29-november,Vbnj344",
-   "title": "Nahost-Ticker: Oxfam – Verseuchung gefährdet Gaza-Wiederaufbau",
-   "teaser": "Der Einsatz von Spreng- und Brandwaffen bei der israelischen Offensive im Gaza-Streifen hat das Gebiet laut Oxfam stark verseucht. Luft, Boden und Wasser seien so belastet, dass sie eine Gefahr für die Bevölkerung darstellten. Die News im Ticker.",
+   "title": "Nahost-Ticker: Gazastreifen –Tote bei israelischen Luftangriffen",
+   "teaser": "Bei israelischen Luftangriffen im Gazastreifen sind nach Angaben von örtlichen Medizinern und Behörden mindestens sechs Palästinenser getötet worden. Das israelische Militär erklärte, es habe Extremisten angegriffen. Die News im Ticker.",
    "category": "Deutschland & Welt",
    "topic": "Nachrichten/Deutschland & Welt",
    "plus": false,
@@ -1045,17 +1298,6 @@
    "date": "2026-11-21T15:14:26+00:00",
    "first_seen": "2026-11-21T15:14:26+00:00"
   },
-  "2189752207": {
-   "sid": 2189752207,
-   "url": "https://www.br.de/nachrichten/bayern/mehr-als-tausend-menschen-erweisen-aiwanger-die-letzte-ehre,VbbzNNx",
-   "title": "Mehr als tausend Menschen erweisen Aiwanger die letzte Ehre",
-   "teaser": "Rund zwei Wochen nach seinem plötzlichen Tod ist Hubert Aiwanger in Inkofen beigesetzt worden. Weggefährten und Freunde würdigen ihn als bodenständigen Politiker und Heimatmenschen. Besonders die Worte von Tanja Schweiger bewegen die Trauergemeinde.",
-   "category": "Bayern",
-   "topic": "Bayern",
-   "plus": false,
-   "date": "2026-11-21T14:18:05+00:00",
-   "first_seen": "2026-11-21T14:18:05+00:00"
-  },
   "3205911508": {
    "sid": 3205911508,
    "url": "https://www.br.de/nachrichten/sport/sandro-wagner-jubelt-hannover-dreht-spiel-gegen-fuerth,VbbbDVq",
@@ -1077,17 +1319,6 @@
    "plus": false,
    "date": "2026-11-21T14:12:16+00:00",
    "first_seen": "2026-11-21T14:12:16+00:00"
-  },
-  "1743323493": {
-   "sid": 1743323493,
-   "url": "https://www.br.de/nachrichten/bayern/mit-tatuetata-in-den-kindergarten-amelies-grosser-feuerwehr-traum,VZp9x0e",
-   "title": "Mit Tatütata in den Kindergarten: Amelies großer Feuerwehr-Traum",
-   "teaser": "Amelie ist eine kleine Helferin und will zur Feuerwehr. Der BR erfüllt ihr mit der Aktion #BayernsKinder einen Herzenswunsch: mit dem Feuerwehrauto in den Kindergarten fahren. Überhaupt boomen gerade Bayerns Kinderfeuerwehren.",
-   "category": "Bayern",
-   "topic": "Bayern",
-   "plus": false,
-   "date": "2026-11-21T13:24:40+00:00",
-   "first_seen": "2026-11-21T13:24:40+00:00"
   },
   "2729326270": {
    "sid": 2729326270,
@@ -1144,17 +1375,6 @@
    "date": "2026-11-21T11:13:49+00:00",
    "first_seen": "2026-11-21T11:13:49+00:00"
   },
-  "2963622232": {
-   "sid": 2963622232,
-   "url": "https://www.br.de/nachrichten/bayern/riskantes-projekt-trueffelplantage-in-oberbayern,Vb7pNGs",
-   "title": "Riskantes Projekt: Trüffelplantage in Oberbayern",
-   "teaser": "Auch in Bayern kann Burgunder-Trüffel angebaut werden – wenn der Boden passt. Eine Garantie auf Erfolg gibt es aber nicht. Ein Landwirt aus Vohburg wagt es trotzdem. Viel Zeit und Geld hat er investiert. Ob es sich lohnt, ist unklar.",
-   "category": "Bayern",
-   "topic": "Bayern",
-   "plus": false,
-   "date": "2026-11-21T10:55:14+00:00",
-   "first_seen": "2026-11-21T10:55:14+00:00"
-  },
   "1976382940": {
    "sid": 1976382940,
    "url": "https://www.br.de/nachrichten/sport/fc-bayern-ohne-harry-kane-wer-soll-den-superstar-ersetzen,Vbaqylk",
@@ -1165,17 +1385,6 @@
    "plus": false,
    "date": "2026-11-21T10:54:41+00:00",
    "first_seen": "2026-11-21T10:54:41+00:00"
-  },
-  "4260554214": {
-   "sid": 4260554214,
-   "url": "https://www.br.de/nachrichten/bayern/grosse-anteilnahme-hubert-aiwanger-wird-im-heimatort-beigesetzt,Vbb0x5j",
-   "title": "Große Anteilnahme: Hubert Aiwanger wird im Heimatort beigesetzt",
-   "teaser": "Zweieinhalb Wochen nach seinem plötzlichen Tod wird der ehemalige Freie-Wähler-Chef Hubert Aiwanger am Samstag in seiner niederbayerischen Heimat beigesetzt. Aiwanger wurde bereits eine Woche zuvor mit einem Trauerstaatsakt in München gewürdigt.",
-   "category": "Bayern",
-   "topic": "Bayern",
-   "plus": false,
-   "date": "2026-11-21T10:12:47+00:00",
-   "first_seen": "2026-11-21T10:12:47+00:00"
   },
   "3514947425": {
    "sid": 3514947425,
@@ -1221,17 +1430,6 @@
    "date": "2026-11-21T06:51:47+00:00",
    "first_seen": "2026-11-21T06:51:47+00:00"
   },
-  "756705845": {
-   "sid": 756705845,
-   "url": "https://www.br.de/nachrichten/bayern/kletterer-alexander-huber-zurueck-nach-dem-hirntumor,VbJrfRD",
-   "title": "Kletterer Alexander Huber – zurück nach dem Hirntumor",
-   "teaser": "Der Extrembergsteiger und Kletterer Alexander Huber hat am Berg mehrfach die Grenzen des Möglichen verschoben. Ein Hirntumor stellte ihn 2024 vor neue Herausforderungen. Doch er hat sich zurückgekämpft – an die Wand und ins Leben.",
-   "category": "Bayern",
-   "topic": "Bayern",
-   "plus": false,
-   "date": "2026-11-21T06:45:14+00:00",
-   "first_seen": "2026-11-21T06:45:14+00:00"
-  },
   "702534743": {
    "sid": 702534743,
    "url": "https://www.br.de/nachrichten/wirtschaft/schwan-stabilo-waechst-wieder-geschaeft-mit-stiften-schwaechelt,VbX99Fz",
@@ -1242,17 +1440,6 @@
    "plus": false,
    "date": "2026-11-21T06:41:59+00:00",
    "first_seen": "2026-11-21T06:41:59+00:00"
-  },
-  "2512644195": {
-   "sid": 2512644195,
-   "url": "https://www.br.de/nachrichten/bayern/jetzt-tut-s-weh-das-dilemma-der-kommunalpolitik,VbVR1jg",
-   "title": "Städte müssen sparen: Das Dilemma der Kommunalpolitik",
-   "teaser": "Es knirscht an allen Ecken und Enden in Bayerns Rathäusern. In Nürnberg hat der Stadtrat ein erstes Sparpaket beschlossen, Münchens Oberbürgermeister Krause hat Millioneneinsparungen im Sozialen angekündigt. Viel Spielraum bleibt der Politik nicht.",
-   "category": "Bayern",
-   "topic": "Bayern",
-   "plus": false,
-   "date": "2026-11-21T06:31:19+00:00",
-   "first_seen": "2026-11-21T06:31:19+00:00"
   },
   "2429847946": {
    "sid": 2429847946,
