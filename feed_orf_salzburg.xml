@@ -5,7 +5,43 @@
     <link>https://salzburg.orf.at/</link>
     <description>Neueste Meldungen, automatisch erzeugt. Nur Titel und Anrisstext.</description>
     <language>de-de</language>
-    <lastBuildDate>Mon, 23 Nov 2026 14:43:22 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 24 Nov 2026 01:56:26 +0000</lastBuildDate>
+    <item>
+      <title>Erste Absolventen für den Kampf gegen Hacker</title>
+      <link>https://salzburg.orf.at/stories/3379971/</link>
+      <guid isPermaLink="false">orf_salzburg-876196312</guid>
+      <pubDate>Mon, 23 Nov 2026 17:35:00 +0000</pubDate>
+      <category>Chronik</category>
+      <topic>Region/Salzburg</topic>
+      <description>Der noch junge Studiengang Cybersicherheit an der Fachhochschule Salzburg hat den ersten Schwung an Absolventen hervorgebracht. Bei den Unternehmen sind diese Fachkräfte gefragt, denn Netzwerke oder Computer werden immer häufiger auf digitalem Weg angegriffen, und die Schäden können verheerend sein.</description>
+    </item>
+    <item>
+      <title>Black Week: Handel erwartet 44 Mio. Euro Umsatz</title>
+      <link>https://salzburg.orf.at/stories/3380736/</link>
+      <guid isPermaLink="false">orf_salzburg-1625827412</guid>
+      <pubDate>Mon, 23 Nov 2026 16:30:00 +0000</pubDate>
+      <category>Wirtschaft</category>
+      <topic>Region/Salzburg</topic>
+      <description>Die Begriffe „Black Friday“, „Black Week“ und „Cyber Monday“ dominieren derzeit nicht nur die Online-Werbung, auch im niedergelassenen Handel gibt es an den vorweihnachtlichen Sonderangeboten kein Vorbeikommen. So werden allein im Bundesland Salzburg in dieser Aktionswoche im Handel 44 Millionen Eur</description>
+    </item>
+    <item>
+      <title>Nach Brand: Kehlsteinhaus notdürftig überdacht</title>
+      <link>https://salzburg.orf.at/stories/3380781/</link>
+      <guid isPermaLink="false">orf_salzburg-603738482</guid>
+      <pubDate>Mon, 23 Nov 2026 15:37:09 +0000</pubDate>
+      <category>Chronik</category>
+      <topic>Region/Salzburg</topic>
+      <description>Das abgebrannte Kehlsteinhaus am Obersalzberg im benachbarten Berchtesgaden (Bayern) ist jetzt notdürftig geschützt: Ein Notdach soll die Ruine über den Winter vor weiteren Schäden bewahren. Die Aufräumarbeiten werden in den nächsten Monaten fortgesetzt.</description>
+    </item>
+    <item>
+      <title>Wintertauschbörse verzeichnet Rekordzahlen</title>
+      <link>https://salzburg.orf.at/stories/3380752/</link>
+      <guid isPermaLink="false">orf_salzburg-627170</guid>
+      <pubDate>Mon, 23 Nov 2026 15:00:00 +0000</pubDate>
+      <category>Wirtschaft</category>
+      <topic>Region/Salzburg</topic>
+      <description>18.000 Menschen haben die Wintertauschbörse von Arbeiterkammer und Gewerkschaftsbund in Bischofshofen und der Stadt Salzburg vergangene Woche besucht. Das sei ein neuer Rekord, heißt es heute von der Arbeiterkammer.</description>
+    </item>
     <item>
       <title>Insolvente Heutallifte machen vorerst weiter</title>
       <link>https://salzburg.orf.at/stories/3380753/</link>
@@ -22,7 +58,7 @@
       <pubDate>Mon, 23 Nov 2026 13:05:00 +0000</pubDate>
       <category>Chronik</category>
       <topic>Region/Salzburg</topic>
-      <description>Der Berufungssenat am Landesgericht Salzburg hat die Strafe für eine 87-Jährige am Montag deutlich erhöht. Die Frau soll versucht haben, ihre schwer beeinträchtigte Tochter mit Schlaftabletten zu töten.</description>
+      <description>Der Berufungssenat des Oberlandesgerichts Linz hat die Strafe für eine 87-Jährige am Montag deutlich erhöht. Die Frau soll versucht haben, ihre schwer beeinträchtigte Tochter mit Schlaftabletten zu töten.</description>
     </item>
     <item>
       <title>Postenvergaben im Land Salzburg sollen geprüft werden</title>
@@ -329,15 +365,6 @@
       <category>Kultur</category>
       <topic>Region/Salzburg</topic>
       <description>Der kaufmännische Direktor der Salzburger Festspiele Lukas Crepaz hat einen neuen Hauptsponsor gewonnen: den börsennotierten Softwarehersteller Fabasoft mit Hauptsitz in Linz. Die drei deutschen Großsponsoren Siemens, Würth und Kühne verlängerten zudem kürzlich ihre Verträge mit dem Festival.</description>
-    </item>
-    <item>
-      <title>Unfalltod von Manninger: Ermittlungen eingestellt</title>
-      <link>https://salzburg.orf.at/stories/3380398/</link>
-      <guid isPermaLink="false">orf_salzburg-2090735451</guid>
-      <pubDate>Fri, 20 Nov 2026 11:20:18 +0000</pubDate>
-      <category>Chronik</category>
-      <topic>Region/Salzburg</topic>
-      <description>Nach dem Tod des Salzburger Ex-ÖFB-Teamtormannes Alexander Manninger bei einem Verkehrsunfall an einem unbeschrankten Bahnübergang im Salzburger Flachgau im Frühjahr ist das Ermittlungsverfahren gegen den Lenker der Lokalbahngarnitur eingestellt worden.</description>
     </item>
   </channel>
 </rss>

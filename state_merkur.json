@@ -1,5 +1,335 @@
 {
  "items": {
+  "1672106907": {
+   "sid": 1672106907,
+   "url": "https://www.merkur.de/bayern/echter-geheimtipp-beliebter-weihnachtsmarkt-in-bayern-oeffnet-94604796.html",
+   "title": "„Echter Geheimtipp“: Beliebter Weihnachtsmarkt in Bayern lockt gleich mit mehreren Highlights",
+   "teaser": "Der beliebte Weihnachtsmarkt wird als „Geheimtipp vor der eigenen Haustür“ bezeichnet. Er hat rund vier Wochen lang geöffnet.",
+   "category": "",
+   "topic": "Bayern",
+   "plus": false,
+   "date": "2026-11-23T21:10:03+00:00",
+   "first_seen": "2026-11-23T21:10:03+00:00"
+  },
+  "2308939101": {
+   "sid": 2308939101,
+   "url": "https://www.merkur.de/lokales/muenchen/in-muenchen-werden-wieder-warn-sirenen-zum-einsatz-kommen-94604785.html",
+   "title": "Anschläge & Co.: In München werden wieder Warn-Sirenen zum Einsatz kommen",
+   "teaser": "Die Stadt München möchte wieder ein Warnsystem mit Sirenen aufbauen – und mit Notstromaggregaten im Krisenfall 72 Stunden durchhalten.",
+   "category": "",
+   "topic": "Bayern/München",
+   "plus": false,
+   "date": "2026-11-23T20:40:52+00:00",
+   "first_seen": "2026-11-23T20:40:52+00:00"
+  },
+  "1019502898": {
+   "sid": 1019502898,
+   "url": "https://www.merkur.de/bayern/unfall-in-markt-rettenbach-60-jaehriger-stirbt-bei-frontalcrash-94604775.html",
+   "title": "Mann stirbt bei Frontalzusammenstoß im Allgäu – weiterer Fahrer schwer verletzt",
+   "teaser": "Bei einer schweren Frontalkollision in Markt Rettenbach hat ein 60 Jahre alter Autofahrer sein Leben verloren. Ein 26-Jähriger wurde im Auto eingeklemmt.",
+   "category": "",
+   "topic": "Bayern",
+   "plus": false,
+   "date": "2026-11-23T20:13:28+00:00",
+   "first_seen": "2026-11-23T20:13:28+00:00"
+  },
+  "449198144": {
+   "sid": 449198144,
+   "url": "https://www.merkur.de/bayern/augsburg-sichert-christkindlesmarkt-mit-stahlbarrieren-zr-94604765.html",
+   "title": "Augsburg riegelt Christkindlesmarkt ab: Aufnahmen zeigen neue Barrieren",
+   "teaser": "Die Stadt sichert den Christkindlesmarkt nach der Kritik im vergangenen Jahr nun mit 19 tonnenschweren Stahlbarrieren statt mit mobilen Pollern.",
+   "category": "",
+   "topic": "Bayern",
+   "plus": false,
+   "date": "2026-11-23T20:01:13+00:00",
+   "first_seen": "2026-11-23T20:01:13+00:00"
+  },
+  "199140066": {
+   "sid": 199140066,
+   "url": "https://www.merkur.de/bayern/weihnachtsgeld-bei-siemens-so-viel-sonderzahlung-gibt-es-94604764.html",
+   "title": "Weihnachtsgeld bei Siemens: So viel Geld bekommen die Mitarbeiter",
+   "teaser": "Siemens zahlt seinen Mitarbeitern auch dieses Jahr wieder einen 13. Monatsgehalt. Alle Details zu den Sonderzahlungen und Gehältern nach Berufen.",
+   "category": "",
+   "topic": "Bayern",
+   "plus": false,
+   "date": "2026-11-23T19:59:17+00:00",
+   "first_seen": "2026-11-23T19:59:17+00:00"
+  },
+  "685316380": {
+   "sid": 685316380,
+   "url": "https://www.merkur.de/lokales/weilheim/weilheim-ort29677/weilheim-lehrer-und-autor-hans-heinrich-stirbt-mit-96-jahren-94603815.html",
+   "title": "Trauer um einen begeisternden Lehrer und unbequemen Fragensteller",
+   "teaser": "Der Pädagoge und Autor Hans Heinrich ist Generationen von Schülern als leidenschaftlicher Lehrer in Erinnerung. Nun ist der Weilheimer, der zahlreiche Bücher schrieb, gestorben – nur wenige Wochen nach seiner Ehefrau.",
+   "category": "",
+   "topic": "Bayern/Oberbayern",
+   "plus": false,
+   "date": "2026-11-23T19:00:00+00:00",
+   "first_seen": "2026-11-23T19:00:00+00:00"
+  },
+  "205710806": {
+   "sid": 205710806,
+   "url": "https://www.merkur.de/lokales/muenchen/thalkirchen-obersendling-forstenried-fuerstenried-solln-ort43351/grosseinsatz-in-muenchen-fassade-von-gebaeude-instabil-94604732.html",
+   "title": "Großeinsatz von Feuerwehr und THW in München: Einsatzkräfte sichern Fassade",
+   "teaser": "Feuerwehr und THW sind zu einem größeren Einsatz im Münchner Süden ausgerückt. Demnach haben sich an einem Gebäude Fassadenteile gelöst.",
+   "category": "",
+   "topic": "Bayern/München",
+   "plus": false,
+   "date": "2026-11-23T18:55:12+00:00",
+   "first_seen": "2026-11-23T18:55:12+00:00"
+  },
+  "2769035733": {
+   "sid": 2769035733,
+   "url": "https://www.merkur.de/lokales/garmisch-partenkirchen/oberammergau-ort29187/oberammergau-kita-reform-bayern-zuschuss-100-euro-kindergarten-tagesstaette-gemeinderat-94604087.html",
+   "title": "„Ärgert mich maßlos“: Umstrittene Kita-Reform sorgt im Gemeinderat für Diskussionen",
+   "teaser": "Die umstrittene Kita-Reform der bayerischen Staatsregierung wirkt sich auf Oberammergau aus. Die Gemeinde will Eltern deshalb entlasten.",
+   "category": "",
+   "topic": "Bayern/Oberbayern",
+   "plus": false,
+   "date": "2026-11-23T18:25:00+00:00",
+   "first_seen": "2026-11-23T18:25:00+00:00"
+  },
+  "1373074286": {
+   "sid": 1373074286,
+   "url": "https://www.merkur.de/bayern/ainring-frau-soll-ehemann-getoetet-haben-mordverdacht-94604699.html",
+   "title": "Leichenfund im Berchtesgadener Land: Verdacht auf Gewaltverbrechen – Frau soll ihren Mann getötet haben",
+   "teaser": "Nach einem mutmaßlichen Tötungsdelikt in Ainring im Berchtesgadener Land sitzt eine 61-Jährige in Untersuchungshaft. Sie soll ihren 65-jährigen Ehemann getötet haben.",
+   "category": "",
+   "topic": "Bayern",
+   "plus": false,
+   "date": "2026-11-23T18:11:58+00:00",
+   "first_seen": "2026-11-23T18:11:58+00:00"
+  },
+  "3340702135": {
+   "sid": 3340702135,
+   "url": "https://www.merkur.de/lokales/wolfratshausen/geretsried-ort46843/maxi-pongratz-im-hinterhalt-jetzt-bin-ich-halt-hier-gelandet-94603638.html",
+   "title": "Einer, der aus dem Herzen spricht: Liedermacher Maxi Pongratz unterhält im Hinterhalt",
+   "teaser": "Der Oberammergauer Liedermacher Maxi Pongratz spielte beim PiPaPo-Festival sein neues Programm über Schlaflosigkeit und Alltag. An seiner Seite begleitete Cellist Juri Kannheiser den Abend.",
+   "category": "",
+   "topic": "Bayern/Oberbayern",
+   "plus": false,
+   "date": "2026-11-23T18:00:00+00:00",
+   "first_seen": "2026-11-23T18:00:00+00:00"
+  },
+  "4042401334": {
+   "sid": 4042401334,
+   "url": "https://www.merkur.de/lokales/bad-toelz/bad-toelz-ort28297/klassische-erdgraeber-verschwinden-baumbestattungen-liegen-im-trend-94603791.html",
+   "title": "Klassische Erdgräber verschwinden zunehmend: Baumbestattungen liegen im Trend",
+   "teaser": "Immer mehr Angehörige lösen Gräber auf, weil Pflege und Entfernung zu viel werden. In Bad Tölz stehen allein 50 Urnenplätze unter Bäumen zur Verfügung.",
+   "category": "",
+   "topic": "Bayern/Oberbayern",
+   "plus": false,
+   "date": "2026-11-23T18:00:00+00:00",
+   "first_seen": "2026-11-23T18:00:00+00:00"
+  },
+  "2350136978": {
+   "sid": 2350136978,
+   "url": "https://www.merkur.de/lokales/ebersberg/ebersberg-ort28611/stadtradeln-im-landkreis-ebersberg-erreicht-neue-bestmarke-473-750-kilometer-94604214.html",
+   "title": "Stadtradeln im Landkreis Ebersberg erreicht neue Bestmarke: 473.750 Kilometer",
+   "teaser": "2683 Teilnehmende radelten beim Stadtradeln im Landkreis Ebersberg. Das sind fast zwölf Erdumrundungen am Äquator. Gegenüber dem Vorjahr stieg die Teilnehmeranzahl und die Gesamtstrecke.",
+   "category": "",
+   "topic": "Bayern/Oberbayern",
+   "plus": false,
+   "date": "2026-11-23T18:00:00+00:00",
+   "first_seen": "2026-11-23T18:00:00+00:00"
+  },
+  "1094161444": {
+   "sid": 1094161444,
+   "url": "https://www.merkur.de/bayern/zoo-westernstadt-und-co-magische-ausflugsziele-fuer-die-vorweihnachtszeit-94604675.html",
+   "title": "Funkelndes Winterwunderland: „Magische Ausflugsziele für die Vorweihnachtszeit“ in Bayern",
+   "teaser": "Hunderttausende Lichter sorgen für eine faszinierende Lichterwelt, andernorts wartet auf Besucher eine fantasievolle Märchenlandschaft – wir stellen besondere Weihnachtsmärkte vor.",
+   "category": "",
+   "topic": "Bayern",
+   "plus": false,
+   "date": "2026-11-23T17:50:36+00:00",
+   "first_seen": "2026-11-23T17:50:36+00:00"
+  },
+  "2607665048": {
+   "sid": 2607665048,
+   "url": "https://www.merkur.de/lokales/region-holzkirchen/holzkirchen-ort28831/trickbetrueger-gesteht-zwei-taten-beim-250-000-euro-coup-in-holzkirchen-schweigt-er-94602651.html",
+   "title": "Trickbetrüger gesteht zwei Taten, schweigt aber zu 250.000-Euro-Verbrechen in Holzkirchen",
+   "teaser": "Ein Angeklagter räumte im Heilbronner Trickbetrüger-Prozess zwei Taten ein, stritt aber den lukrativsten Fall ab: Ein Holzkirchner Ehepaar war um 250.000 Euro geprellt worden. Ein volles Geständnis hätte dem Beschuldigten vermutlich eine höhere Haftstrafe erspart.",
+   "category": "",
+   "topic": "Bayern/Oberbayern",
+   "plus": false,
+   "date": "2026-11-23T17:03:54+00:00",
+   "first_seen": "2026-11-23T17:03:54+00:00"
+  },
+  "799542921": {
+   "sid": 799542921,
+   "url": "https://www.merkur.de/lokales/garmisch-partenkirchen/garmisch-partenkirchen-ort28711/sc-riessersee-insolvent-500-dauerkarteninhaber-muessen-jetzt-extra-zahlen-eishockey-scr-oberliga-94604609.html",
+   "title": "SC Riessersee: Dauerkarteninhaber müssen jetzt extra zahlen",
+   "teaser": "Der SC Riessersee darf trotz Insolvenz bis Jahresende weiterspielen. Doch alle Dauer- und Zehnerkarteninhaber erwartet eine bittere rechtliche Änderung.",
+   "category": "",
+   "topic": "Bayern/Oberbayern",
+   "plus": false,
+   "date": "2026-11-23T17:00:05+00:00",
+   "first_seen": "2026-11-23T17:00:05+00:00"
+  },
+  "2018437295": {
+   "sid": 2018437295,
+   "url": "https://www.merkur.de/lokales/schongau/bernbeuren-ort121388/kindergarten-wird-teurer-gemeinde-hebt-gebuehren-um-50-euro-an-94602379.html",
+   "title": "Kindergarten wird teurer: Gemeinde hebt Gebühren um 50 Euro an",
+   "teaser": "Den Wegfall des 100-Euro-Zuschusses für Kindergartenkinder wird die Gemeinde Bernbeuren mit 50 Euro kompensieren. Der Gemeinderat wird allerdings 2027 nochmal auf die Zahlen schauen.",
+   "category": "",
+   "topic": "Bayern/Oberbayern",
+   "plus": false,
+   "date": "2026-11-23T17:00:00+00:00",
+   "first_seen": "2026-11-23T17:00:00+00:00"
+  },
+  "409262239": {
+   "sid": 409262239,
+   "url": "https://www.merkur.de/lokales/freising/freising-ort28692/3740-tonnen-streusalz-eingelagert-freisings-winterdienst-ist-startklar-94604182.html",
+   "title": "3740 Tonnen Streusalz eingelagert: Freisings Winterdienst ist startklar",
+   "teaser": "Der Landkreisbauhof Freising hat seine Vorbereitungen abgeschlossen. Aus der Vergangenheit hat das Team gelernt und kann der „kalten Jahreszeit ganz entspannt entgegenblicken“.",
+   "category": "",
+   "topic": "Bayern/Oberbayern",
+   "plus": false,
+   "date": "2026-11-23T17:00:00+00:00",
+   "first_seen": "2026-11-23T17:00:00+00:00"
+  },
+  "766894951": {
+   "sid": 766894951,
+   "url": "https://www.merkur.de/lokales/fuerstenfeldbruck/olching-ort29215/olching-weihnachtshaus-baum-sturm-zerstoert-installation-show-start-lichter-94604592.html",
+   "title": "„Ich dachte, ich muss heulen“: Baum stürzt auf beliebtes Weihnachtshaus in Olching – kurz vor dem Start",
+   "teaser": "Ein umstürzender Baum hat das Olchinger Weihnachtshaus schwer getroffen – und das wenige Tage vor dem Start der Show. Ob alles rechtzeitig fertig wird, ist noch offen.",
+   "category": "",
+   "topic": "Bayern/Oberbayern",
+   "plus": false,
+   "date": "2026-11-23T16:52:59+00:00",
+   "first_seen": "2026-11-23T16:52:59+00:00"
+  },
+  "2468324595": {
+   "sid": 2468324595,
+   "url": "https://www.merkur.de/lokales/wolfratshausen/geretsried-ort46843/widerspenstiger-weihnachtsbote-geretsrieder-christbaum-kommt-stunden-spaeter-94604590.html",
+   "title": "Widerspenstiger Weihnachtsbote: Geretsrieder Christbaum kommt Stunden später",
+   "teaser": "Die Fichte für den Karl-Lederer-Platz stand gefährlich nah an einem Telefonkabel. Doch nicht nur das verzögerte die Ankunft des Christbaums am Montag.",
+   "category": "",
+   "topic": "Bayern/Oberbayern",
+   "plus": false,
+   "date": "2026-11-23T16:47:28+00:00",
+   "first_seen": "2026-11-23T16:47:28+00:00"
+  },
+  "2478553076": {
+   "sid": 2478553076,
+   "url": "https://www.merkur.de/lokales/fuerstenfeldbruck/olching-ort29215/olching-repair-cafe-feiert-75-treffen-kaffeemaschine-nach-zwei-stunden-gerettet-94604369.html",
+   "title": "Ihre Mission: Unnötigen Müll vermeiden – Ehrenamtliche retten auch kaputte Kaffeemaschinen",
+   "teaser": "Unnötigen Müll zu vermeiden – das ist das Ziel des Olchinger Repair Cafés. Seit vielen Jahren schon ist Michael Simon dort der absolute Profi unter den Kaffeemaschinen-Experten. Doch ein Besucher musste beim letzten Treffen unverrichteter Dinge nach Hause gehen.",
+   "category": "",
+   "topic": "Bayern/Oberbayern",
+   "plus": false,
+   "date": "2026-11-23T16:30:00+00:00",
+   "first_seen": "2026-11-23T16:30:00+00:00"
+  },
+  "952747088": {
+   "sid": 952747088,
+   "url": "https://www.merkur.de/lokales/starnberg/starnberg-ort29487/zu-wenige-mitglieder-gruendung-des-foerdervereins-starnberg-scheitert-94602505.html",
+   "title": "Zu wenige Mitglieder: Gründung des Fördervereins Starnberg scheitert",
+   "teaser": "Der neue Förderverein Jugendarbeit Starnberg kam mangels Gründungsmitglieder nicht zustande. Der zweite Anlauf ist für den 15. Dezember um 19 Uhr angesetzt.",
+   "category": "",
+   "topic": "Bayern/Oberbayern",
+   "plus": false,
+   "date": "2026-11-23T16:02:00+00:00",
+   "first_seen": "2026-11-23T16:02:00+00:00"
+  },
+  "620709514": {
+   "sid": 620709514,
+   "url": "https://www.merkur.de/lokales/ebersberg/ebersberg-ort28611/ich-will-nicht-aufgeben-24-jaehrige-kaempft-um-ausbildungsplatz-in-ebersberg-94604070.html",
+   "title": "„Ich will nicht aufgeben“: 24-Jährige kämpft in Nigeria um Ausbildungsplatz in Ebersberg",
+   "teaser": "Chidinma Okolo hat für einen Reisepass gespart und Deutsch gelernt, um mit Visum nach Deutschland einzureisen. Für einen Ausbildungsplatz müsste die 24-Jährige ihren Sohn in Nigeria zurücklassen.",
+   "category": "",
+   "topic": "Bayern/Oberbayern",
+   "plus": false,
+   "date": "2026-11-23T16:02:00+00:00",
+   "first_seen": "2026-11-23T16:02:00+00:00"
+  },
+  "3488251274": {
+   "sid": 3488251274,
+   "url": "https://www.merkur.de/lokales/region-miesbach/miesbach-ort29062/landrat-ehrt-17-brk-ehrenamtliche-und-bekommt-selbst-ein-ehrenzeichen-94602563.html",
+   "title": "Landrat ehrt 17 BRK-Ehrenamtliche – und bekommt selbst ein Ehrenzeichen",
+   "teaser": "Landrat Jens Zangenfeind zeichnete Helfer für 25, 40 und 50 Jahre aktiven Dienst beim Bayerischen Roten Kreuz aus. Dann überraschte ihn Kreisbereitschaftsleiter Benedikt Dörder mit einem Ehrenzeichen in Bronze.",
+   "category": "",
+   "topic": "Bayern/Oberbayern",
+   "plus": false,
+   "date": "2026-11-23T16:00:00+00:00",
+   "first_seen": "2026-11-23T16:00:00+00:00"
+  },
+  "2321471179": {
+   "sid": 2321471179,
+   "url": "https://www.merkur.de/lokales/bad-toelz/benediktbeuern-ort28358/benediktbeuern-fbm-klagt-ueber-wahl-daempfer-fokus-auf-seniorenhilfe-94604026.html",
+   "title": "Benediktbeuern: FBM klagt über Wahl-Dämpfer – Fokus auf Seniorenhilfe",
+   "teaser": "Die Freie Bürgerliste Miteinander (FBM) hat ihren Vorstand bestätigt: Rudi Mühlhans bleibt Vorsitzender, Andi Buchner sein Stellvertreter und Tini Schwarm Kassenführerin. Inhaltlich will sich die Gruppierung weiterhin vor allem für soziale Themen, Inklusion, Barrierefreiheit und die Belange von Seni",
+   "category": "",
+   "topic": "Bayern/Oberbayern",
+   "plus": false,
+   "date": "2026-11-23T16:00:00+00:00",
+   "first_seen": "2026-11-23T16:00:00+00:00"
+  },
+  "3923069285": {
+   "sid": 3923069285,
+   "url": "https://www.merkur.de/lokales/freising/moosburg-ort29088/vorhang-faellt-nasen-platt-moosburger-weihnachtsmarkt-startet-mit-mini-eisenbahn-94604132.html",
+   "title": "Der Vorhang ist gefallen: Moosburger Vorweihnachtszeit begeistert Kinder mit Mini-Eisenbahn",
+   "teaser": "Im Moosburger Kirchengäßchen hat der „Bahnhof Winterland\" eröffnet – mit einer Modellbahn im Bücherei-Schaufenster als Hauptattraktion.",
+   "category": "",
+   "topic": "Bayern/Oberbayern",
+   "plus": false,
+   "date": "2026-11-23T16:00:00+00:00",
+   "first_seen": "2026-11-23T16:00:00+00:00"
+  },
+  "3638158281": {
+   "sid": 3638158281,
+   "url": "https://www.merkur.de/lokales/muenchen/mehr-als-nur-ein-hit-portugal-the-man-ueberzeugen-live-94603577.html",
+   "title": "Mehr als ein Hit: Portugal.The Man überraschen live",
+   "teaser": "Portugal.The Man sind weit mehr als ihre Grammy-Single „Feel It Still“. In der Tonhalle zeigen sie ein extrem abwechslungsreiches Repertoire. Selbst der bekannteste Song kippt plötzlich ins Raue.",
+   "category": "",
+   "topic": "Bayern/München",
+   "plus": false,
+   "date": "2026-11-23T15:22:00+00:00",
+   "first_seen": "2026-11-23T15:22:00+00:00"
+  },
+  "3488478760": {
+   "sid": 3488478760,
+   "url": "https://www.merkur.de/lokales/bad-toelz/benediktbeuern-ort28358/musikkapelle-benediktbeuern-lockt-kinder-mit-posaune-trompete-und-pommes-94604296.html",
+   "title": "Musikkapelle Benediktbeuern lockt Kinder mit Posaune, Trompete – und Pommes",
+   "teaser": "Beim Schnuppertag der Musikkapelle Benediktbeuern durften rund 20 Kinder alle Instrumente ausprobieren. Nach dem ersten Schnuppertag fingen immerhin drei Kinder an, ein Instrument zu lernen.",
+   "category": "",
+   "topic": "Bayern/Oberbayern",
+   "plus": false,
+   "date": "2026-11-23T15:18:20+00:00",
+   "first_seen": "2026-11-23T15:18:20+00:00"
+  },
+  "4114216033": {
+   "sid": 4114216033,
+   "url": "https://www.merkur.de/bayern/wiggensbach-landwirt-58-tot-im-stall-im-allgaeu-aufgefunden-94604235.html",
+   "title": "Landwirt tot in Stall gefunden – Kriminalpolizei ermittelt zur Todesursache",
+   "teaser": "Fund im Allgäu: Ein 58 Jahre alter Landwirt ist in Wiggensbach leblos in seinem Stall entdeckt worden. Die Kriminalpolizei ermittelt zur genauen Todesursache.",
+   "category": "",
+   "topic": "Bayern",
+   "plus": false,
+   "date": "2026-11-23T15:05:34+00:00",
+   "first_seen": "2026-11-23T15:05:34+00:00"
+  },
+  "713890561": {
+   "sid": 713890561,
+   "url": "https://www.merkur.de/lokales/schongau/schongau-ort29421/wir-muessen-die-aermel-hochkrempeln-unternehmer-besprechen-wie-probleme-geloest-werden-koennen-94602361.html",
+   "title": "„Wir müssen die Ärmel hochkrempeln“: Unternehmer besprechen, wie Probleme gelöst werden können",
+   "teaser": "Der neue IHK-Regionalausschuss Weilheim-Schongau hat sich bei seinem ersten Treffen drei Schwerpunkte gesetzt. Neben Verkehr stehen KI-Kompetenz und Cybersicherheit auf der Agenda.",
+   "category": "",
+   "topic": "Bayern/Oberbayern",
+   "plus": false,
+   "date": "2026-11-23T15:00:00+00:00",
+   "first_seen": "2026-11-23T15:00:00+00:00"
+  },
+  "1861027038": {
+   "sid": 1861027038,
+   "url": "https://www.merkur.de/lokales/fuerstenfeldbruck/fuerstenfeldbruck-ort65548/wertstoffboerse-wird-zum-paradies-fuer-fans-von-weihnachts-deko-94604165.html",
+   "title": "Wertstoffbörse wird zum Paradies für Fans von Weihnachts-Deko",
+   "teaser": "Schöne Weihnachtsdeko zu günstigen Preisen: Der Weihnachtsmarkt der Wertstoffbörse lockt viele Besucher an – sogar über die Landkreisgrenze hinaus.",
+   "category": "",
+   "topic": "Bayern/Oberbayern",
+   "plus": false,
+   "date": "2026-11-23T14:45:11+00:00",
+   "first_seen": "2026-11-23T14:45:11+00:00"
+  },
   "100651566": {
    "sid": 100651566,
    "url": "https://www.merkur.de/lokales/fuerstenfeldbruck/fuerstenfeldbruck-ort65548/fuerstenfeldbruck-schulen-gymnasien-realschulen-fos-bos-g9-platzmangel-94604117.html",
@@ -10,6 +340,17 @@
    "plus": false,
    "date": "2026-11-23T14:38:11+00:00",
    "first_seen": "2026-11-23T14:38:11+00:00"
+  },
+  "3787093314": {
+   "sid": 3787093314,
+   "url": "https://www.merkur.de/lokales/fuerstenfeldbruck/olching-ort29215/olching-koennte-2028-als-erste-mvv-kommune-autonome-busse-einsetzen-94604140.html",
+   "title": "Können Olchings Busse bald selbst fahren? Erste Weichen im Stadtrat gestellt",
+   "teaser": "Busse, die ohne Fahrer unterwegs sind: Das könnte in Olching bald Wirklichkeit werden. Als eine der ersten Kommunen im MVV-Raum könnte die Stadt beim autonomen Fahren im öffentlichen Nahverkehr eine Vorreiterrolle übernehmen.",
+   "category": "",
+   "topic": "Bayern/Oberbayern",
+   "plus": false,
+   "date": "2026-11-23T14:32:18+00:00",
+   "first_seen": "2026-11-23T14:32:18+00:00"
   },
   "1399117369": {
    "sid": 1399117369,
@@ -55,10 +396,21 @@
    "date": "2026-11-23T14:00:00+00:00",
    "first_seen": "2026-11-23T14:00:00+00:00"
   },
+  "2532929853": {
+   "sid": 2532929853,
+   "url": "https://www.merkur.de/lokales/region-miesbach/hausham-ort74880/leiterin-fuehrt-haushamer-jugendtreff-37-jahre-lang-bald-geht-sie-in-rente-94604205.html",
+   "title": "Leiterin führt Haushamer Jugendtreff 37 Jahre lang – bald geht sie in Rente",
+   "teaser": "Bärbel Stiedl begann 1989 mit einem Ultimatum des Gemeinderats und machte den Jute zur festen Institution. Ihre Nachfolgerin ist ein Eigengewächs des Treffs.",
+   "category": "",
+   "topic": "Bayern/Oberbayern",
+   "plus": false,
+   "date": "2026-11-23T14:00:00+00:00",
+   "first_seen": "2026-11-23T14:00:00+00:00"
+  },
   "2543293282": {
    "sid": 2543293282,
    "url": "https://www.merkur.de/lokales/starnberg/starnberg-ort29487/elf-einbrueche-seit-donnerstag-im-landkreis-starnberg-auch-in-zwei-pfarrhaeusern-94604008.html",
-   "title": "Elf Einbrüche seit Donnerstag im Landkreis Starnberg– auch in zwei Pfarrhäusern",
+   "title": "Elf Einbrüche in kurzer Zeit im Landkreis Starnberg– auch in zwei Pfarrhäusern",
    "teaser": "Elf Einbrüche und Einbruchsversuche meldeten die Polizeien seit vergangenem Donnerstag im Landkreis Starnberg. Die Täter verschafften sich Zutritt zu Privatwohnungen, aber auch zu Pfarrhäusern.",
    "category": "",
    "topic": "Bayern/Oberbayern",
@@ -253,39 +605,6 @@
    "date": "2026-11-23T11:00:00+00:00",
    "first_seen": "2026-11-23T11:00:00+00:00"
   },
-  "1217260893": {
-   "sid": 1217260893,
-   "url": "https://www.merkur.de/lokales/schongau/altenstadt-ort377062/denen-fehlt-an-allem-bayerischer-verein-liefert-pflaster-windeln-und-einen-toilettenstuhl-nach-rumaenien-94602334.html",
-   "title": "„Denen fehlt's an allem“: Bayerischer Verein liefert Pflaster, Windeln und einen Toilettenstuhl nach Rumänien",
-   "teaser": "„Denen fehlt’s an allem“: Diesen Satz spricht Beppo Miller aus Altenstadt aus, nachdem er sich mit weiteren Aktiven der Rumänienhilfe Dienhausen in Rumänien ein Bild im Elendsviertel der Stadt Caransebes verschafft hat.",
-   "category": "",
-   "topic": "Bayern/Oberbayern",
-   "plus": false,
-   "date": "2026-11-23T11:00:00+00:00",
-   "first_seen": "2026-11-23T11:00:00+00:00"
-  },
-  "1842454169": {
-   "sid": 1842454169,
-   "url": "https://www.merkur.de/lokales/freising/freising-ort28692/besinnliche-klaenge-und-geschichten-fuer-guten-zweck-staade-stund-am-27-november-in-freising-neustift-94602406.html",
-   "title": "Besinnliche Klänge und Geschichten für guten Zweck: „Staade Stund“ am 27. November in Freising-Neustift",
-   "teaser": "Die Musikschule Freising lädt wieder zur „staaden Stund“ in die Pfarrkirche Neustift. Der Erlös des Konzerts in besonderer Kulisse kommt der Aktion „Menschen in Not“ zugute.",
-   "category": "",
-   "topic": "Bayern/Oberbayern",
-   "plus": false,
-   "date": "2026-11-23T11:00:00+00:00",
-   "first_seen": "2026-11-23T11:00:00+00:00"
-  },
-  "1772885666": {
-   "sid": 1772885666,
-   "url": "https://www.merkur.de/lokales/region-holzkirchen/otterfing-ort29238/otterfing-erhoeht-wassergebuehren-ab-2027-neuer-brunnen-kostet-millionen-94602637.html",
-   "title": "Gemeinde erhöht Gebühren für Wasser und Abwasser – Genaue Steigerung noch unklar",
-   "teaser": "Der Gemeinderat Otterfing hat beschlossen, die Wasser- und Abwassergebühren zum 1. Januar 2027 „anzupassen“. Angesichts millionenschwerer Investitionen in den vergangenen Jahren – unter anderem wurde ein neuer Brunnen erschlossen – ist allen klar: Es wird teurer werden. Wie stark die Preise steigen,",
-   "category": "",
-   "topic": "Bayern/Oberbayern",
-   "plus": false,
-   "date": "2026-11-23T11:00:00+00:00",
-   "first_seen": "2026-11-23T11:00:00+00:00"
-  },
   "382055025": {
    "sid": 382055025,
    "url": "https://www.merkur.de/bayern/56-verletzte-in-kirche-im-allgaeu-polizei-zu-kohlenmonoxid-einsatz-zr-94603512.html",
@@ -308,39 +627,6 @@
    "date": "2026-11-23T10:50:07+00:00",
    "first_seen": "2026-11-23T10:50:07+00:00"
   },
-  "3777358746": {
-   "sid": 3777358746,
-   "url": "https://www.merkur.de/lokales/muenchen-lk/ottobrunn-ort29241/theologe-gewinnt-ottobrunner-comedy-wettbewerb-mit-beerdigungsliedern-94602403.html",
-   "title": "Theologe gewinnt Ottobrunner Comedy-Wettbewerb mit Liedern",
-   "teaser": "Markus Kapp holte beim 25. Kabarett- und Comedy-Wettbewerb im Wolf-Ferrari-Haus beide Preise. Seine makabren Klavierlieder brachten das Publikum zum Lachen.",
-   "category": "",
-   "topic": "Bayern/Oberbayern",
-   "plus": false,
-   "date": "2026-11-23T10:45:00+00:00",
-   "first_seen": "2026-11-23T10:45:00+00:00"
-  },
-  "2577478035": {
-   "sid": 2577478035,
-   "url": "https://www.merkur.de/lokales/ebersberg/ebersberg-ort28611/aufwand-steht-in-keinem-verhaeltnis-zwei-uralt-baumriesen-werden-gefaellt-94603454.html",
-   "title": "„Aufwand steht in keinem Verhältnis“: Zwei Uralt-Baumriesen werden gefällt",
-   "teaser": "Das Landratsamt Ebersberg hebt den Schutzstatus einer Eiche in Pöring und einer Esche in Purfing auf. Die Fällung der Bäume steht unmittelbar bevor.",
-   "category": "",
-   "topic": "Bayern/Oberbayern",
-   "plus": false,
-   "date": "2026-11-23T10:40:09+00:00",
-   "first_seen": "2026-11-23T10:40:09+00:00"
-  },
-  "1428656802": {
-   "sid": 1428656802,
-   "url": "https://www.merkur.de/lokales/region-miesbach/irschenberg-ort28854/unschlagbare-idee-fuer-klimaschutz-mw-biomasse-feiert-jubilaeum-94603359.html",
-   "title": "„Unschlagbare Idee“ für Klimaschutz: MW Biomasse feiert Jubiläum",
-   "teaser": "Die MW Biomasse AG hat sich in 20 Jahren als Faktor bei der Wärmeversorgung etabliert. Und ist dabei eine wichtige Säule für den Klimaschutz im Landkreis Miesbach.",
-   "category": "",
-   "topic": "Bayern/Oberbayern",
-   "plus": false,
-   "date": "2026-11-23T10:33:00+00:00",
-   "first_seen": "2026-11-23T10:33:00+00:00"
-  },
   "937024354": {
    "sid": 937024354,
    "url": "https://www.merkur.de/lokales/muenchen/ludwigsvorstadt-isarvorstadt-ort43328/saeugling-stuerzt-in-der-ludwigsvorstadt-aus-kinderwagen-ins-gleisbett-mutiger-mann-rettet-kind-aus-dem-gleis-94603391.html",
@@ -351,50 +637,6 @@
    "plus": false,
    "date": "2026-11-23T10:17:19+00:00",
    "first_seen": "2026-11-23T10:17:19+00:00"
-  },
-  "3861290925": {
-   "sid": 3861290925,
-   "url": "https://www.merkur.de/lokales/bad-toelz/sachsenkam-ort377098/windpark-geruechte-in-sachsenkam-voellig-an-den-haaren-herbeigezogen-94602356.html",
-   "title": "Windpark-Gerüchte in Sachsenkam: „Völlig an den Haaren herbeigezogen\"",
-   "teaser": "Bürgermeister Andreas Rammler hat Windpark-Gerüchte in Sachsenkam klar zurückgewiesen. Bei der Gemeinde habe sich bislang kein einziger Interessent gemeldet.",
-   "category": "",
-   "topic": "Bayern/Oberbayern",
-   "plus": false,
-   "date": "2026-11-23T10:02:00+00:00",
-   "first_seen": "2026-11-23T10:02:00+00:00"
-  },
-  "4000578152": {
-   "sid": 4000578152,
-   "url": "https://www.merkur.de/lokales/starnberg/poecking-ort377114/poeckinger-faschingsclub-stellt-vier-neue-regenten-per-boot-vor-94602484.html",
-   "title": "Pöckinger Faschingsclub begrüßt neue Regenten an Bord",
-   "teaser": "Der PFC präsentierte seine Prinzenpaare für 2026/27 am Steg in Possenhofen. Die neue Prinzessin Ka Ian I. wagt sich dabei zum ersten Mal ins närrische Treiben.",
-   "category": "",
-   "topic": "Bayern/Oberbayern",
-   "plus": false,
-   "date": "2026-11-23T10:02:00+00:00",
-   "first_seen": "2026-11-23T10:02:00+00:00"
-  },
-  "1408185985": {
-   "sid": 1408185985,
-   "url": "https://www.merkur.de/lokales/freising/kranzberg-ort67274/40-parkbuchten-sorgen-fuer-wut-vizebuergermeister-will-thema-neu-angehen-94602284.html",
-   "title": "40 Parkbuchten sorgen für Wut: Vizebürgermeister will Thema neu angehen",
-   "teaser": "Rund 40 Anwohner in Thalhausen haben ihren Unmut über die neuen Parkbuchten bei einem Treffen lautstark geäußert. Eine Entscheidung, die Regelung zu kippen, fiel im Gemeinderat trotzdem nicht.",
-   "category": "",
-   "topic": "Bayern/Oberbayern",
-   "plus": false,
-   "date": "2026-11-23T10:00:00+00:00",
-   "first_seen": "2026-11-23T10:00:00+00:00"
-  },
-  "266567758": {
-   "sid": 266567758,
-   "url": "https://www.merkur.de/lokales/garmisch-partenkirchen/garmisch-partenkirchen-ort28711/262-voegel-aus-horror-transport-tierheim-sucht-halter-mit-grossen-volieren-94603227.html",
-   "title": "262 Vögel aus Horror-Transport: Tierheim sucht Halter mit großen Volieren",
-   "teaser": "Nach einer Polizeikontrolle kümmert sich das Tierheim Garmisch-Partenkirchen noch um 262 beschlagnahmte Vögel. Die Chefin gibt sie nur weiter, wenn Fachkenntnis und Platz nachgewiesen sind.",
-   "category": "",
-   "topic": "Bayern/Oberbayern",
-   "plus": false,
-   "date": "2026-11-23T10:00:00+00:00",
-   "first_seen": "2026-11-23T10:00:00+00:00"
   },
   "1284596218": {
    "sid": 1284596218,
@@ -428,94 +670,6 @@
    "plus": false,
    "date": "2026-11-23T09:07:51+00:00",
    "first_seen": "2026-11-23T09:07:51+00:00"
-  },
-  "3703464113": {
-   "sid": 3703464113,
-   "url": "https://www.merkur.de/lokales/muenchen-lk/haar-ort104496/nach-sperrung-uebers-wochenende-a99-wieder-fuer-verkehr-freigegeben-weiterer-baustellen-fahrplan-94603145.html",
-   "title": "Nach Sperrung übers Wochenende: A99 wieder für Verkehr freigegeben – So gehen Bauarbeiten weiter",
-   "teaser": "Die Autobahn GmbH hat die A99 an der Anschlussstelle Haar nach einer Wochenendsperre wieder freigegeben. Der neue Brückenüberbau soll erst Mitte 2028 für den Verkehr freigegeben werden.",
-   "category": "",
-   "topic": "Bayern/Oberbayern",
-   "plus": false,
-   "date": "2026-11-23T09:06:07+00:00",
-   "first_seen": "2026-11-23T09:06:07+00:00"
-  },
-  "125448543": {
-   "sid": 125448543,
-   "url": "https://www.merkur.de/lokales/region-tegernsee/rottach-egern-ort29359/ein-haus-mit-charakter-zahlreiche-besucher-bei-einweihung-des-neuen-rottacher-rathauses-94602598.html",
-   "title": "„Ein Haus mit Charakter“: Zahlreiche Besucher bei Einweihung des neuen Rottacher Rathauses",
-   "teaser": "Die Neugier war groß: Rund 1000 Besucher kamen zur Einweihung und zum Tag der offenen Tür ins neue Rottacher Rathaus. Der Bürgermeister zeigte sich stolz auf das Projekt.",
-   "category": "",
-   "topic": "Bayern/Oberbayern",
-   "plus": false,
-   "date": "2026-11-23T09:00:00+00:00",
-   "first_seen": "2026-11-23T09:00:00+00:00"
-  },
-  "1405326728": {
-   "sid": 1405326728,
-   "url": "https://www.merkur.de/lokales/region-holzkirchen/valley-ort77216/gruender-des-orgelzentrums-altes-schloss-valley-wird-feierlich-verabschiedet-94602624.html",
-   "title": "Requiem für Ehrenbürger: Letztes Geleit für Sixtus Lampl",
-   "teaser": "Freunde, Musiker und Vereine haben dem im September verstorbenen Sixtus Lampl in Unterdarching die letzte Ehre erwiesen. Nach dem feierlichen Requiem ging es um das Erbe des Ehrenbürgers: Beim Gedenkempfang stellten Stiftungsvorstand und Architekt die Vision eines Valleyer Orgelmuseums vor, dem Herz",
-   "category": "",
-   "topic": "Bayern/Oberbayern",
-   "plus": false,
-   "date": "2026-11-23T09:00:00+00:00",
-   "first_seen": "2026-11-23T09:00:00+00:00"
-  },
-  "2427140940": {
-   "sid": 2427140940,
-   "url": "https://www.merkur.de/lokales/fuerstenfeldbruck/fuerstenfeldbruck-ort65548/germering-christkindlmarkt-advent-fuerstenfeldbruck-tuerkenfeld-kaltenberg-94603102.html",
-   "title": "Der Advent beginnt: Das ist in der Region Fürstenfeldbruck geboten",
-   "teaser": "Im Brucker Land locken an den vier Adventswochenenden wieder Märkte, Konzerte und Brauchtum tausende Besucher an. Germering öffnet seinen Markt sogar täglich.",
-   "category": "",
-   "topic": "Bayern/Oberbayern",
-   "plus": false,
-   "date": "2026-11-23T08:52:13+00:00",
-   "first_seen": "2026-11-23T08:52:13+00:00"
-  },
-  "1189893593": {
-   "sid": 1189893593,
-   "url": "https://www.merkur.de/lokales/muenchen-lk/haar-ort104496/polizei-warnt-haarer-senioren-so-funktioniert-der-falsche-arztanruf-94602398.html",
-   "title": "Polizei warnt Haarer Senioren: So funktioniert der falsche Arztanruf",
-   "teaser": "Rund 300 Senioren kamen zum Infonachmittag der Stadt Haar und erfuhren, wie Telefonbetrüger vorgehen. Die Polizei erklärte, welche Masche derzeit besonders beliebt ist.",
-   "category": "",
-   "topic": "Bayern/Oberbayern",
-   "plus": false,
-   "date": "2026-11-23T08:27:00+00:00",
-   "first_seen": "2026-11-23T08:27:00+00:00"
-  },
-  "2035770833": {
-   "sid": 2035770833,
-   "url": "https://www.merkur.de/lokales/wolfratshausen/egling-ort28621/reh-ausgewichen-24-jaehrige-prallt-mit-pkw-frontal-gegen-baum-strasse-komplett-gesperrt-94602999.html",
-   "title": "Reh ausgewichen: 24-Jährige prallt mit Pkw frontal gegen Baum – Straße komplett gesperrt",
-   "teaser": "Eine Autofahrerin aus Geretsried ist in einem Waldstück mit ihrem Auto von der Fahrbahn abgekommen und gegen einen Baum geprallt. Die Feuerwehr musste sie aus dem Pkw-Wrack befreien.",
-   "category": "",
-   "topic": "Bayern/Oberbayern",
-   "plus": false,
-   "date": "2026-11-23T08:07:00+00:00",
-   "first_seen": "2026-11-23T08:07:00+00:00"
-  },
-  "3614254915": {
-   "sid": 3614254915,
-   "url": "https://www.merkur.de/lokales/starnberg/starnberg-ort29487/starnberger-see-zu-flach-thw-faehrt-schrittempo-zur-roseninsel-94602495.html",
-   "title": "Historischer Tiefstand: Starnberger See zu flach – Roseninsel nicht per Schiff erreichbar",
-   "teaser": "Wegen des historischen Tiefstands im Starnberger See ist die Roseninsel nicht per Schiff erreichbar. Das THW brachte deshalb Werkzeug mit einer Krupp-Plattform aus den 1960er-Jahren hinüber.",
-   "category": "",
-   "topic": "Bayern/Oberbayern",
-   "plus": false,
-   "date": "2026-11-23T08:02:00+00:00",
-   "first_seen": "2026-11-23T08:02:00+00:00"
-  },
-  "1003731795": {
-   "sid": 1003731795,
-   "url": "https://www.merkur.de/lokales/bad-toelz/lenggries-ort28977/erster-gesundheitstag-in-lenggries-wiederholung-wahrscheinlich-94602429.html",
-   "title": "Erster Gesundheitstag in Lenggries: 20 Aussteller, Wiederholung wahrscheinlich",
-   "teaser": "Im Alpenfestsaal informierten rund 20 Aussteller über Hilfsmittel, Hörgeräte und Pflegeangebote. Mit-Organisator Kadach zeigte sich „total begeistert\" – und hält eine Neuauflage für sehr wahrscheinlich.",
-   "category": "",
-   "topic": "Bayern/Oberbayern",
-   "plus": false,
-   "date": "2026-11-23T08:01:00+00:00",
-   "first_seen": "2026-11-23T08:01:00+00:00"
   },
   "2953413927": {
    "sid": 2953413927,
@@ -594,39 +748,6 @@
    "date": "2026-11-22T18:49:57+00:00",
    "first_seen": "2026-11-22T18:49:57+00:00"
   },
-  "839310096": {
-   "sid": 839310096,
-   "url": "https://www.merkur.de/lokales/bad-toelz/jachenau-ort28870/trotz-nieselregen-und-grad-helfer-schwenden-almflaechen-94602218.html",
-   "title": "Trotz Nieselregen und 4 Grad: Helfer schwenden Almflächen",
-   "teaser": "Das „Tölzer Natur Team“ hat Landwirt Sebastian Bauer bei der Almpflege am Fuße des Staffels unterstützt. Im Landkreis sind die almwirtschaftlich genutzten Flächen zuletzt um 5,3 Prozent zurückgegangen.",
-   "category": "",
-   "topic": "Bayern/Oberbayern",
-   "plus": false,
-   "date": "2026-11-22T18:01:00+00:00",
-   "first_seen": "2026-11-22T18:01:00+00:00"
-  },
-  "172415574": {
-   "sid": 172415574,
-   "url": "https://www.merkur.de/lokales/freising/gammelsdorf-ort377171/gammelsdorfer-prinzenpaar-2027-enthuellt-in-faschingskreisen-sind-sie-bestens-bekannt-94602305.html",
-   "title": "Gammelsdorfer Prinzenpaar 2027 enthüllt: In Faschingskreisen sind sie bestens bekannt",
-   "teaser": "Die Narrhalla Gammelsdorf hat beim Weinfest ihr Prinzenpaar 2027 vorgestellt. Beide Regenten sind erfahrene Faschings-Aktive und wurden mit viel Applaus bedacht.",
-   "category": "",
-   "topic": "Bayern/Oberbayern",
-   "plus": false,
-   "date": "2026-11-22T18:00:00+00:00",
-   "first_seen": "2026-11-22T18:00:00+00:00"
-  },
-  "492379443": {
-   "sid": 492379443,
-   "url": "https://www.merkur.de/lokales/wolfratshausen/muensing-ort29101/abschied-nach-20-jahren-pfarrer-martin-kirchbichler-verlaesst-seine-muensinger-schaefchen-94602376.html",
-   "title": "Abschied nach 20 Jahren: Pfarrer Martin Kirchbichler verlässt seine Münsinger Schäfchen",
-   "teaser": "Nach 20 Jahren verlässt Pfarrer Martin Kirchbichler Münsing. Zum feierlichen Abschied spielte die Musikkapelle Holzhausen – genau wie bei seiner Amtseinführung.",
-   "category": "",
-   "topic": "Bayern/Oberbayern",
-   "plus": false,
-   "date": "2026-11-22T18:00:00+00:00",
-   "first_seen": "2026-11-22T18:00:00+00:00"
-  },
   "670296284": {
    "sid": 670296284,
    "url": "https://www.merkur.de/bayern/tod-aiwanger-nachfolge-freie-waehler-bayern-kabinett-parteispitze-vize-ministerpraesident-94602695.html",
@@ -637,17 +758,6 @@
    "plus": false,
    "date": "2026-11-22T17:52:23+00:00",
    "first_seen": "2026-11-22T17:52:23+00:00"
-  },
-  "3695282547": {
-   "sid": 3695282547,
-   "url": "https://www.merkur.de/lokales/ebersberg/grafing-ort28746/skasa-stiftung-gegruendet-sechs-vereine-teilen-sich-4500-euro-94602167.html",
-   "title": "Skasa-Stiftung gegründet: Sechs Vereine teilen sich 4500 Euro",
-   "teaser": "Im Grafinger Rathaus hat Stifter Michael Skasa seine Ewigkeitsstiftung offiziell ins Leben gerufen. Künftig könnten bis zu 30.000 Euro jährlich ausgeschüttet werden.",
-   "category": "",
-   "topic": "Bayern/Oberbayern",
-   "plus": false,
-   "date": "2026-11-22T17:47:00+00:00",
-   "first_seen": "2026-11-22T17:47:00+00:00"
   },
   "713086337": {
    "sid": 713086337,
@@ -836,6 +946,17 @@
    "date": "2026-11-21T18:17:38+00:00",
    "first_seen": "2026-11-21T18:17:38+00:00"
   },
+  "263174302": {
+   "sid": 263174302,
+   "url": "https://www.merkur.de/bayern/herbst-klein-kanada-in-bayern-drei-seen-gebiet-im-94601696.html",
+   "title": "„Klein Kanada“ in Bayern: Wunderschöner Ausflugstipp in das Drei-Seen-Gebiet im Herbst",
+   "teaser": "Zwischen Ruhpolding und Reit im Winkl liegt Bayerns „Klein Kanada“. Warum das Drei-Seen-Gebiet im Herbst mit Bergwäldern und Natur pur als Ausflugsziel lockt.",
+   "category": "",
+   "topic": "Bayern",
+   "plus": false,
+   "date": "2026-11-21T18:17:38+00:00",
+   "first_seen": "2026-11-21T18:17:38+00:00"
+  },
   "3253025831": {
    "sid": 3253025831,
    "url": "https://www.merkur.de/bayern/wetter-in-bayern-bis-zu-40-cm-schnee-und-glaette-drohen-zr-94601650.html",
@@ -946,50 +1067,6 @@
    "date": "2026-11-21T13:17:45+00:00",
    "first_seen": "2026-11-21T13:17:45+00:00"
   },
-  "4078581559": {
-   "sid": 4078581559,
-   "url": "https://www.merkur.de/bayern/trauer-im-haus-thurn-und-taxis-kunstmaezen-mick-flick-ist-tot-94601523.html",
-   "title": "Trauer im Haus Thurn und Taxis: Kunstmäzen Mick Flick ist tot",
-   "teaser": "Der bekannte Kunstmäzen Mick Flick ist in einem Krankenhaus in Bayern gestorben. Er ist der Schwager von Fürstin Gloria von Thurn und Taxis.",
-   "category": "",
-   "topic": "Bayern",
-   "plus": false,
-   "date": "2026-11-21T12:48:25+00:00",
-   "first_seen": "2026-11-21T12:48:25+00:00"
-  },
-  "1545909460": {
-   "sid": 1545909460,
-   "url": "https://www.merkur.de/bayern/aerztemangel-auf-dem-land-so-lockt-oettingen-neue-aerzte-an-94601487.html",
-   "title": "Kampf gegen Ärztemangel: Wie ein bayerischer Bürgermeister neue Mediziner in seine Stadt lockt",
-   "teaser": "Laut KVB ist der Raum Oettingen hausärztlich unterversorgt. Bürgermeister Thomas Heydecker erklärt im Gespräch, was er dagegen tut.",
-   "category": "",
-   "topic": "Bayern",
-   "plus": false,
-   "date": "2026-11-21T11:56:32+00:00",
-   "first_seen": "2026-11-21T11:56:32+00:00"
-  },
-  "1746955807": {
-   "sid": 1746955807,
-   "url": "https://www.merkur.de/bayern/aerztemangel-bayern-region-mediziner-versuch-buergermeister-94601487.html",
-   "title": "Kampf gegen Ärztemangel: Wie ein bayerischer Bürgermeister neue Mediziner in seine Stadt lockt",
-   "teaser": "Laut KVB ist der Raum Oettingen hausärztlich unterversorgt. Bürgermeister Thomas Heydecker erklärt im Gespräch, was er dagegen tut.",
-   "category": "",
-   "topic": "Bayern",
-   "plus": false,
-   "date": "2026-11-21T11:56:32+00:00",
-   "first_seen": "2026-11-21T11:56:32+00:00"
-  },
-  "728110961": {
-   "sid": 728110961,
-   "url": "https://www.merkur.de/bayern/nuernberg/neue-ueberraschungen-im-gepaeck-band-feiert-jubilaeum-mit-konzert-in-heimatstadt-94601483.html",
-   "title": "„Neue Überraschungen im Gepäck“: Band feiert Jubiläum – mit großem Konzert in Heimatstadt",
-   "teaser": "Sie haben den Aufstieg zu einer festen Größe der deutschen Rocklandschaft geschafft – nun feiert die Band ein großes Jubiläum.",
-   "category": "",
-   "topic": "Bayern",
-   "plus": false,
-   "date": "2026-11-21T11:50:50+00:00",
-   "first_seen": "2026-11-21T11:50:50+00:00"
-  },
   "670593310": {
    "sid": 670593310,
    "url": "https://www.merkur.de/lokales/muenchen/allach-untermenzing-ort43355/gelbe-tonne-allach-untermenzing-fuerchtet-muellchaos-zu-silvester-94596186.html",
@@ -1001,17 +1078,6 @@
    "date": "2026-11-21T11:26:31+00:00",
    "first_seen": "2026-11-21T11:26:31+00:00"
   },
-  "1013489413": {
-   "sid": 1013489413,
-   "url": "https://www.merkur.de/bayern/ein-besuch-im-salzbergwerk-berchtesgaden-zr-94598972.html",
-   "title": "Herbstausflug in Bayern: Spaß und Action im Salzbergwerk Berchtesgaden",
-   "teaser": "Rutschen, Kino und Floßfahrt: Im Salzbergwerk Berchtesgaden tauchen Besucher auf abenteuerliche Weise tief in die Geschichte des Salzabbaus ein.",
-   "category": "",
-   "topic": "Bayern",
-   "plus": false,
-   "date": "2026-11-21T11:00:00+00:00",
-   "first_seen": "2026-11-21T11:00:00+00:00"
-  },
   "3635282066": {
    "sid": 3635282066,
    "url": "https://www.merkur.de/lokales/muenchen/aubing-lochhausen-langwied-ort43354/am-lusssee-wird-nachgebessert-kies-weg-neuer-haltegriff-bis-ins-wasser-94596093.html",
@@ -1022,28 +1088,6 @@
    "plus": false,
    "date": "2026-11-21T10:50:54+00:00",
    "first_seen": "2026-11-21T10:50:54+00:00"
-  },
-  "854158608": {
-   "sid": 854158608,
-   "url": "https://www.merkur.de/bayern/passau/unfall-bei-winzer-17-jaehriger-motorradfahrer-schwer-verletzt-94601442.html",
-   "title": "Heftiger Unfall: 17-jähriger Motorradfahrer erleidet schwere Verletzungen",
-   "teaser": "Ein schwerer Verkehrsunfall hat sich in Winzer ereignet. Ein 17-jähriger Biker stieß mit einem Pkw zusammen und erlitt schwere Verletzungen.",
-   "category": "",
-   "topic": "Bayern",
-   "plus": false,
-   "date": "2026-11-21T10:34:51+00:00",
-   "first_seen": "2026-11-21T10:34:51+00:00"
-  },
-  "1571285822": {
-   "sid": 1571285822,
-   "url": "https://www.merkur.de/bayern/hubert-aiwanger-wird-beerdigt-die-bilder-der-trauerfeier-zr-94601413.html",
-   "title": "Hubert Aiwanger wird beerdigt: Die Bilder der Trauerfeier",
-   "teaser": "Am 4. November starb Hubert Aiwanger überraschend. Am 21. November wird er in seiner Heimat beerdigt. Bis zu 1000 Menschen werden erwartet.",
-   "category": "",
-   "topic": "Bayern",
-   "plus": false,
-   "date": "2026-11-21T09:50:59+00:00",
-   "first_seen": "2026-11-21T09:50:59+00:00"
   },
   "50256074": {
    "sid": 50256074,
@@ -1066,17 +1110,6 @@
    "plus": false,
    "date": "2026-11-21T09:00:00+00:00",
    "first_seen": "2026-11-21T09:00:00+00:00"
-  },
-  "2698563376": {
-   "sid": 2698563376,
-   "url": "https://www.merkur.de/bayern/hubert-aiwanger-wird-in-heimat-beerdigt-die-bilder-aus-inkofen-94601379.html",
-   "title": "Hubert Aiwanger in Heimat beerdigt: Die Bilder von der Trauerfeier",
-   "teaser": "Hubert Aiwanger wurde am Samstag beerdigt. Zur Trauerfeier in der Heimat des Freie-Wähler-Chefs wurden zahlreiche Menschen erwartet – die Bilder.",
-   "category": "",
-   "topic": "Bayern",
-   "plus": false,
-   "date": "2026-11-21T08:45:40+00:00",
-   "first_seen": "2026-11-21T08:45:40+00:00"
   },
   "2979889756": {
    "sid": 2979889756,
@@ -1286,39 +1319,6 @@
    "plus": false,
    "date": "2026-11-18T20:06:44+00:00",
    "first_seen": "2026-11-18T20:06:44+00:00"
-  },
-  "439746976": {
-   "sid": 439746976,
-   "url": "https://www.merkur.de/lokales/muenchen/trudering-riem-ort43347/neue-dinnershow-im-teatro-in-muenchen-circus-of-love-94597233.html",
-   "title": "Neue Dinnershow im teatro: „Circus of Love“ begeistert mit internationalen Künstlern und 4-Gänge-Menü von Käfer",
-   "teaser": "Die neue Dinnershow im teatro in München bietet ein beeindruckendes Bühnenprogramm mit Akrobatik, Jonglage, Schwertschlucken und Burlesque. Perfekt darauf abgestimmt ist ein Vier-Gänge-Feinkostmenü von Käfer.",
-   "category": "",
-   "topic": "Bayern/München",
-   "plus": false,
-   "date": "2026-11-18T18:20:17+00:00",
-   "first_seen": "2026-11-18T18:20:17+00:00"
-  },
-  "3615780680": {
-   "sid": 3615780680,
-   "url": "https://www.merkur.de/lokales/muenchen/nie-wieder-termine-verpassen-der-tz-newsletter-fuer-muenchen-kommt-jeden-donnerstag-94598421.html",
-   "title": "„Perfekt ausgewählt und sortiert“: Mit diesem Service verpassen Sie nie wieder Termine in München",
-   "teaser": "Startet schon diese Woche: Ein neuer Newsletter bündelt Münchner Veranstaltungen übersichtlich und nach Tagen sortiert. Wann und wo es ihn gibt...",
-   "category": "",
-   "topic": "Bayern/München",
-   "plus": false,
-   "date": "2026-11-18T16:00:00+00:00",
-   "first_seen": "2026-11-18T16:00:00+00:00"
-  },
-  "1057080230": {
-   "sid": 1057080230,
-   "url": "https://www.merkur.de/lokales/muenchen/schwanthalerhoehe-ort43337/bierkiste-muenchen-spezial-getraenkemarkt-eroeffnet-im-westend-neu-94596605.html",
-   "title": "Ein Jahr nach Aus im Schlachthofviertel: Bierkiste eröffnet an neuem Standort in München",
-   "teaser": "Fast ein Jahr nach dem Aus im Schlachthofviertel feiert die Bierkiste ihr Comeback: Der Münchner Spezial-Getränkemarkt eröffnet neu im Westend.",
-   "category": "",
-   "topic": "Bayern/München",
-   "plus": false,
-   "date": "2026-11-18T14:13:12+00:00",
-   "first_seen": "2026-11-18T14:13:12+00:00"
   }
  }
 }

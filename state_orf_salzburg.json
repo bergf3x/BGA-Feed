@@ -1,5 +1,49 @@
 {
  "items": {
+  "876196312": {
+   "sid": 876196312,
+   "url": "https://salzburg.orf.at/stories/3379971/",
+   "title": "Erste Absolventen für den Kampf gegen Hacker",
+   "teaser": "Der noch junge Studiengang Cybersicherheit an der Fachhochschule Salzburg hat den ersten Schwung an Absolventen hervorgebracht. Bei den Unternehmen sind diese Fachkräfte gefragt, denn Netzwerke oder Computer werden immer häufiger auf digitalem Weg angegriffen, und die Schäden können verheerend sein.",
+   "category": "Chronik",
+   "topic": "Region/Salzburg",
+   "plus": false,
+   "date": "2026-11-23T17:35:00+00:00",
+   "first_seen": "2026-11-23T17:35:00+00:00"
+  },
+  "1625827412": {
+   "sid": 1625827412,
+   "url": "https://salzburg.orf.at/stories/3380736/",
+   "title": "Black Week: Handel erwartet 44 Mio. Euro Umsatz",
+   "teaser": "Die Begriffe „Black Friday“, „Black Week“ und „Cyber Monday“ dominieren derzeit nicht nur die Online-Werbung, auch im niedergelassenen Handel gibt es an den vorweihnachtlichen Sonderangeboten kein Vorbeikommen. So werden allein im Bundesland Salzburg in dieser Aktionswoche im Handel 44 Millionen Eur",
+   "category": "Wirtschaft",
+   "topic": "Region/Salzburg",
+   "plus": false,
+   "date": "2026-11-23T16:30:00+00:00",
+   "first_seen": "2026-11-23T16:30:00+00:00"
+  },
+  "603738482": {
+   "sid": 603738482,
+   "url": "https://salzburg.orf.at/stories/3380781/",
+   "title": "Nach Brand: Kehlsteinhaus notdürftig überdacht",
+   "teaser": "Das abgebrannte Kehlsteinhaus am Obersalzberg im benachbarten Berchtesgaden (Bayern) ist jetzt notdürftig geschützt: Ein Notdach soll die Ruine über den Winter vor weiteren Schäden bewahren. Die Aufräumarbeiten werden in den nächsten Monaten fortgesetzt.",
+   "category": "Chronik",
+   "topic": "Region/Salzburg",
+   "plus": false,
+   "date": "2026-11-23T15:37:09+00:00",
+   "first_seen": "2026-11-23T15:37:09+00:00"
+  },
+  "627170": {
+   "sid": 627170,
+   "url": "https://salzburg.orf.at/stories/3380752/",
+   "title": "Wintertauschbörse verzeichnet Rekordzahlen",
+   "teaser": "18.000 Menschen haben die Wintertauschbörse von Arbeiterkammer und Gewerkschaftsbund in Bischofshofen und der Stadt Salzburg vergangene Woche besucht. Das sei ein neuer Rekord, heißt es heute von der Arbeiterkammer.",
+   "category": "Wirtschaft",
+   "topic": "Region/Salzburg",
+   "plus": false,
+   "date": "2026-11-23T15:00:00+00:00",
+   "first_seen": "2026-11-23T15:00:00+00:00"
+  },
   "420651171": {
    "sid": 420651171,
    "url": "https://salzburg.orf.at/stories/3380753/",
@@ -15,7 +59,7 @@
    "sid": 1330120485,
    "url": "https://salzburg.orf.at/stories/3380755/",
    "title": "Zehn Jahre Haft nach versuchtem Mord an Tochter",
-   "teaser": "Der Berufungssenat am Landesgericht Salzburg hat die Strafe für eine 87-Jährige am Montag deutlich erhöht. Die Frau soll versucht haben, ihre schwer beeinträchtigte Tochter mit Schlaftabletten zu töten.",
+   "teaser": "Der Berufungssenat des Oberlandesgerichts Linz hat die Strafe für eine 87-Jährige am Montag deutlich erhöht. Die Frau soll versucht haben, ihre schwer beeinträchtigte Tochter mit Schlaftabletten zu töten.",
    "category": "Chronik",
    "topic": "Region/Salzburg",
    "plus": false,
@@ -395,17 +439,6 @@
    "plus": false,
    "date": "2026-11-20T11:25:00+00:00",
    "first_seen": "2026-11-20T11:25:00+00:00"
-  },
-  "2090735451": {
-   "sid": 2090735451,
-   "url": "https://salzburg.orf.at/stories/3380398/",
-   "title": "Unfalltod von Manninger: Ermittlungen eingestellt",
-   "teaser": "Nach dem Tod des Salzburger Ex-ÖFB-Teamtormannes Alexander Manninger bei einem Verkehrsunfall an einem unbeschrankten Bahnübergang im Salzburger Flachgau im Frühjahr ist das Ermittlungsverfahren gegen den Lenker der Lokalbahngarnitur eingestellt worden.",
-   "category": "Chronik",
-   "topic": "Region/Salzburg",
-   "plus": false,
-   "date": "2026-11-20T11:20:18+00:00",
-   "first_seen": "2026-11-20T11:20:18+00:00"
   }
  }
 }
