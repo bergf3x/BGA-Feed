@@ -1,10 +1,32 @@
 {
  "items": {
+  "3856967640": {
+   "sid": 3856967640,
+   "url": "https://salzburg.orf.at/stories/3381118/",
+   "title": "Kehlsteinhaus-Sanierung: Zweistellige Millionensumme",
+   "teaser": "Knapp einen Monat nach dem Großbrand des Kehlsteinhauses, einem Repräsentationsgebäude Adolf Hitlers und Teil des NS-„Führersperrgebiets“ am Obersalzberg war am Mittwoch erstmals ein Blick ins Innere möglich. Die Betreiber sprachen auch über weitere Pläne. Der Wiederaufbau dürfte eine zweistellige M",
+   "category": "Chronik",
+   "topic": "Region/Salzburg",
+   "plus": false,
+   "date": "2026-11-25T17:57:22+00:00",
+   "first_seen": "2026-11-25T17:57:22+00:00"
+  },
+  "520834898": {
+   "sid": 520834898,
+   "url": "https://salzburg.orf.at/stories/3381112/",
+   "title": "Youth League: Salzburg mit Sieg vor Aufstieg",
+   "teaser": "In der UEFA Youth League haben die Nachwuchsfußballer des FC Red Bull Salzburg Mittwochnachmittag einen großen Schritt in Richtung Sechzehntelfinale gemacht: Sie gewannen zu Hause gegen Roter Stern Belgrad mit 5:0.",
+   "category": "Sport",
+   "topic": "Region/Salzburg",
+   "plus": false,
+   "date": "2026-11-25T15:57:33+00:00",
+   "first_seen": "2026-11-25T15:57:33+00:00"
+  },
   "516498789": {
    "sid": 516498789,
    "url": "https://salzburg.orf.at/stories/3381102/",
    "title": "Tödlicher Unfall mit Güterzug: Ennstal-Strecke gesperrt",
-   "teaser": "Am Mittwoch ist bei Radstadt (Pongau) ein 24-jähriger Lastwagenfahrer bei einem schweren Unfall ums Leben gekommen. Sein Lkw stieß in den Mittagsstunden an einem unbeschrankten Bahnübergang mit einem Güterzug zusammen. Die Ennstal-Bahnstrecke wurde deshalb gesperrt",
+   "teaser": "Am Mittwoch ist bei Radstadt (Pongau) ein 24-jähriger Lastwagenfahrer bei einem schweren Unfall ums Leben gekommen. Sein Lkw stieß in den Mittagsstunden an einem unbeschrankten Bahnübergang mit einem Güterzug zusammen. Die Ennstal-Bahnstrecke wurde deshalb gesperrt.",
    "category": "Chronik",
    "topic": "Region/Salzburg",
    "plus": false,
@@ -15,7 +37,7 @@
    "sid": 3645114396,
    "url": "https://salzburg.orf.at/stories/3381037/",
    "title": "Wahlumfrage: Institut korrigiert Darstellung der SPÖ",
-   "teaser": "Die Vorstellung einer Wahlumfrage durch die Salzburger SPÖ am Mittwoch endete mit einer Korrektur: Das Linzer Market-Institut betonte am Nachmittag in einer Stellungnahme, dass die SPÖ ohne Rücksprache mit Rohzahlen an die Öffentlichkeit gegangen sei.",
+   "teaser": "Die Vorstellung einer Wahlumfrage durch die Salzburger SPÖ am Mittwoch hat mit einer Korrektur geendet: Das Linzer Market-Institut betonte am Nachmittag in einer Stellungnahme, dass die SPÖ ohne Rücksprache mit Rohzahlen an die Öffentlichkeit gegangen sei.",
    "category": "Politik Inland",
    "topic": "Region/Salzburg",
    "plus": false,
@@ -417,28 +439,6 @@
    "plus": false,
    "date": "2026-11-22T14:45:00+00:00",
    "first_seen": "2026-11-22T14:45:00+00:00"
-  },
-  "2732116538": {
-   "sid": 2732116538,
-   "url": "https://salzburg.orf.at/stories/3380582/",
-   "title": "„Wildtiere auf Achse“ mit Rekordbuchungen",
-   "teaser": "Mit einem mobilen Anhänger voller Tierpräparate bringt die Salzburger Jägerschaft heimische Wildtiere in Kindergärten, Schulen und zu Veranstaltungen. Das Interesse an „Wildtiere auf Achse“ wächst – die Aktion stößt aber zunehmend an organisatorische Grenzen.",
-   "category": "Wirtschaft",
-   "topic": "Region/Salzburg",
-   "plus": false,
-   "date": "2026-11-22T13:00:00+00:00",
-   "first_seen": "2026-11-22T13:00:00+00:00"
-  },
-  "4114614155": {
-   "sid": 4114614155,
-   "url": "https://salzburg.orf.at/stories/3380594/",
-   "title": "Schnapsbrennerei in Adnet in Brand geraten",
-   "teaser": "In einer Schnapsbrennerei in Adnet (Tennengau) ist am Samstagabend ein Feuer ausgebrochen. Die Flammen drohten auf weitere Gebäude und Anlagenteile überzugreifen. Die Feuerwehr konnte dies jedoch verhindern.",
-   "category": "Chronik",
-   "topic": "Region/Salzburg",
-   "plus": false,
-   "date": "2026-11-22T11:15:00+00:00",
-   "first_seen": "2026-11-22T11:15:00+00:00"
   }
  }
 }

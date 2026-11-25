@@ -5,7 +5,25 @@
     <link>https://salzburg.orf.at/</link>
     <description>Neueste Meldungen, automatisch erzeugt. Nur Titel und Anrisstext.</description>
     <language>de-de</language>
-    <lastBuildDate>Wed, 25 Nov 2026 15:38:48 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 25 Nov 2026 23:48:28 +0000</lastBuildDate>
+    <item>
+      <title>Kehlsteinhaus-Sanierung: Zweistellige Millionensumme</title>
+      <link>https://salzburg.orf.at/stories/3381118/</link>
+      <guid isPermaLink="false">orf_salzburg-3856967640</guid>
+      <pubDate>Wed, 25 Nov 2026 17:57:22 +0000</pubDate>
+      <category>Chronik</category>
+      <topic>Region/Salzburg</topic>
+      <description>Knapp einen Monat nach dem Großbrand des Kehlsteinhauses, einem Repräsentationsgebäude Adolf Hitlers und Teil des NS-„Führersperrgebiets“ am Obersalzberg war am Mittwoch erstmals ein Blick ins Innere möglich. Die Betreiber sprachen auch über weitere Pläne. Der Wiederaufbau dürfte eine zweistellige M</description>
+    </item>
+    <item>
+      <title>Youth League: Salzburg mit Sieg vor Aufstieg</title>
+      <link>https://salzburg.orf.at/stories/3381112/</link>
+      <guid isPermaLink="false">orf_salzburg-520834898</guid>
+      <pubDate>Wed, 25 Nov 2026 15:57:33 +0000</pubDate>
+      <category>Sport</category>
+      <topic>Region/Salzburg</topic>
+      <description>In der UEFA Youth League haben die Nachwuchsfußballer des FC Red Bull Salzburg Mittwochnachmittag einen großen Schritt in Richtung Sechzehntelfinale gemacht: Sie gewannen zu Hause gegen Roter Stern Belgrad mit 5:0.</description>
+    </item>
     <item>
       <title>Tödlicher Unfall mit Güterzug: Ennstal-Strecke gesperrt</title>
       <link>https://salzburg.orf.at/stories/3381102/</link>
@@ -13,7 +31,7 @@
       <pubDate>Wed, 25 Nov 2026 14:56:17 +0000</pubDate>
       <category>Chronik</category>
       <topic>Region/Salzburg</topic>
-      <description>Am Mittwoch ist bei Radstadt (Pongau) ein 24-jähriger Lastwagenfahrer bei einem schweren Unfall ums Leben gekommen. Sein Lkw stieß in den Mittagsstunden an einem unbeschrankten Bahnübergang mit einem Güterzug zusammen. Die Ennstal-Bahnstrecke wurde deshalb gesperrt</description>
+      <description>Am Mittwoch ist bei Radstadt (Pongau) ein 24-jähriger Lastwagenfahrer bei einem schweren Unfall ums Leben gekommen. Sein Lkw stieß in den Mittagsstunden an einem unbeschrankten Bahnübergang mit einem Güterzug zusammen. Die Ennstal-Bahnstrecke wurde deshalb gesperrt.</description>
     </item>
     <item>
       <title>Wahlumfrage: Institut korrigiert Darstellung der SPÖ</title>
@@ -22,7 +40,7 @@
       <pubDate>Wed, 25 Nov 2026 14:35:00 +0000</pubDate>
       <category>Politik Inland</category>
       <topic>Region/Salzburg</topic>
-      <description>Die Vorstellung einer Wahlumfrage durch die Salzburger SPÖ am Mittwoch endete mit einer Korrektur: Das Linzer Market-Institut betonte am Nachmittag in einer Stellungnahme, dass die SPÖ ohne Rücksprache mit Rohzahlen an die Öffentlichkeit gegangen sei.</description>
+      <description>Die Vorstellung einer Wahlumfrage durch die Salzburger SPÖ am Mittwoch hat mit einer Korrektur geendet: Das Linzer Market-Institut betonte am Nachmittag in einer Stellungnahme, dass die SPÖ ohne Rücksprache mit Rohzahlen an die Öffentlichkeit gegangen sei.</description>
     </item>
     <item>
       <title>Salzburg mit neuem Rekord-Tourismussommer</title>
@@ -347,24 +365,6 @@
       <category>Wirtschaft</category>
       <topic>Region/Salzburg</topic>
       <description>Wegen einer notwendigen Sanierung droht die Schließung des Reichenhaller Hauses auf dem Hochstaufen im benachbarten Bayern. Weil die Förderungen nicht ausreichen würden, wie es heißt, hat der Alpenverein in Bad Reichenhall eine Spendenaktion gestartet.</description>
-    </item>
-    <item>
-      <title>„Wildtiere auf Achse“ mit Rekordbuchungen</title>
-      <link>https://salzburg.orf.at/stories/3380582/</link>
-      <guid isPermaLink="false">orf_salzburg-2732116538</guid>
-      <pubDate>Sun, 22 Nov 2026 13:00:00 +0000</pubDate>
-      <category>Wirtschaft</category>
-      <topic>Region/Salzburg</topic>
-      <description>Mit einem mobilen Anhänger voller Tierpräparate bringt die Salzburger Jägerschaft heimische Wildtiere in Kindergärten, Schulen und zu Veranstaltungen. Das Interesse an „Wildtiere auf Achse“ wächst – die Aktion stößt aber zunehmend an organisatorische Grenzen.</description>
-    </item>
-    <item>
-      <title>Schnapsbrennerei in Adnet in Brand geraten</title>
-      <link>https://salzburg.orf.at/stories/3380594/</link>
-      <guid isPermaLink="false">orf_salzburg-4114614155</guid>
-      <pubDate>Sun, 22 Nov 2026 11:15:00 +0000</pubDate>
-      <category>Chronik</category>
-      <topic>Region/Salzburg</topic>
-      <description>In einer Schnapsbrennerei in Adnet (Tennengau) ist am Samstagabend ein Feuer ausgebrochen. Die Flammen drohten auf weitere Gebäude und Anlagenteile überzugreifen. Die Feuerwehr konnte dies jedoch verhindern.</description>
     </item>
   </channel>
 </rss>

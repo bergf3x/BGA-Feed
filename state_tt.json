@@ -1,5 +1,15 @@
 {
  "items": {
+  "1028445": {
+   "sid": 1028445,
+   "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein/grassau_artikel,-chancen-und-probleme-der-migration-und-integration-diskussionsrunde-beim-grassauer-verein-integer-_arid,1028445.html",
+   "title": "Chancen und Probleme der Migration und Integration – Diskussionsrunde beim Grassauer Verein Integer",
+   "teaser": "Grassau – Warum werden Menschen abgeschoben, die arbeiten oder eine Ausbildung machen und gut integriert sind? Diese Frage hat eine Diskussion über Migration und Integration beim ...",
+   "category": "Grassau",
+   "plus": false,
+   "topic": "Region/Landkreis Traunstein",
+   "first_seen": "2026-11-25T23:48:28+00:00"
+  },
   "1028373": {
    "sid": 1028373,
    "url": "https://www.traunsteiner-tagblatt.de/sport/sport-aus-der-region_artikel,-biathlet-seidl-freut-sich-auf-den-weltcupauftakt-nicht-zu-viele-gedanken-machen-_arid,1028373.html",
@@ -50,6 +60,16 @@
    "topic": "Region/Landkreis Traunstein",
    "first_seen": "2026-11-25T15:38:48+00:00"
   },
+  "1028362": {
+   "sid": 1028362,
+   "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein/siegsdorf_artikel,-drama-in-vielen-akten-beendet-neuer-lkw-der-freiwilligen-feuerwehr-eisenaerzt-gesegnet-_arid,1028362.html",
+   "title": "»Drama in vielen Akten« beendet: Neuer Lkw der Freiwilligen Feuerwehr Eisenärzt gesegnet",
+   "teaser": "",
+   "category": "Siegsdorf",
+   "plus": true,
+   "topic": "Region/Landkreis Traunstein",
+   "first_seen": "2026-11-25T23:48:28+00:00"
+  },
   "1028359": {
    "sid": 1028359,
    "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein/traunstein_artikel,-ausstellung-gegen-tyrannei-im-traunsteiner-stadtmuseum-zeigt-eindrucksvolle-projekte-junger-leute-_arid,1028359.html",
@@ -89,6 +109,16 @@
    "plus": true,
    "topic": "Region/Landkreis Traunstein",
    "first_seen": "2026-11-25T15:38:48+00:00"
+  },
+  "1028337": {
+   "sid": 1028337,
+   "url": "https://www.traunsteiner-tagblatt.de/region/berchtesgadener-land/teisendorf_artikel,-von-kunsthandwerk-bis-zur-kinderbackstube-der-andreasmarkt-in-teisendorf-hat-viel-zu-bieten-_arid,1028337.html",
+   "title": "Von Kunsthandwerk bis zur Kinderbackstube: Der Andreasmarkt in Teisendorf hat viel zu bieten",
+   "teaser": "Teisendorf – Der traditionelle Andreasmarkt findet am Sonntag in Teisendorf statt. Von 9 bis 17 Uhr laden über 50 Fieranten mit ihren Ständen in der Post- und Marktstraße sowie den ...",
+   "category": "Teisendorf",
+   "plus": false,
+   "topic": "Region/Berchtesgadener Land",
+   "first_seen": "2026-11-25T23:48:28+00:00"
   },
   "1028329": {
    "sid": 1028329,
@@ -516,26 +546,6 @@
    "title": "Ersatzbau mit 26 Betten: Gemeinderat stimmte gegen Vorhaben der Chiemgau-Klinik",
    "teaser": "",
    "category": "Marquartstein",
-   "plus": true,
-   "topic": "Region/Landkreis Traunstein",
-   "first_seen": "2026-11-22T10:21:35+00:00"
-  },
-  "1027751": {
-   "sid": 1027751,
-   "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein/siegsdorf_artikel,-sperrung-auf-der-a-8-asphaltierungsarbeiten-bei-siegsdorf-_arid,1027751.html",
-   "title": "Sperrung auf der A 8 – Asphaltierungsarbeiten bei Siegsdorf",
-   "teaser": "Wegen Asphaltierungsarbeiten im Bereich der Autobahnbrücke über die Weiße Traun wird die Autobahn von Montag um 18.45 Uhr bis Dienstag um 6 Uhr in Fahrtrichtung München gesperrt.\nDie ...",
-   "category": "Siegsdorf",
-   "plus": false,
-   "topic": "Region/Landkreis Traunstein",
-   "first_seen": "2026-11-22T18:03:52+00:00"
-  },
-  "1027750": {
-   "sid": 1027750,
-   "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein_artikel,-seit-50-jahren-bewegt-helmut-geier-menschen-auf-der-tanzflaeche-_arid,1027750.html",
-   "title": "Seit 50 Jahren bewegt Helmut Geier Menschen auf der Tanzfläche",
-   "teaser": "",
-   "category": "Landkreis Traunstein",
    "plus": true,
    "topic": "Region/Landkreis Traunstein",
    "first_seen": "2026-11-22T10:21:35+00:00"
