@@ -1,5 +1,16 @@
 {
  "items": {
+  "3887965189": {
+   "sid": 3887965189,
+   "url": "https://www.nationalpark-berchtesgaden.bayern.de/service/presse/pressemitteilungen/pressemitteilung.htm?PMNr=47/26",
+   "title": "Große Gästebefragung im Nationalpark gestartet",
+   "teaser": "",
+   "category": "",
+   "topic": "Region/Nationalpark",
+   "plus": false,
+   "date": "2026-11-25T11:00:00+00:00",
+   "first_seen": "2026-11-25T11:00:00+00:00"
+  },
   "1593951072": {
    "sid": 1593951072,
    "url": "https://www.nationalpark-berchtesgaden.bayern.de/service/presse/pressemitteilungen/pressemitteilung.htm?PMNr=46/26",
@@ -428,17 +439,6 @@
    "plus": false,
    "date": "2026-03-10T11:00:00+00:00",
    "first_seen": "2026-03-10T11:00:00+00:00"
-  },
-  "1256120408": {
-   "sid": 1256120408,
-   "url": "https://www.nationalpark-berchtesgaden.bayern.de/service/presse/pressemitteilungen/pressemitteilung.htm?PMNr=6/26",
-   "title": "Neue Ausstellung im \"Haus der Berge\": Waldameisen - Superheldinnen auf sechs Beinen",
-   "teaser": "",
-   "category": "",
-   "topic": "Region/Nationalpark",
-   "plus": false,
-   "date": "2026-03-02T11:00:00+00:00",
-   "first_seen": "2026-03-02T11:00:00+00:00"
   }
  }
 }
