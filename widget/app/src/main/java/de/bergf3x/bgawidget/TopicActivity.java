@@ -70,6 +70,14 @@ public class TopicActivity extends Activity {
         body = b.scrollBox(0.7f);
         render();
         b.space(4);
+        if (sources) {
+            // ein Tipp: Filter weg, alle Quellen wieder sichtbar (wirkt mit OK)
+            b.pillKeep("Zurücksetzen – alle Quellen", false, () -> {
+                sel.clear();
+                open = "";
+                render();
+            });
+        }
         final java.util.Set<String> init = new java.util.HashSet<>(sel);
         TextView ok = b.footer(true, () -> { }, () -> save(sel));
         b.watch(ok, () -> !init.equals(new java.util.HashSet<>(sel)));
@@ -97,13 +105,28 @@ public class TopicActivity extends Activity {
     private void render() {
         Bubble.soft(body);
         body.removeAllViews();
-        String all = parent.equals(Taxonomy.PAPERS) ? "Alle Quellen" : "Alles in „" + parent + "“";
-        b.row(body, all + " (" + count(parent) + ")", sel.contains(parent), () -> {
-            sel.clear();
-            sel.add(parent);
-            render();
-        }, false);
-        for (final String region : children(parent)) {
+        boolean sources = parent.equals(Taxonomy.PAPERS);
+        if (!sources) {
+            b.row(body, "Alles in „" + parent + "“ (" + count(parent) + ")", sel.contains(parent), () -> {
+                sel.clear();
+                sel.add(parent);
+                render();
+            }, false);
+        }
+        List<String> list = children(parent);
+        if (sources) {
+            // alle Zeitungen der gewaehlten Quellen, auch ohne aktuelle Meldungen (dann ausgegraut statt ausgeblendet)
+            list = new ArrayList<>();
+            for (String n : ListService.paperNames(this, id)) list.add(Taxonomy.PAPERS + "/" + n);
+            for (String c : children(parent)) if (!list.contains(c)) list.add(c);
+        }
+        for (final String region : list) {
+            if (count(region) == 0) {
+                View e = entry(name(region) + " · keine aktuellen Meldungen", 0, sel.contains(region), () -> toggle(region));
+                e.setAlpha(0.45f);
+                body.addView(e);
+                continue;
+            }
             final List<String> subs = children(region);
             if (subs.size() <= 1) {
                 // keine Untergliederung: direkt waehlbar

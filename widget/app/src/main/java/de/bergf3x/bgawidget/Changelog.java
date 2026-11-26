@@ -10,6 +10,13 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.35",
+                    "+ Filter-Symbol in der Kopfzeile neben dem Abo-Schloss (App und Widget): öffnet die Quellen-Auswahl von unten; ein Punkt zeigt, dass gefiltert wird",
+                    "+ Quellen-Auswahl: „Zurücksetzen – alle Quellen“; Zeitungen ohne aktuelle Meldungen bleiben sichtbar, nur ausgegraut",
+                    "~ Unter den Reitern steht nur noch „Gefiltert: x von y Quellen · n ungelesen“ und „Alle als gelesen markieren“, und nur, wenn es etwas zu sagen gibt",
+                    "~ Seitenwischen deutlich flüssiger: alle drei Seiten liegen fertig nebeneinander, die Seite übernimmt das Tempo des Fingers und gleitet weich aus; Scrollposition jeder Seite bleibt erhalten",
+                    "~ Keine Vibration mehr beim Wischen (Seiten wechseln, Gemerktes entfernen)",
+                    "+ Einstellungen → Darstellung → Bedienung: „Seiten durch Wischen wechseln“ und „Animationen reduzieren“ (folgt standardmäßig der Systemeinstellung); „Vibration bei Aktionen“ schaltet alle Vibrationen ab"},
             {"1.34",
                     "+ Neue Filterleiste: Themen als ruhige Text-Reiter in voller Breite (aktiver unterstrichen, roter Punkt nur bei Ungelesenem), darunter „n ungelesen · m Quellen ▾“ und „Alle als gelesen markieren“ als schlichter Textlink (App und Widget)",
                     "+ Quellen: Tipp auf „m Quellen ▾“ öffnet ein Blatt von unten mit allen Zeitungen zum Anhaken, Regionen je Zeitung aufklappbar; die Auswahl bleibt gespeichert (App und Widget)",

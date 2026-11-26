@@ -54,8 +54,6 @@ public class MainActivity extends Activity {
     private LinearLayout page;
     private LinearLayout top;
     private LinearLayout navBar;
-    /** Bereich unter dem Kopf (Liste + Ziehen-Anzeige): wird beim Seitenwischen verschoben. */
-    private FrameLayout pageStack;
     /** Duenner Strich an der unteren Leiste, nur beim Wischen sichtbar. */
     private View navLine;
     private float d;
@@ -182,12 +180,13 @@ public class MainActivity extends Activity {
 
     private void restore(final int y) {
         if (scroll == null) return;
+        final ScrollView sv = scroll;
         // vor dem naechsten Zeichnen setzen, damit die Liste nicht kurz oben aufblitzt
-        scroll.getViewTreeObserver().addOnPreDrawListener(new android.view.ViewTreeObserver.OnPreDrawListener() {
+        sv.getViewTreeObserver().addOnPreDrawListener(new android.view.ViewTreeObserver.OnPreDrawListener() {
             @Override
             public boolean onPreDraw() {
-                scroll.getViewTreeObserver().removeOnPreDrawListener(this);
-                scroll.scrollTo(0, y);
+                sv.getViewTreeObserver().removeOnPreDrawListener(this);
+                sv.scrollTo(0, y);
                 return true;
             }
         });
@@ -370,214 +369,248 @@ public class MainActivity extends Activity {
 
     // ------------------------------------------------------------------ Seitenwischen (News | Wetter | Gemerkt)
 
-    /** Scrollposition je Seite (bleibt beim Wechsel erhalten). */
-    private final int[] pageY = new int[3];
-    /** Letztes Bild jeder Seite: zeigt die Nachbarseite schon waehrend des Wischens. */
-    private final android.graphics.Bitmap[] pageSnap = new android.graphics.Bitmap[3];
+    /** Eine Seite des Pagers: eigene Liste, eigene Scrollposition, eigene Wetterkarte/Reiterzeile. */
+    private static final class Pg {
+        ScrollView scroll;
+        LinearLayout page;
+        View wxFull, wxMini, wxIn, wxCam, wxShield, chipsWrap;
+        FrameLayout wxBox;
+        int wxFullH;
+        boolean built, dirty;
+    }
+
+    private final Pg[] pgs = new Pg[3];
+    /** Traeger der drei Seiten (liegen nebeneinander, verschoben per translationX). */
+    private FrameLayout pager;
+    /** Aktive Seite und stufenlose Stellung waehrend des Wischens. */
+    private int cur;
+    private float pos;
+    /** Seite, die gerade aufgebaut wird (-1 = keine): savedTab()/weatherTab() gelten dann fuer sie. */
+    private int buildIdx = -1;
+    private int bound = -1;
     /** Zuletzt gewaehlte Wetter-Unterseite (Bergwetter/Region). */
     private static String wxTopic = WeatherCards.BERG;
-    private ImageView peek;
-    private int peekIdx = -1;
     private float pgX0, pgY0, pgDx;
     private boolean pgArmed, paging, pgBusy;
     private long pgBusyAt;
     private android.view.VelocityTracker pgVt;
+    private android.animation.ValueAnimator pgAnim;
+    private final Runnable prebuild = this::prebuildNext;
 
     private int pageIdx() {
-        return savedTab() ? 2 : weatherTab() ? 1 : 0;
+        return cur;
     }
 
-    /** Sichtbaren Inhalt der aktuellen Seite als Bild merken (fuer die Vorschau beim naechsten Wischen). */
-    private void snapCurrent() {
-        if (pageStack == null || pageStack.getWidth() <= 0 || pageStack.getHeight() <= 0) return;
-        int i = pageIdx();
+    /** Felder (scroll, page, Wetterkarte, Reiter) auf Seite i umstellen. */
+    private void bind(int i) {
+        Pg p = pgs[i];
+        scroll = p.scroll;
+        page = p.page;
+        wxFull = p.wxFull;
+        wxMini = p.wxMini;
+        wxIn = p.wxIn;
+        wxCam = p.wxCam;
+        wxShield = p.wxShield;
+        wxBox = p.wxBox;
+        wxFullH = p.wxFullH;
+        chipsWrap = p.chipsWrap;
+        bound = i;
+    }
+
+    private void store() {
+        if (bound < 0) return;
+        Pg p = pgs[bound];
+        p.wxFull = wxFull;
+        p.wxMini = wxMini;
+        p.wxIn = wxIn;
+        p.wxCam = wxCam;
+        p.wxShield = wxShield;
+        p.wxBox = wxBox;
+        p.wxFullH = wxFullH;
+        p.chipsWrap = chipsWrap;
+    }
+
+    /** Etwas fuer Seite i ausfuehren und danach wieder die aktive Seite anbinden. */
+    private void withPage(int i, Runnable r) {
+        int keep = bound < 0 ? cur : bound;
+        store();
+        bind(i);
         try {
-            android.graphics.Bitmap bm = pageSnap[i];
-            if (bm == null || bm.getWidth() != pageStack.getWidth() || bm.getHeight() != pageStack.getHeight()) {
-                if (bm != null) bm.recycle();
-                bm = android.graphics.Bitmap.createBitmap(pageStack.getWidth(), pageStack.getHeight(), android.graphics.Bitmap.Config.ARGB_8888);
-                pageSnap[i] = bm;
-            }
-            android.graphics.Canvas c = new android.graphics.Canvas(bm);
-            Drawable bg = windowBg();
-            int[] at = new int[2];
-            pageStack.getLocationInWindow(at);
-            // Fensterverlauf an derselben Stelle wie auf dem Bildschirm
-            bg.setBounds(-at[0], -at[1], getWindow().getDecorView().getWidth() - at[0], getWindow().getDecorView().getHeight() - at[1]);
-            bg.draw(c);
-            float tx0 = scroll.getTranslationX();
-            scroll.setTranslationX(0f);
-            pageStack.draw(c);
-            scroll.setTranslationX(tx0);
-        } catch (Throwable t) {
-            pageSnap[i] = null;
+            r.run();
+        } finally {
+            store();
+            bind(keep);
         }
     }
 
-    /** Vorschau der Nachbarseite neben der Liste anlegen bzw. austauschen. */
-    private void preparePeek(int idx) {
-        if (pageStack == null) return;
-        if (peek == null) {
-            peek = new ImageView(this);
-            peek.setScaleType(ImageView.ScaleType.FIT_XY);
-            peek.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
-        }
-        if (peek.getParent() == null) {
-            pageStack.addView(peek, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        }
-        peek.animate().cancel();
-        peek.setAlpha(1f);
-        if (peekIdx != idx) {
-            peekIdx = idx;
-            android.graphics.Bitmap bm = idx >= 0 ? pageSnap[idx] : null;
-            // noch nie besuchte Seite: leere Flaeche in Fensterfarbe, der Inhalt blendet nach dem Einrasten ein
-            if (bm != null && !bm.isRecycled()) {
-                peek.setImageBitmap(bm);
-                peek.setBackground(null);
-            } else {
-                peek.setImageDrawable(null);
-                peek.setBackground(windowBg());
-            }
-        }
+    /** Thema, mit dem eine (nicht aktive) Seite aufgebaut wird. */
+    private String topicFor(int i) {
+        if (i == 0) return Prefs.newsTopic(this, ID);
+        if (i == 1) return wxTopic;
+        return null;
     }
 
-    private void removePeek() {
-        if (peek != null && peek.getParent() != null) ((ViewGroup) peek.getParent()).removeView(peek);
-        peekIdx = -1;
-    }
-
-    /** Seite um dx verschieben (dx < 0: naechste Seite schiebt von rechts nach). */
-    private void dragTo(float dx) {
-        int cur = pageIdx();
-        float w = Math.max(1, pageStack.getWidth());
-        int n = dx < 0 ? cur + 1 : cur - 1;
-        boolean edge = n < 0 || n > 2;
-        if (edge) {
-            // Gummiband am Rand: wird schnell schwer, keine Nachbarseite
-            float max = w * 0.18f;
-            dx = Math.signum(dx) * max * (1f - (float) Math.exp(-Math.abs(dx) / (max * 1.6f)));
-            if (peek != null) peek.setVisibility(View.GONE);
-        } else {
-            preparePeek(n);
-            peek.setVisibility(View.VISIBLE);
-            peek.setTranslationX(dx + (n > cur ? w : -w));
+    /** Seiten nebeneinander legen: Stellung p (0..2, stufenlos). Weit entfernte Seiten werden nicht gezeichnet. */
+    private void layoutPages(float p) {
+        pos = p;
+        if (pager == null) return;
+        float w = pager.getWidth();
+        for (int i = 0; i < 3; i++) {
+            ScrollView sv = pgs[i].scroll;
+            boolean near = Math.abs(i - p) < 0.999f;
+            sv.setVisibility(near ? View.VISIBLE : View.INVISIBLE);
+            sv.setTranslationX(w > 0 ? (i - p) * w : 0f);
         }
-        pgDx = dx;
-        scroll.setTranslationX(dx);
-        setNavPos(Math.max(0f, Math.min(2f, cur - dx / w)));
+        setNavPos(Math.max(0f, Math.min(2f, p)));
     }
 
-    /** Nach dem Loslassen weich einrasten: zur Nachbarseite oder zurueck. */
-    private void settle(boolean commit) {
-        final int cur = pageIdx();
-        final float w = Math.max(1, pageStack.getWidth());
-        final int n = pgDx < 0 ? cur + 1 : cur - 1;
-        final boolean go = commit && n >= 0 && n <= 2;
-        final float from = pgDx, to = go ? (n > cur ? -w : w) : 0f;
-        float dist = Math.abs(to - from) / w;
-        android.animation.ValueAnimator va = android.animation.ValueAnimator.ofFloat(from, to);
-        va.setDuration(Math.max(140, Math.round(260 * Math.min(1f, dist + 0.15f))));
-        va.setInterpolator(new android.view.animation.DecelerateInterpolator(1.6f));
-        va.addUpdateListener(a -> dragTo((float) a.getAnimatedValue()));
-        pgBusy = true;
-        pgBusyAt = System.currentTimeMillis();
-        va.addListener(new android.animation.AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(android.animation.Animator a) {
-                if (go) {
-                    showPage(n);
-                } else {
-                    scroll.setTranslationX(0f);
-                    removePeek();
-                    setNavPos(cur);
-                    pgBusy = false;
-                    hideNavLine();
-                }
+    /** Eine Seite (neu) aufbauen, auch wenn sie gerade nicht sichtbar ist. */
+    private void buildPage(final int i) {
+        final String ov = i == cur ? null : topicFor(i);
+        withPage(i, () -> {
+            buildIdx = i;
+            Prefs.appTopicOverride = ov;
+            try {
+                buildContent(i);
+            } finally {
+                buildIdx = -1;
+                Prefs.appTopicOverride = null;
             }
         });
-        va.start();
+        pgs[i].built = true;
+        pgs[i].dirty = false;
+    }
+
+    /** Nachbarseiten im Hintergrund fertig aufbauen (eine pro Bild), damit das Wischen nur fertigen Inhalt bewegt. */
+    private void schedulePrebuild() {
+        ui.removeCallbacks(prebuild);
+        ui.postDelayed(prebuild, 300);
+    }
+
+    private void prebuildNext() {
+        if (isFinishing() || isDestroyed() || !warmed || pager == null) return;
+        if (paging || pgBusy) {
+            ui.postDelayed(prebuild, 200);
+            return;
+        }
+        int[] order = {cur - 1, cur + 1, cur - 2, cur + 2};
+        for (int j : order) {
+            if (j < 0 || j > 2 || (pgs[j].built && !pgs[j].dirty)) continue;
+            buildPage(j);
+            layoutPages(pos);
+            ui.postDelayed(prebuild, 32);
+            return;
+        }
+    }
+
+    /** Seite i wird aktiv: Einstellungen merken, Kopf und Leiste anpassen. */
+    private void setCur(int i) {
+        if (i == cur) return;
+        if (cur == 1) wxTopic = Prefs.topic(this, ID);
+        store();
+        cur = i;
+        if (i == 2) {
+            Prefs.setFlag(this, "tab_saved", true);
+        } else {
+            Prefs.setFlag(this, "tab_saved", false);
+            Prefs.setTopic(this, ID, i == 1 ? wxTopic : Prefs.newsTopic(this, ID));
+        }
+        shownTopic = Prefs.topicRaw(this, ID);
+        bind(i);
+        if (!pgs[i].built || pgs[i].dirty) buildPage(i);
+        buildHeader();
+        updateNav();
+        layoutPages(i);
+    }
+
+    /** Nachbarseite sicher fertig, bevor sie ins Bild kommt. */
+    private void ensureBuilt(int i) {
+        if (i < 0 || i > 2) return;
+        if (!pgs[i].built || pgs[i].dirty) buildPage(i);
+    }
+
+    /** Stellung waehrend des Ziehens; am Rand Gummiband (wird schnell schwer). */
+    private void dragTo(float dx) {
+        float w = Math.max(1, pager.getWidth());
+        float p = cur - dx / w;
+        if (p < 0) p = -rubber(-p);
+        else if (p > 2) p = 2 + rubber(p - 2);
+        pgDx = dx;
+        layoutPages(p);
+    }
+
+    private static float rubber(float over) {
+        return 0.16f * (1f - (float) Math.exp(-over / 0.28f));
+    }
+
+    /**
+     * Weich zur Zielseite gleiten. Nach dem Loslassen uebernimmt die Bewegung das Tempo des Fingers und
+     * bremst sanft ab; bei "Animationen reduzieren" wird direkt umgeschaltet.
+     */
+    private void glideTo(final int target, float velocity, boolean fromRest) {
+        if (pgAnim != null) pgAnim.cancel();
+        final float from = pos;
+        if (Motion.reduced(this) || pager.getWidth() <= 0) {
+            layoutPages(target);
+            setCur(target);
+            pgBusy = false;
+            hideNavLine();
+            return;
+        }
+        float w = pager.getWidth();
+        float distPx = Math.abs(target - from) * w;
+        long dur;
+        if (fromRest) {
+            dur = Math.round(300 + 60 * Math.min(2f, Math.abs(target - from)));
+        } else {
+            float v = Math.abs(velocity);
+            // Tempo des Fingers fortsetzen, aber nie hektisch und nie zaeh
+            dur = v > px(250) ? Math.round(distPx / v * 1000f * 2.0f) : 340;
+            dur = Math.max(220, Math.min(420, dur));
+        }
+        pgBusy = true;
+        pgBusyAt = System.currentTimeMillis();
+        pgAnim = android.animation.ValueAnimator.ofFloat(from, target);
+        pgAnim.setDuration(dur);
+        pgAnim.setInterpolator(fromRest ? new android.view.animation.PathInterpolator(0.4f, 0f, 0.2f, 1f)
+                : new android.view.animation.PathInterpolator(0.25f, 0.6f, 0.3f, 1f));
+        pgAnim.addUpdateListener(a -> layoutPages((float) a.getAnimatedValue()));
+        pgAnim.addListener(new android.animation.AnimatorListenerAdapter() {
+            private boolean cancelled;
+
+            @Override
+            public void onAnimationCancel(android.animation.Animator a) {
+                cancelled = true;
+            }
+
+            @Override
+            public void onAnimationEnd(android.animation.Animator a) {
+                pgBusy = false;
+                if (cancelled) return;
+                layoutPages(target);
+                setCur(target);
+                hideNavLine();
+                schedulePrebuild();
+            }
+        });
+        pgAnim.start();
     }
 
     /** Tipp auf einen Reiter der unteren Leiste: weich zur Seite gleiten (auch ueber eine Seite hinweg). */
     private void animateTo(final int target) {
-        if (pgBusy || pageStack == null || scroll == null) return;
-        final int cur = pageIdx();
-        if (target == cur) return;
-        snapCurrent();
-        pageY[cur] = scroll.getScrollY();
-        final float w = Math.max(1, pageStack.getWidth());
-        preparePeek(target);
-        peek.setVisibility(View.VISIBLE);
-        final float dir = target > cur ? -1f : 1f;
+        if (pgBusy || pager == null || target == cur) return;
+        for (int j = Math.min(cur, target); j <= Math.max(cur, target); j++) ensureBuilt(j);
         showNavLine();
-        pgBusy = true;
-        pgBusyAt = System.currentTimeMillis();
-        android.animation.ValueAnimator va = android.animation.ValueAnimator.ofFloat(0f, 1f);
-        va.setDuration(280);
-        va.setInterpolator(new android.view.animation.DecelerateInterpolator(1.6f));
-        va.addUpdateListener(a -> {
-            float f = (float) a.getAnimatedValue();
-            scroll.setTranslationX(dir * w * f);
-            peek.setTranslationX(-dir * w * (1f - f));
-            setNavPos(cur + (target - cur) * f);
-        });
-        va.addListener(new android.animation.AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(android.animation.Animator a) {
-                showPage(target);
-            }
-        });
-        va.start();
-    }
-
-    /** Zielseite aufbauen, waehrend die Vorschau sie noch abdeckt; danach Vorschau weich ausblenden. */
-    private void showPage(int target) {
-        int cur = pageIdx();
-        if (cur != target) pageY[cur] = scroll.getScrollY();
-        if (cur == 1) wxTopic = Prefs.topic(this, ID);
-        if (peek != null) peek.setTranslationX(0f);
-        if (target == 2) {
-            Prefs.setFlag(this, "tab_saved", true);
-        } else {
-            Prefs.setFlag(this, "tab_saved", false);
-            String t = target == 1 ? wxTopic : Prefs.newsTopic(this, ID);
-            Prefs.setTopic(this, ID, t);
-        }
-        shownTopic = Prefs.topicRaw(this, ID);
-        scroll.setTranslationX(0f);
-        build();
-        final int y = pageY[target];
-        restore(y);
-        setNavPos(target);
-        hideNavLine();
-        // erst nach dem ersten Bild der neuen Seite die Vorschau wegnehmen: kein Aufblitzen
-        scroll.getViewTreeObserver().addOnPreDrawListener(new android.view.ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                scroll.getViewTreeObserver().removeOnPreDrawListener(this);
-                scroll.post(() -> {
-                    if (peek != null && peek.getParent() != null) {
-                        peek.animate().alpha(0f).setDuration(Bubble.SWAP_MS).withEndAction(() -> {
-                            removePeek();
-                            pgBusy = false;
-                            snapCurrent();
-                        }).start();
-                    } else {
-                        pgBusy = false;
-                    }
-                });
-                return true;
-            }
-        });
+        glideTo(target, 0f, true);
     }
 
     /** Wischen nur unterhalb der Reiterzeile und in der Liste (nicht im Kopf, nicht auf den Reitern). */
     private boolean canPage(android.view.MotionEvent e) {
-        if (pageStack == null || pgBusy || pulling || pullLoading) return false;
+        if (pager == null || pgBusy || pulling || pullLoading || !Motion.swipe(this)) return false;
         int[] at = new int[2];
-        pageStack.getLocationOnScreen(at);
+        pager.getLocationOnScreen(at);
         float x = e.getRawX(), y = e.getRawY();
-        if (y < at[1] || y > at[1] + pageStack.getHeight()) return false;
+        if (y < at[1] || y > at[1] + pager.getHeight()) return false;
         if (chipsWrap != null && chipsWrap.isShown()) {
             int[] c = new int[2];
             chipsWrap.getLocationOnScreen(c);
@@ -586,7 +619,7 @@ public class MainActivity extends Activity {
         return true;
     }
 
-    /** Gibt true zurueck, wenn das Ereignis vom Seitenwischen verbraucht wurde. */
+    /** Gibt true zurueck, wenn das Ereignis vom Seitenwischen verbraucht wurde. Kein Vibrieren beim Wischen. */
     private boolean pageTouch(android.view.MotionEvent e) {
         int act = e.getActionMasked();
         if (act == android.view.MotionEvent.ACTION_DOWN) {
@@ -611,15 +644,15 @@ public class MainActivity extends Activity {
                 }
                 if (Math.abs(dx) <= slop || Math.abs(dx) < Math.abs(dy) * 1.5f) return false;
                 // Gemerkt (letzte Seite): nach links wischen entfernt die Karte wie bisher
-                if (pageIdx() == 2 && dx < 0) {
+                if (cur == 2 && dx < 0) {
                     pgArmed = false;
                     return false;
                 }
                 paging = true;
                 pullArmed = false;
                 pgX0 += Math.signum(dx) * slop; // ohne Sprung beim Einsetzen
-                snapCurrent();
-                pageY[pageIdx()] = scroll.getScrollY();
+                ensureBuilt(cur - 1);
+                ensureBuilt(cur + 1);
                 showNavLine();
                 android.view.MotionEvent c = android.view.MotionEvent.obtain(e);
                 c.setAction(android.view.MotionEvent.ACTION_CANCEL);
@@ -640,8 +673,9 @@ public class MainActivity extends Activity {
             }
             boolean fling = Math.abs(vx) > px(500) && Math.signum(vx) == Math.signum(pgDx);
             boolean commit = act == android.view.MotionEvent.ACTION_UP && (Math.abs(pgDx) > px(70) || fling);
-            if (commit) Haptic.play(pageStack, Haptic.TICK);
-            settle(commit);
+            int target = cur;
+            if (commit) target = Math.max(0, Math.min(2, pgDx < 0 ? cur + 1 : cur - 1));
+            glideTo(target, vx, false);
             return true;
         }
         return paging;
@@ -649,7 +683,7 @@ public class MainActivity extends Activity {
 
     @Override
     public boolean dispatchTouchEvent(android.view.MotionEvent e) {
-        if (scroll == null || pullBox == null) return super.dispatchTouchEvent(e);
+        if (scroll == null || pullBox == null || pager == null) return super.dispatchTouchEvent(e);
         // Sicherung: nie laenger als 1,5 s gesperrt
         if (pgBusy && System.currentTimeMillis() - pgBusyAt > 1500) pgBusy = false;
         if (pgBusy && e.getActionMasked() == android.view.MotionEvent.ACTION_DOWN) return true; // waehrend des Einrastens nichts antippen
@@ -808,66 +842,10 @@ public class MainActivity extends Activity {
     private void build() {
         loadLook();
         applyWindow();
-        // dieselben Ansichten wiederverwenden: kein neues Fenster-Inhalt, kein Aufblitzen, Scrollposition bleibt.
-        // Oben (Kopf, Wetter, Werkzeuge, Reiter) steht fest, nur die Nachrichtenliste scrollt.
-        int keepY = 0;
-        if (scroll == null) {
-            LinearLayout root = new LinearLayout(this);
-            root.setOrientation(LinearLayout.VERTICAL);
-            top = new LinearLayout(this);
-            top.setOrientation(LinearLayout.VERTICAL);
-            top.setPadding(px(14), px(8), px(14), 0);
-            root.addView(top, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            scroll = new ScrollView(this);
-            scroll.setVerticalScrollBarEnabled(false);
-            // Wetterkarte scrollt mit der Liste weg; oben bleibt synchron eine schmale Wetterzeile + Reiter stehen
-            scroll.setOnScrollChangeListener((v, x, y, ox, oy) -> updateOverlay(y));
-            scroll.getViewTreeObserver().addOnGlobalLayoutListener(() -> updateOverlay(scroll.getScrollY()));
-            page = new LinearLayout(this);
-            page.setOrientation(LinearLayout.VERTICAL);
-            page.setPadding(px(14), 0, px(14), px(28));
-            scroll.addView(page, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            FrameLayout stack = new FrameLayout(this);
-            stack.addView(scroll, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            scroll.setOverScrollMode(View.OVER_SCROLL_NEVER);
-            stack.addView(buildPull(), new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.TOP));
-            pageStack = stack;
-            root.addView(stack, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
-            navBar = new LinearLayout(this);
-            navBar.setOrientation(LinearLayout.HORIZONTAL);
-            navBar.setBackground(navBg());
-            navBar.setElevation(px(6));
-            navBar.setOnApplyWindowInsetsListener((v, ins) -> {
-                v.setPadding(0, 0, 0, ins.getSystemWindowInsetBottom());
-                return ins;
-            });
-            // duenner Strich oben an der Leiste: erscheint nur beim Wischen und laeuft stufenlos mit
-            FrameLayout navWrap = new FrameLayout(this);
-            navWrap.addView(navBar, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            navLine = new View(this);
-            navLine.setAlpha(0f);
-            navLine.setElevation(px(7));
-            navWrap.addView(navLine, new FrameLayout.LayoutParams(px(36), Math.max(2, px(2)), Gravity.TOP | Gravity.START));
-            root.addView(navWrap, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            setContentView(root);
-        } else {
-            keepY = scroll.getScrollY();
-            top.removeAllViews();
-            page.removeAllViews();
-        }
-
-        final LinearLayout list = page;
-        page = top;
-        wxFull = null;
-        wxMini = null;
-        wxIn = null;
-        wxCam = null;
-        wxBox = null;
-        wxShield = null;
-        wxFullH = 0;
-        chipsWrap = null;
-        header();
-        page = list;
+        // dieselben Ansichten wiederverwenden: kein neuer Fenster-Inhalt, kein Aufblitzen, Scrollposition bleibt.
+        // Oben steht der Kopf fest; darunter liegen drei Seiten (News, Wetter, Gemerkt) nebeneinander.
+        if (pager == null) createShell();
+        buildHeader();
         int wc = widgetCount();
         int seen = Prefs.intVal(this, "widget_seen", -1);
         if (seen >= 0 && wc > seen) {
@@ -876,18 +854,102 @@ public class MainActivity extends Activity {
             for (String k : new String[]{"notify", "battery", "autostart"}) Prefs.setFlag(this, "perm_later_" + k, false);
         }
         if (seen != wc) Prefs.setInt(this, "widget_seen", wc);
-        boolean newsTab = !savedTab() && !weatherTab();
+        buildPage(cur);
+        for (int j = 0; j < 3; j++) if (j != cur && pgs[j].built) pgs[j].dirty = true;
+        updateNav();
+        if (!paging && !pgBusy) layoutPages(cur);
+        schedulePrebuild();
+    }
+
+    /** Grundgeruest einmalig: Kopf, drei Seiten nebeneinander, Ziehen-Anzeige, untere Leiste. */
+    private void createShell() {
+        cur = savedTab0() ? 2 : Prefs.topic(this, ID).startsWith(Taxonomy.WETTER) ? 1 : 0;
+        if (cur == 1) wxTopic = Prefs.topic(this, ID);
+        LinearLayout root = new LinearLayout(this);
+        root.setOrientation(LinearLayout.VERTICAL);
+        top = new LinearLayout(this);
+        top.setOrientation(LinearLayout.VERTICAL);
+        top.setPadding(px(14), px(8), px(14), 0);
+        root.addView(top, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        FrameLayout stack = new FrameLayout(this);
+        pager = new FrameLayout(this);
+        pager.setClipChildren(true);
+        for (int i = 0; i < 3; i++) {
+            final int idx = i;
+            final Pg p = new Pg();
+            p.scroll = new ScrollView(this);
+            p.scroll.setVerticalScrollBarEnabled(false);
+            p.scroll.setOverScrollMode(View.OVER_SCROLL_NEVER);
+            // Wetterkarte scrollt mit der Liste weg; oben bleibt synchron eine schmale Wetterzeile + Reiter stehen
+            p.scroll.setOnScrollChangeListener((v, x, y, ox, oy) -> withPage(idx, () -> updateOverlay(y)));
+            p.scroll.getViewTreeObserver().addOnGlobalLayoutListener(() -> withPage(idx, () -> updateOverlay(p.scroll.getScrollY())));
+            p.page = new LinearLayout(this);
+            p.page.setOrientation(LinearLayout.VERTICAL);
+            p.page.setPadding(px(14), 0, px(14), px(28));
+            p.scroll.addView(p.page, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            pgs[i] = p;
+            pager.addView(p.scroll, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        }
+        pager.addOnLayoutChangeListener((v, l, t, r, b, ol, ot, or, ob) -> {
+            if (r - l != or - ol) layoutPages(pos);
+        });
+        stack.addView(pager, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        stack.addView(buildPull(), new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.TOP));
+        root.addView(stack, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
+        navBar = new LinearLayout(this);
+        navBar.setOrientation(LinearLayout.HORIZONTAL);
+        navBar.setBackground(navBg());
+        navBar.setElevation(px(6));
+        navBar.setOnApplyWindowInsetsListener((v, ins) -> {
+            v.setPadding(0, 0, 0, ins.getSystemWindowInsetBottom());
+            return ins;
+        });
+        // duenner Strich oben an der Leiste: erscheint nur beim Wischen und laeuft stufenlos mit
+        FrameLayout navWrap = new FrameLayout(this);
+        navWrap.addView(navBar, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        navLine = new View(this);
+        navLine.setAlpha(0f);
+        navLine.setElevation(px(7));
+        navWrap.addView(navLine, new FrameLayout.LayoutParams(px(36), Math.max(2, px(2)), Gravity.TOP | Gravity.START));
+        root.addView(navWrap, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        setContentView(root);
+        bind(cur);
+    }
+
+    /** Kopfzeile (App-Name, Abo, Filter, Aktualisieren, Einstellungen) fuer die aktive Seite. */
+    private void buildHeader() {
+        LinearLayout keep = page;
+        page = top;
+        top.removeAllViews();
+        header();
+        page = keep;
+    }
+
+    /** Inhalt einer Seite; Felder sind bereits auf diese Seite umgestellt (withPage). */
+    private void buildContent(int i) {
+        int keepY = scroll.getScrollY();
+        page.removeAllViews();
+        wxFull = null;
+        wxMini = null;
+        wxIn = null;
+        wxCam = null;
+        wxBox = null;
+        wxShield = null;
+        wxFullH = 0;
+        chipsWrap = null;
+        int wc = widgetCount();
+        boolean newsTab = i == 0;
         if (newsTab && wc == 0 && !Prefs.addCardHidden(this)) addWidgetCard();
         if (newsTab && (wc > 0 || Prefs.addCardHidden(this))) permCard();
-        if (!savedTab() && Prefs.showWeather(this, ID)) weatherCard();
+        if (i != 2 && Prefs.showWeather(this, ID)) weatherCard();
         int before = page.getChildCount();
-        if (!savedTab()) newsChips();
+        if (i != 2) newsChips();
         if (page.getChildCount() > before) {
             // Reiter in einen Streifen mit Fensterhintergrund legen: er bleibt beim Scrollen oben unter der Wetterzeile stehen
             View hs = page.getChildAt(page.getChildCount() - 1);
             page.removeView(hs);
             FrameLayout wrap = new FrameLayout(this);
-            wrap.setPadding(px(14), px(10), px(14), px(10));
+            wrap.setPadding(px(14), px(10), px(14), px(6));
             wrap.setBackground(windowBg());
             wrap.setOutlineProvider(null);
             wrap.setTranslationZ(px(2));
@@ -899,16 +961,20 @@ public class MainActivity extends Activity {
             chipsWrap = wrap;
         }
         news();
-        updateNav();
         restore(keepY);
     }
 
-    private boolean savedTab() {
+    /** Gemerkt war beim letzten Mal offen (wird beim Start zurueckgesetzt, daher meist false). */
+    private boolean savedTab0() {
         return Prefs.flag(this, "tab_saved");
     }
 
+    private boolean savedTab() {
+        return (buildIdx >= 0 ? buildIdx : cur) == 2;
+    }
+
     private boolean weatherTab() {
-        return !savedTab() && Prefs.topic(this, ID).startsWith(Taxonomy.WETTER);
+        return (buildIdx >= 0 ? buildIdx : cur) == 1;
     }
 
     /** Flache untere Leiste: News | Wetter | Gemerkt. Aktiv = heller und minimal groesser, keine Pille. */
@@ -1127,6 +1193,24 @@ public class MainActivity extends Activity {
                         build();
                     });
             if (ps == 0) lock.setAlpha(0.6f);
+            // Filter: oeffnet die Quellen-Auswahl von unten; Punkt, solange ein Filter aktiv ist
+            boolean filt = warmed && ListService.filtered(this, ID);
+            ImageView fb = iconButton(R.drawable.ic_filter, filt ? "Quellen filtern, Filter aktiv" : "Quellen filtern", this::openSources);
+            FrameLayout ff = new FrameLayout(this);
+            ff.addView(fb, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            if (filt) {
+                View dot = new View(this);
+                GradientDrawable g = new GradientDrawable();
+                g.setShape(GradientDrawable.OVAL);
+                g.setColor(0xFFE53935);
+                g.setStroke(Math.max(2, px(2)), baseColor());
+                dot.setBackground(g);
+                FrameLayout.LayoutParams dl = new FrameLayout.LayoutParams(px(11), px(11), Gravity.TOP | Gravity.END);
+                dl.topMargin = px(2);
+                dl.rightMargin = px(2);
+                ff.addView(dot, dl);
+            }
+            row.addView(ff, lp(40, 40, 0, 0, 8, 0));
             row.addView(lock, lp(40, 40, 0, 0, 8, 0));
         }
         row.addView(iconButton(R.drawable.ic_refresh, "Aktualisieren", () -> sync(true)), lp(40, 40, 0, 0, 8, 0));
@@ -1547,7 +1631,6 @@ public class MainActivity extends Activity {
                         float dx = v.getTranslationX();
                         float w = v.getWidth();
                         if (e.getActionMasked() == android.view.MotionEvent.ACTION_UP && dx < -w * 0.35f) {
-                            Haptic.play(v, Haptic.TICK);
                             v.animate().translationX(-w).setDuration(140).withEndAction(() -> {
                                 Prefs.toggleSaved(MainActivity.this, f.title, "", "", f.link);
                                 build();
@@ -1745,45 +1828,53 @@ public class MainActivity extends Activity {
         rule.setBackgroundColor(line);
         box.addView(rule, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.max(1, px(1))));
 
-        // 2. "n ungelesen · m Quellen ▾" links (oeffnet die Quellen-Auswahl), "Alle als gelesen markieren" rechts
+        // 2. Info-Zeile nur bei Filter oder Ungelesenem: "Gefiltert: x von y Quellen · n ungelesen", rechts "Alle als gelesen markieren"
         final int unread = warmed && hasSeen ? ListService.newItems(this, ID).size() : 0;
-        LinearLayout info = new LinearLayout(this);
-        info.setOrientation(LinearLayout.HORIZONTAL);
-        info.setGravity(Gravity.CENTER_VERTICAL);
-        boolean papersOn = topic.startsWith(Taxonomy.PAPERS);
-        TextView src = text(ListService.sourceLine(this, ID, unread), 12.5f, papersOn ? tx : soft, papersOn);
-        src.setSingleLine(true);
-        src.setEllipsize(android.text.TextUtils.TruncateAt.END);
-        src.setPadding(px(4), px(9), px(8), px(9));
-        src.setMinHeight(px(40));
-        src.setGravity(Gravity.CENTER_VERTICAL);
-        press(src, 0, 10, 0);
-        src.setContentDescription(src.getText().toString().replace(" ▾", "") + ", Quellen auswählen");
-        src.setOnClickListener(v -> {
-            Haptic.play(v, Haptic.TICK);
-            Intent in = new Intent(this, TopicActivity.class);
-            in.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, ID);
-            in.putExtra("topic", Taxonomy.PAPERS);
-            in.putExtra("menu", true);
-            in.putExtra("sheet", true);
-            startActivity(in);
-        });
-        info.addView(src, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
-        if (unread > 0) {
-            TextView mark = text("Alle als gelesen markieren", 12.5f, tx, false);
-            mark.setPadding(px(8), px(9), px(4), px(9));
-            mark.setMinHeight(px(40));
-            mark.setGravity(Gravity.CENTER_VERTICAL);
-            press(mark, 0, 10, 0);
-            mark.setContentDescription("Alle " + unread + " ungelesenen Nachrichten als gelesen markieren");
-            mark.setOnClickListener(v -> {
-                Haptic.play(v, Haptic.CONFIRM);
-                ListService.markAllRead(this);
-            });
-            info.addView(mark);
+        String infoText = warmed ? ListService.infoLine(this, ID, unread) : "";
+        if (!infoText.isEmpty()) {
+            boolean filt = ListService.filtered(this, ID);
+            LinearLayout info = new LinearLayout(this);
+            info.setOrientation(LinearLayout.HORIZONTAL);
+            info.setGravity(Gravity.CENTER_VERTICAL);
+            TextView src = text(infoText, 12.5f, filt ? tx : soft, false);
+            src.setSingleLine(true);
+            src.setEllipsize(android.text.TextUtils.TruncateAt.END);
+            src.setPadding(px(4), px(9), px(8), px(9));
+            src.setMinHeight(px(40));
+            src.setGravity(Gravity.CENTER_VERTICAL);
+            if (filt) {
+                // Tipp auf "Gefiltert" oeffnet ebenfalls die Quellen-Auswahl
+                press(src, 0, 10, 0);
+                src.setContentDescription(infoText + ", Quellen ändern");
+                src.setOnClickListener(v -> openSources());
+            }
+            info.addView(src, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+            if (unread > 0) {
+                TextView mark = text("Alle als gelesen markieren", 12.5f, tx, false);
+                mark.setPadding(px(8), px(9), px(4), px(9));
+                mark.setMinHeight(px(40));
+                mark.setGravity(Gravity.CENTER_VERTICAL);
+                press(mark, 0, 10, 0);
+                mark.setContentDescription("Alle " + unread + " ungelesenen Nachrichten als gelesen markieren");
+                mark.setOnClickListener(v -> {
+                    Haptic.play(v, Haptic.CONFIRM);
+                    ListService.markAllRead(this);
+                });
+                info.addView(mark);
+            }
+            box.addView(info, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         }
-        box.addView(info, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         page.addView(box, lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 4));
+    }
+
+    /** Quellen-Auswahl (Zeitungen mit Regionen) als Blatt von unten. */
+    private void openSources() {
+        Intent in = new Intent(this, TopicActivity.class);
+        in.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, ID);
+        in.putExtra("topic", Taxonomy.PAPERS);
+        in.putExtra("menu", true);
+        in.putExtra("sheet", true);
+        startActivity(in);
     }
 
     /** Text-Reiter: aktiv hell mit Strich darunter, sonst gedaempft; roter Punkt nur bei Ungelesenem. */
@@ -1837,7 +1928,7 @@ public class MainActivity extends Activity {
         Prefs.setTopic(this, ID, t);
         shownTopic = Prefs.topicRaw(this, ID);
         build();
-        if (scroll != null) scroll.post(() -> scroll.scrollTo(0, 0));
+        if (scroll != null) { final ScrollView sv0 = scroll; sv0.post(() -> sv0.scrollTo(0, 0)); }
     }
 
     private View chip(String label, boolean on, final Runnable click) {

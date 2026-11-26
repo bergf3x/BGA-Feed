@@ -184,7 +184,12 @@ final class Prefs {
     }
 
     /** Gewaehltes Thema inkl. Medium ("Region/Berchtesgaden|BGLand24"); ohne Medium nur das Thema. */
+    /** App: Thema, mit dem gerade eine nicht sichtbare Seite (News/Wetter) aufgebaut wird; sonst null. */
+    static volatile String appTopicOverride;
+
     static String topicRaw(Context c, int id) {
+        String ov = appTopicOverride;
+        if (id == APP && ov != null) return ov;
         return sp(c).getString("tp_" + id, "");
     }
 

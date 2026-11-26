@@ -73,6 +73,32 @@
                     android:visibility="gone" />
             </LinearLayout>
 
+            <FrameLayout
+                android:id="@+id/btn_hfilter_box"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:layout_marginRight="6dp">
+
+                <ImageView
+                    android:id="@+id/btn_hfilter"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/btn_round"
+                    android:contentDescription="Quellen filtern"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_filter" />
+
+                <ImageView
+                    android:id="@+id/btn_hfilter_dot"
+                    android:layout_width="9dp"
+                    android:layout_height="9dp"
+                    android:layout_gravity="top|right"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginRight="2dp"
+                    android:src="@drawable/dot_red"
+                    android:visibility="gone" />
+            </FrameLayout>
+
             <ImageView
                 android:id="@+id/btn_habo"
                 android:layout_width="34dp"

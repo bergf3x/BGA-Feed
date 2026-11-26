@@ -178,14 +178,22 @@ public class WidgetProvider extends AppWidgetProvider {
                     : topicBroadcast(ctx, id, 100 + i, value, immutable));
         }
         if (shows == 2) rv.setViewVisibility(R.id.row_p, android.view.View.GONE);
-        // Zeile unter den Reitern: "n ungelesen · m Quellen ▾" (oeffnet die Zeitungsauswahl), rechts "Alle als gelesen markieren"
-        boolean newsRow = !wxm && shows == 0 && pl.chips;
+        // Zeile unter den Reitern: "Gefiltert: x von y Quellen · n ungelesen", rechts "Alle als gelesen markieren";
+        // nur sichtbar, wenn gefiltert ist oder es Ungelesenes gibt
+        boolean newsTab = !wxm && shows == 0 && pl.chips;
+        int unread = newsTab ? ListService.newItems(ctx, id).size() : 0;
+        boolean filt = newsTab && ListService.filtered(ctx, id);
+        boolean newsRow = newsTab && (unread > 0 || filt);
         rv.setViewVisibility(R.id.row_f, newsRow ? android.view.View.VISIBLE : android.view.View.GONE);
+        // Filter-Symbol in der Kopfzeile (neben dem Abo-Schloss), Punkt bei aktivem Filter
+        rv.setViewVisibility(R.id.btn_hfilter_box, shows == 0 ? android.view.View.VISIBLE : android.view.View.GONE);
+        rv.setViewVisibility(R.id.btn_hfilter_dot, filt ? android.view.View.VISIBLE : android.view.View.GONE);
+        Pal.filter(ctx, id, rv, R.id.btn_hfilter, -1);
+        rv.setInt(R.id.btn_hfilter, "setImageAlpha", textAlpha);
+        rv.setOnClickPendingIntent(R.id.btn_hfilter, sourcesPending(ctx, id, immutable));
         if (newsRow) {
-            int unread = ListService.newItems(ctx, id).size();
-            boolean papersOn = topic.startsWith(Taxonomy.PAPERS);
-            rv.setTextViewText(R.id.f_info, Style.font(ctx, id, ListService.sourceLine(ctx, id, unread)));
-            Pal.text(ctx, id, rv, R.id.f_info, -1, papersOn ? 1f : 0.7f);
+            rv.setTextViewText(R.id.f_info, Style.font(ctx, id, ListService.infoLine(ctx, id, unread)));
+            Pal.text(ctx, id, rv, R.id.f_info, -1, filt ? 1f : 0.7f);
             rv.setOnClickPendingIntent(R.id.f_info, sourcesPending(ctx, id, immutable));
             rv.setViewVisibility(R.id.f_mark, unread > 0 ? android.view.View.VISIBLE : android.view.View.GONE);
             Pal.text(ctx, id, rv, R.id.f_mark, -1, 1f);

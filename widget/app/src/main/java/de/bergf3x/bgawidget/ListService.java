@@ -44,29 +44,45 @@ public class ListService extends RemoteViewsService {
         return n;
     }
 
-    /**
-     * Quellen-Zeile unter den Reitern: {gewaehlte Zeitungen, alle Zeitungen}. Ohne Zeitungsauswahl
-     * (oder "Alle Zeitungen") sind beide Zahlen gleich.
-     */
-    static int[] sourceCount(Context ctx, int id) {
-        java.util.Set<String> papers = new java.util.LinkedHashSet<>();
-        String root = Taxonomy.PAPERS + "/";
-        for (String t : Taxonomy.topics(ctx, id)) {
-            if (t.startsWith(root)) papers.add(t.substring(root.length()).split("/")[0]);
+    /** Alle Zeitungen der gewaehlten Quellen (auch ohne aktuelle Meldungen), Namen wie im Pfad "Zeitungen/<Name>". */
+    static List<String> paperNames(Context ctx, int id) {
+        List<String> out = new ArrayList<>();
+        List<Catalog.Feed> all = Catalog.load(ctx);
+        Set<String> sel = Catalog.effective(all, Prefs.feeds(ctx, id));
+        for (Catalog.Feed f : all) {
+            String n = f.name.replace('/', '-');
+            if (sel.contains(f.id) && !out.contains(n)) out.add(n);
         }
-        java.util.Set<String> picked = new java.util.HashSet<>();
+        return out;
+    }
+
+    /** {gefilterte Zeitungen, alle Zeitungen}; ohne Zeitungsfilter sind beide Zahlen gleich. */
+    static int[] sourceCount(Context ctx, int id) {
+        String root = Taxonomy.PAPERS + "/";
+        int total = paperNames(ctx, id).size();
+        Set<String> picked = new java.util.HashSet<>();
         for (String[] e : Prefs.topicSel(ctx, id)) {
             if (e[0].startsWith(root)) picked.add(e[0].substring(root.length()).split("/")[0]);
         }
-        int total = papers.size();
-        return new int[]{picked.isEmpty() ? total : picked.size(), total};
+        return new int[]{picked.isEmpty() ? total : Math.min(total, picked.size()), total};
     }
 
-    /** Text der Quellen-Zeile, z. B. "3 ungelesen · 2 von 6 Quellen ▾". */
-    static String sourceLine(Context ctx, int id, int unread) {
+    /** Ist ein Quellen-Filter aktiv (nicht alle Zeitungen)? */
+    static boolean filtered(Context ctx, int id) {
         int[] q = sourceCount(ctx, id);
-        String src = q[0] < q[1] ? q[0] + " von " + q[1] + " Quellen ▾" : q[1] + (q[1] == 1 ? " Quelle ▾" : " Quellen ▾");
-        return (unread > 0 ? unread + " ungelesen · " : "") + src;
+        return q[0] < q[1];
+    }
+
+    /** Zeile unter den Reitern, z. B. "Gefiltert: 2 von 6 Quellen · 3 ungelesen"; leer, wenn es nichts zu sagen gibt. */
+    static String infoLine(Context ctx, int id, int unread) {
+        int[] q = sourceCount(ctx, id);
+        StringBuilder sb = new StringBuilder();
+        if (q[0] < q[1]) sb.append("Gefiltert: ").append(q[0]).append(" von ").append(q[1]).append(q[1] == 1 ? " Quelle" : " Quellen");
+        if (unread > 0) {
+            if (sb.length() > 0) sb.append(" · ");
+            sb.append(unread).append(" ungelesen");
+        }
+        return sb.toString();
     }
 
     /** Alles Aktuelle als gelesen markieren und App sowie Widgets neu zeichnen. */

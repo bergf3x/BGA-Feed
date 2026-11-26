@@ -117,6 +117,8 @@ public class ConfigActivity extends Activity {
         bgRound = BgStyle.sysCorner(this, widgetId);
         kwNotifyOn = Prefs.kwNotify(this);
         haptic = Haptic.enabled(this);
+        pageSwipe = Motion.swipe(this);
+        reduced = Motion.reduced(this);
         imgMode = Prefs.imgMode(this);
         selected.addAll(Prefs.feeds(this, widgetId));
         muted.addAll(Prefs.muted(this, widgetId));
@@ -140,7 +142,7 @@ public class ConfigActivity extends Activity {
 
     // ---------- Seiten ----------
     private static final int P_MAIN = 0, P_SOURCES = 1, P_DESIGN = 2, P_LIST = 3, P_WEATHER = 4, P_COLORS = 5, P_NOTIFY = 6, P_SHOWS = 7;
-    private boolean haptic;
+    private boolean haptic, pageSwipe, reduced;
     private int imgMode;
     private int page = P_MAIN;
     private String kwText = "";
@@ -155,7 +157,7 @@ public class ConfigActivity extends Activity {
                 .append(wxOn).append('|').append(warnOn).append('|').append(bgMode).append('|').append(bgC1).append('|')
                 .append(bgC2).append('|').append(bgTint).append('|').append(bgSrc).append('|').append(accent).append('|')
                 .append(bgRound).append('|').append(kwNotifyOn).append('|').append(compact).append('|')
-                .append(notify).append('|').append(haptic).append('|').append(imgMode).append('|')
+                .append(notify).append('|').append(haptic).append('|').append(pageSwipe).append('|').append(reduced).append('|').append(imgMode).append('|')
                 .append(etKw != null ? etKw.getText().toString() : kwText).append('|')
                 .append(new java.util.TreeSet<>(selected)).append('|').append(new java.util.TreeSet<>(muted)).append('|')
                 .append(new java.util.TreeMap<>(plusF)).append(new java.util.TreeSet<>(wcBerg)).append(wcRegion)
@@ -166,7 +168,7 @@ public class ConfigActivity extends Activity {
     /** Stand aller Entwurfswerte beim Betreten einer Unterseite, damit "Abbrechen" sie zuruecksetzen kann. */
     private static final class St {
         int bgPct, txPct, color, density, font, size, theme, bgMode, bgC1, bgC2, bgTint, bgSrc, accent, imgMode, showsIdx;
-        boolean plus, wxOn, warnOn, bgRound, kwNotifyOn, compact, notify, haptic, wcRegion, wcRegionShow;
+        boolean plus, wxOn, warnOn, bgRound, kwNotifyOn, compact, notify, haptic, pageSwipe, reduced, wcRegion, wcRegionShow;
         String kw;
         Set<String> selected, muted, wcBerg, wcWarn;
         java.util.Map<String, Boolean> plusF;
@@ -180,7 +182,7 @@ public class ConfigActivity extends Activity {
         t.theme = theme; t.bgMode = bgMode; t.bgC1 = bgC1; t.bgC2 = bgC2; t.bgTint = bgTint; t.bgSrc = bgSrc;
         t.accent = accent; t.imgMode = imgMode; t.showsIdx = showsIdx; t.plus = plus; t.wxOn = wxOn;
         t.warnOn = warnOn; t.bgRound = bgRound; t.kwNotifyOn = kwNotifyOn; t.compact = compact; t.notify = notify;
-        t.haptic = haptic; t.wcRegion = wcRegion; t.wcRegionShow = wcRegionShow;
+        t.haptic = haptic; t.pageSwipe = pageSwipe; t.reduced = reduced; t.wcRegion = wcRegion; t.wcRegionShow = wcRegionShow;
         t.kw = etKw != null ? etKw.getText().toString() : kwText;
         t.selected = new HashSet<>(selected);
         t.muted = new HashSet<>(muted);
@@ -200,6 +202,14 @@ public class ConfigActivity extends Activity {
         if (haptic != t.haptic) {
             haptic = t.haptic;
             Haptic.set(this, haptic);
+        }
+        if (pageSwipe != t.pageSwipe) {
+            pageSwipe = t.pageSwipe;
+            Motion.setSwipe(this, pageSwipe);
+        }
+        if (reduced != t.reduced) {
+            reduced = t.reduced;
+            Motion.setReduced(this, reduced);
         }
         kwText = t.kw;
         if (etKw != null) etKw.setText(t.kw);
@@ -541,6 +551,16 @@ public class ConfigActivity extends Activity {
         b.toggle(body, "Vibration bei Aktionen", haptic, on -> {
             haptic = on;
             Haptic.set(this, on);
+        });
+        if (widgetId == Prefs.APP) {
+            b.toggle(body, "Seiten durch Wischen wechseln", pageSwipe, on -> {
+                pageSwipe = on;
+                Motion.setSwipe(this, on);
+            });
+        }
+        b.toggle(body, "Animationen reduzieren", reduced, on -> {
+            reduced = on;
+            Motion.setReduced(this, on);
         });
         refreshPreview();
         b.pillKeep("Farben …", false, this::showColors);

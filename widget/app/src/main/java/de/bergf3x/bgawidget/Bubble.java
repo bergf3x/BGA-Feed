@@ -264,6 +264,11 @@ final class Bubble {
         box.getLocationOnScreen(l);
         baseX = l[0];
         baseY = l[1];
+        if (Motion.reduced(act)) {
+            // Animationen reduziert: nur kurz einblenden, kein Zoomen/Schieben, Hintergrund bleibt stehen
+            android.animation.ObjectAnimator.ofFloat(box, View.ALPHA, 0f, 1f).setDuration(120).start();
+            return;
+        }
         if (sheet) {
             box.setTranslationY(box.getHeight() + px(24));
             box.animate().translationY(0f).setDuration(OPEN_MS + 40).setInterpolator(ZOOM_IN).start();
@@ -467,7 +472,9 @@ final class Bubble {
         closing = true;
         dim(dimMax, 0f, CLOSE_MS);
         android.view.ViewPropertyAnimator a = box.animate().setDuration(CLOSE_MS).setInterpolator(ZOOM_OUT);
-        if (sheet) {
+        if (Motion.reduced(act)) {
+            a.setDuration(120);
+        } else if (sheet) {
             a.translationY(box.getHeight() + px(24));
         } else if (origin != null && box.getWidth() > 0 && box.getHeight() > 0) {
             a.translationX(origin.left - baseX).translationY(origin.top - baseY)
@@ -479,7 +486,7 @@ final class Bubble {
             act.finish();
             act.overridePendingTransition(0, 0);
         }).start();
-        if (depth != null) depth.animate().scaleX(1f).scaleY(1f).setDuration(CLOSE_MS).setInterpolator(ZOOM_OUT).start();
+        if (depth != null && depth.getScaleX() != 1f) depth.animate().scaleX(1f).scaleY(1f).setDuration(CLOSE_MS).setInterpolator(ZOOM_OUT).start();
     }
 
     TextView text(String s, float sp, int color, boolean bold) {
