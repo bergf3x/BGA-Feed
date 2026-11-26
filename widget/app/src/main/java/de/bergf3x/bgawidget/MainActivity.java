@@ -54,6 +54,10 @@ public class MainActivity extends Activity {
     private LinearLayout page;
     private LinearLayout top;
     private LinearLayout navBar;
+    /** Bereich unter dem Kopf (Liste + Ziehen-Anzeige): wird beim Seitenwischen verschoben. */
+    private FrameLayout pageStack;
+    /** Duenner Strich an der unteren Leiste, nur beim Wischen sichtbar. */
+    private View navLine;
     private float d;
     private boolean light;
     private int tx, soft, line, cardFill, chipOn, chipOnTx, accentBar;
@@ -364,9 +368,292 @@ public class MainActivity extends Activity {
         });
     }
 
+    // ------------------------------------------------------------------ Seitenwischen (News | Wetter | Gemerkt)
+
+    /** Scrollposition je Seite (bleibt beim Wechsel erhalten). */
+    private final int[] pageY = new int[3];
+    /** Letztes Bild jeder Seite: zeigt die Nachbarseite schon waehrend des Wischens. */
+    private final android.graphics.Bitmap[] pageSnap = new android.graphics.Bitmap[3];
+    /** Zuletzt gewaehlte Wetter-Unterseite (Bergwetter/Region). */
+    private static String wxTopic = WeatherCards.BERG;
+    private ImageView peek;
+    private int peekIdx = -1;
+    private float pgX0, pgY0, pgDx;
+    private boolean pgArmed, paging, pgBusy;
+    private long pgBusyAt;
+    private android.view.VelocityTracker pgVt;
+
+    private int pageIdx() {
+        return savedTab() ? 2 : weatherTab() ? 1 : 0;
+    }
+
+    /** Sichtbaren Inhalt der aktuellen Seite als Bild merken (fuer die Vorschau beim naechsten Wischen). */
+    private void snapCurrent() {
+        if (pageStack == null || pageStack.getWidth() <= 0 || pageStack.getHeight() <= 0) return;
+        int i = pageIdx();
+        try {
+            android.graphics.Bitmap bm = pageSnap[i];
+            if (bm == null || bm.getWidth() != pageStack.getWidth() || bm.getHeight() != pageStack.getHeight()) {
+                if (bm != null) bm.recycle();
+                bm = android.graphics.Bitmap.createBitmap(pageStack.getWidth(), pageStack.getHeight(), android.graphics.Bitmap.Config.ARGB_8888);
+                pageSnap[i] = bm;
+            }
+            android.graphics.Canvas c = new android.graphics.Canvas(bm);
+            Drawable bg = windowBg();
+            int[] at = new int[2];
+            pageStack.getLocationInWindow(at);
+            // Fensterverlauf an derselben Stelle wie auf dem Bildschirm
+            bg.setBounds(-at[0], -at[1], getWindow().getDecorView().getWidth() - at[0], getWindow().getDecorView().getHeight() - at[1]);
+            bg.draw(c);
+            float tx0 = scroll.getTranslationX();
+            scroll.setTranslationX(0f);
+            pageStack.draw(c);
+            scroll.setTranslationX(tx0);
+        } catch (Throwable t) {
+            pageSnap[i] = null;
+        }
+    }
+
+    /** Vorschau der Nachbarseite neben der Liste anlegen bzw. austauschen. */
+    private void preparePeek(int idx) {
+        if (pageStack == null) return;
+        if (peek == null) {
+            peek = new ImageView(this);
+            peek.setScaleType(ImageView.ScaleType.FIT_XY);
+            peek.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+        }
+        if (peek.getParent() == null) {
+            pageStack.addView(peek, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        }
+        peek.animate().cancel();
+        peek.setAlpha(1f);
+        if (peekIdx != idx) {
+            peekIdx = idx;
+            android.graphics.Bitmap bm = idx >= 0 ? pageSnap[idx] : null;
+            // noch nie besuchte Seite: leere Flaeche in Fensterfarbe, der Inhalt blendet nach dem Einrasten ein
+            if (bm != null && !bm.isRecycled()) {
+                peek.setImageBitmap(bm);
+                peek.setBackground(null);
+            } else {
+                peek.setImageDrawable(null);
+                peek.setBackground(windowBg());
+            }
+        }
+    }
+
+    private void removePeek() {
+        if (peek != null && peek.getParent() != null) ((ViewGroup) peek.getParent()).removeView(peek);
+        peekIdx = -1;
+    }
+
+    /** Seite um dx verschieben (dx < 0: naechste Seite schiebt von rechts nach). */
+    private void dragTo(float dx) {
+        int cur = pageIdx();
+        float w = Math.max(1, pageStack.getWidth());
+        int n = dx < 0 ? cur + 1 : cur - 1;
+        boolean edge = n < 0 || n > 2;
+        if (edge) {
+            // Gummiband am Rand: wird schnell schwer, keine Nachbarseite
+            float max = w * 0.18f;
+            dx = Math.signum(dx) * max * (1f - (float) Math.exp(-Math.abs(dx) / (max * 1.6f)));
+            if (peek != null) peek.setVisibility(View.GONE);
+        } else {
+            preparePeek(n);
+            peek.setVisibility(View.VISIBLE);
+            peek.setTranslationX(dx + (n > cur ? w : -w));
+        }
+        pgDx = dx;
+        scroll.setTranslationX(dx);
+        setNavPos(Math.max(0f, Math.min(2f, cur - dx / w)));
+    }
+
+    /** Nach dem Loslassen weich einrasten: zur Nachbarseite oder zurueck. */
+    private void settle(boolean commit) {
+        final int cur = pageIdx();
+        final float w = Math.max(1, pageStack.getWidth());
+        final int n = pgDx < 0 ? cur + 1 : cur - 1;
+        final boolean go = commit && n >= 0 && n <= 2;
+        final float from = pgDx, to = go ? (n > cur ? -w : w) : 0f;
+        float dist = Math.abs(to - from) / w;
+        android.animation.ValueAnimator va = android.animation.ValueAnimator.ofFloat(from, to);
+        va.setDuration(Math.max(140, Math.round(260 * Math.min(1f, dist + 0.15f))));
+        va.setInterpolator(new android.view.animation.DecelerateInterpolator(1.6f));
+        va.addUpdateListener(a -> dragTo((float) a.getAnimatedValue()));
+        pgBusy = true;
+        pgBusyAt = System.currentTimeMillis();
+        va.addListener(new android.animation.AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(android.animation.Animator a) {
+                if (go) {
+                    showPage(n);
+                } else {
+                    scroll.setTranslationX(0f);
+                    removePeek();
+                    setNavPos(cur);
+                    pgBusy = false;
+                    hideNavLine();
+                }
+            }
+        });
+        va.start();
+    }
+
+    /** Tipp auf einen Reiter der unteren Leiste: weich zur Seite gleiten (auch ueber eine Seite hinweg). */
+    private void animateTo(final int target) {
+        if (pgBusy || pageStack == null || scroll == null) return;
+        final int cur = pageIdx();
+        if (target == cur) return;
+        snapCurrent();
+        pageY[cur] = scroll.getScrollY();
+        final float w = Math.max(1, pageStack.getWidth());
+        preparePeek(target);
+        peek.setVisibility(View.VISIBLE);
+        final float dir = target > cur ? -1f : 1f;
+        showNavLine();
+        pgBusy = true;
+        pgBusyAt = System.currentTimeMillis();
+        android.animation.ValueAnimator va = android.animation.ValueAnimator.ofFloat(0f, 1f);
+        va.setDuration(280);
+        va.setInterpolator(new android.view.animation.DecelerateInterpolator(1.6f));
+        va.addUpdateListener(a -> {
+            float f = (float) a.getAnimatedValue();
+            scroll.setTranslationX(dir * w * f);
+            peek.setTranslationX(-dir * w * (1f - f));
+            setNavPos(cur + (target - cur) * f);
+        });
+        va.addListener(new android.animation.AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(android.animation.Animator a) {
+                showPage(target);
+            }
+        });
+        va.start();
+    }
+
+    /** Zielseite aufbauen, waehrend die Vorschau sie noch abdeckt; danach Vorschau weich ausblenden. */
+    private void showPage(int target) {
+        int cur = pageIdx();
+        if (cur != target) pageY[cur] = scroll.getScrollY();
+        if (cur == 1) wxTopic = Prefs.topic(this, ID);
+        if (peek != null) peek.setTranslationX(0f);
+        if (target == 2) {
+            Prefs.setFlag(this, "tab_saved", true);
+        } else {
+            Prefs.setFlag(this, "tab_saved", false);
+            String t = target == 1 ? wxTopic : Prefs.newsTopic(this, ID);
+            Prefs.setTopic(this, ID, t);
+        }
+        shownTopic = Prefs.topicRaw(this, ID);
+        scroll.setTranslationX(0f);
+        build();
+        final int y = pageY[target];
+        restore(y);
+        setNavPos(target);
+        hideNavLine();
+        // erst nach dem ersten Bild der neuen Seite die Vorschau wegnehmen: kein Aufblitzen
+        scroll.getViewTreeObserver().addOnPreDrawListener(new android.view.ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                scroll.getViewTreeObserver().removeOnPreDrawListener(this);
+                scroll.post(() -> {
+                    if (peek != null && peek.getParent() != null) {
+                        peek.animate().alpha(0f).setDuration(Bubble.SWAP_MS).withEndAction(() -> {
+                            removePeek();
+                            pgBusy = false;
+                            snapCurrent();
+                        }).start();
+                    } else {
+                        pgBusy = false;
+                    }
+                });
+                return true;
+            }
+        });
+    }
+
+    /** Wischen nur unterhalb der Reiterzeile und in der Liste (nicht im Kopf, nicht auf den Reitern). */
+    private boolean canPage(android.view.MotionEvent e) {
+        if (pageStack == null || pgBusy || pulling || pullLoading) return false;
+        int[] at = new int[2];
+        pageStack.getLocationOnScreen(at);
+        float x = e.getRawX(), y = e.getRawY();
+        if (y < at[1] || y > at[1] + pageStack.getHeight()) return false;
+        if (chipsWrap != null && chipsWrap.isShown()) {
+            int[] c = new int[2];
+            chipsWrap.getLocationOnScreen(c);
+            if (y >= c[1] && y <= c[1] + chipsWrap.getHeight() && x >= c[0] && x <= c[0] + chipsWrap.getWidth()) return false;
+        }
+        return true;
+    }
+
+    /** Gibt true zurueck, wenn das Ereignis vom Seitenwischen verbraucht wurde. */
+    private boolean pageTouch(android.view.MotionEvent e) {
+        int act = e.getActionMasked();
+        if (act == android.view.MotionEvent.ACTION_DOWN) {
+            pgArmed = canPage(e);
+            paging = false;
+            pgX0 = e.getRawX();
+            pgY0 = e.getRawY();
+            if (pgVt != null) pgVt.recycle();
+            pgVt = android.view.VelocityTracker.obtain();
+            pgVt.addMovement(e);
+            return false;
+        }
+        if (pgVt != null) pgVt.addMovement(e);
+        if (act == android.view.MotionEvent.ACTION_MOVE) {
+            float dx = e.getRawX() - pgX0, dy = e.getRawY() - pgY0;
+            if (!paging) {
+                if (!pgArmed || pulling) return false;
+                int slop = android.view.ViewConfiguration.get(this).getScaledTouchSlop();
+                if (Math.abs(dy) > slop && Math.abs(dy) > Math.abs(dx)) {
+                    pgArmed = false; // senkrechtes Scrollen hat Vorrang
+                    return false;
+                }
+                if (Math.abs(dx) <= slop || Math.abs(dx) < Math.abs(dy) * 1.5f) return false;
+                // Gemerkt (letzte Seite): nach links wischen entfernt die Karte wie bisher
+                if (pageIdx() == 2 && dx < 0) {
+                    pgArmed = false;
+                    return false;
+                }
+                paging = true;
+                pullArmed = false;
+                pgX0 += Math.signum(dx) * slop; // ohne Sprung beim Einsetzen
+                snapCurrent();
+                pageY[pageIdx()] = scroll.getScrollY();
+                showNavLine();
+                android.view.MotionEvent c = android.view.MotionEvent.obtain(e);
+                c.setAction(android.view.MotionEvent.ACTION_CANCEL);
+                super.dispatchTouchEvent(c);
+                c.recycle();
+            }
+            dragTo(e.getRawX() - pgX0);
+            return true;
+        }
+        if (act == android.view.MotionEvent.ACTION_UP || act == android.view.MotionEvent.ACTION_CANCEL) {
+            pgArmed = false;
+            if (!paging) return false;
+            paging = false;
+            float vx = 0;
+            if (pgVt != null) {
+                pgVt.computeCurrentVelocity(1000);
+                vx = pgVt.getXVelocity();
+            }
+            boolean fling = Math.abs(vx) > px(500) && Math.signum(vx) == Math.signum(pgDx);
+            boolean commit = act == android.view.MotionEvent.ACTION_UP && (Math.abs(pgDx) > px(70) || fling);
+            if (commit) Haptic.play(pageStack, Haptic.TICK);
+            settle(commit);
+            return true;
+        }
+        return paging;
+    }
+
     @Override
     public boolean dispatchTouchEvent(android.view.MotionEvent e) {
         if (scroll == null || pullBox == null) return super.dispatchTouchEvent(e);
+        // Sicherung: nie laenger als 1,5 s gesperrt
+        if (pgBusy && System.currentTimeMillis() - pgBusyAt > 1500) pgBusy = false;
+        if (pgBusy && e.getActionMasked() == android.view.MotionEvent.ACTION_DOWN) return true; // waehrend des Einrastens nichts antippen
+        if (pageTouch(e)) return true;
         int act = e.getActionMasked();
         if (act == android.view.MotionEvent.ACTION_DOWN) {
             pullStartX = e.getRawX();
@@ -544,6 +831,7 @@ public class MainActivity extends Activity {
             stack.addView(scroll, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             scroll.setOverScrollMode(View.OVER_SCROLL_NEVER);
             stack.addView(buildPull(), new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.TOP));
+            pageStack = stack;
             root.addView(stack, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
             navBar = new LinearLayout(this);
             navBar.setOrientation(LinearLayout.HORIZONTAL);
@@ -553,7 +841,14 @@ public class MainActivity extends Activity {
                 v.setPadding(0, 0, 0, ins.getSystemWindowInsetBottom());
                 return ins;
             });
-            root.addView(navBar, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            // duenner Strich oben an der Leiste: erscheint nur beim Wischen und laeuft stufenlos mit
+            FrameLayout navWrap = new FrameLayout(this);
+            navWrap.addView(navBar, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            navLine = new View(this);
+            navLine.setAlpha(0f);
+            navLine.setElevation(px(7));
+            navWrap.addView(navLine, new FrameLayout.LayoutParams(px(36), Math.max(2, px(2)), Gravity.TOP | Gravity.START));
+            root.addView(navWrap, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             setContentView(root);
         } else {
             keepY = scroll.getScrollY();
@@ -616,44 +911,26 @@ public class MainActivity extends Activity {
         return !savedTab() && Prefs.topic(this, ID).startsWith(Taxonomy.WETTER);
     }
 
-    /** Reiterwechsel: Liste blendet kurz und weich neu ein statt hart umzuspringen. */
-    private void fadeTabs() {
-        if (scroll == null) return;
-        scroll.animate().cancel();
-        scroll.setAlpha(0f);
-        scroll.animate().alpha(1f).setDuration(Bubble.SWAP_MS).setStartDelay(30)
-                .setInterpolator(new android.view.animation.DecelerateInterpolator()).start();
-    }
-
-    private void switchTab(boolean saved, String topic) {
-        Prefs.setFlag(this, "tab_saved", saved);
-        fadeTabs();
-        if (topic == null) {
-            build();
-            if (scroll != null) scroll.post(() -> scroll.scrollTo(0, 0));
-        } else {
-            setTopic(topic);
-        }
-    }
-
-    /** Flache untere Leiste: News | Wetter | Gemerkt (nur der aktive Bereich zeigt seinen Namen). */
+    /** Flache untere Leiste: News | Wetter | Gemerkt. Aktiv = heller und minimal groesser, keine Pille. */
     private void updateNav() {
         if (navBar == null) return;
         navBar.setBackground(navBg());
         navBar.removeAllViews();
-        boolean wx = weatherTab();
-        boolean sv = savedTab();
+        final int cur = pageIdx();
         int n = Prefs.saved(this).length();
-        navBar.addView(navItem(R.drawable.ic_news, "News", !wx && !sv, "", () -> {
-            if (wx || sv) switchTab(false, Prefs.newsTopic(this, ID)); else if (scroll != null) scroll.smoothScrollTo(0, 0);
-        }), new LinearLayout.LayoutParams(0, px(64), 1f));
-        navBar.addView(navItem(R.drawable.ic_cloud, "Wetter", wx, "", () -> {
-            if (!wx) switchTab(false, WeatherCards.BERG); else if (scroll != null) scroll.smoothScrollTo(0, 0);
-        }), new LinearLayout.LayoutParams(0, px(64), 1f));
         badgeAlert = Prefs.savedUnread(this) > 0;
-        navBar.addView(navItem(R.drawable.ic_bookmark, "Gemerkt", sv, n > 0 ? (n > 99 ? "99+" : String.valueOf(n)) : "", () -> {
-            if (!sv) switchTab(true, null); else if (scroll != null) scroll.smoothScrollTo(0, 0);
-        }), new LinearLayout.LayoutParams(0, px(64), 1f));
+        String[] names = {"News", "Wetter", "Gemerkt"};
+        int[] icons = {R.drawable.ic_news, R.drawable.ic_cloud, R.drawable.ic_bookmark};
+        for (int i = 0; i < 3; i++) {
+            final int k = i;
+            String badge = i == 2 && n > 0 ? (n > 99 ? "99+" : String.valueOf(n)) : "";
+            navBar.addView(navItem(i, icons[i], names[i], i == cur, badge, () -> {
+                if (k != pageIdx()) animateTo(k);
+                else if (scroll != null) scroll.smoothScrollTo(0, 0);
+            }), new LinearLayout.LayoutParams(0, px(64), 1f));
+        }
+        if (navLine != null) navLine.setBackground(shape(tx, 1, 0));
+        setNavPos(cur);
     }
 
     /** Untere Leiste: Fensterfarbe der App, oben eine feine helle Kante. */
@@ -665,23 +942,18 @@ public class MainActivity extends Activity {
         return l;
     }
 
-    private View navItem(int icon, String label, boolean on, String badge, final Runnable click) {
+    private final ImageView[] navIcon = new ImageView[3];
+    private final TextView[] navLab = new TextView[3];
+
+    private View navItem(int idx, int icon, String label, boolean on, String badge, final Runnable click) {
         LinearLayout it = new LinearLayout(this);
         it.setOrientation(LinearLayout.VERTICAL);
         it.setGravity(Gravity.CENTER);
         ImageView iv = new ImageView(this);
         iv.setImageResource(icon);
-        iv.setColorFilter(on ? chipOnTx : soft);
         android.widget.FrameLayout ifl = new android.widget.FrameLayout(this);
         ifl.setClipChildren(false);
-        if (on) {
-            // gewaehlter Reiter: erhabene Pille in Akzentfarbe hinter dem Symbol
-            iv.setBackground(Depth.raised(Depth.blend(chipOn, baseColor()), px(16), d, light));
-            iv.setPadding(px(18), px(5), px(18), px(7));
-            ifl.addView(iv, new android.widget.FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        } else {
-            ifl.addView(iv, new android.widget.FrameLayout.LayoutParams(px(24), px(24), Gravity.CENTER));
-        }
+        ifl.addView(iv, new android.widget.FrameLayout.LayoutParams(px(24), px(24), Gravity.CENTER));
         if (!badge.isEmpty()) {
             TextView b = text(badge, 11, 0xFFFFFFFF, true);
             b.setGravity(Gravity.CENTER);
@@ -695,23 +967,66 @@ public class MainActivity extends Activity {
             b.setBackground(bg);
             android.widget.FrameLayout.LayoutParams bp = new android.widget.FrameLayout.LayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.TOP | Gravity.END);
-            bp.rightMargin = on ? px(-2) : px(-8);
-            bp.topMargin = on ? px(-6) : px(-8);
+            bp.rightMargin = px(-8);
+            bp.topMargin = px(-8);
             ifl.addView(b, bp);
         }
         it.setClipChildren(false);
         it.addView(ifl, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        LinearLayout lab = new LinearLayout(this);
-        lab.setOrientation(LinearLayout.HORIZONTAL);
-        lab.setGravity(Gravity.CENTER);
-        lab.addView(text(label, 12, on ? tx : soft, on));
-        it.addView(lab, lp(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 2, 0, 0));
+        TextView lab = text(label, 12, soft, false);
+        it.addView(lab, lp(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 3, 0, 0));
+        navIcon[idx] = iv;
+        navLab[idx] = lab;
         it.setContentDescription(label + (on ? ", ausgewählt" : "") + (badge.isEmpty() ? "" : ", " + badge));
         it.setOnClickListener(v -> {
             Haptic.play(v, Haptic.TICK);
             click.run();
         });
         return it;
+    }
+
+    /** Farbe zwischen zwei ARGB-Werten (t = 0..1). */
+    private static int blendArgb(int a, int b, float t) {
+        int aa = a >>> 24, ar = (a >> 16) & 255, ag = (a >> 8) & 255, ab = a & 255;
+        int ba = b >>> 24, br = (b >> 16) & 255, bg = (b >> 8) & 255, bb = b & 255;
+        return (Math.round(aa + (ba - aa) * t) << 24) | (Math.round(ar + (br - ar) * t) << 16)
+                | (Math.round(ag + (bg - ag) * t) << 8) | Math.round(ab + (bb - ab) * t);
+    }
+
+    /**
+     * Stellung der unteren Leiste (0 = News, 1 = Wetter, 2 = Gemerkt, stufenlos dazwischen):
+     * Symbol und Text werden nach Abstand heller, das Symbol bis 1,1fach groesser; der Strich laeuft mit.
+     */
+    private void setNavPos(float pos) {
+        for (int i = 0; i < 3; i++) {
+            if (navIcon[i] == null) continue;
+            float t = Math.max(0f, Math.min(1f, 1f - Math.abs(pos - i)));
+            int c = blendArgb(NAV_OFF, tx, t);
+            navIcon[i].setColorFilter(c);
+            navIcon[i].setScaleX(1f + 0.1f * t);
+            navIcon[i].setScaleY(1f + 0.1f * t);
+            navLab[i].setTextColor(c);
+        }
+        if (navLine != null && navBar != null && navBar.getWidth() > 0) {
+            float cell = navBar.getWidth() / 3f;
+            navLine.setTranslationX(cell * (pos + 0.5f) - navLine.getWidth() / 2f);
+        }
+    }
+
+    /** Inaktive Reiter der unteren Leiste: grau. */
+    private static final int NAV_OFF = 0xFF9AA2AD;
+
+    private void showNavLine() {
+        if (navLine == null) return;
+        navLine.animate().cancel();
+        navLine.animate().alpha(1f).setStartDelay(0).setDuration(160).start();
+    }
+
+    private void hideNavLine() {
+        if (navLine == null) return;
+        navLine.animate().cancel();
+        navLine.animate().alpha(0f).setStartDelay(220).setDuration(380)
+                .setInterpolator(new android.view.animation.DecelerateInterpolator()).start();
     }
 
     // ------------------------------------------------------------------ Bausteine
@@ -799,6 +1114,20 @@ public class MainActivity extends Activity {
             android.widget.ProgressBar pb = new android.widget.ProgressBar(this);
             pb.setIndeterminateTintList(ColorStateList.valueOf(tx));
             row.addView(pb, lp(24, 24, 0, 0, 8, 0));
+        }
+        if (!savedTab() && !weatherTab()) {
+            // Abo-Schloss: offen = Abo-Artikel sichtbar, geschlossen = ausgeblendet
+            final int ps = Prefs.plusState(this, ID);
+            ImageView lock = iconButton(ps == 0 ? R.drawable.ic_lock : R.drawable.ic_lock_open,
+                    ps == 0 ? "Abo-Artikel ausgeblendet, antippen zum Anzeigen" : "Abo-Artikel sichtbar, antippen zum Ausblenden", () -> {
+                        Prefs.setPlusAll(this, ID, ps != 1);
+                        Haptic.play(scroll, Haptic.TICK);
+                        android.widget.Toast.makeText(this, ps != 1 ? "Abo-Artikel werden angezeigt" : "Abo-Artikel sind ausgeblendet",
+                                android.widget.Toast.LENGTH_SHORT).show();
+                        build();
+                    });
+            if (ps == 0) lock.setAlpha(0.6f);
+            row.addView(lock, lp(40, 40, 0, 0, 8, 0));
         }
         row.addView(iconButton(R.drawable.ic_refresh, "Aktualisieren", () -> sync(true)), lp(40, 40, 0, 0, 8, 0));
         row.addView(iconButton(R.drawable.ic_tune, "Einstellungen", () -> open(ConfigActivity.class)), lp(40, 40, 0, 0, 0, 0));
@@ -1075,35 +1404,6 @@ public class MainActivity extends Activity {
         String topic = Prefs.topic(this, ID);
         // Gespeicherte Auswahl bleibt erhalten, auch wenn das Thema gerade keine Artikel hat (z. B. Abo aus, Neuabruf)
         chips(topics, topic);
-        markAllBar();
-    }
-
-    /** Leiste "n ungelesen · Alle als gelesen markieren": nur sichtbar, solange es Neues gibt. */
-    private void markAllBar() {
-        if (!warmed || !hasSeen) return;
-        final int n = ListService.newItems(this, ID).size();
-        if (n == 0) return;
-        LinearLayout bar = new LinearLayout(this);
-        bar.setOrientation(LinearLayout.HORIZONTAL);
-        bar.setGravity(Gravity.CENTER_VERTICAL);
-        bar.setPadding(px(14), px(4), px(4), px(4));
-        press(bar, cardFill, 14, line);
-        TextView cnt = text(n + " ungelesen", 13, soft, false);
-        cnt.setSingleLine(true);
-        cnt.setEllipsize(android.text.TextUtils.TruncateAt.END);
-        bar.addView(cnt, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
-        TextView act = text("Alle als gelesen markieren", 13, chipOnTx, true);
-        act.setPadding(px(12), px(8), px(12), px(8));
-        act.setMinHeight(px(36));
-        act.setGravity(Gravity.CENTER);
-        press(act, chipOn, 11, 0);
-        act.setContentDescription("Alle " + n + " ungelesenen Nachrichten als gelesen markieren");
-        act.setOnClickListener(v -> {
-            Haptic.play(v, Haptic.CONFIRM);
-            ListService.markAllRead(this);
-        });
-        bar.addView(act);
-        page.addView(bar, lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 10));
     }
 
     /** Nachrichtenliste (scrollt). */
@@ -1202,14 +1502,9 @@ public class MainActivity extends Activity {
         foldSection(Taxonomy.WORLD, world, read, kw);
     }
 
-    /** Gemerkte Karte: nach rechts wischen oeffnet den Artikel, nach links entfernt ihn aus Gemerkt. */
+    /** Gemerkte Karte: nach links wischen entfernt sie aus Gemerkt; nach rechts wechselt die Seite zurueck zu Wetter. */
     private View swipeCard(final FeedItem f, final View card) {
         final FrameLayout fl = new FrameLayout(this);
-        final TextView open = text("Öffnen", 13, 0xFFFFFFFF, true);
-        open.setGravity(Gravity.CENTER_VERTICAL | Gravity.START);
-        open.setPadding(px(18), 0, 0, 0);
-        open.setBackground(shape(0xFF2F6FE0, 16, 0));
-        open.setVisibility(View.INVISIBLE);
         final TextView del = text("Entfernen", 13, 0xFFFFFFFF, true);
         del.setGravity(Gravity.CENTER_VERTICAL | Gravity.END);
         del.setPadding(0, 0, px(18), 0);
@@ -1217,7 +1512,6 @@ public class MainActivity extends Activity {
         del.setVisibility(View.INVISIBLE);
         ViewGroup.LayoutParams outer = card.getLayoutParams();
         card.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        fl.addView(open, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         fl.addView(del, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         fl.addView(card);
         fl.setLayoutParams(outer);
@@ -1236,14 +1530,13 @@ public class MainActivity extends Activity {
                         return false;
                     case android.view.MotionEvent.ACTION_MOVE: {
                         float dx = e.getRawX() - x0, dy = e.getRawY() - y0;
-                        if (!sw && Math.abs(dx) > slop && Math.abs(dx) > Math.abs(dy) * 1.5f) {
+                        if (!sw && dx < -slop && Math.abs(dx) > Math.abs(dy) * 1.5f) {
                             sw = true;
                             v.getParent().requestDisallowInterceptTouchEvent(true);
                             v.setPressed(false);
                         }
                         if (!sw) return false;
-                        v.setTranslationX(dx);
-                        open.setVisibility(dx > 0 ? View.VISIBLE : View.INVISIBLE);
+                        v.setTranslationX(Math.min(0f, dx));
                         del.setVisibility(dx < 0 ? View.VISIBLE : View.INVISIBLE);
                         return true;
                     }
@@ -1259,14 +1552,8 @@ public class MainActivity extends Activity {
                                 Prefs.toggleSaved(MainActivity.this, f.title, "", "", f.link);
                                 build();
                             }).start();
-                        } else if (e.getActionMasked() == android.view.MotionEvent.ACTION_UP && dx > w * 0.35f) {
-                            v.animate().translationX(0).setDuration(140).withEndAction(() -> {
-                                open.setVisibility(View.INVISIBLE);
-                                v.performClick();
-                            }).start();
                         } else {
                             v.animate().translationX(0).setDuration(140).withEndAction(() -> {
-                                open.setVisibility(View.INVISIBLE);
                                 del.setVisibility(View.INVISIBLE);
                             }).start();
                         }
@@ -1415,16 +1702,18 @@ public class MainActivity extends Activity {
             page.addView(wh, lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 10));
             return;
         }
+        // Zeitungen stehen nicht als Reiter da, sondern in der Quellen-Auswahl ("m Quellen ▾")
         List<String> parents = new ArrayList<>();
-        for (String t : topics) if (t.indexOf('/') < 0 && !t.equals(Taxonomy.OUT) && !t.equals(Taxonomy.WETTER)) parents.add(t);
-        if (parents.isEmpty()) return;
+        for (String t : topics) if (t.indexOf('/') < 0 && !t.equals(Taxonomy.OUT) && !t.equals(Taxonomy.WETTER) && !t.equals(Taxonomy.PAPERS)) parents.add(t);
         String curParent = topic.isEmpty() ? "" : topic.split("/")[0];
+        newTop = warmed ? ListService.newTopics(this, ID) : new java.util.HashSet<String>();
+        LinearLayout box = new LinearLayout(this);
+        box.setOrientation(LinearLayout.VERTICAL);
+
+        // 1. ruhige Text-Reiter in voller Breite, aktiver unterstrichen, am Rand weich auslaufend
         LinearLayout row = new LinearLayout(this);
         row.setOrientation(LinearLayout.HORIZONTAL);
-        newTop = warmed ? ListService.newTopics(this, ID) : new java.util.HashSet<String>();
-        int fresh = warmed ? ListService.freshUnread(this, ID) : 0;
-        View allChip = chip("Alle", curParent.isEmpty(), () -> setTopic(""));
-        row.addView(newTop.isEmpty() ? allChip : withDot(allChip));
+        row.addView(tab("Alle", curParent.isEmpty(), !newTop.isEmpty(), () -> setTopic("")));
         for (final String p : parents) {
             boolean hasSubs = false;
             for (String t : topics) if (t.startsWith(p + "/")) hasSubs = true;
@@ -1433,7 +1722,7 @@ public class MainActivity extends Activity {
             if (on && (topic.indexOf('/') >= 0 || Prefs.topicSel(this, ID).size() > 1)) label = Prefs.topicLabel(this, ID);
             if (hasSubs) label = label + " ▾";
             final boolean subs = hasSubs;
-            View pc = chip(label, on, () -> {
+            row.addView(tab(label, on, newTop.contains(p), () -> {
                 if (subs) {
                     Intent in = new Intent(this, TopicActivity.class);
                     in.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, ID);
@@ -1443,55 +1732,97 @@ public class MainActivity extends Activity {
                 } else {
                     setTopic(p);
                 }
-            });
-            row.addView(newTop.contains(p) ? withDot(pc) : pc);
+            }));
         }
-        final int ps = Prefs.plusState(this, ID);
-        int pn = ps == 0 ? 0 : ListService.plusCount(ID);
-        String aboLabel = (ps == 1 ? "Abo an" : ps == 0 ? "Abo aus" : "Abo teils") + (pn > 0 ? " · " + pn : "");
-        TextView abo = (TextView) chip(aboLabel, ps != 0, () -> {
-            Prefs.setPlusAll(this, ID, ps != 1);
-            build();
-        });
-        Drawable lock = tinted(ps == 0 ? R.drawable.ic_lock_open : R.drawable.ic_lock, 16);
-        lock.setTint(ps != 0 ? chipOnTx : tx);
-        abo.setCompoundDrawables(lock, null, null, null);
-        abo.setCompoundDrawablePadding(px(6));
-        abo.setContentDescription(aboLabel + ", Abo-Artikel " + (ps == 0 ? "ausgeblendet" : "sichtbar") + ", antippen zum Umschalten");
         HorizontalScrollView hs = new HorizontalScrollView(this);
         hs.setHorizontalScrollBarEnabled(false);
-        // Themen blenden am Rand weich aus, statt hart abgeschnitten zu werden
         hs.setHorizontalFadingEdgeEnabled(true);
-        hs.setFadingEdgeLength(px(28));
+        hs.setFadingEdgeLength(px(32));
         hs.setOverScrollMode(View.OVER_SCROLL_NEVER);
         hs.addView(row);
-        // Abo-Schalter steht fest links, nur die Themen daneben scrollen
-        LinearLayout fixed = new LinearLayout(this);
-        fixed.setOrientation(LinearLayout.HORIZONTAL);
-        fixed.setGravity(Gravity.CENTER_VERTICAL);
-        fixed.addView(abo);
-        fixed.addView(hs, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
-        page.addView(fixed, lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 10));
+        box.addView(hs, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        View rule = new View(this);
+        rule.setBackgroundColor(line);
+        box.addView(rule, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.max(1, px(1))));
+
+        // 2. "n ungelesen · m Quellen ▾" links (oeffnet die Quellen-Auswahl), "Alle als gelesen markieren" rechts
+        final int unread = warmed && hasSeen ? ListService.newItems(this, ID).size() : 0;
+        LinearLayout info = new LinearLayout(this);
+        info.setOrientation(LinearLayout.HORIZONTAL);
+        info.setGravity(Gravity.CENTER_VERTICAL);
+        boolean papersOn = topic.startsWith(Taxonomy.PAPERS);
+        TextView src = text(ListService.sourceLine(this, ID, unread), 12.5f, papersOn ? tx : soft, papersOn);
+        src.setSingleLine(true);
+        src.setEllipsize(android.text.TextUtils.TruncateAt.END);
+        src.setPadding(px(4), px(9), px(8), px(9));
+        src.setMinHeight(px(40));
+        src.setGravity(Gravity.CENTER_VERTICAL);
+        press(src, 0, 10, 0);
+        src.setContentDescription(src.getText().toString().replace(" ▾", "") + ", Quellen auswählen");
+        src.setOnClickListener(v -> {
+            Haptic.play(v, Haptic.TICK);
+            Intent in = new Intent(this, TopicActivity.class);
+            in.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, ID);
+            in.putExtra("topic", Taxonomy.PAPERS);
+            in.putExtra("menu", true);
+            in.putExtra("sheet", true);
+            startActivity(in);
+        });
+        info.addView(src, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+        if (unread > 0) {
+            TextView mark = text("Alle als gelesen markieren", 12.5f, tx, false);
+            mark.setPadding(px(8), px(9), px(4), px(9));
+            mark.setMinHeight(px(40));
+            mark.setGravity(Gravity.CENTER_VERTICAL);
+            press(mark, 0, 10, 0);
+            mark.setContentDescription("Alle " + unread + " ungelesenen Nachrichten als gelesen markieren");
+            mark.setOnClickListener(v -> {
+                Haptic.play(v, Haptic.CONFIRM);
+                ListService.markAllRead(this);
+            });
+            info.addView(mark);
+        }
+        box.addView(info, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        page.addView(box, lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 4));
     }
 
-    /** Roter Punkt in der oberen rechten Ecke (neue Meldungen in diesem Thema). */
-    private View withDot(View chip) {
-        android.widget.FrameLayout fl = new android.widget.FrameLayout(this);
-        fl.setLayoutParams(chip.getLayoutParams());
-        chip.setLayoutParams(new android.widget.FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        fl.addView(chip);
-        View dot = new View(this);
-        GradientDrawable g = new GradientDrawable();
-        g.setShape(GradientDrawable.OVAL);
-        g.setColor(0xFFE53935);
-        g.setStroke(Math.max(2, px(2)), baseColor());
-        dot.setBackground(g);
-        android.widget.FrameLayout.LayoutParams dp = new android.widget.FrameLayout.LayoutParams(px(13), px(13), Gravity.TOP | Gravity.END);
-        dp.topMargin = px(2);
-        dp.rightMargin = px(2);
-        fl.addView(dot, dp);
-        fl.setContentDescription("Neue Meldungen");
-        return fl;
+    /** Text-Reiter: aktiv hell mit Strich darunter, sonst gedaempft; roter Punkt nur bei Ungelesenem. */
+    private View tab(String label, boolean on, boolean dot, final Runnable click) {
+        LinearLayout t = new LinearLayout(this);
+        t.setOrientation(LinearLayout.VERTICAL);
+        t.setGravity(Gravity.CENTER_HORIZONTAL);
+        LinearLayout lr = new LinearLayout(this);
+        lr.setOrientation(LinearLayout.HORIZONTAL);
+        lr.setGravity(Gravity.CENTER_VERTICAL);
+        TextView tv = text(label, 14.5f, on ? tx : soft, on);
+        lr.addView(tv);
+        if (dot) {
+            View d0 = new View(this);
+            GradientDrawable g = new GradientDrawable();
+            g.setShape(GradientDrawable.OVAL);
+            g.setColor(0xFFE53935);
+            d0.setBackground(g);
+            LinearLayout.LayoutParams dl = new LinearLayout.LayoutParams(px(6), px(6));
+            dl.leftMargin = px(4);
+            dl.bottomMargin = px(8);
+            lr.addView(d0, dl);
+        }
+        t.addView(lr, lp(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 8, 0, 7));
+        View ul = new View(this);
+        ul.setBackground(shape(on ? chipOn : 0, 1, 0));
+        ul.setVisibility(on ? View.VISIBLE : View.INVISIBLE);
+        t.addView(ul, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.max(2, px(2))));
+        t.setPadding(px(10), 0, px(10), 0);
+        t.setMinimumHeight(px(40));
+        t.setClickable(true);
+        t.setBackground(new RippleDrawable(ColorStateList.valueOf(light ? 0x22000000 : 0x33FFFFFF), null, shape(0xFFFFFFFF, 10, 0)));
+        String spoken = label.replace(" ▾", "") + (on ? ", ausgewählt" : "") + (dot ? ", neue Meldungen" : "") + (label.endsWith("▾") ? ", öffnet Auswahl" : "");
+        t.setContentDescription(spoken);
+        t.setOnClickListener(v -> {
+            Haptic.play(v, Haptic.TICK);
+            click.run();
+        });
+        return t;
     }
 
     private android.graphics.drawable.Drawable tinted(int res, int dp) {
@@ -1502,6 +1833,7 @@ public class MainActivity extends Activity {
     }
 
     private void setTopic(String t) {
+        if (t.startsWith(Taxonomy.WETTER)) wxTopic = t;
         Prefs.setTopic(this, ID, t);
         shownTopic = Prefs.topicRaw(this, ID);
         build();

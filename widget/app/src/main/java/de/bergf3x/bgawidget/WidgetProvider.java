@@ -24,6 +24,7 @@ public class WidgetProvider extends AppWidgetProvider {
     static final String ACTION_PINNED = "de.bergf3x.bgawidget.PINNED";
     static final String ACTION_TOGGLE_WX = "de.bergf3x.bgawidget.TOGGLE_WX";
     static final String ACTION_TOGGLE_ABO = "de.bergf3x.bgawidget.TOGGLE_ABO";
+    static final String ACTION_MARK_ALL = "de.bergf3x.bgawidget.MARK_ALL";
     private static final int[] P = {R.id.p0, R.id.p1, R.id.p2, R.id.p3, R.id.p4};
     private static final int[] P_ON = {R.id.p0_on, R.id.p1_on, R.id.p2_on, R.id.p3_on, R.id.p4_on};
     private static final int[] P_DOT = {R.id.p0_dot, R.id.p1_dot, R.id.p2_dot, R.id.p3_dot, R.id.p4_dot};
@@ -79,6 +80,10 @@ public class WidgetProvider extends AppWidgetProvider {
                         android.widget.Toast.LENGTH_SHORT).show();
                 refresh(ctx, id);
             }
+            return;
+        }
+        if (ACTION_MARK_ALL.equals(action)) {
+            ListService.markAllRead(ctx);
             return;
         }
         if (ACTION_SET_SHOWS.equals(action)) {
@@ -141,7 +146,8 @@ public class WidgetProvider extends AppWidgetProvider {
             parents.add(WeatherCards.BERG);
             parents.add(WeatherCards.REGION);
         } else {
-            for (String t : topics) if (t.indexOf('/') < 0 && !t.equals(Taxonomy.OUT) && !t.equals(Taxonomy.WETTER)) parents.add(t);
+            // Zeitungen stehen nicht als Reiter da, sondern in der Quellen-Zeile darunter
+            for (String t : topics) if (t.indexOf('/') < 0 && !t.equals(Taxonomy.OUT) && !t.equals(Taxonomy.WETTER) && !t.equals(Taxonomy.PAPERS)) parents.add(t);
         }
         String curParent = topic.isEmpty() ? "" : topic.split("/")[0];
         java.util.Set<String> newTop = wxm ? new java.util.HashSet<String>() : ListService.newTopics(ctx, id);
@@ -154,27 +160,40 @@ public class WidgetProvider extends AppWidgetProvider {
             boolean on = wxm ? value.equals(topic) : value.equals(curParent);
             boolean hasSubs = false;
             if (!wxm) for (String t : topics) if (t.startsWith(value + "/") && !value.isEmpty()) hasSubs = true;
-            int fresh = !wxm && i == 0 ? ListService.freshUnread(ctx, id) : 0;
             String label = wxm ? (i == 0 ? "Bergwetter" : "Region") : (i == 0 ? "Alle" : value);
             if (!wxm && on && (topic.indexOf('/') >= 0 || Prefs.topicSel(ctx, id).size() > 1)) label = Prefs.topicLabel(ctx, id);
             if (hasSubs) label = label + " ▾";
             rv.setViewVisibility(P[i], android.view.View.VISIBLE);
             rv.setViewVisibility(P_DOT[i], !wxm && (i == 0 ? !newTop.isEmpty() : newTop.contains(value)) ? android.view.View.VISIBLE : android.view.View.GONE);
             rv.setTextViewText(P_T[i], Style.font(ctx, id, label));
-            rv.setInt(P[i], "setBackgroundResource", Pal.chipBg(ctx, id));
+            // ruhige Text-Reiter: aktiver Reiter hell und unterstrichen, die anderen gedaempft
+            rv.setInt(P[i], "setBackgroundResource", 0);
             int acc = Prefs.accent(ctx, id);
             if (acc >= 0) rv.setInt(P_ON[i], "setColorFilter", 0xFF000000 | acc);
             else Pal.pair(ctx, id, rv, P_ON[i], "setColorFilter", 0xFF2A2F36, 0xFFF2F2F2);
             rv.setViewVisibility(P_ON[i], on ? android.view.View.VISIBLE : android.view.View.GONE);
-            if (on && acc >= 0) rv.setTextColor(P_T[i], Pal.onColor(acc));
-            else if (on) Pal.textPair(ctx, id, rv, P_T[i], 0xFFFFFFFF, dark);
-            else Pal.text(ctx, id, rv, P_T[i], -1, 1f);
+            Pal.text(ctx, id, rv, P_T[i], -1, on ? 1f : 0.6f);
             rv.setOnClickPendingIntent(P[i], hasSubs
                     ? topicPending(ctx, id, 100 + i, value, true, immutable)
                     : topicBroadcast(ctx, id, 100 + i, value, immutable));
         }
         if (shows == 2) rv.setViewVisibility(R.id.row_p, android.view.View.GONE);
-        rv.setViewVisibility(R.id.btn_pabo, shows == 2 || !pl.chips ? android.view.View.GONE : android.view.View.VISIBLE);
+        // Zeile unter den Reitern: "n ungelesen · m Quellen ▾" (oeffnet die Zeitungsauswahl), rechts "Alle als gelesen markieren"
+        boolean newsRow = !wxm && shows == 0 && pl.chips;
+        rv.setViewVisibility(R.id.row_f, newsRow ? android.view.View.VISIBLE : android.view.View.GONE);
+        if (newsRow) {
+            int unread = ListService.newItems(ctx, id).size();
+            boolean papersOn = topic.startsWith(Taxonomy.PAPERS);
+            rv.setTextViewText(R.id.f_info, Style.font(ctx, id, ListService.sourceLine(ctx, id, unread)));
+            Pal.text(ctx, id, rv, R.id.f_info, -1, papersOn ? 1f : 0.7f);
+            rv.setOnClickPendingIntent(R.id.f_info, sourcesPending(ctx, id, immutable));
+            rv.setViewVisibility(R.id.f_mark, unread > 0 ? android.view.View.VISIBLE : android.view.View.GONE);
+            Pal.text(ctx, id, rv, R.id.f_mark, -1, 1f);
+            Intent mi = new Intent(ctx, WidgetProvider.class).setAction(ACTION_MARK_ALL)
+                    .setData(Uri.parse("bgawidget://markall/" + id));
+            rv.setOnClickPendingIntent(R.id.f_mark, PendingIntent.getBroadcast(ctx, id * 1000 + 930, mi,
+                    PendingIntent.FLAG_UPDATE_CURRENT | immutable));
+        }
         // Untere Leiste ist immer da (das Widget ist mindestens 400 dp hoch): News | Wetter | Gemerkt mit Zaehler
         rv.setViewVisibility(R.id.nav_row, android.view.View.VISIBLE);
         int savedN = 0;
@@ -190,9 +209,9 @@ public class WidgetProvider extends AppWidgetProvider {
         {
             int[] nv = {R.id.nav_news, R.id.nav_wx, R.id.nav_saved};
             for (int k = 0; k < 3; k++) {
-                Pal.text(ctx, id, rv, nv[k], -1, k == shows ? 1f : 0.55f);
-                // gewaehlter Reiter: erhabene Pille
-                rv.setInt(nv[k], "setBackgroundResource", k == shows ? (Prefs.isLight(ctx, id) ? R.drawable.nav_on_light : R.drawable.nav_on) : 0);
+                // gewaehlter Reiter: nur heller Text, keine Pille (wie in der App)
+                Pal.text(ctx, id, rv, nv[k], -1, k == shows ? 1f : 0.5f);
+                rv.setInt(nv[k], "setBackgroundResource", 0);
                 Intent ni = new Intent(ctx, WidgetProvider.class).setAction(ACTION_SET_SHOWS);
                 ni.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id);
                 ni.putExtra("shows", k);
@@ -391,12 +410,13 @@ public class WidgetProvider extends AppWidgetProvider {
         rv.setTextViewText(R.id.w_sub, sub);
         if (ok) Pal.text(ctx, id, rv, R.id.w_sub, -1, 0.7f); else rv.setTextColor(R.id.w_sub, 0xFFFFB74D);
         rv.setViewVisibility(R.id.w_sub, !sub.isEmpty() ? android.view.View.VISIBLE : android.view.View.GONE);
-        rv.setViewVisibility(R.id.btn_habo, android.view.View.GONE);
         rv.setViewVisibility(R.id.btn_hsaved, android.view.View.GONE);
         rv.setViewVisibility(R.id.btn_hcam, android.view.View.GONE);
         rv.setViewVisibility(R.id.w_stand, android.view.View.GONE);
-        // Abo-Schloss links vor den Themen, Webcams rechts in der unteren Leiste
-        aboButton(ctx, rv, id, R.id.btn_pabo, 0xA0, -1);
+        // Abo-Schloss in der Kopfzeile neben Aktualisieren und Einstellungen (nur bei Nachrichten), Webcams unten rechts
+        int shown = Prefs.widgetShows(ctx, id);
+        rv.setViewVisibility(R.id.btn_habo, shown == 0 ? android.view.View.VISIBLE : android.view.View.GONE);
+        aboButton(ctx, rv, id, R.id.btn_habo, 0xA0, -1);
         rv.setOnClickPendingIntent(R.id.nav_cam, activity(ctx, WebcamActivity.class, id, 903, "webcam"));
         Pal.filter(ctx, id, rv, R.id.nav_cam, -1);
         rv.setInt(R.id.nav_cam, "setImageAlpha", Prefs.alpha(Prefs.text(ctx, id)));
@@ -446,10 +466,10 @@ public class WidgetProvider extends AppWidgetProvider {
         }
     }
 
-    /** Abo-Schalter im Widget: geschlossenes Schloss = Abo-Artikel sichtbar, offenes (blasser) = ausgeblendet. */
+    /** Abo-Schalter: offenes Schloss = Abo-Artikel sichtbar, geschlossenes (blasser) = ausgeblendet. Gleich in der App. */
     private static void aboButton(Context ctx, RemoteViews rv, int id, int viewId, int dimAlpha, int override) {
         int ps = Prefs.plusState(ctx, id);
-        rv.setImageViewResource(viewId, ps == 0 ? R.drawable.ic_lock_open : R.drawable.ic_lock);
+        rv.setImageViewResource(viewId, ps == 0 ? R.drawable.ic_lock : R.drawable.ic_lock_open);
         Pal.filter(ctx, id, rv, viewId, override);
         int full = Prefs.alpha(Prefs.text(ctx, id));
         rv.setInt(viewId, "setImageAlpha", ps == 0 ? Math.min(full, dimAlpha) : full);
@@ -507,6 +527,17 @@ public class WidgetProvider extends AppWidgetProvider {
 
         mgr.updateAppWidget(id, rv);
         mgr.notifyAppWidgetViewDataChanged(id, R.id.list);
+    }
+
+    /** Quellen-Auswahl (Zeitungen mit Regionen) als Blatt von unten. */
+    private static PendingIntent sourcesPending(Context ctx, int id, int immutable) {
+        Intent i = new Intent(ctx, TopicActivity.class);
+        i.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id);
+        i.putExtra("topic", Taxonomy.PAPERS);
+        i.putExtra("menu", true);
+        i.putExtra("sheet", true);
+        i.setData(Uri.parse("bgawidget://sources/" + id));
+        return PendingIntent.getActivity(ctx, id * 1000 + 931, i, PendingIntent.FLAG_UPDATE_CURRENT | immutable);
     }
 
     /** Direkt wechselndes Thema ohne Fenster (kein Start-Effekt des Launchers). */

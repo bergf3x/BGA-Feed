@@ -47,6 +47,36 @@ final class Bubble {
     /** Abstand der Blase vom oberen Rand (Anteil der Hoehe). */
     private float topFrac = 0.18f;
 
+    /** Blatt von unten (Quellen-Auswahl): volle Breite, unten angesetzt, faehrt hoch statt aus der Karte zu wachsen. */
+    private boolean sheet;
+
+    void sheet() {
+        sheet = true;
+        origin = null;
+        android.view.ViewGroup.LayoutParams p = box.getLayoutParams();
+        if (p instanceof FrameLayout.LayoutParams) {
+            FrameLayout.LayoutParams f = (FrameLayout.LayoutParams) p;
+            int screenW = act.getResources().getDisplayMetrics().widthPixels;
+            f.width = Math.min(screenW - px(16), px(520));
+            f.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
+            f.topMargin = Math.round(act.getResources().getDisplayMetrics().heightPixels * 0.12f);
+            f.bottomMargin = px(8);
+            box.setLayoutParams(f);
+        }
+        // unten Platz fuer die Gesten-/Navigationsleiste lassen
+        box.setOnApplyWindowInsetsListener((v, ins) -> {
+            android.view.ViewGroup.LayoutParams q = v.getLayoutParams();
+            if (q instanceof FrameLayout.LayoutParams) {
+                int want = px(8) + ins.getSystemWindowInsetBottom();
+                if (((FrameLayout.LayoutParams) q).bottomMargin != want) {
+                    ((FrameLayout.LayoutParams) q).bottomMargin = want;
+                    v.setLayoutParams(q);
+                }
+            }
+            return ins;
+        });
+    }
+
     /** Blase weiter oben beginnen lassen (fuer lange Menues wie die Einstellungen). */
     void high() {
         topFrac = 0.08f;
@@ -234,6 +264,13 @@ final class Bubble {
         box.getLocationOnScreen(l);
         baseX = l[0];
         baseY = l[1];
+        if (sheet) {
+            box.setTranslationY(box.getHeight() + px(24));
+            box.animate().translationY(0f).setDuration(OPEN_MS + 40).setInterpolator(ZOOM_IN).start();
+            android.animation.ObjectAnimator.ofFloat(box, View.ALPHA, 0f, 1f).setDuration(140).start();
+            if (depth != null) depth.animate().scaleX(DEPTH).scaleY(DEPTH).setDuration(OPEN_MS).setInterpolator(ZOOM_IN).start();
+            return;
+        }
         if (origin != null && box.getWidth() > 0 && box.getHeight() > 0) {
             box.setPivotX(0f);
             box.setPivotY(0f);
@@ -430,7 +467,9 @@ final class Bubble {
         closing = true;
         dim(dimMax, 0f, CLOSE_MS);
         android.view.ViewPropertyAnimator a = box.animate().setDuration(CLOSE_MS).setInterpolator(ZOOM_OUT);
-        if (origin != null && box.getWidth() > 0 && box.getHeight() > 0) {
+        if (sheet) {
+            a.translationY(box.getHeight() + px(24));
+        } else if (origin != null && box.getWidth() > 0 && box.getHeight() > 0) {
             a.translationX(origin.left - baseX).translationY(origin.top - baseY)
                     .scaleX(origin.width() / (float) box.getWidth()).scaleY(origin.height() / (float) box.getHeight());
         } else {

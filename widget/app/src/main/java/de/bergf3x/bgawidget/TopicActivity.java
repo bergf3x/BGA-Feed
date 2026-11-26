@@ -61,8 +61,12 @@ public class TopicActivity extends Activity {
             }
         }
         b = new Bubble(this, 300, 8);
-        b.text(parent, 11, b.soft, false).setPadding(b.px(10), b.px(4), b.px(10), b.px(2));
-        b.text("Mehrere Themen wählbar", 11, b.soft, false).setPadding(b.px(10), 0, b.px(10), b.px(6));
+        boolean sources = parent.equals(Taxonomy.PAPERS);
+        if (getIntent().getBooleanExtra("sheet", false)) b.sheet();
+        b.text(sources ? "Quellen" : parent, sources ? 16 : 11, sources ? b.title : b.soft, sources)
+                .setPadding(b.px(10), b.px(4), b.px(10), b.px(2));
+        b.text(sources ? "Zeitungen anhaken, Regionen über ▾ aufklappen" : "Mehrere Themen wählbar", 11, b.soft, false)
+                .setPadding(b.px(10), 0, b.px(10), b.px(6));
         body = b.scrollBox(0.7f);
         render();
         b.space(4);
@@ -93,7 +97,7 @@ public class TopicActivity extends Activity {
     private void render() {
         Bubble.soft(body);
         body.removeAllViews();
-        String all = parent.equals(Taxonomy.PAPERS) ? "Alle Zeitungen gemischt" : "Alles in „" + parent + "“";
+        String all = parent.equals(Taxonomy.PAPERS) ? "Alle Quellen" : "Alles in „" + parent + "“";
         b.row(body, all + " (" + count(parent) + ")", sel.contains(parent), () -> {
             sel.clear();
             sel.add(parent);

@@ -27,13 +27,6 @@ public class PreviewActivity extends Activity {
         String meta = str(in, EXTRA_META);
         String text = str(in, EXTRA_TEXT);
         final String link = str(in, EXTRA_LINK);
-        if (ListService.MARK_ALL.equals(link)) {
-            // Tipp auf "Alle als gelesen markieren" im Widget: nichts anzuzeigen
-            ListService.markAllRead(this);
-            finish();
-            overridePendingTransition(0, 0);
-            return;
-        }
         if (title.isEmpty() && link.isEmpty()) {
             // Tipp auf eine Medien-Ueberschrift im Widget: nichts anzuzeigen
             finish();

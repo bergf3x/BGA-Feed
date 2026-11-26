@@ -44,8 +44,30 @@ public class ListService extends RemoteViewsService {
         return n;
     }
 
-    /** Marker der "Alle als gelesen markieren"-Zeile im Widget. */
-    static final String MARK_ALL = "markall:";
+    /**
+     * Quellen-Zeile unter den Reitern: {gewaehlte Zeitungen, alle Zeitungen}. Ohne Zeitungsauswahl
+     * (oder "Alle Zeitungen") sind beide Zahlen gleich.
+     */
+    static int[] sourceCount(Context ctx, int id) {
+        java.util.Set<String> papers = new java.util.LinkedHashSet<>();
+        String root = Taxonomy.PAPERS + "/";
+        for (String t : Taxonomy.topics(ctx, id)) {
+            if (t.startsWith(root)) papers.add(t.substring(root.length()).split("/")[0]);
+        }
+        java.util.Set<String> picked = new java.util.HashSet<>();
+        for (String[] e : Prefs.topicSel(ctx, id)) {
+            if (e[0].startsWith(root)) picked.add(e[0].substring(root.length()).split("/")[0]);
+        }
+        int total = papers.size();
+        return new int[]{picked.isEmpty() ? total : picked.size(), total};
+    }
+
+    /** Text der Quellen-Zeile, z. B. "3 ungelesen · 2 von 6 Quellen ▾". */
+    static String sourceLine(Context ctx, int id, int unread) {
+        int[] q = sourceCount(ctx, id);
+        String src = q[0] < q[1] ? q[0] + " von " + q[1] + " Quellen ▾" : q[1] + (q[1] == 1 ? " Quelle ▾" : " Quellen ▾");
+        return (unread > 0 ? unread + " ungelesen · " : "") + src;
+    }
 
     /** Alles Aktuelle als gelesen markieren und App sowie Widgets neu zeichnen. */
     static void markAllRead(Context ctx) {
@@ -542,48 +564,12 @@ public class ListService extends RemoteViewsService {
             if (Prefs.widgetShows(ctx, widgetId) == 2) return savedItems(ctx);
             List<FeedItem> all = loadItems(ctx, widgetId, online, res);
             List<FeedItem> list = grouped(ctx, new ArrayList<>(all.subList(0, Math.min(all.size(), 60))));
-            // gleiche Leiste wie in der App: "n ungelesen" + "Alle als gelesen markieren", nur solange es Neues gibt
-            int fresh = hasSeen ? newItems(ctx, widgetId).size() : 0;
-            if (fresh > 0) {
-                FeedItem bar = new FeedItem();
-                bar.header = true;
-                bar.link = MARK_ALL;
-                bar.title = String.valueOf(fresh);
-                list.add(0, bar);
-            }
             return list;
         }
 
         @Override
         public void onDestroy() {
             items.clear();
-        }
-
-        /** Erste Zeile der Liste: Anzahl Ungelesener und Knopf "Alle als gelesen markieren". */
-        private RemoteViews markAllView(FeedItem it) {
-            RemoteViews rv = new RemoteViews(ctx.getPackageName(), R.layout.widget_item);
-            rv.setInt(R.id.item_card, "setBackgroundResource", Pal.cardBg(ctx, widgetId));
-            rv.setViewVisibility(R.id.item_accent, android.view.View.GONE);
-            rv.setViewVisibility(R.id.item_meta, android.view.View.VISIBLE);
-            rv.setViewVisibility(R.id.item_dot, android.view.View.GONE);
-            rv.setViewVisibility(R.id.item_plus, android.view.View.GONE);
-            rv.setViewVisibility(R.id.item_thumb, android.view.View.GONE);
-            rv.setImageViewBitmap(R.id.item_thumb, null);
-            rv.setTextViewText(R.id.item_title, Style.font(ctx, widgetId, "\u2713 Alle als gelesen markieren"));
-            rv.setTextViewTextSize(R.id.item_title, android.util.TypedValue.COMPLEX_UNIT_SP, Style.titleSp(sizeIdx));
-            Pal.text(ctx, widgetId, rv, R.id.item_title, -1, 1f);
-            rv.setTextViewTextSize(R.id.item_meta, android.util.TypedValue.COMPLEX_UNIT_SP, Style.metaSp(sizeIdx));
-            Pal.set(ctx, widgetId, rv, R.id.item_meta, Style.font(ctx, widgetId, it.title + " ungelesen"),
-                    Prefs.colorSub(ctx, widgetId), Prefs.colorSub2(ctx, widgetId), 0.7f);
-            float dp = ctx.getResources().getDisplayMetrics().density;
-            int cardPad = Math.round((airy ? 13 : 8) * dp);
-            int rowPad = Math.round((airy ? 5 : 3) * dp);
-            rv.setViewPadding(R.id.item_card, cardPad, cardPad, cardPad, cardPad);
-            rv.setViewPadding(R.id.item_root, 0, rowPad, 0, rowPad);
-            Intent fill = new Intent();
-            fill.putExtra(PreviewActivity.EXTRA_LINK, MARK_ALL);
-            rv.setOnClickFillInIntent(R.id.item_root, fill);
-            return rv;
         }
 
         private RemoteViews headerView(FeedItem it) {
@@ -616,7 +602,7 @@ public class ListService extends RemoteViewsService {
             RemoteViews rv = new RemoteViews(ctx.getPackageName(), R.layout.widget_item);
             if (position < 0 || position >= items.size()) return rv;
             FeedItem it = items.get(position);
-            if (it.header) return MARK_ALL.equals(it.link) ? markAllView(it) : headerView(it);
+            if (it.header) return headerView(it);
             int tx = Prefs.text(ctx, widgetId);
             int rgb = Prefs.color(ctx, widgetId);
             boolean read = Prefs.isRead(readSet, it.link);

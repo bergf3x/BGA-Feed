@@ -39,10 +39,6 @@ final class Pal {
     }
 
     /** Hintergrund-Drawable der Chips. */
-    static int chipBg(Context c, int id) {
-        return Prefs.isLight(c, id) ? R.drawable.chip_bg_light : R.drawable.chip_bg;
-    }
-
     static int cardBg(Context c, int id) {
         return Prefs.isLight(c, id) ? R.drawable.card_bg_light : R.drawable.card_bg;
     }

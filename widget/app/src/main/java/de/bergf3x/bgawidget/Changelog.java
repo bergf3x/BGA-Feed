@@ -10,6 +10,13 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.34",
+                    "+ Neue Filterleiste: Themen als ruhige Text-Reiter in voller Breite (aktiver unterstrichen, roter Punkt nur bei Ungelesenem), darunter „n ungelesen · m Quellen ▾“ und „Alle als gelesen markieren“ als schlichter Textlink (App und Widget)",
+                    "+ Quellen: Tipp auf „m Quellen ▾“ öffnet ein Blatt von unten mit allen Zeitungen zum Anhaken, Regionen je Zeitung aufklappbar; die Auswahl bleibt gespeichert (App und Widget)",
+                    "~ Abo-Schloss sitzt jetzt in der Kopfzeile neben Aktualisieren und Einstellungen: offen = Abo-Artikel sichtbar, geschlossen = ausgeblendet (App und Widget)",
+                    "+ App: Seiten News, Wetter und Gemerkt durch waagerechtes Wischen wechseln; die Seite folgt dem Finger und rastet weich ein, Scrollposition und Auswahl jeder Seite bleiben erhalten. Auf der Reiterzeile scrollen weiter die Reiter",
+                    "~ Untere Leiste ohne Pille: aktiver Reiter hell und minimal größer; beim Wischen läuft ein dünner Strich mit, der sanft erscheint und wieder verschwindet. Tipp auf einen Reiter gleitet weich zur Seite",
+                    "~ Gemerkt: nach links wischen entfernt die Karte wie bisher, nach rechts geht es zurück zu Wetter (statt Artikel öffnen)"},
             {"1.33",
                     "~ Behoben: Im Widget öffnete der Tipp auf eine Bergwetter-Region nichts. Jetzt erscheint wie in der App das Fenster mit den Reitern „Orte“ und „Gipfel“",
                     "~ Behoben: Die gewählten Regionen, Zeitungen und Themen gingen verloren, sobald man die Einstellungen mit „OK“ speicherte oder kurz zum Reiter „Wetter“ wechselte. Die Auswahl bleibt jetzt in App und Widget dauerhaft gespeichert"},
