@@ -33,6 +33,8 @@ final class Webcams {
         boolean generic;
         /** 360-Grad-Panorama (sehr breites Bild). */
         boolean pano;
+        /** Mitte des Vorschau-Ausschnitts im Panorama (Anteil der Bildbreite). */
+        float panX = 0.5f;
         /** Hoehe in m (0 = unbekannt) und Beschreibung/Schlagwoerter fuer die Suche (aus der Kameraliste). */
         int elev;
         String desc = "";
@@ -90,11 +92,12 @@ final class Webcams {
     }
 
     /** Roundshot-Kamera: Kennung aus der Kamera-Seite; Vorschau = /thumbnail, Bild = /medium (je per Weiterleitung). */
-    private static Cam roundshot(String host, String slug, int id, String name) {
+    private static Cam roundshot(String host, String slug, int id, String name, float panX) {
         String base = "https://" + host + ".roundshot.com/";
         Cam c = new Cam("rs_" + slug, name, "Roundshot", base + slug + "/", false, base + "cams/" + id + "/medium");
         c.thumb = base + "cams/" + id + "/thumbnail";
-        c.pano = true;
+        c.pano = panX >= 0;
+        c.panX = panX;
         return c;
     }
 
@@ -136,17 +139,17 @@ final class Webcams {
             foto("freiwandeck", "Freiwandeck – Blick zum Großglockner"),
             foto("wallackhaus", "Wallackhaus Süd"),
             foto("wallackhaus-nord", "Wallackhaus Nord"),
-            roundshot("zbag", "rothorn", 1045, "Rothorn"),
-            roundshot("zbag", "matterhornglacierparadise", 964, "Matterhorn Glacier Paradise"),
-            roundshot("zbag", "trockener-steg", 1044, "Trockener Steg"),
-            roundshot("zbag", "hohtaelli", 1043, "Hohtälli"),
-            roundshot("zbag", "hirli", 1047, "Hirli"),
-            roundshot("zbag", "sunnegga", 1049, "Sunnegga"),
-            roundshot("zbag", "riffelberg", 1048, "Riffelberg"),
-            roundshot("zbag", "schwarzsee", 2090, "Schwarzsee"),
-            roundshot("zermatt", "gornergrat", 1042, "Gornergrat"),
-            roundshot("zermatt", "monterosa", 1551, "Monte Rosa"),
-            roundshot("zbag", "blauherd", 2091, "Blauherd"),
+            roundshot("zbag", "rothorn", 1045, "Rothorn", 0.56f),
+            roundshot("zbag", "matterhornglacierparadise", 964, "Matterhorn Glacier Paradise", 0.3f),
+            roundshot("zbag", "trockener-steg", 1044, "Trockener Steg", 0.17f),
+            roundshot("zbag", "hohtaelli", 1043, "Hohtälli", 0.63f),
+            roundshot("zbag", "hirli", 1047, "Hirli", 0.14f),
+            roundshot("zbag", "sunnegga", 1049, "Sunnegga", -1f),
+            roundshot("zbag", "riffelberg", 1048, "Riffelberg", -1f),
+            roundshot("zbag", "schwarzsee", 2090, "Schwarzsee", 0.27f),
+            roundshot("zermatt", "gornergrat", 1042, "Gornergrat", 0.48f),
+            roundshot("zermatt", "monterosa", 1551, "Monte Rosa", 0.4f),
+            roundshot("zbag", "blauherd", 2091, "Blauherd", 0.74f),
             cervinia("plateau-rosa", 931, "Plateau Rosa (Cervinia)"),
             cervinia("bec-carre", 1256, "Bec Carré (Cervinia)"),
             cervinia("matterhorn", 867, "Matterhorn (Cervinia)"),
@@ -193,9 +196,8 @@ final class Webcams {
                     "adlersruhe oberwalderhuette gletscher-sued ankogel-sued gletscher-nord feldkopf feldkopf-west ankogel-nord hagener-huette polinik liesgelespitz dobratsch falkert-nord ederplan falkert zechneralm turrach-ost turrach-west heidi-chalets lorenzalm schulterkogel poertschach-a-w"},
             {"Steiermark", "Steiermark", "", "hochkar sarstein krakau hotel-lindenhof grimming"},
             {"Österreich (übrige)", "Österreich", "", "pfaelzerhuette passlueg"},
-            {"Südtirol", "Südtirol", "", "langenferner becherhaus ridnaun weissbrunnferner rieserferner chavalatsch kronplatz rittnerhorn trafoi zallinger dreizinnenblick hochmuth gummer"},
-            {"Schweiz", "Schweiz", "", "konkordiahuette glecksteinhuette pizol wildhaus hoherkasten hochhamm brunnen"},
-            {"Zermatt und Matterhorn", "Matterhorn", "rs_rothorn rs_matterhornglacierparadise rs_trockener-steg rs_hohtaelli rs_hirli rs_sunnegga rs_riffelberg rs_schwarzsee rs_gornergrat rs_monterosa rs_blauherd px_931 px_1256 px_867", ""},
+            {"Südtirol und Italien", "Italien", "", "langenferner becherhaus ridnaun weissbrunnferner rieserferner chavalatsch kronplatz rittnerhorn trafoi zallinger dreizinnenblick hochmuth gummer", "px_931 px_1256 px_867"},
+            {"Schweiz", "Schweiz", "rs_rothorn rs_matterhornglacierparadise rs_trockener-steg rs_hohtaelli rs_hirli rs_sunnegga rs_riffelberg rs_schwarzsee rs_gornergrat rs_monterosa rs_blauherd", "konkordiahuette glecksteinhuette pizol wildhaus hoherkasten hochhamm brunnen"},
             {"Webcam-Verzeichnisse", "", "lk_dir_schoenau lk_dir_bgd", ""},
     };
 
@@ -223,6 +225,7 @@ final class Webcams {
             }
             java.util.Collections.sort(ext, (a, b) -> Integer.compare(b.elev, a.elev));
             for (Cam c : ext) ids.add(c.id);
+            if (r.length > 4) ids.addAll(java.util.Arrays.asList(words(r[4])));
             fs.add(new Folder(r[0], r[1].isEmpty() ? null : r[1], ids.toArray(new String[0])));
         }
         FOLDERS = fs.toArray(new Folder[0]);

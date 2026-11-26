@@ -58,6 +58,8 @@ import java.util.concurrent.Executors;
 public class WebcamActivity extends Activity {
     private static final int THUMB_W = 400;
     private static final int PREVIEW_W = 1000;
+    private static final int PANO_THUMB_W = 1000;
+    private static final int PANO_W = 3000;
     private static final long[] INTERVALS = {30000L, 60000L, 300000L, 0L};
     private static final String[] INTERVAL_LABELS = {"30 Sek.", "1 Min.", "5 Min.", "Manuell"};
     private static final int[] KEEP = {3, 7, 14, 30};
@@ -87,7 +89,7 @@ public class WebcamActivity extends Activity {
     private int camPos;
     private boolean camOpen;
     private FrameLayout camHolder;
-    private ImageView camImg;
+    private PanoImageView camImg;
     private ProgressBar camSpin;
     private TextView camTitle, camSub, camCount, camStatus, camSource, camLink, camNote;
     private ImageView camStar;
@@ -550,13 +552,20 @@ public class WebcamActivity extends Activity {
         thbg.setColor(b.light ? 0x1A000000 : 0x26FFFFFF);
         th.setBackground(thbg);
         roundClip(th, 12);
-        ImageView iv = new ImageView(this);
+        ImageView iv;
+        if (c.pano) {
+            PanoImageView pv = new PanoImageView(this);
+            pv.setPan(c.panX);
+            iv = pv;
+        } else {
+            iv = new ImageView(this);
+        }
         if (c.link) {
             iv.setImageResource(R.drawable.ic_external);
             iv.setColorFilter(b.soft);
             th.addView(iv, new FrameLayout.LayoutParams(b.px(22), b.px(22), Gravity.CENTER));
         } else {
-            iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            if (!c.pano) iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
             th.addView(iv, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         }
         r.addView(th, new LinearLayout.LayoutParams(b.px(76), b.px(54)));
@@ -650,13 +659,13 @@ public class WebcamActivity extends Activity {
             pool.execute(() -> {
                 try {
                     if (s.iv.getDrawable() == null) {
-                        final Webcams.Shot cc = Webcams.cached(app, s.cam, THUMB_W, true);
+                        final Webcams.Shot cc = Webcams.cached(app, s.cam, s.cam.pano ? PANO_THUMB_W : THUMB_W, true);
                         if (cc.bmp != null) ui.post(() -> {
                             if (g == gen) setImage(s, cc);
                         });
                     }
                     if (allowRefresh && Webcams.age(app, s.cam, true) > maxAge) {
-                        final Webcams.Shot n = Webcams.refresh(app, s.cam, THUMB_W, true);
+                        final Webcams.Shot n = Webcams.refresh(app, s.cam, s.cam.pano ? PANO_THUMB_W : THUMB_W, true);
                         if (n.bmp != null && !n.offline) {
                             ui.post(() -> {
                                 if (g == gen) setImage(s, n);
@@ -764,7 +773,7 @@ public class WebcamActivity extends Activity {
         camHolder.setBackgroundColor(0x33000000);
         camHolder.setMinimumHeight(b.px(200));
         roundClip(camHolder, 16);
-        camImg = new ImageView(this);
+        camImg = new PanoImageView(this);
         camImg.setAdjustViewBounds(true);
         camImg.setScaleType(ImageView.ScaleType.FIT_CENTER);
         camImg.setMaxHeight(b.px(280));
@@ -878,12 +887,18 @@ public class WebcamActivity extends Activity {
         camNote.setText(cam.generic
                 ? "Hinweis: Dieser Link führt auf die gemeinsame Webcam-Seite von Berchtesgaden, nicht auf genau diese Kamera."
                 : cam.pano
-                ? "360°-Panorama: im Vollbild mit Spreizen zoomen und mit dem Finger verschieben  ·  Wischen = nächste Kamera"
+                ? "Ausschnitt aus dem 360°-Panorama  ·  Vollbild zeigt das ganze Bild (Spreizen = zoomen, Ziehen = verschieben)"
                 : "Tippen aufs Bild = Vollbild  ·  Wischen = nächste Kamera");
         camShownTaken = -1;
         camImg.setImageDrawable(null);
-        Webcams.Shot c = Webcams.cached(this, cam, PREVIEW_W);
-        if (c.bmp == null && cam.thumb != null) c = Webcams.cached(this, cam, PREVIEW_W, true);
+        // Panorama: normaler Ausschnitt in fester Hoehe, sonst Bild einpassen
+        FrameLayout.LayoutParams ilp = (FrameLayout.LayoutParams) camImg.getLayoutParams();
+        ilp.height = cam.pano ? b.px(200) : ViewGroup.LayoutParams.WRAP_CONTENT;
+        camImg.setAdjustViewBounds(!cam.pano);
+        camImg.setLayoutParams(ilp);
+        camImg.setPan(cam.pano ? cam.panX : -1f);
+        Webcams.Shot c = Webcams.cached(this, cam, previewW(cam));
+        if (c.bmp == null && cam.thumb != null) c = Webcams.cached(this, cam, previewW(cam), true);
         camHasImage = c.bmp != null;
         if (c.bmp != null) {
             camImg.setImageBitmap(c.bmp);
@@ -907,7 +922,7 @@ public class WebcamActivity extends Activity {
         }
         final Context app = getApplicationContext();
         pool.execute(() -> {
-            final Webcams.Shot s = Webcams.refresh(app, cam, PREVIEW_W);
+            final Webcams.Shot s = Webcams.refresh(app, cam, previewW(cam));
             ui.post(() -> {
                 if (isFinishing() || isDestroyed() || g != gen || at != camPos || !camOpen) return;
                 camSpin.setVisibility(View.GONE);
@@ -919,6 +934,10 @@ public class WebcamActivity extends Activity {
                 camStatus.setText(Webcams.status(s));
             });
         });
+    }
+
+    private int previewW(Webcams.Cam cam) {
+        return cam.pano ? PANO_W : PREVIEW_W;
     }
 
     private void openFull() {

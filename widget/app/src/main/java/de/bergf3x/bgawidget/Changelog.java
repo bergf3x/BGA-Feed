@@ -10,6 +10,9 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.47",
+                    "~ Zermatt-Kameras stehen jetzt in der Region Schweiz, die Kameras von Cervinia in „Südtirol und Italien“ (der Reiter „Matterhorn“ entfällt)",
+                    "~ 360°-Panoramen zeigen in Liste und Einzelansicht einen normalen Ausschnitt (meist mit dem Matterhorn); das ganze Panorama gibt es im Vollbild. Sunnegga und Riffelberg sind normale Bilder"},
             {"1.46",
                     "+ Neue Region „Matterhorn“ mit 14 Kameras: Rothorn, Matterhorn Glacier Paradise, Trockener Steg, Hohtälli, Hirli, Sunnegga, Riffelberg, Schwarzsee, Gornergrat, Monte Rosa, Blauherd (Roundshot, 360°-Panoramen) sowie Plateau Rosa, Bec Carré und Matterhorn von Cervinia (Panomax)"},
             {"1.45",
