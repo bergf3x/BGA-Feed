@@ -1143,7 +1143,7 @@ public class MainActivity extends Activity {
         v.setContentDescription(desc);
         v.setImageResource(res);
         v.setColorFilter(tx);
-        int p = px(9);
+        int p = px(8);
         v.setPadding(p, p, p, p);
         // Symbol ohne Hintergrund, nur Druck-Effekt
         v.setBackground(new RippleDrawable(ColorStateList.valueOf(light ? 0x33000000 : 0x40FFFFFF),
@@ -1159,11 +1159,7 @@ public class MainActivity extends Activity {
     }
 
     private void header() {
-        LinearLayout row = new LinearLayout(this);
-        row.setOrientation(LinearLayout.HORIZONTAL);
-        row.setGravity(Gravity.CENTER_VERTICAL);
-        LinearLayout titles = new LinearLayout(this);
-        titles.setOrientation(LinearLayout.VERTICAL);
+        // Zeile 1: Name allein, volle Breite (immer einzeilig). Zeile 2: Stand links, vier Symbole rechts.
         TextView appName = text("BGL Wetter & News", 28, tx, false);
         try {
             appName.setTypeface(getResources().getFont(R.font.fraunces));
@@ -1178,59 +1174,65 @@ public class MainActivity extends Activity {
         appName.setMaxLines(1);
         appName.setEllipsize(android.text.TextUtils.TruncateAt.END);
         appName.setAutoSizeTextTypeUniformWithConfiguration(20, 28, 1, android.util.TypedValue.COMPLEX_UNIT_SP);
-        titles.addView(appName);
-        titles.addView(text(statusLine(), 11.5f, soft, false));
-        titles.setMinimumHeight(px(54));
-        titles.setGravity(Gravity.CENTER_VERTICAL);
-        row.addView(titles, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
-        {
-            // Filter-Platz bleibt auf allen Seiten gleich breit, damit Name und Kopfhoehe nicht springen
-            final boolean onNews = !savedTab() && !weatherTab();
-            // Filter: oeffnet die Quellen-Auswahl von unten; Punkt, solange ein Filter aktiv ist
-            boolean filt = onNews && warmed && ListService.filtered(this, ID);
-            ImageView fb = iconButton(R.drawable.ic_filter, filt ? "Quellen filtern, Filter aktiv" : "Quellen filtern", this::openSources);
-            FrameLayout ff = new FrameLayout(this);
-            ff.addView(fb, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            if (filt) {
-                View dot = new View(this);
-                GradientDrawable g = new GradientDrawable();
-                g.setShape(GradientDrawable.OVAL);
-                g.setColor(0xFFE53935);
-                g.setStroke(Math.max(2, px(2)), baseColor());
-                dot.setBackground(g);
-                FrameLayout.LayoutParams dl = new FrameLayout.LayoutParams(px(11), px(11), Gravity.TOP | Gravity.END);
-                dl.topMargin = px(2);
-                dl.rightMargin = px(2);
-                ff.addView(dot, dl);
-            }
-            ff.setVisibility(onNews ? View.VISIBLE : View.INVISIBLE);
-            row.addView(ff, lp(40, 40, 0, 0, 8, 0));
-            // Abo-Schloss: offen = Abo-Artikel sichtbar, geschlossen = ausgeblendet (Platz bleibt auf allen Seiten reserviert)
-            final int ps = Prefs.plusState(this, ID);
-            ImageView lock = iconButton(ps == 0 ? R.drawable.ic_lock : R.drawable.ic_lock_open,
-                    ps == 0 ? "Abo-Artikel ausgeblendet, antippen zum Anzeigen" : "Abo-Artikel sichtbar, antippen zum Ausblenden", () -> {
-                        Prefs.setPlusAll(this, ID, ps != 1);
-                        Haptic.play(scroll, Haptic.TICK);
-                        android.widget.Toast.makeText(this, ps != 1 ? "Abo-Artikel werden angezeigt" : "Abo-Artikel sind ausgeblendet",
-                                android.widget.Toast.LENGTH_SHORT).show();
-                        build();
-                    });
-            if (ps == 0) lock.setAlpha(0.6f);
-            lock.setVisibility(onNews ? View.VISIBLE : View.INVISIBLE);
-            row.addView(lock, lp(40, 40, 0, 0, 8, 0));
+        appName.setPadding(px(2), 0, 0, 0);
+        page.addView(appName, lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 0));
+
+        LinearLayout row = new LinearLayout(this);
+        row.setOrientation(LinearLayout.HORIZONTAL);
+        row.setGravity(Gravity.CENTER_VERTICAL);
+        TextView stand = text(statusLine(), 11.5f, soft, false);
+        stand.setSingleLine(true);
+        stand.setEllipsize(android.text.TextUtils.TruncateAt.END);
+        stand.setPadding(px(2), 0, px(6), 0);
+        row.addView(stand, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+
+        // Filter und Abo gibt es nur bei News; auf den anderen Seiten bleibt der Platz leer, damit nichts springt
+        final boolean onNews = !savedTab() && !weatherTab();
+        boolean filt = onNews && warmed && ListService.filtered(this, ID);
+        ImageView fb = iconButton(R.drawable.ic_filter, filt ? "Quellen filtern, Filter aktiv" : "Quellen filtern", this::openSources);
+        FrameLayout ff = new FrameLayout(this);
+        ff.addView(fb, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        if (filt) {
+            View dot = new View(this);
+            GradientDrawable g = new GradientDrawable();
+            g.setShape(GradientDrawable.OVAL);
+            g.setColor(0xFFE53935);
+            g.setStroke(Math.max(2, px(2)), baseColor());
+            dot.setBackground(g);
+            FrameLayout.LayoutParams dl = new FrameLayout.LayoutParams(px(10), px(10), Gravity.TOP | Gravity.END);
+            dl.topMargin = px(3);
+            dl.rightMargin = px(3);
+            ff.addView(dot, dl);
         }
+        ff.setVisibility(onNews ? View.VISIBLE : View.INVISIBLE);
+        row.addView(ff, lp(36, 36, 0, 0, 2, 0));
+
+        // Abo-Schloss: offen = Abo-Artikel sichtbar, geschlossen = ausgeblendet
+        final int ps = Prefs.plusState(this, ID);
+        ImageView lock = iconButton(ps == 0 ? R.drawable.ic_lock : R.drawable.ic_lock_open,
+                ps == 0 ? "Abo-Artikel ausgeblendet, antippen zum Anzeigen" : "Abo-Artikel sichtbar, antippen zum Ausblenden", () -> {
+                    Prefs.setPlusAll(this, ID, ps != 1);
+                    Haptic.play(scroll, Haptic.TICK);
+                    android.widget.Toast.makeText(this, ps != 1 ? "Abo-Artikel werden angezeigt" : "Abo-Artikel sind ausgeblendet",
+                            android.widget.Toast.LENGTH_SHORT).show();
+                    build();
+                });
+        if (ps == 0) lock.setAlpha(0.6f);
+        lock.setVisibility(onNews ? View.VISIBLE : View.INVISIBLE);
+        row.addView(lock, lp(36, 36, 0, 0, 2, 0));
+
         if (syncing) {
-            // Ladekreis im Platz des Aktualisieren-Knopfs, damit der Name nicht schrumpft
+            // Ladekreis an der Stelle des Aktualisieren-Knopfs
             FrameLayout sp = new FrameLayout(this);
             android.widget.ProgressBar pb = new android.widget.ProgressBar(this);
             pb.setIndeterminateTintList(ColorStateList.valueOf(tx));
-            sp.addView(pb, new FrameLayout.LayoutParams(px(24), px(24), Gravity.CENTER));
-            row.addView(sp, lp(40, 40, 0, 0, 8, 0));
+            sp.addView(pb, new FrameLayout.LayoutParams(px(22), px(22), Gravity.CENTER));
+            row.addView(sp, lp(36, 36, 0, 0, 2, 0));
         } else {
-            row.addView(iconButton(R.drawable.ic_refresh, "Aktualisieren", () -> sync(true)), lp(40, 40, 0, 0, 8, 0));
+            row.addView(iconButton(R.drawable.ic_refresh, "Aktualisieren", () -> sync(true)), lp(36, 36, 0, 0, 2, 0));
         }
-        row.addView(iconButton(R.drawable.ic_tune, "Einstellungen", () -> open(ConfigActivity.class)), lp(40, 40, 0, 0, 0, 0));
-        page.addView(row, lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 10));
+        row.addView(iconButton(R.drawable.ic_tune, "Einstellungen", () -> open(ConfigActivity.class)), lp(36, 36, 0, 0, 0, 0));
+        page.addView(row, lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 6));
     }
 
     private String statusLine() {

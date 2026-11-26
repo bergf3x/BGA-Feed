@@ -10,6 +10,8 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.41",
+                    "~ Kopfzeile in zwei Zeilen: oben der App-Name in voller Breite (nie abgeschnitten), darunter links der Stand, rechts Filter, Abo-Schloss, Aktualisieren und Einstellungen (App)"},
             {"1.40",
                     "~ Abo-Schloss wieder in der Kopfzeile (App und Widget); der Schalter in der Quellen-Auswahl bleibt zusätzlich"},
             {"1.39",
