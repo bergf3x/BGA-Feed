@@ -863,8 +863,13 @@ public class MainActivity extends Activity {
 
     /** Grundgeruest einmalig: Kopf, drei Seiten nebeneinander, Ziehen-Anzeige, untere Leiste. */
     private void createShell() {
-        cur = savedTab0() ? 2 : Prefs.topic(this, ID).startsWith(Taxonomy.WETTER) ? 1 : 0;
-        if (cur == 1) wxTopic = Prefs.topic(this, ID);
+        // Start immer auf News; die zuletzt gewaehlte Wetter-Unterseite bleibt fuer den Reiter Wetter erhalten
+        cur = 0;
+        String startTopic = Prefs.topic(this, ID);
+        if (startTopic.startsWith(Taxonomy.WETTER)) {
+            wxTopic = startTopic;
+            Prefs.setTopic(this, ID, Prefs.newsTopic(this, ID));
+        }
         LinearLayout root = new LinearLayout(this);
         root.setOrientation(LinearLayout.VERTICAL);
         top = new LinearLayout(this);
@@ -965,10 +970,6 @@ public class MainActivity extends Activity {
     }
 
     /** Gemerkt war beim letzten Mal offen (wird beim Start zurueckgesetzt, daher meist false). */
-    private boolean savedTab0() {
-        return Prefs.flag(this, "tab_saved");
-    }
-
     private boolean savedTab() {
         return (buildIdx >= 0 ? buildIdx : cur) == 2;
     }

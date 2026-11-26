@@ -10,6 +10,8 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.39",
+                    "~ Die App startet immer auf News, auch wenn sie zuletzt auf Wetter geschlossen wurde (die gewählte Wetter-Unterseite bleibt gemerkt)"},
             {"1.38",
                     "~ Bergwetter / Region: exakt dieselben Reiter wie bei den Nachrichten (gleiche graue Kapsel, Höhe, Schrift, Abstand); die weiße Segment-Leiste ist entfernt"},
             {"1.37",
