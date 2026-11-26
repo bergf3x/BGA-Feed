@@ -1205,6 +1205,19 @@ public class MainActivity extends Activity {
             }
             ff.setVisibility(onNews ? View.VISIBLE : View.INVISIBLE);
             row.addView(ff, lp(40, 40, 0, 0, 8, 0));
+            // Abo-Schloss: offen = Abo-Artikel sichtbar, geschlossen = ausgeblendet (Platz bleibt auf allen Seiten reserviert)
+            final int ps = Prefs.plusState(this, ID);
+            ImageView lock = iconButton(ps == 0 ? R.drawable.ic_lock : R.drawable.ic_lock_open,
+                    ps == 0 ? "Abo-Artikel ausgeblendet, antippen zum Anzeigen" : "Abo-Artikel sichtbar, antippen zum Ausblenden", () -> {
+                        Prefs.setPlusAll(this, ID, ps != 1);
+                        Haptic.play(scroll, Haptic.TICK);
+                        android.widget.Toast.makeText(this, ps != 1 ? "Abo-Artikel werden angezeigt" : "Abo-Artikel sind ausgeblendet",
+                                android.widget.Toast.LENGTH_SHORT).show();
+                        build();
+                    });
+            if (ps == 0) lock.setAlpha(0.6f);
+            lock.setVisibility(onNews ? View.VISIBLE : View.INVISIBLE);
+            row.addView(lock, lp(40, 40, 0, 0, 8, 0));
         }
         if (syncing) {
             // Ladekreis im Platz des Aktualisieren-Knopfs, damit der Name nicht schrumpft

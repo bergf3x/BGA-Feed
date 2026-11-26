@@ -10,6 +10,8 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.40",
+                    "~ Abo-Schloss wieder in der Kopfzeile (App und Widget); der Schalter in der Quellen-Auswahl bleibt zusätzlich"},
             {"1.39",
                     "~ Die App startet immer auf News, auch wenn sie zuletzt auf Wetter geschlossen wurde (die gewählte Wetter-Unterseite bleibt gemerkt)"},
             {"1.38",
