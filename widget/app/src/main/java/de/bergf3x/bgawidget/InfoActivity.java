@@ -60,7 +60,21 @@ public class InfoActivity extends Activity {
                 + "Alle Rechte an den Inhalten und Marken liegen beim DAV und seinen Datenpartnern. "
                 + "Die App ist nicht vom DAV, steht in keiner Verbindung zu ihm und wird von ihm weder betrieben noch empfohlen. "
                 + "Bergwetter ersetzt keine eigene Tourenplanung; maßgeblich ist die Originalseite.", 12, b.soft, false, 2));
-        src.addView(line(b, "Webcams: jeweilige Betreiber, Link in der Webcam-Ansicht", 12, b.soft, false, 8));
+        src.addView(line(b, "Webcams", 12, b.soft, false, 10));
+        src.addView(link(b, "foto-webcam.eu", "https://www.foto-webcam.eu"));
+        src.addView(link(b, "terra-hd.de", "https://www.terra-hd.de"));
+        src.addView(link(b, "Panomax", "https://www.panomax.com"));
+        src.addView(link(b, "Feratel", "https://www.feratel.com"));
+        src.addView(link(b, "livespotting / wetter.com (Königssee)", "https://www.berchtesgaden.de/webcams/webcam-koenigssee"));
+        src.addView(link(b, "Großglockner Hochalpenstraße", "https://www.grossglockner.at/gg/en/webcam"));
+        src.addView(link(b, "avisec (Glocknerhaus, Kaiser-Franz-Josefs-Haus)", "https://avisec.com"));
+        src.addView(link(b, "Nationalpark Berchtesgaden", "https://nationalpark-berchtesgaden.bayern.de"));
+        src.addView(link(b, "bergfex", "https://www.bergfex.com"));
+        src.addView(link(b, "blickfix", "https://www.blickfix.com"));
+        src.addView(line(b, "Die Webcam-Bilder gehören den jeweiligen Betreibern. Die App zeigt sie nur zur Ansicht, "
+                + "nennt die Quelle und verlinkt auf die Originalseite der Kamera. Sie werden nicht verändert, nicht weitergegeben "
+                + "und nur kurz zwischengespeichert. Teilen sendet nur den Link zur Originalseite. "
+                + "Für Verfügbarkeit und Aktualität gibt es keine Gewähr.", 12, b.soft, false, 6));
 
         b.divider();
         android.widget.LinearLayout cb = section(b, "Bildnachweise", 0.26f);

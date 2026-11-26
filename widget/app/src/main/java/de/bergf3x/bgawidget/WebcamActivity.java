@@ -155,6 +155,59 @@ public class WebcamActivity extends Activity {
         super.onDestroy();
     }
 
+    // ---------------------------------------------------------------- Wischen zwischen den Regionen
+
+    private float swDownX, swDownY;
+    private long swDownT;
+    private boolean swActive;
+
+    /** Waagerechtes Wischen auf der Liste springt zur naechsten bzw. vorigen Region (verbraucht keine Eingabe). */
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (listBody != null && !camOpen && listScroll != null && Motion.swipe(this)) {
+            switch (ev.getActionMasked()) {
+                case MotionEvent.ACTION_DOWN: {
+                    android.graphics.Rect r = new android.graphics.Rect();
+                    swActive = listScroll.getGlobalVisibleRect(r) && r.contains((int) ev.getRawX(), (int) ev.getRawY());
+                    swDownX = ev.getRawX();
+                    swDownY = ev.getRawY();
+                    swDownT = ev.getEventTime();
+                    break;
+                }
+                case MotionEvent.ACTION_UP:
+                    if (swActive) {
+                        float dx = ev.getRawX() - swDownX, dy = ev.getRawY() - swDownY;
+                        long dt = Math.max(1, ev.getEventTime() - swDownT);
+                        if (Math.abs(dx) > b.px(70) && Math.abs(dx) > Math.abs(dy) * 1.8f && dt < 700) {
+                            jumpRegion(dx < 0 ? 1 : -1);
+                        }
+                    }
+                    swActive = false;
+                    break;
+                case MotionEvent.ACTION_CANCEL:
+                    swActive = false;
+                    break;
+                default:
+                    break;
+            }
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+
+    /** dir = 1 naechste, -1 vorige Region mit Reiter; am Ende passiert nichts. */
+    private void jumpRegion(int dir) {
+        int cur = Math.max(0, activeSec);
+        int target = -1;
+        for (int i = cur + dir; i >= 0 && i < secChips.size(); i += dir) {
+            if (secChips.get(i) != null) {
+                target = i;
+                break;
+            }
+        }
+        if (target < 0) return;
+        listScroll.smoothScrollTo(0, Math.max(0, secViews.get(target).getTop() - b.px(2)));
+    }
+
     @Override
     public void onBackPressed() {
         if (up != null) up.run();

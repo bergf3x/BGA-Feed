@@ -10,6 +10,9 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.44",
+                    "+ Webcams: Wischen nach links oder rechts springt zur nächsten oder vorigen Region (folgt dem Schalter „Seiten durch Wischen wechseln“)",
+                    "+ Über die App → Quellen: Webcam-Quellen (foto-webcam.eu, terra-hd, Panomax, Feratel, Großglockner Hochalpenstraße, avisec u. a.) mit Hinweis zu Rechten und Teilen"},
             {"1.43",
                     "~ Webcams ohne Ordner: eine durchgehende Liste nach Regionen, Reiter springen zur Region und laufen beim Scrollen mit; kleine Vorschaubilder mit Aufnahmezeit, Suche und Favoriten (Stern)",
                     "+ Einzelansicht mit großem Knopf „Vollbild“ sowie „Teilen“ (Link der Kamera) und „Webseite“; „Weitere Webcams“ ist entfallen, Nur-Link-Seiten stehen in ihrer Region",
