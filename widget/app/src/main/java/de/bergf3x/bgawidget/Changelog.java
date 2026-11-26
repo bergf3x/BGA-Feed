@@ -10,6 +10,11 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.36",
+                    "~ Kopfzeile: Der App-Name steht immer in einer Zeile (schrumpft bei Platzmangel), die Kopfhöhe bleibt auf News, Wetter und Gemerkt gleich – kein Ruck mehr beim Seitenwechsel",
+                    "~ Abo-Artikel: Das Schloss ist aus der Kopfzeile (App und Widget) in die Quellen-Auswahl gewandert („Abo-Artikel anzeigen“, wirkt mit OK)",
+                    "~ Wetter: „Bergwetter“ und „Region“ jetzt als Text-Reiter mit Unterstrich, genau wie die Themen bei den Nachrichten",
+                    "~ Beim Aktualisieren dreht der Ladekreis an der Stelle des Aktualisieren-Knopfs"},
             {"1.35",
                     "+ Filter-Symbol in der Kopfzeile neben dem Abo-Schloss (App und Widget): öffnet die Quellen-Auswahl von unten; ein Punkt zeigt, dass gefiltert wird",
                     "+ Quellen-Auswahl: „Zurücksetzen – alle Quellen“; Zeitungen ohne aktuelle Meldungen bleiben sichtbar, nur ausgegraut",

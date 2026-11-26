@@ -1173,28 +1173,19 @@ public class MainActivity extends Activity {
         appName.getPaint().setShader(new android.graphics.LinearGradient(0, 0, nameW, 0,
                 light ? new int[]{0xFF14171B, 0xFF2A2F36, 0xFF6B7380} : new int[]{0xFFFFFFFF, 0xFFF1F3F6, 0xFF9AA3B2},
                 new float[]{0f, 0.45f, 1f}, android.graphics.Shader.TileMode.CLAMP));
+        appName.setMaxLines(1);
+        appName.setEllipsize(android.text.TextUtils.TruncateAt.END);
+        appName.setAutoSizeTextTypeUniformWithConfiguration(20, 28, 1, android.util.TypedValue.COMPLEX_UNIT_SP);
         titles.addView(appName);
         titles.addView(text(statusLine(), 11.5f, soft, false));
+        titles.setMinimumHeight(px(54));
+        titles.setGravity(Gravity.CENTER_VERTICAL);
         row.addView(titles, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
-        if (syncing) {
-            android.widget.ProgressBar pb = new android.widget.ProgressBar(this);
-            pb.setIndeterminateTintList(ColorStateList.valueOf(tx));
-            row.addView(pb, lp(24, 24, 0, 0, 8, 0));
-        }
-        if (!savedTab() && !weatherTab()) {
-            // Abo-Schloss: offen = Abo-Artikel sichtbar, geschlossen = ausgeblendet
-            final int ps = Prefs.plusState(this, ID);
-            ImageView lock = iconButton(ps == 0 ? R.drawable.ic_lock : R.drawable.ic_lock_open,
-                    ps == 0 ? "Abo-Artikel ausgeblendet, antippen zum Anzeigen" : "Abo-Artikel sichtbar, antippen zum Ausblenden", () -> {
-                        Prefs.setPlusAll(this, ID, ps != 1);
-                        Haptic.play(scroll, Haptic.TICK);
-                        android.widget.Toast.makeText(this, ps != 1 ? "Abo-Artikel werden angezeigt" : "Abo-Artikel sind ausgeblendet",
-                                android.widget.Toast.LENGTH_SHORT).show();
-                        build();
-                    });
-            if (ps == 0) lock.setAlpha(0.6f);
+        {
+            // Filter-Platz bleibt auf allen Seiten gleich breit, damit Name und Kopfhoehe nicht springen
+            final boolean onNews = !savedTab() && !weatherTab();
             // Filter: oeffnet die Quellen-Auswahl von unten; Punkt, solange ein Filter aktiv ist
-            boolean filt = warmed && ListService.filtered(this, ID);
+            boolean filt = onNews && warmed && ListService.filtered(this, ID);
             ImageView fb = iconButton(R.drawable.ic_filter, filt ? "Quellen filtern, Filter aktiv" : "Quellen filtern", this::openSources);
             FrameLayout ff = new FrameLayout(this);
             ff.addView(fb, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -1210,10 +1201,19 @@ public class MainActivity extends Activity {
                 dl.rightMargin = px(2);
                 ff.addView(dot, dl);
             }
+            ff.setVisibility(onNews ? View.VISIBLE : View.INVISIBLE);
             row.addView(ff, lp(40, 40, 0, 0, 8, 0));
-            row.addView(lock, lp(40, 40, 0, 0, 8, 0));
         }
-        row.addView(iconButton(R.drawable.ic_refresh, "Aktualisieren", () -> sync(true)), lp(40, 40, 0, 0, 8, 0));
+        if (syncing) {
+            // Ladekreis im Platz des Aktualisieren-Knopfs, damit der Name nicht schrumpft
+            FrameLayout sp = new FrameLayout(this);
+            android.widget.ProgressBar pb = new android.widget.ProgressBar(this);
+            pb.setIndeterminateTintList(ColorStateList.valueOf(tx));
+            sp.addView(pb, new FrameLayout.LayoutParams(px(24), px(24), Gravity.CENTER));
+            row.addView(sp, lp(40, 40, 0, 0, 8, 0));
+        } else {
+            row.addView(iconButton(R.drawable.ic_refresh, "Aktualisieren", () -> sync(true)), lp(40, 40, 0, 0, 8, 0));
+        }
         row.addView(iconButton(R.drawable.ic_tune, "Einstellungen", () -> open(ConfigActivity.class)), lp(40, 40, 0, 0, 0, 0));
         page.addView(row, lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 10));
     }
@@ -1775,14 +1775,15 @@ public class MainActivity extends Activity {
 
     private void chips(List<String> topics, final String topic) {
         if (weatherTab()) {
+            // gleiche Text-Reiter wie bei den Nachrichten
+            LinearLayout wbox = new LinearLayout(this);
+            wbox.setOrientation(LinearLayout.VERTICAL);
             LinearLayout wrow = new LinearLayout(this);
             wrow.setOrientation(LinearLayout.HORIZONTAL);
-            wrow.addView(chip("Bergwetter", !topic.equals(WeatherCards.REGION), () -> setTopic(WeatherCards.BERG)));
-            wrow.addView(chip("Region", topic.equals(WeatherCards.REGION), () -> setTopic(WeatherCards.REGION)));
-            HorizontalScrollView wh = new HorizontalScrollView(this);
-            wh.setHorizontalScrollBarEnabled(false);
-            wh.addView(wrow);
-            page.addView(wh, lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 10));
+            wrow.addView(tab("Bergwetter", !topic.equals(WeatherCards.REGION), false, () -> setTopic(WeatherCards.BERG)));
+            wrow.addView(tab("Region", topic.equals(WeatherCards.REGION), false, () -> setTopic(WeatherCards.REGION)));
+            tabStrip(wbox, wrow);
+            page.addView(wbox, lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 4));
             return;
         }
         // Zeitungen stehen nicht als Reiter da, sondern in der Quellen-Auswahl ("m Quellen ▾")
@@ -1817,16 +1818,7 @@ public class MainActivity extends Activity {
                 }
             }));
         }
-        HorizontalScrollView hs = new HorizontalScrollView(this);
-        hs.setHorizontalScrollBarEnabled(false);
-        hs.setHorizontalFadingEdgeEnabled(true);
-        hs.setFadingEdgeLength(px(32));
-        hs.setOverScrollMode(View.OVER_SCROLL_NEVER);
-        hs.addView(row);
-        box.addView(hs, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        View rule = new View(this);
-        rule.setBackgroundColor(line);
-        box.addView(rule, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.max(1, px(1))));
+        tabStrip(box, row);
 
         // 2. Info-Zeile nur bei Filter oder Ungelesenem: "Gefiltert: x von y Quellen · n ungelesen", rechts "Alle als gelesen markieren"
         final int unread = warmed && hasSeen ? ListService.newItems(this, ID).size() : 0;
@@ -1865,6 +1857,20 @@ public class MainActivity extends Activity {
             box.addView(info, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         }
         page.addView(box, lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 4));
+    }
+
+    /** Reiterzeile (scrollbar, weich auslaufend) mit feiner Linie darunter; fuer News und Wetter gleich. */
+    private void tabStrip(LinearLayout box, LinearLayout row) {
+        HorizontalScrollView hs = new HorizontalScrollView(this);
+        hs.setHorizontalScrollBarEnabled(false);
+        hs.setHorizontalFadingEdgeEnabled(true);
+        hs.setFadingEdgeLength(px(32));
+        hs.setOverScrollMode(View.OVER_SCROLL_NEVER);
+        hs.addView(row);
+        box.addView(hs, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        View rule = new View(this);
+        rule.setBackgroundColor(line);
+        box.addView(rule, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.max(1, px(1))));
     }
 
     /** Quellen-Auswahl (Zeitungen mit Regionen) als Blatt von unten. */
@@ -1929,23 +1935,6 @@ public class MainActivity extends Activity {
         shownTopic = Prefs.topicRaw(this, ID);
         build();
         if (scroll != null) { final ScrollView sv0 = scroll; sv0.post(() -> sv0.scrollTo(0, 0)); }
-    }
-
-    private View chip(String label, boolean on, final Runnable click) {
-        TextView c = text(label, 13.5f, on ? chipOnTx : tx, on);
-        c.setPadding(px(14), px(8), px(14), px(8));
-        c.setMinHeight(px(40));
-        c.setGravity(Gravity.CENTER);
-        press(c, on ? chipOn : cardFill, 18, on ? 0 : line);
-        c.setOnClickListener(v -> {
-            Haptic.play(v, Haptic.TICK);
-            click.run();
-        });
-        // Bedienungshilfe: Zustand und Funktion vorlesen statt des Pfeil-Zeichens
-        String spoken = label.replace(" ▾", "") + (on ? ", ausgewählt" : "") + (label.endsWith("▾") ? ", öffnet Auswahl" : "");
-        c.setContentDescription(spoken);
-        c.setLayoutParams(lp(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 8, 0));
-        return c;
     }
 
     private View newsCard(final FeedItem it, Set<String> read, List<String> kw) {

@@ -31,6 +31,7 @@ public class TopicActivity extends Activity {
     private Map<String, Integer> counts;
     private final List<String> sel = new ArrayList<>();
     private String open = "";
+    private boolean plusInit, plusNow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +72,9 @@ public class TopicActivity extends Activity {
         render();
         b.space(4);
         if (sources) {
+            // Abo-Artikel an/aus (frueher das Schloss in der Kopfzeile); wirkt mit OK
+            plusNow = plusInit = Prefs.plusState(this, id) != 0;
+            b.toggle(b.box, "Abo-Artikel anzeigen", plusNow, on -> plusNow = on);
             // ein Tipp: Filter weg, alle Quellen wieder sichtbar (wirkt mit OK)
             b.pillKeep("Zurücksetzen – alle Quellen", false, () -> {
                 sel.clear();
@@ -79,8 +83,11 @@ public class TopicActivity extends Activity {
             });
         }
         final java.util.Set<String> init = new java.util.HashSet<>(sel);
-        TextView ok = b.footer(true, () -> { }, () -> save(sel));
-        b.watch(ok, () -> !init.equals(new java.util.HashSet<>(sel)));
+        TextView ok = b.footer(true, () -> { }, () -> {
+            if (plusNow != plusInit) Prefs.setPlusAll(this, id, plusNow);
+            save(sel);
+        });
+        b.watch(ok, () -> plusNow != plusInit || !init.equals(new java.util.HashSet<>(sel)));
     }
 
     private List<String> children(String path) {

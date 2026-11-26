@@ -100,17 +100,6 @@
             </FrameLayout>
 
             <ImageView
-                android:id="@+id/btn_habo"
-                android:layout_width="34dp"
-                android:layout_height="34dp"
-                android:layout_marginRight="6dp"
-                android:background="@drawable/btn_round"
-                android:contentDescription="Abo-Artikel"
-                android:padding="8dp"
-                android:src="@drawable/ic_lock_open"
-                android:visibility="gone" />
-
-            <ImageView
                 android:id="@+id/btn_hsaved"
                 android:layout_width="34dp"
                 android:layout_height="34dp"
@@ -512,14 +501,6 @@
                 android:layout_marginLeft="0dp"
                 android:orientation="horizontal"
                 android:visibility="gone">
-                <ImageView
-                    android:id="@+id/btn_abo"
-                    android:layout_width="34dp"
-                    android:layout_height="34dp"
-                    android:background="@drawable/ripple_circle"
-                    android:contentDescription="Abo-Artikel"
-                    android:padding="7dp"
-                    android:src="@drawable/ic_lock_open" />
                 <ImageView
                     android:id="@+id/btn_saved"
                     android:layout_width="34dp"
