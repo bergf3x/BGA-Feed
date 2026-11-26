@@ -1776,13 +1776,15 @@ public class MainActivity extends Activity {
 
     private void chips(List<String> topics, final String topic) {
         if (weatherTab()) {
-            LinearLayout track = new LinearLayout(this);
-            track.setOrientation(LinearLayout.HORIZONTAL);
-            track.setPadding(px(3), px(3), px(3), px(3));
-            track.setBackground(shape(light ? 0x0F000000 : 0x14FFFFFF, 14, line));
-            track.addView(segment("Bergwetter", !topic.equals(WeatherCards.REGION), () -> setTopic(WeatherCards.BERG)));
-            track.addView(segment("Region", topic.equals(WeatherCards.REGION), () -> setTopic(WeatherCards.REGION)));
-            page.addView(track, lp(ViewGroup.LayoutParams.MATCH_PARENT, 42, 0, 0, 0, 8));
+            // exakt dieselben Reiter wie bei den Nachrichten (gleiche Kapsel, Hoehe, Schrift, Abstand)
+            LinearLayout wbox = new LinearLayout(this);
+            wbox.setOrientation(LinearLayout.VERTICAL);
+            LinearLayout wrow = new LinearLayout(this);
+            wrow.setOrientation(LinearLayout.HORIZONTAL);
+            wrow.addView(tab("Bergwetter", !topic.equals(WeatherCards.REGION), false, () -> setTopic(WeatherCards.BERG)));
+            wrow.addView(tab("Region", topic.equals(WeatherCards.REGION), false, () -> setTopic(WeatherCards.REGION)));
+            tabStrip(wbox, wrow);
+            page.addView(wbox, lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 4));
             return;
         }
         // Zeitungen stehen nicht als Reiter da, sondern in der Quellen-Auswahl ("m Quellen ▾")
@@ -1914,22 +1916,6 @@ public class MainActivity extends Activity {
         lp.bottomMargin = px(2);
         lr.setLayoutParams(lp);
         return lr;
-    }
-
-    /** Segment fuer die Zwei-Wahl (Bergwetter/Region): Glas-Leiste, aktiver Reiter als gefuellter Streifen. */
-    private View segment(String label, boolean on, final Runnable click) {
-        TextView t = text(label, 13.5f, on ? chipOnTx : soft, on);
-        t.setGravity(Gravity.CENTER);
-        t.setClickable(true);
-        t.setBackground(new RippleDrawable(ColorStateList.valueOf(light ? 0x22000000 : 0x33FFFFFF),
-                on ? shape(chipOn, 11, 0) : null, shape(0xFFFFFFFF, 11, 0)));
-        t.setContentDescription(label + (on ? ", ausgewählt" : ""));
-        t.setOnClickListener(v -> {
-            Haptic.play(v, Haptic.TICK);
-            click.run();
-        });
-        t.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1f));
-        return t;
     }
 
     private android.graphics.drawable.Drawable tinted(int res, int dp) {
