@@ -81,7 +81,7 @@ final class Prefs {
     static void setWidgetShows(Context c, int id, int shows, boolean region) {
         android.content.SharedPreferences.Editor e = sp(c).edit().putInt("shows_" + id, shows);
         if (shows == 1) e.putString("tp_" + id, region ? WeatherCards.REGION : WeatherCards.BERG);
-        else if (topic(c, id).startsWith(WeatherCards.TOP)) e.putString("tp_" + id, "");
+        else if (topic(c, id).startsWith(WeatherCards.TOP)) e.putString("tp_" + id, newsTopic(c, id));
         e.apply();
     }
 
@@ -147,8 +147,7 @@ final class Prefs {
                 .putInt("tx_" + id, clamp(text))
                 .putInt("tc_" + id, color & 0xFFFFFF)
                 .putStringSet("fd_" + id, new HashSet<>(feeds))
-                .remove("tp_" + id)
-                .apply();
+                .apply(); // Themen-/Zeitungsauswahl (tp_) bleibt beim Speichern der Einstellungen erhalten
     }
 
     /** Gewaehlte Feeds; Standard: nur der Berchtesgadener Anzeiger (wie in Version 1). */
@@ -208,12 +207,22 @@ final class Prefs {
     }
 
     static void setTopic(Context c, int id, String topic) {
-        sp(c).edit().putString("tp_" + id, topic).apply();
+        android.content.SharedPreferences.Editor e = sp(c).edit().putString("tp_" + id, topic);
+        // Nachrichten-Auswahl getrennt merken: der Reiter Wetter darf sie nicht ueberschreiben
+        if (!topic.startsWith(WeatherCards.TOP)) e.putString("tpn_" + id, topic);
+        e.apply();
+    }
+
+    /** Zuletzt gewaehlte Nachrichten-Auswahl (Themen/Zeitungen), auch wenn gerade Wetter offen ist. */
+    static String newsTopic(Context c, int id) {
+        String raw = sp(c).getString("tp_" + id, "");
+        if (!raw.startsWith(WeatherCards.TOP)) return raw;
+        return sp(c).getString("tpn_" + id, "");
     }
 
     static void remove(Context c, int id) {
         sp(c).edit().remove("bg_" + id).remove("tx_" + id).remove("tc_" + id)
-                .remove("fd_" + id).remove("tp_" + id).remove("pl_" + id).remove("pl2_" + id)
+                .remove("fd_" + id).remove("tp_" + id).remove("tpn_" + id).remove("pl_" + id).remove("pl2_" + id)
                 .remove("plus_" + id).remove("mute_" + id).remove("dens_" + id)
                 .remove("tcs2_" + id).remove("tcw2_" + id).remove("font_" + id).remove("size_" + id).remove("theme_" + id)
                 .remove("wx_" + id).remove("warn_" + id).remove("tcs_" + id).remove("tcw_" + id).remove("cmp_" + id).remove("acc_" + id).apply();

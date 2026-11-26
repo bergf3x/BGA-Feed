@@ -41,13 +41,10 @@ public class PreviewActivity extends Activity {
         }
 
         // Regionskarte im Bergwetter: Fenster mit Orten und Gipfeln
+        // Direkt hier aufbauen statt BergActivity nachzustarten: ein zweiter Start aus dem Widget wird
+        // von Android 14+ bzw. manchen Herstellern als Hintergrundstart blockiert (Tipp ohne Wirkung).
         if (link.startsWith(WeatherCards.OPEN)) {
-            Intent bi = new Intent(this, BergActivity.class);
-            bi.putExtra(BergActivity.EXTRA_REGION, link.substring(WeatherCards.OPEN.length()));
-            int wid = in.getIntExtra(android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID, 0);
-            if (wid > 0) bi.putExtra(android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID, wid);
-            startActivity(bi);
-            finish();
+            if (!BergActivity.show(this, link.substring(WeatherCards.OPEN.length()))) finish();
             return;
         }
 

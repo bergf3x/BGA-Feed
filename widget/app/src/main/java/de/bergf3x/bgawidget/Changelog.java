@@ -10,6 +10,9 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.33",
+                    "~ Behoben: Im Widget öffnete der Tipp auf eine Bergwetter-Region nichts. Jetzt erscheint wie in der App das Fenster mit den Reitern „Orte“ und „Gipfel“",
+                    "~ Behoben: Die gewählten Regionen, Zeitungen und Themen gingen verloren, sobald man die Einstellungen mit „OK“ speicherte oder kurz zum Reiter „Wetter“ wechselte. Die Auswahl bleibt jetzt in App und Widget dauerhaft gespeichert"},
             {"1.32",
                     "~ Die gewählte Zeitungs- und Themenauswahl bleibt jetzt dauerhaft gespeichert (App und Widget): sie wird nicht mehr automatisch auf „Alle“ zurückgesetzt, wenn das Thema gerade keine Artikel hat"},
             {"1.31",

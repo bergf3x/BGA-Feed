@@ -645,7 +645,7 @@ public class MainActivity extends Activity {
         boolean sv = savedTab();
         int n = Prefs.saved(this).length();
         navBar.addView(navItem(R.drawable.ic_news, "News", !wx && !sv, "", () -> {
-            if (wx || sv) switchTab(false, ""); else if (scroll != null) scroll.smoothScrollTo(0, 0);
+            if (wx || sv) switchTab(false, Prefs.newsTopic(this, ID)); else if (scroll != null) scroll.smoothScrollTo(0, 0);
         }), new LinearLayout.LayoutParams(0, px(64), 1f));
         navBar.addView(navItem(R.drawable.ic_cloud, "Wetter", wx, "", () -> {
             if (!wx) switchTab(false, WeatherCards.BERG); else if (scroll != null) scroll.smoothScrollTo(0, 0);
