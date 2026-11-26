@@ -550,10 +550,9 @@
                 <ImageView
                     android:id="@+id/p0_on"
                     android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_gravity="bottom"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginTop="1dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/chip_on"
                     android:visibility="gone" />
@@ -591,10 +590,9 @@
                 <ImageView
                     android:id="@+id/p1_on"
                     android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_gravity="bottom"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginTop="1dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/chip_on"
                     android:visibility="gone" />
@@ -632,10 +630,9 @@
                 <ImageView
                     android:id="@+id/p2_on"
                     android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_gravity="bottom"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginTop="1dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/chip_on"
                     android:visibility="gone" />
@@ -673,10 +670,9 @@
                 <ImageView
                     android:id="@+id/p3_on"
                     android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_gravity="bottom"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginTop="1dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/chip_on"
                     android:visibility="gone" />
@@ -714,10 +710,9 @@
                 <ImageView
                     android:id="@+id/p4_on"
                     android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_gravity="bottom"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginTop="1dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/chip_on"
                     android:visibility="gone" />

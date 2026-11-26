@@ -1144,8 +1144,9 @@ public class MainActivity extends Activity {
         v.setColorFilter(tx);
         int p = px(9);
         v.setPadding(p, p, p, p);
+        // Symbol ohne Hintergrund, nur Druck-Effekt
         v.setBackground(new RippleDrawable(ColorStateList.valueOf(light ? 0x33000000 : 0x40FFFFFF),
-                shape(light ? 0x14000000 : 0x24FFFFFF, 20, 0), shape(0xFFFFFFFF, 20, 0)));
+                null, shape(0xFFFFFFFF, 20, 0)));
         v.setOnClickListener(x -> click.run());
         return v;
     }
@@ -1775,15 +1776,13 @@ public class MainActivity extends Activity {
 
     private void chips(List<String> topics, final String topic) {
         if (weatherTab()) {
-            // gleiche Text-Reiter wie bei den Nachrichten
-            LinearLayout wbox = new LinearLayout(this);
-            wbox.setOrientation(LinearLayout.VERTICAL);
-            LinearLayout wrow = new LinearLayout(this);
-            wrow.setOrientation(LinearLayout.HORIZONTAL);
-            wrow.addView(tab("Bergwetter", !topic.equals(WeatherCards.REGION), false, () -> setTopic(WeatherCards.BERG)));
-            wrow.addView(tab("Region", topic.equals(WeatherCards.REGION), false, () -> setTopic(WeatherCards.REGION)));
-            tabStrip(wbox, wrow);
-            page.addView(wbox, lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 4));
+            LinearLayout track = new LinearLayout(this);
+            track.setOrientation(LinearLayout.HORIZONTAL);
+            track.setPadding(px(3), px(3), px(3), px(3));
+            track.setBackground(shape(light ? 0x0F000000 : 0x14FFFFFF, 14, line));
+            track.addView(segment("Bergwetter", !topic.equals(WeatherCards.REGION), () -> setTopic(WeatherCards.BERG)));
+            track.addView(segment("Region", topic.equals(WeatherCards.REGION), () -> setTopic(WeatherCards.REGION)));
+            page.addView(track, lp(ViewGroup.LayoutParams.MATCH_PARENT, 42, 0, 0, 0, 8));
             return;
         }
         // Zeitungen stehen nicht als Reiter da, sondern in der Quellen-Auswahl ("m Quellen ▾")
@@ -1859,7 +1858,7 @@ public class MainActivity extends Activity {
         page.addView(box, lp(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 0, 0, 4));
     }
 
-    /** Reiterzeile (scrollbar, weich auslaufend) mit feiner Linie darunter; fuer News und Wetter gleich. */
+    /** Reiterzeile der Themen (scrollbar, weich auslaufend). */
     private void tabStrip(LinearLayout box, LinearLayout row) {
         HorizontalScrollView hs = new HorizontalScrollView(this);
         hs.setHorizontalScrollBarEnabled(false);
@@ -1868,9 +1867,6 @@ public class MainActivity extends Activity {
         hs.setOverScrollMode(View.OVER_SCROLL_NEVER);
         hs.addView(row);
         box.addView(hs, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        View rule = new View(this);
-        rule.setBackgroundColor(line);
-        box.addView(rule, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.max(1, px(1))));
     }
 
     /** Quellen-Auswahl (Zeitungen mit Regionen) als Blatt von unten. */
@@ -1883,15 +1879,12 @@ public class MainActivity extends Activity {
         startActivity(in);
     }
 
-    /** Text-Reiter: aktiv hell mit Strich darunter, sonst gedaempft; roter Punkt nur bei Ungelesenem. */
+    /** Themen-Reiter: aktiv als weiche Kapsel, sonst nur gedaempfter Text; roter Punkt nur bei Ungelesenem. */
     private View tab(String label, boolean on, boolean dot, final Runnable click) {
-        LinearLayout t = new LinearLayout(this);
-        t.setOrientation(LinearLayout.VERTICAL);
-        t.setGravity(Gravity.CENTER_HORIZONTAL);
         LinearLayout lr = new LinearLayout(this);
         lr.setOrientation(LinearLayout.HORIZONTAL);
-        lr.setGravity(Gravity.CENTER_VERTICAL);
-        TextView tv = text(label, 14.5f, on ? tx : soft, on);
+        lr.setGravity(Gravity.CENTER);
+        TextView tv = text(label, 13.5f, on ? tx : soft, on);
         lr.addView(tv);
         if (dot) {
             View d0 = new View(this);
@@ -1900,25 +1893,42 @@ public class MainActivity extends Activity {
             g.setColor(0xFFE53935);
             d0.setBackground(g);
             LinearLayout.LayoutParams dl = new LinearLayout.LayoutParams(px(6), px(6));
-            dl.leftMargin = px(4);
-            dl.bottomMargin = px(8);
+            dl.leftMargin = px(5);
+            dl.bottomMargin = px(7);
             lr.addView(d0, dl);
         }
-        t.addView(lr, lp(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0, 8, 0, 7));
-        View ul = new View(this);
-        ul.setBackground(shape(on ? chipOn : 0, 1, 0));
-        ul.setVisibility(on ? View.VISIBLE : View.INVISIBLE);
-        t.addView(ul, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.max(2, px(2))));
-        t.setPadding(px(10), 0, px(10), 0);
-        t.setMinimumHeight(px(40));
-        t.setClickable(true);
-        t.setBackground(new RippleDrawable(ColorStateList.valueOf(light ? 0x22000000 : 0x33FFFFFF), null, shape(0xFFFFFFFF, 10, 0)));
+        lr.setPadding(px(14), 0, px(14), 0);
+        lr.setMinimumHeight(px(36));
+        lr.setClickable(true);
+        lr.setBackground(new RippleDrawable(ColorStateList.valueOf(light ? 0x22000000 : 0x33FFFFFF),
+                on ? shape(light ? 0x1A000000 : 0x26FFFFFF, 18, 0) : null, shape(0xFFFFFFFF, 18, 0)));
         String spoken = label.replace(" ▾", "") + (on ? ", ausgewählt" : "") + (dot ? ", neue Meldungen" : "") + (label.endsWith("▾") ? ", öffnet Auswahl" : "");
-        t.setContentDescription(spoken);
+        lr.setContentDescription(spoken);
+        lr.setOnClickListener(v -> {
+            Haptic.play(v, Haptic.TICK);
+            click.run();
+        });
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, px(36));
+        lp.rightMargin = px(6);
+        lp.topMargin = px(2);
+        lp.bottomMargin = px(2);
+        lr.setLayoutParams(lp);
+        return lr;
+    }
+
+    /** Segment fuer die Zwei-Wahl (Bergwetter/Region): Glas-Leiste, aktiver Reiter als gefuellter Streifen. */
+    private View segment(String label, boolean on, final Runnable click) {
+        TextView t = text(label, 13.5f, on ? chipOnTx : soft, on);
+        t.setGravity(Gravity.CENTER);
+        t.setClickable(true);
+        t.setBackground(new RippleDrawable(ColorStateList.valueOf(light ? 0x22000000 : 0x33FFFFFF),
+                on ? shape(chipOn, 11, 0) : null, shape(0xFFFFFFFF, 11, 0)));
+        t.setContentDescription(label + (on ? ", ausgewählt" : ""));
         t.setOnClickListener(v -> {
             Haptic.play(v, Haptic.TICK);
             click.run();
         });
+        t.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1f));
         return t;
     }
 

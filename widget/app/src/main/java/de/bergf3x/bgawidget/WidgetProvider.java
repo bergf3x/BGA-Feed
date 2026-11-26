@@ -154,11 +154,12 @@ public class WidgetProvider extends AppWidgetProvider {
             rv.setViewVisibility(P[i], android.view.View.VISIBLE);
             rv.setViewVisibility(P_DOT[i], !wxm && (i == 0 ? !newTop.isEmpty() : newTop.contains(value)) ? android.view.View.VISIBLE : android.view.View.GONE);
             rv.setTextViewText(P_T[i], Style.font(ctx, id, label));
-            // ruhige Text-Reiter: aktiver Reiter hell und unterstrichen, die anderen gedaempft
+            // aktiver Reiter: weiche Kapsel, die anderen nur Text, gedaempft
             rv.setInt(P[i], "setBackgroundResource", 0);
             int acc = Prefs.accent(ctx, id);
             if (acc >= 0) rv.setInt(P_ON[i], "setColorFilter", 0xFF000000 | acc);
             else Pal.pair(ctx, id, rv, P_ON[i], "setColorFilter", 0xFF2A2F36, 0xFFF2F2F2);
+            rv.setInt(P_ON[i], "setImageAlpha", acc >= 0 ? 0x4D : 0x2E);
             rv.setViewVisibility(P_ON[i], on ? android.view.View.VISIBLE : android.view.View.GONE);
             Pal.text(ctx, id, rv, P_T[i], -1, on ? 1f : 0.6f);
             rv.setOnClickPendingIntent(P[i], hasSubs

@@ -10,6 +10,11 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.37",
+                    "~ Einheitliche Symbole: ein Linien-Satz (24er-Raster, 1,75 dp, runde Enden, nie gefüllt) in Kopfzeile, unterer Leiste, Einstellungen und Widget",
+                    "~ Symbolknöpfe ohne Hintergrund, nur mit Druck-Effekt (App und Widget)",
+                    "~ Themen-Reiter: der aktive Reiter ist jetzt eine weiche Kapsel statt unterstrichen (App und Widget), keine Trennlinie mehr darunter",
+                    "~ Bergwetter / Region: Segment-Leiste mit gefülltem aktivem Streifen (App)"},
             {"1.36",
                     "~ Kopfzeile: Der App-Name steht immer in einer Zeile (schrumpft bei Platzmangel), die Kopfhöhe bleibt auf News, Wetter und Gemerkt gleich – kein Ruck mehr beim Seitenwechsel",
                     "~ Abo-Artikel: Das Schloss ist aus der Kopfzeile (App und Widget) in die Quellen-Auswahl gewandert („Abo-Artikel anzeigen“, wirkt mit OK)",
