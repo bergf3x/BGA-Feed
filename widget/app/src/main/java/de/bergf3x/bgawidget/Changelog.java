@@ -10,6 +10,11 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.42",
+                    "~ Webcams neu: Blatt von unten mit Ordnern je Region (Titelbild = aktuelles Live-Bild), Raster mit zwei Spalten, Suche über alle Kameras und Favoriten (Stern)",
+                    "+ Einzelansicht mit Wischen zur nächsten Kamera („3 / 19“), Neu laden und Webseite oben, Tipp aufs Bild = Vollbild (Vollbild wischt ebenfalls durch die Auswahl)",
+                    "+ Beim Öffnen erscheint sofort das zuletzt gespeicherte Bild und wird bei Bedarf (älter als 5 Min.) weich überblendet aktualisiert; nur sichtbare Kacheln laden",
+                    "+ Webcam-Einstellungen: Aktualisierung (30 Sek., 1 Min., 5 Min., Manuell), Aufbewahrung (3–30 Tage), „Nur im WLAN“, Speicher leeren; Gesamtspeicher höchstens 50 MB"},
             {"1.41",
                     "~ Kopfzeile in zwei Zeilen: oben der App-Name in voller Breite (nie abgeschnitten), darunter links der Stand, rechts Filter, Abo-Schloss, Aktualisieren und Einstellungen (App)"},
             {"1.40",

@@ -26,7 +26,8 @@ import android.widget.TextView;
 /** Webcam im Vollbild: schwarzer Hintergrund, Zoom, Wischen zur naechsten Kamera, Bild erneuert sich jede Minute. */
 public class CamFullActivity extends Activity {
     static final String EXTRA_INDEX = "idx";
-    private static final long RELOAD_MS = 60000L;
+    /** Kamera-Indizes (Webcams.CAMS) in der Reihenfolge, durch die gewischt wird; ohne Angabe alle. */
+    static final String EXTRA_IDS = "ids";
     private static final int MAX_W = 2048;
 
     private final Handler ui = new Handler(Looper.getMainLooper());
@@ -35,6 +36,7 @@ public class CamFullActivity extends Activity {
     private TextView title, sub, count;
     private ProgressBar spinner;
     private int index;
+    private int[] list;
     private int gen;
     private boolean hasBmp;
     private boolean barVisible = true;
@@ -53,8 +55,13 @@ public class CamFullActivity extends Activity {
         d = getResources().getDisplayMetrics().density;
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().getDecorView().setBackgroundColor(Color.BLACK);
+        list = getIntent().getIntArrayExtra(EXTRA_IDS);
+        if (list == null || list.length == 0) {
+            list = new int[Webcams.CAMS.length];
+            for (int i = 0; i < list.length; i++) list[i] = i;
+        }
         index = getIntent().getIntExtra(EXTRA_INDEX, 0);
-        if (index < 0 || index >= Webcams.CAMS.length) index = 0;
+        if (index < 0 || index >= list.length) index = 0;
 
         FrameLayout root = new FrameLayout(this);
         root.setBackgroundColor(Color.BLACK);
@@ -142,7 +149,12 @@ public class CamFullActivity extends Activity {
         super.onResume();
         hideSystemBars();
         ui.removeCallbacks(tick);
-        ui.postDelayed(tick, RELOAD_MS);
+        scheduleTick();
+    }
+
+    private void scheduleTick() {
+        long iv = Webcams.intervalMs(this);
+        if (iv > 0) ui.postDelayed(tick, Math.max(iv, 30000L));
     }
 
     @Override
@@ -173,9 +185,10 @@ public class CamFullActivity extends Activity {
 
     /** Zu einer Kamera wechseln (endlos in beide Richtungen): erst das gespeicherte Bild, dann das neue. */
     private void show(int i) {
-        int n = Webcams.CAMS.length;
+        int n = list.length;
         index = ((i % n) + n) % n;
-        Webcams.Cam cam = Webcams.CAMS[index];
+        Webcams.Cam cam = Webcams.CAMS[list[index]];
+        Webcams.viewed(this, cam);
         title.setText(cam.name);
         count.setText((index + 1) + " / " + n + "  ·  Wischen = nächste Kamera");
         Webcams.Shot c = Webcams.cached(this, cam, MAX_W);
@@ -190,7 +203,7 @@ public class CamFullActivity extends Activity {
         ui.removeCallbacks(tick);
         final int g = ++gen;
         final int at = index;
-        final Webcams.Cam cam = Webcams.CAMS[at];
+        final Webcams.Cam cam = Webcams.CAMS[list[at]];
         if (manual) {
             sub.setText("Aktualisiere …");
             if (!hasBmp) spinner.setVisibility(View.VISIBLE);
@@ -206,14 +219,14 @@ public class CamFullActivity extends Activity {
                     hasBmp = true;
                 }
                 sub.setText(Webcams.status(s));
-                ui.postDelayed(tick, RELOAD_MS);
+                scheduleTick();
             });
         }).start();
     }
 
     private void openPage() {
         try {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Webcams.CAMS[index].page)));
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Webcams.CAMS[list[index]].page)));
         } catch (Exception ignored) {
         }
     }
