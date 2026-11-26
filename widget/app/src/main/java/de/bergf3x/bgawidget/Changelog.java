@@ -10,6 +10,8 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.46",
+                    "+ Neue Region „Matterhorn“ mit 14 Kameras: Rothorn, Matterhorn Glacier Paradise, Trockener Steg, Hohtälli, Hirli, Sunnegga, Riffelberg, Schwarzsee, Gornergrat, Monte Rosa, Blauherd (Roundshot, 360°-Panoramen) sowie Plateau Rosa, Bec Carré und Matterhorn von Cervinia (Panomax)"},
             {"1.45",
                     "+ Weitere Bergkameras aus den Alpen, nach Regionen sortiert (Chiemgau, Tegernsee, Zugspitze, Allgäu, Salzburg, Salzkammergut, Zillertal, Nordtirol, Osttirol, Vorarlberg, Kärnten, Steiermark, Südtirol, Schweiz); die Liste lädt die App von foto-webcam.eu und erneuert sie alle 3 Tage",
                     "~ Die Großglockner-Kameras stehen jetzt in ihren Regionen (Kärnten, Salzburger Land) statt in einem eigenen Reiter",

@@ -63,7 +63,8 @@ public class InfoActivity extends Activity {
         src.addView(line(b, "Webcams", 12, b.soft, false, 10));
         src.addView(link(b, "foto-webcam.eu", "https://www.foto-webcam.eu"));
         src.addView(link(b, "terra-hd.de", "https://www.terra-hd.de"));
-        src.addView(link(b, "Panomax", "https://www.panomax.com"));
+        src.addView(link(b, "Panomax (u. a. Cervinia)", "https://www.panomax.com"));
+        src.addView(link(b, "Roundshot (Zermatt, Gornergrat)", "https://zbag.roundshot.com"));
         src.addView(link(b, "Feratel", "https://www.feratel.com"));
         src.addView(link(b, "livespotting / wetter.com (Königssee)", "https://www.berchtesgaden.de/webcams/webcam-koenigssee"));
         src.addView(link(b, "Großglockner Hochalpenstraße", "https://www.grossglockner.at/gg/en/webcam"));

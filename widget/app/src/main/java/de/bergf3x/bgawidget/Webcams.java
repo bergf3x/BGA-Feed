@@ -31,6 +31,8 @@ final class Webcams {
         String thumb;
         /** true, wenn page nur eine gemeinsame Seite fuer mehrere Kameras ist (Link nicht kamera-genau). */
         boolean generic;
+        /** 360-Grad-Panorama (sehr breites Bild). */
+        boolean pano;
         /** Hoehe in m (0 = unbekannt) und Beschreibung/Schlagwoerter fuer die Suche (aus der Kameraliste). */
         int elev;
         String desc = "";
@@ -87,6 +89,21 @@ final class Webcams {
                 "https://panodata.panomax.com/cams/" + id + "/preview_og.jpg");
     }
 
+    /** Roundshot-Kamera: Kennung aus der Kamera-Seite; Vorschau = /thumbnail, Bild = /medium (je per Weiterleitung). */
+    private static Cam roundshot(String host, String slug, int id, String name) {
+        String base = "https://" + host + ".roundshot.com/";
+        Cam c = new Cam("rs_" + slug, name, "Roundshot", base + slug + "/", false, base + "cams/" + id + "/medium");
+        c.thumb = base + "cams/" + id + "/thumbnail";
+        c.pano = true;
+        return c;
+    }
+
+    /** Panomax-Kamera der Region Cervinia (Seite cervinia.panomax.com/<slug>). */
+    private static Cam cervinia(String slug, int id, String name) {
+        return new Cam("px_" + id, name, "Panomax", "https://cervinia.panomax.com/" + slug, false,
+                "https://panodata.panomax.com/cams/" + id + "/preview_og.jpg");
+    }
+
     private static Cam link(String id, String name, String source, String page) {
         return new Cam("lk_" + id, name, source, page, false);
     }
@@ -119,6 +136,20 @@ final class Webcams {
             foto("freiwandeck", "Freiwandeck – Blick zum Großglockner"),
             foto("wallackhaus", "Wallackhaus Süd"),
             foto("wallackhaus-nord", "Wallackhaus Nord"),
+            roundshot("zbag", "rothorn", 1045, "Rothorn"),
+            roundshot("zbag", "matterhornglacierparadise", 964, "Matterhorn Glacier Paradise"),
+            roundshot("zbag", "trockener-steg", 1044, "Trockener Steg"),
+            roundshot("zbag", "hohtaelli", 1043, "Hohtälli"),
+            roundshot("zbag", "hirli", 1047, "Hirli"),
+            roundshot("zbag", "sunnegga", 1049, "Sunnegga"),
+            roundshot("zbag", "riffelberg", 1048, "Riffelberg"),
+            roundshot("zbag", "schwarzsee", 2090, "Schwarzsee"),
+            roundshot("zermatt", "gornergrat", 1042, "Gornergrat"),
+            roundshot("zermatt", "monterosa", 1551, "Monte Rosa"),
+            roundshot("zbag", "blauherd", 2091, "Blauherd"),
+            cervinia("plateau-rosa", 931, "Plateau Rosa (Cervinia)"),
+            cervinia("bec-carre", 1256, "Bec Carré (Cervinia)"),
+            cervinia("matterhorn", 867, "Matterhorn (Cervinia)"),
             // nur Webseite (kein Standbild abrufbar)
             link("avisec_kfjh", "Kaiser-Franz-Josefs-Haus", "avisec", "https://avisec.com/feed/kfjh"),
             link("avisec_glocknerhaus", "Glocknerhaus", "avisec", "https://avisec.com/feed/glocknerhaus"),
@@ -164,6 +195,7 @@ final class Webcams {
             {"Österreich (übrige)", "Österreich", "", "pfaelzerhuette passlueg"},
             {"Südtirol", "Südtirol", "", "langenferner becherhaus ridnaun weissbrunnferner rieserferner chavalatsch kronplatz rittnerhorn trafoi zallinger dreizinnenblick hochmuth gummer"},
             {"Schweiz", "Schweiz", "", "konkordiahuette glecksteinhuette pizol wildhaus hoherkasten hochhamm brunnen"},
+            {"Zermatt und Matterhorn", "Matterhorn", "rs_rothorn rs_matterhornglacierparadise rs_trockener-steg rs_hohtaelli rs_hirli rs_sunnegga rs_riffelberg rs_schwarzsee rs_gornergrat rs_monterosa rs_blauherd px_931 px_1256 px_867", ""},
             {"Webcam-Verzeichnisse", "", "lk_dir_schoenau lk_dir_bgd", ""},
     };
 

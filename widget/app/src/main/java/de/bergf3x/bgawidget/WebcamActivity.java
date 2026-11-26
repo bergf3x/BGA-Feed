@@ -877,6 +877,8 @@ public class WebcamActivity extends Activity {
         camLink.setText(cam.page.replace("https://", "").replace("www.", ""));
         camNote.setText(cam.generic
                 ? "Hinweis: Dieser Link führt auf die gemeinsame Webcam-Seite von Berchtesgaden, nicht auf genau diese Kamera."
+                : cam.pano
+                ? "360°-Panorama: im Vollbild mit Spreizen zoomen und mit dem Finger verschieben  ·  Wischen = nächste Kamera"
                 : "Tippen aufs Bild = Vollbild  ·  Wischen = nächste Kamera");
         camShownTaken = -1;
         camImg.setImageDrawable(null);
