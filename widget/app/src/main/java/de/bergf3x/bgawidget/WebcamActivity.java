@@ -129,8 +129,10 @@ public class WebcamActivity extends Activity {
         b = new Bubble(this, 330, 8);
         b.sheet();
         final Context app = getApplicationContext();
+        Webcams.loadIndex(app);
         pool.execute(() -> Webcams.cleanup(app));
         showMain();
+        if (Webcams.indexStale(app)) refreshIndex(app);
     }
 
     @Override
@@ -155,63 +157,30 @@ public class WebcamActivity extends Activity {
         super.onDestroy();
     }
 
-    // ---------------------------------------------------------------- Wischen zwischen den Regionen
-
-    private float swDownX, swDownY;
-    private long swDownT;
-    private boolean swActive;
-
-    /** Waagerechtes Wischen auf der Liste springt zur naechsten bzw. vorigen Region (verbraucht keine Eingabe). */
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (listBody != null && !camOpen && listScroll != null && Motion.swipe(this)) {
-            switch (ev.getActionMasked()) {
-                case MotionEvent.ACTION_DOWN: {
-                    android.graphics.Rect r = new android.graphics.Rect();
-                    swActive = listScroll.getGlobalVisibleRect(r) && r.contains((int) ev.getRawX(), (int) ev.getRawY());
-                    swDownX = ev.getRawX();
-                    swDownY = ev.getRawY();
-                    swDownT = ev.getEventTime();
-                    break;
-                }
-                case MotionEvent.ACTION_UP:
-                    if (swActive) {
-                        float dx = ev.getRawX() - swDownX, dy = ev.getRawY() - swDownY;
-                        long dt = Math.max(1, ev.getEventTime() - swDownT);
-                        if (Math.abs(dx) > b.px(70) && Math.abs(dx) > Math.abs(dy) * 1.8f && dt < 700) {
-                            jumpRegion(dx < 0 ? 1 : -1);
-                        }
-                    }
-                    swActive = false;
-                    break;
-                case MotionEvent.ACTION_CANCEL:
-                    swActive = false;
-                    break;
-                default:
-                    break;
-            }
-        }
-        return super.dispatchTouchEvent(ev);
-    }
-
-    /** dir = 1 naechste, -1 vorige Region mit Reiter; am Ende passiert nichts. */
-    private void jumpRegion(int dir) {
-        int cur = Math.max(0, activeSec);
-        int target = -1;
-        for (int i = cur + dir; i >= 0 && i < secChips.size(); i += dir) {
-            if (secChips.get(i) != null) {
-                target = i;
-                break;
-            }
-        }
-        if (target < 0) return;
-        listScroll.smoothScrollTo(0, Math.max(0, secViews.get(target).getTop() - b.px(2)));
-    }
-
     @Override
     public void onBackPressed() {
         if (up != null) up.run();
         else b.close();
+    }
+
+    /** Kameraliste im Hintergrund von foto-webcam.eu holen; danach Liste neu aufbauen, sofern sie gerade zu sehen ist. */
+    private void refreshIndex(final Context app) {
+        pool.execute(() -> {
+            try {
+                Webcams.fetchIndex(app);
+            } catch (Exception e) {
+                return;
+            }
+            ui.post(() -> {
+                if (isFinishing() || isDestroyed() || camOpen || listBody == null) return;
+                Webcams.loadIndex(app);
+                int y = listScroll.getScrollY();
+                fillList();
+                listScroll.post(() -> listScroll.scrollTo(0, y));
+                updateMainSub();
+                kickSoon();
+            });
+        });
     }
 
     // ---------------------------------------------------------------- Bausteine
@@ -317,17 +286,43 @@ public class WebcamActivity extends Activity {
 
     private int regionCount() {
         int n = 0;
-        for (Webcams.Folder f : Webcams.FOLDERS) if (f.chip != null) n++;
+        for (Webcams.Folder f : Webcams.FOLDERS) {
+            if (f.chip == null) continue;
+            for (String id : f.ids) {
+                if (Webcams.indexOf(id) >= 0) {
+                    n++;
+                    break;
+                }
+            }
+        }
         return n;
+    }
+
+    private TextView mainSub;
+
+    private void updateMainSub() {
+        if (mainSub != null) mainSub.setText(imageCamCount() + " Kameras · " + regionCount() + " Regionen");
+    }
+
+    /** Zeile unter dem Namen: Hoehe, Aufnahmezeit, Quelle. */
+    private String subText(Webcams.Cam c) {
+        if (c.link) return c.source;
+        StringBuilder sb = new StringBuilder();
+        if (c.elev > 0) sb.append(String.format(Locale.GERMANY, "%,d m", c.elev)).append(" · ");
+        String ago = Webcams.agoLabel(this, c, true);
+        if (!ago.isEmpty()) sb.append(ago).append(" · ");
+        return sb.append(c.source).toString();
     }
 
     // ---------------------------------------------------------------- Liste
 
     private void showMain() {
+        if (Webcams.dirty) Webcams.loadIndex(getApplicationContext());
         reset();
         up = null;
-        head("Webcams", imageCamCount() + " Kameras · " + regionCount() + " Regionen", null,
+        LinearLayout mh = head("Webcams", imageCamCount() + " Kameras · " + regionCount() + " Regionen", null,
                 iconBtn(R.drawable.ic_tune, "Webcam-Einstellungen", this::showSettings));
+        mainSub = ((TextView[]) mh.getTag())[1];
 
         LinearLayout bar = new LinearLayout(this);
         bar.setOrientation(LinearLayout.HORIZONTAL);
@@ -427,7 +422,7 @@ public class WebcamActivity extends Activity {
                 int i = Webcams.indexOf(id);
                 if (i < 0) continue;
                 Webcams.Cam c = Webcams.CAMS[i];
-                if (searching && !norm(c.name + " " + f.name + " " + c.source).contains(nq)) continue;
+                if (searching && !norm(c.name + " " + f.name + " " + c.source + " " + c.desc).contains(nq)) continue;
                 all.add(i);
                 if (!c.link) imgs.add(i);
             }
@@ -588,8 +583,7 @@ public class WebcamActivity extends Activity {
         sub.setTextColor(b.soft);
         sub.setSingleLine(true);
         sub.setEllipsize(android.text.TextUtils.TruncateAt.END);
-        String ago = Webcams.agoLabel(this, c, true);
-        sub.setText(c.link ? c.source : (ago.isEmpty() ? c.source : ago + " · " + c.source));
+        sub.setText(subText(c));
         col.addView(sub);
         r.addView(col, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
 
@@ -679,8 +673,7 @@ public class WebcamActivity extends Activity {
     /** Neues Bild weich ueber das alte blenden (nur wenn sich etwas geaendert hat). */
     private void setImage(Slot s, Webcams.Shot shot) {
         if (shot.bmp == null) return;
-        String ago = Webcams.agoLabel(this, s.cam, true);
-        if (s.sub != null && !ago.isEmpty()) s.sub.setText(ago + " · " + s.cam.source);
+        if (s.sub != null) s.sub.setText(subText(s.cam));
         if (s.shownTaken >= 0 && shot.taken > 0 && shot.taken == s.shownTaken) return;
         s.shownTaken = shot.taken;
         crossfade(s.iv, shot.bmp);
@@ -928,8 +921,10 @@ public class WebcamActivity extends Activity {
 
     private void openFull() {
         if (camList.length == 0) return;
+        String[] ids = new String[camList.length];
+        for (int i = 0; i < ids.length; i++) ids[i] = Webcams.CAMS[camList[i]].id;
         startActivity(new Intent(this, CamFullActivity.class)
-                .putExtra(CamFullActivity.EXTRA_IDS, camList)
+                .putExtra(CamFullActivity.EXTRA_IDS, ids)
                 .putExtra(CamFullActivity.EXTRA_INDEX, camPos));
     }
 

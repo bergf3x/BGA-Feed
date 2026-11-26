@@ -10,6 +10,11 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.45",
+                    "+ Weitere Bergkameras aus den Alpen, nach Regionen sortiert (Chiemgau, Tegernsee, Zugspitze, Allgäu, Salzburg, Salzkammergut, Zillertal, Nordtirol, Osttirol, Vorarlberg, Kärnten, Steiermark, Südtirol, Schweiz); die Liste lädt die App von foto-webcam.eu und erneuert sie alle 3 Tage",
+                    "~ Die Großglockner-Kameras stehen jetzt in ihren Regionen (Kärnten, Salzburger Land) statt in einem eigenen Reiter",
+                    "~ Zeilen zeigen die Höhe; die Suche findet auch Ort, Tal und Beschreibung",
+                    "- Das Wischen von Region zu Region auf der Webcam-Liste ist wieder entfernt (die Reiter-Leiste wischt weiter)"},
             {"1.44",
                     "+ Webcams: Wischen nach links oder rechts springt zur nächsten oder vorigen Region (folgt dem Schalter „Seiten durch Wischen wechseln“)",
                     "+ Über die App → Quellen: Webcam-Quellen (foto-webcam.eu, terra-hd, Panomax, Feratel, Großglockner Hochalpenstraße, avisec u. a.) mit Hinweis zu Rechten und Teilen"},

@@ -24,7 +24,7 @@ import android.widget.TextView;
 /** Webcam im Vollbild: schwarzer Hintergrund, Zoom, Wischen zur naechsten Kamera, Bild erneuert sich jede Minute. */
 public class CamFullActivity extends Activity {
     static final String EXTRA_INDEX = "idx";
-    /** Kamera-Indizes (Webcams.CAMS) in der Reihenfolge, durch die gewischt wird; ohne Angabe alle. */
+    /** Kamera-Kennungen in der Reihenfolge, durch die gewischt wird; ohne Angabe alle Kameras mit Bild. */
     static final String EXTRA_IDS = "ids";
     private static final int MAX_W = 2048;
 
@@ -34,7 +34,7 @@ public class CamFullActivity extends Activity {
     private TextView title, sub, count;
     private ProgressBar spinner;
     private int index;
-    private int[] list;
+    private Webcams.Cam[] list;
     private int gen;
     private boolean hasBmp;
     private boolean barVisible = true;
@@ -53,11 +53,18 @@ public class CamFullActivity extends Activity {
         d = getResources().getDisplayMetrics().density;
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().getDecorView().setBackgroundColor(Color.BLACK);
-        list = getIntent().getIntArrayExtra(EXTRA_IDS);
-        if (list == null || list.length == 0) {
-            list = new int[Webcams.CAMS.length];
-            for (int i = 0; i < list.length; i++) list[i] = i;
+        String[] ids = getIntent().getStringArrayExtra(EXTRA_IDS);
+        java.util.List<Webcams.Cam> cams = new java.util.ArrayList<>();
+        if (ids != null) {
+            for (String id : ids) {
+                Webcams.Cam cam = Webcams.byId(id);
+                if (cam != null && !cam.link) cams.add(cam);
+            }
         }
+        if (cams.isEmpty()) {
+            for (Webcams.Cam cam : Webcams.CAMS) if (!cam.link) cams.add(cam);
+        }
+        list = cams.toArray(new Webcams.Cam[0]);
         index = getIntent().getIntExtra(EXTRA_INDEX, 0);
         if (index < 0 || index >= list.length) index = 0;
 
@@ -105,7 +112,7 @@ public class CamFullActivity extends Activity {
         cols.addView(sub);
         top.addView(cols, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
         top.addView(iconButton(R.drawable.ic_refresh, "Neu laden", false, () -> load(true)));
-        top.addView(iconButton(R.drawable.ic_share, "Teilen", false, () -> Webcams.share(this, Webcams.CAMS[list[index]])));
+        top.addView(iconButton(R.drawable.ic_share, "Teilen", false, () -> Webcams.share(this, list[index])));
         bar = top;
         root.addView(top, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.TOP));
 
@@ -192,7 +199,7 @@ public class CamFullActivity extends Activity {
     private void show(int i) {
         int n = list.length;
         index = ((i % n) + n) % n;
-        Webcams.Cam cam = Webcams.CAMS[list[index]];
+        Webcams.Cam cam = list[index];
         Webcams.viewed(this, cam);
         title.setText(cam.name);
         count.setText((index + 1) + " / " + n + "  ·  Wischen = nächste Kamera");
@@ -208,7 +215,7 @@ public class CamFullActivity extends Activity {
         ui.removeCallbacks(tick);
         final int g = ++gen;
         final int at = index;
-        final Webcams.Cam cam = Webcams.CAMS[list[at]];
+        final Webcams.Cam cam = list[at];
         if (manual) {
             sub.setText("Aktualisiere …");
             if (!hasBmp) spinner.setVisibility(View.VISIBLE);

@@ -8,6 +8,7 @@ package de.bergf3x.bgawidget;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -30,6 +31,9 @@ final class Webcams {
         String thumb;
         /** true, wenn page nur eine gemeinsame Seite fuer mehrere Kameras ist (Link nicht kamera-genau). */
         boolean generic;
+        /** Hoehe in m (0 = unbekannt) und Beschreibung/Schlagwoerter fuer die Suche (aus der Kameraliste). */
+        int elev;
+        String desc = "";
         /** Nur Webseite, kein Bild in der App. */
         final boolean link;
 
@@ -87,7 +91,7 @@ final class Webcams {
         return new Cam("lk_" + id, name, source, page, false);
     }
 
-    static final Cam[] CAMS = {
+    private static final Cam[] BASE = {
             foto("jenner-sued", "Jenner Süd"),
             foto("jenner-ost", "Jenner Ost"),
             foto("funtenseetauern", "Funtenseetauern"),
@@ -127,15 +131,181 @@ final class Webcams {
             link("dir_bgd", "Alle Webcams Berchtesgaden", "Nur Webseite · berchtesgaden.de", "https://www.berchtesgaden.de/webcams"),
     };
 
-    /** Zuordnung der Kameras zu Ordnern (Vorschlag, ohne Pruefung der Lage jeder Kamera). Reihenfolge = Anzeige. */
-    static final Folder[] FOLDERS = {
-            new Folder("Jenner und Königssee", "Jenner", "fw_jenner-sued", "fw_jenner-ost", "ls_koenigssee", "fe_3004", "fe_3009", "fe_3345", "lk_jenner_berg"),
-            new Folder("Berchtesgaden und Obersalzberg", "Berchtesgaden", "th_hoegl", "fe_3005", "px_rossfeld", "fw_windbeutelbaron", "fe_3007", "lk_obersalzberg", "lk_hochlenzer", "lk_kehlstein"),
-            new Folder("Ramsau und Hintersee", "Ramsau", "th_hintersee", "fe_3006", "th_stoisser-alm"),
-            new Folder("Nationalpark und Hütten", "Nationalpark", "fw_funtenseetauern", "fw_funtensee", "fw_stoehrhaus", "fw_stahlhaus", "th_neue-traunsteiner-huette", "lk_nationalpark"),
-            new Folder("Großglockner", "Großglockner", "px_7", "px_16", "px_17", "fw_freiwandeck", "fw_wallackhaus", "fw_wallackhaus-nord", "lk_avisec_kfjh", "lk_avisec_glocknerhaus"),
-            new Folder("Webcam-Verzeichnisse", null, "lk_dir_schoenau", "lk_dir_bgd"),
+    /** Alle Kameras (eingebaute + aus der Kameraliste geladene) und die Regionen daraus. */
+    static volatile Cam[] CAMS = BASE;
+    static volatile Folder[] FOLDERS = new Folder[0];
+    /** true, wenn eine neue Kameraliste geladen wurde, aber noch nicht in die Anzeige uebernommen ist. */
+    static volatile boolean dirty;
+    private static volatile java.util.Map<String, Cam> EXTRA = new java.util.LinkedHashMap<>();
+
+    /**
+     * Regionen in Anzeigereihenfolge: {Name, Reiter (leer = keiner), eingebaute Kameras, Kameras aus der Liste (Kennungen von foto-webcam.eu)}.
+     * Zuordnung nach Lage; die Eintraege der Liste stammen aus einer von Hand getroffenen Bergauswahl.
+     */
+    private static final String[][] REGIONS = {
+            {"Jenner und Königssee", "Jenner", "fw_jenner-sued fw_jenner-ost ls_koenigssee fe_3004 fe_3009 fe_3345 lk_jenner_berg", ""},
+            {"Berchtesgaden und Obersalzberg", "Berchtesgaden", "th_hoegl fe_3005 px_rossfeld fw_windbeutelbaron fe_3007 lk_obersalzberg lk_hochlenzer lk_kehlstein", ""},
+            {"Ramsau und Hintersee", "Ramsau", "th_hintersee fe_3006 th_stoisser-alm", "vorderloiplsau"},
+            {"Nationalpark und Hütten", "Nationalpark", "fw_funtenseetauern fw_funtensee fw_stoehrhaus fw_stahlhaus th_neue-traunsteiner-huette lk_nationalpark", ""},
+            {"Bad Reichenhall", "Bad Reichenhall", "", "hochstaufen salzburg"},
+            {"Chiemgau", "Chiemgau", "", "wendelstein-ost wendelstein-west hochfelln hochfelln-alpen traunstein-sued traunstein rauschberg hochries-sued hochries-nord hochries hochries-ost kampenwand schleching samerberg"},
+            {"Tegernsee und Voralpen", "Tegernsee", "", "buchstein kochelsee wallberg pendling-ost pendling-west tegernseewest bruennsteinhaus gsteig"},
+            {"Garmisch und Zugspitze", "Zugspitze", "", "bzb-gipfel zugspitze-sued zugspitze zugspitze-nord zugspitze-ost sonnalpin meilerhuette-haus meilerhuette wank kandahar-express kreuzeck eibsee-nord hausberg bzb-tal eibsee-hotel"},
+            {"Allgäu", "Allgäu", "", "nebelhorn fellhorn tegelberg"},
+            {"Salzburger Land", "Salzburg", "px_16 px_17", "sonnblick kleinfleisskees hochkoenig rauris wasserfallboden rudolfshuette thomaseck obertauern2 mooserboden asitz obertauern1 hundsfeldsee gernkogel sonnblickbasis hackelhuette hackelhuette-nord zellamsee schwaigerhaus"},
+            {"Salzkammergut", "Salzkammergut", "", "gjaidstein simonyhuette hochleckenhaus attersee attersee2"},
+            {"Zillertal", "Zillertal", "", "tuxertal tristner gamshuette schlegeis"},
+            {"Nordtirol", "Nordtirol", "", "hintereisferner2 hintereisferner1 tisenjoch jamtalferner bockkogel braunschweigerhuette russkopf sulzkogel wannenkogel bremerhuette st-anton innsbruck toelzer-huette trins wilder-kaiser st-johann-in-tirol-west st-johann-in-tirol"},
+            {"Osttirol", "Osttirol", "", "kreuzspitze lucknerhaus grossglockner-zoom glocknerwinkel lienz dolomitenhuette kalsertal virgen-nord"},
+            {"Vorarlberg", "Vorarlberg", "", "ruefikopf gargellen-sued gargellen-west diedamskopf koerbersee lindauerhuette furkajoch dornbirn"},
+            {"Kärnten", "Kärnten", "px_7 fw_freiwandeck fw_wallackhaus fw_wallackhaus-nord lk_avisec_kfjh lk_avisec_glocknerhaus",
+                    "adlersruhe oberwalderhuette gletscher-sued ankogel-sued gletscher-nord feldkopf feldkopf-west ankogel-nord hagener-huette polinik liesgelespitz dobratsch falkert-nord ederplan falkert zechneralm turrach-ost turrach-west heidi-chalets lorenzalm schulterkogel poertschach-a-w"},
+            {"Steiermark", "Steiermark", "", "hochkar sarstein krakau hotel-lindenhof grimming"},
+            {"Österreich (übrige)", "Österreich", "", "pfaelzerhuette passlueg"},
+            {"Südtirol", "Südtirol", "", "langenferner becherhaus ridnaun weissbrunnferner rieserferner chavalatsch kronplatz rittnerhorn trafoi zallinger dreizinnenblick hochmuth gummer"},
+            {"Schweiz", "Schweiz", "", "konkordiahuette glecksteinhuette pizol wildhaus hoherkasten hochhamm brunnen"},
+            {"Webcam-Verzeichnisse", "", "lk_dir_schoenau lk_dir_bgd", ""},
     };
+
+    static {
+        rebuild();
+    }
+
+    private static String[] words(String s) {
+        return s.trim().isEmpty() ? new String[0] : s.trim().split("\\s+");
+    }
+
+    /** CAMS und FOLDERS aus den eingebauten Kameras und der geladenen Kameraliste neu bilden. */
+    static synchronized void rebuild() {
+        java.util.Map<String, Cam> ex = EXTRA;
+        java.util.List<Cam> all = new java.util.ArrayList<>(java.util.Arrays.asList(BASE));
+        all.addAll(ex.values());
+        CAMS = all.toArray(new Cam[0]);
+        java.util.List<Folder> fs = new java.util.ArrayList<>();
+        for (String[] r : REGIONS) {
+            java.util.List<String> ids = new java.util.ArrayList<>(java.util.Arrays.asList(words(r[2])));
+            java.util.List<Cam> ext = new java.util.ArrayList<>();
+            for (String slug : words(r[3])) {
+                Cam c = ex.get("fw_" + slug);
+                if (c != null) ext.add(c);
+            }
+            java.util.Collections.sort(ext, (a, b) -> Integer.compare(b.elev, a.elev));
+            for (Cam c : ext) ids.add(c.id);
+            fs.add(new Folder(r[0], r[1].isEmpty() ? null : r[1], ids.toArray(new String[0])));
+        }
+        FOLDERS = fs.toArray(new Folder[0]);
+        dirty = false;
+    }
+
+    // ------------------------------------------------------------ Kameraliste von foto-webcam.eu
+
+    private static final String INDEX_URL = "https://www.foto-webcam.eu/";
+    private static final long INDEX_MAX_AGE = 3 * 86400000L;
+
+    private static java.io.File indexFile(Context c) {
+        return new java.io.File(c.getFilesDir(), "cam_index.json");
+    }
+
+    private static java.util.Set<String> wantedSlugs() {
+        java.util.Set<String> w = new java.util.HashSet<>();
+        for (String[] r : REGIONS) java.util.Collections.addAll(w, words(r[3]));
+        return w;
+    }
+
+    /** true, wenn es noch keine gespeicherte Liste gibt oder sie aelter als 3 Tage ist. */
+    static boolean indexStale(Context c) {
+        java.io.File f = indexFile(c);
+        return !f.exists() || System.currentTimeMillis() - f.lastModified() > INDEX_MAX_AGE;
+    }
+
+    /**
+     * Uebersichtsseite von foto-webcam.eu laden, die eingebettete Kameraliste lesen und nur die ausgewaehlten
+     * Kameras lokal speichern (Hintergrund-Thread). Wirft bei Fehler; dann bleibt die alte Liste.
+     */
+    static void fetchIndex(Context c) throws Exception {
+        String h = Net.download(INDEX_URL, false);
+        String key = "var metadata= new Object(";
+        int i = h.indexOf(key);
+        if (i < 0) throw new IOException("Keine Kameraliste gefunden");
+        org.json.JSONObject root = (org.json.JSONObject) new org.json.JSONTokener(h.substring(i + key.length())).nextValue();
+        org.json.JSONArray arr = root.getJSONArray("cams");
+        java.util.Set<String> want = wantedSlugs();
+        org.json.JSONArray out = new org.json.JSONArray();
+        String[] keep = {"id", "name", "title", "keywords", "offline", "hidden", "imgurl", "link", "elevation", "partner"};
+        for (int k = 0; k < arr.length(); k++) {
+            org.json.JSONObject j = arr.getJSONObject(k);
+            if (!want.contains(j.optString("id"))) continue;
+            org.json.JSONObject o = new org.json.JSONObject();
+            for (String f : keep) if (j.has(f)) o.put(f, j.get(f));
+            out.put(o);
+        }
+        if (out.length() < 20) throw new IOException("Kameraliste unvollstaendig");
+        java.io.File f = indexFile(c);
+        java.io.File tmp = new java.io.File(f.getPath() + ".tmp");
+        try (FileOutputStream os = new FileOutputStream(tmp)) {
+            os.write(out.toString().getBytes("UTF-8"));
+        }
+        if (!tmp.renameTo(f)) {
+            f.delete();
+            if (!tmp.renameTo(f)) throw new IOException("Speichern fehlgeschlagen");
+        }
+        dirty = true;
+    }
+
+    private static String hostOf(String url) {
+        try {
+            String h = Uri.parse(url).getHost();
+            return h == null ? "" : h.startsWith("www.") ? h.substring(4) : h;
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
+    /** Gespeicherte Kameraliste lesen und in CAMS/FOLDERS uebernehmen (ohne Netz). */
+    static void loadIndex(Context c) {
+        java.util.Map<String, Cam> ex = new java.util.LinkedHashMap<>();
+        try {
+            java.io.File f = indexFile(c);
+            if (f.exists()) {
+                byte[] b = new byte[(int) f.length()];
+                try (java.io.FileInputStream in = new java.io.FileInputStream(f)) {
+                    int n = 0, r;
+                    while (n < b.length && (r = in.read(b, n, b.length - n)) > 0) n += r;
+                }
+                org.json.JSONArray arr = new org.json.JSONArray(new String(b, "UTF-8"));
+                java.util.Set<String> baseIds = new java.util.HashSet<>();
+                for (Cam bc : BASE) baseIds.add(bc.id);
+                for (int k = 0; k < arr.length(); k++) {
+                    org.json.JSONObject j = arr.getJSONObject(k);
+                    String slug = j.optString("id");
+                    if (slug.isEmpty() || j.optBoolean("offline") || j.optBoolean("hidden") || baseIds.contains("fw_" + slug)) continue;
+                    String name = j.optString("name", slug);
+                    String img = j.optString("imgurl");
+                    String link = j.optString("link");
+                    Cam cam;
+                    if (!j.optBoolean("partner") && img.startsWith("https://www.foto-webcam.eu/webcam/" + slug + "/current/")) {
+                        cam = foto(slug, name);
+                    } else {
+                        if (img.isEmpty()) continue;
+                        String page = link.startsWith("http") ? link : "https://www.foto-webcam.eu/webcam/" + slug + "/";
+                        cam = new Cam("fw_" + slug, name, hostOf(page), page, true, img);
+                    }
+                    cam.elev = j.optInt("elevation", 0);
+                    cam.desc = j.optString("title") + " " + j.optString("keywords");
+                    ex.put(cam.id, cam);
+                }
+            }
+        } catch (Exception ignored) {
+            ex.clear();
+        }
+        EXTRA = ex;
+        rebuild();
+    }
+
+    static Cam byId(String id) {
+        for (Cam c : CAMS) if (c.id.equals(id)) return c;
+        return null;
+    }
 
     static int indexOf(String id) {
         for (int i = 0; i < CAMS.length; i++) if (CAMS[i].id.equals(id)) return i;
@@ -255,7 +425,7 @@ final class Webcams {
         File[] fs = dir(c).listFiles();
         if (fs == null) return;
         java.util.Set<String> keep = favs(c);
-        for (Cam cam : CAMS) keep.add(cam.id);
+        for (Cam cam : BASE) keep.add(cam.id);
         long now = System.currentTimeMillis();
         long maxAge = keepDays(c) * 86400000L;
         java.util.List<File> rest = new java.util.ArrayList<>();
