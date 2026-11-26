@@ -1,5 +1,16 @@
 {
  "items": {
+  "3219043411": {
+   "sid": 3219043411,
+   "url": "https://www.nationalpark-berchtesgaden.bayern.de/service/presse/pressemitteilungen/pressemitteilung.htm?PMNr=48/26",
+   "title": "Kinder stärken - Zukunft gestalten / Lehrkräftefortbildung aller \"Nationalpark- und Biosphärenschulen\"",
+   "teaser": "",
+   "category": "",
+   "topic": "Region/Nationalpark",
+   "plus": false,
+   "date": "2026-11-26T11:00:00+00:00",
+   "first_seen": "2026-11-26T11:00:00+00:00"
+  },
   "3887965189": {
    "sid": 3887965189,
    "url": "https://www.nationalpark-berchtesgaden.bayern.de/service/presse/pressemitteilungen/pressemitteilung.htm?PMNr=47/26",
@@ -428,17 +439,6 @@
    "plus": false,
    "date": "2026-03-11T11:00:00+00:00",
    "first_seen": "2026-03-11T11:00:00+00:00"
-  },
-  "4066543421": {
-   "sid": 4066543421,
-   "url": "https://www.nationalpark-berchtesgaden.bayern.de/service/presse/pressemitteilungen/pressemitteilung.htm?PMNr=7/26",
-   "title": "Willkommen zuhause!",
-   "teaser": "",
-   "category": "",
-   "topic": "Region/Nationalpark",
-   "plus": false,
-   "date": "2026-03-10T11:00:00+00:00",
-   "first_seen": "2026-03-10T11:00:00+00:00"
   }
  }
 }

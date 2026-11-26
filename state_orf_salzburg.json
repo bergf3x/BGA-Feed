@@ -1,5 +1,93 @@
 {
  "items": {
+  "4149282870": {
+   "sid": 4149282870,
+   "url": "https://salzburg.orf.at/stories/3381218/",
+   "title": "Polizist und Polizistin reanimierten 60-Jährigen",
+   "teaser": "Ein Polizist und eine Polizistin haben am Mittwoch in Hallein (Tennengau) einen 60-Jährigen reanimiert. Die beiden als Polizeisanitäter ausgebildeten Beamten, die auch Freiwillige beim Roten Kreuz sind, stellten einen Herz-Kreislauf-Stillstand fest und begannen sofort mit der Wiederbelebung.",
+   "category": "Chronik",
+   "topic": "Region/Salzburg",
+   "plus": false,
+   "date": "2026-11-26T18:10:00+00:00",
+   "first_seen": "2026-11-26T18:10:00+00:00"
+  },
+  "1822241597": {
+   "sid": 1822241597,
+   "url": "https://salzburg.orf.at/stories/3381266/",
+   "title": "Hochwasserschutz: Nächster Schritt nach 20 Jahren",
+   "teaser": "In Seekirchen (Flachgau) wurden am Donnerstag Anrainer über den geplanten Hochwasserschutz informiert. Nach mehr als 20 Jahren Projektierung soll es im Jänner die wasserrechtlichte Verhandlung geben. Betroffene bleiben aber skeptisch.",
+   "category": "Politik Inland",
+   "topic": "Region/Salzburg",
+   "plus": false,
+   "date": "2026-11-26T17:38:50+00:00",
+   "first_seen": "2026-11-26T17:38:50+00:00"
+  },
+  "1588285887": {
+   "sid": 1588285887,
+   "url": "https://salzburg.orf.at/stories/3381264/",
+   "title": "Festival Winterfest zeigt „ganze Zirkuswelt“",
+   "teaser": "Mit einer Lichter- und Akrobatikshow einer japanischen Gruppe feierte Mittwochabend das Zirkusfestival Winterfest im Salzburger Volksgarten Premiere. Und bei der heurigen Ausgabe sollen mit Akteuren von vier Kontinenten neue Wege beschritten werden: Man will die „ganze Zirkuswelt“ in Salzburg zu Gas",
+   "category": "Kultur",
+   "topic": "Region/Salzburg",
+   "plus": false,
+   "date": "2026-11-26T16:56:25+00:00",
+   "first_seen": "2026-11-26T16:56:25+00:00"
+  },
+  "947989218": {
+   "sid": 947989218,
+   "url": "https://salzburg.orf.at/stories/3381250/",
+   "title": "Bus-Kollision mit Sattelzug endete glimpflich",
+   "teaser": "Eine Kollision zwischen einem Reisebus und einem Sattelzug in Lamprechtshausen (Flachgau) endete Donnerstag am späten Nachmittag glimpflich. Obwohl sich über 20 Personen in dem Bus befanden, gab es nur zwei Leichtverletzte. Für Feuerwehren, Rettung und Polizei war es dennoch ein Großeinsatz.",
+   "category": "Chronik",
+   "topic": "Region/Salzburg",
+   "plus": false,
+   "date": "2026-11-26T15:21:28+00:00",
+   "first_seen": "2026-11-26T15:21:28+00:00"
+  },
+  "960708821": {
+   "sid": 960708821,
+   "url": "https://salzburg.orf.at/stories/3381240/",
+   "title": "Stadt Salzburg erlaubt Ganzjahres-Schanigärten",
+   "teaser": "Die Stadt Salzburg hat am Donnerstag eine Reform der Regeln für Schanigärten auf öffentlichem Grund beschlossen. Die Gastgärten dürfen künftig das ganze Jahr über betrieben werden, nicht nur zwischen März und Oktober. Dafür werden die Gebühren vor allem in der Innenstadt deutlich erhöht.",
+   "category": "Chronik",
+   "topic": "Region/Salzburg",
+   "plus": false,
+   "date": "2026-11-26T14:29:35+00:00",
+   "first_seen": "2026-11-26T14:29:35+00:00"
+  },
+  "1306301542": {
+   "sid": 1306301542,
+   "url": "https://salzburg.orf.at/stories/3381174/",
+   "title": "Hollersbach: Kritik an Luxus-Neubau im Grünland",
+   "teaser": "Ein Luxus-Neubau im landwirtschaftlichen Grünland sorgt in Hollersbach (Pinzgau) für Diskussionen. Die Grünen im Salzburger Landtag kritisieren die Genehmigung des Bauprojekts. Bürgermeisterin Sieglinde Islitzer-Lerch (ÖVP) sagt hingegen, dass alle rechtlichen Voraussetzungen geprüft worden seien.",
+   "category": "Politik Inland",
+   "topic": "Region/Salzburg",
+   "plus": false,
+   "date": "2026-11-26T13:25:00+00:00",
+   "first_seen": "2026-11-26T13:25:00+00:00"
+  },
+  "359119818": {
+   "sid": 359119818,
+   "url": "https://salzburg.orf.at/stories/3381203/",
+   "title": "Panne bei Wahlumfrage: SPÖ sieht kaum Eigenfehler",
+   "teaser": "Nach der umstrittenen Präsentation einer Wahlumfrage beschäftigte sich die Salzburger SPÖ am Donnerstag mit der Aufarbeitung des Falls. Bei einer Parteivorstandssitzung sah man aber keine größeren Eigenfehler, personelle Konsequenzen gibt es vorerst nicht.",
+   "category": "Chronik",
+   "topic": "Region/Salzburg",
+   "plus": false,
+   "date": "2026-11-26T11:32:02+00:00",
+   "first_seen": "2026-11-26T11:32:02+00:00"
+  },
+  "1840087192": {
+   "sid": 1840087192,
+   "url": "https://salzburg.orf.at/stories/3381187/",
+   "title": "Neuschnee sorgt für zahlreiche Unfälle in Salzburg",
+   "teaser": "Der Neuschnee hat am Donnerstag den ganzen Tag über im gesamten Bundesland Salzburg für zahlreiche Unfälle und Verkehrsbehinderungen gesorgt. Mehrere Lkw blieben auf schneebedeckten Straßen hängen oder stellten sich quer.",
+   "category": "Chronik",
+   "topic": "Region/Salzburg",
+   "plus": false,
+   "date": "2026-11-26T10:55:39+00:00",
+   "first_seen": "2026-11-26T10:55:39+00:00"
+  },
   "2087592586": {
    "sid": 2087592586,
    "url": "https://salzburg.orf.at/stories/3381156/",
@@ -14,7 +102,7 @@
   "1267911283": {
    "sid": 1267911283,
    "url": "https://salzburg.orf.at/stories/3381089/",
-   "title": "Renaturierung: Kleine Projekte bringen mehr Artenvielfalt",
+   "title": "Renaturierung: Kleine Projekte für mehr Artenvielfalt",
    "teaser": "Es braucht mehr natürliche Räume, damit Tier- und Pflanzenarten überleben. Zum Beispiel im Flachgau greifen einige kleinere Initativen ein, um beispielsweise Moorgebiete zu erhalten oder durch Hecken die Artenvielfalt zu erhöhen.",
    "category": "Chronik",
    "topic": "Region/Salzburg",
@@ -59,7 +147,7 @@
    "sid": 516498789,
    "url": "https://salzburg.orf.at/stories/3381102/",
    "title": "Tödlicher Unfall mit Güterzug: Ennstal-Strecke gesperrt",
-   "teaser": "Am Mittwoch ist bei Radstadt (Pongau) ein 24-jähriger Lastwagenfahrer bei einem schweren Unfall ums Leben gekommen. Sein Lkw stieß in den Mittagsstunden an einem unbeschrankten Bahnübergang mit einem Güterzug zusammen. Die Ennstal-Bahnstrecke wurde deshalb gesperrt.",
+   "teaser": "Am Mittwoch ist bei Radstadt (Pongau) ein 24-jähriger Lastwagenfahrer bei einem schweren Unfall ums Leben gekommen. Sein Lkw stieß in den Mittagsstunden an einem unbeschrankten Bahnübergang mit einem Güterzug zusammen. Die Ennstal-Bahnstrecke war deshalb bis in den Nacht gesperrt.",
    "category": "Chronik",
    "topic": "Region/Salzburg",
    "plus": false,
@@ -351,94 +439,6 @@
    "plus": false,
    "date": "2026-11-23T15:00:00+00:00",
    "first_seen": "2026-11-23T15:00:00+00:00"
-  },
-  "420651171": {
-   "sid": 420651171,
-   "url": "https://salzburg.orf.at/stories/3380753/",
-   "title": "Insolvente Heutallifte machen vorerst weiter",
-   "teaser": "Die insolventen Heutallifte in Unken (Pinzgau) können unter Führung des Masseverwalters weitermachen. Das wurde am Montagvormittag bei der ersten Gläubigerversammlung am Salzburger Landesgericht beschlossen.",
-   "category": "Wirtschaft",
-   "topic": "Region/Salzburg",
-   "plus": false,
-   "date": "2026-11-23T13:13:45+00:00",
-   "first_seen": "2026-11-23T13:13:45+00:00"
-  },
-  "1330120485": {
-   "sid": 1330120485,
-   "url": "https://salzburg.orf.at/stories/3380755/",
-   "title": "Zehn Jahre Haft nach versuchtem Mord an Tochter",
-   "teaser": "Der Berufungssenat des Oberlandesgerichts Linz hat die Strafe für eine 87-Jährige am Montag deutlich erhöht. Die Frau soll versucht haben, ihre schwer beeinträchtigte Tochter mit Schlaftabletten zu töten.",
-   "category": "Chronik",
-   "topic": "Region/Salzburg",
-   "plus": false,
-   "date": "2026-11-23T13:05:00+00:00",
-   "first_seen": "2026-11-23T13:05:00+00:00"
-  },
-  "2054671739": {
-   "sid": 2054671739,
-   "url": "https://salzburg.orf.at/stories/3380717/",
-   "title": "Postenvergaben im Land Salzburg sollen geprüft werden",
-   "teaser": "Die Opposition im Salzburger Landtag will die Vergabe von Spitzenposten in der Landesverwaltung und in landesnahen Unternehmen überprüfen lassen. Anlass ist das Debakel bei der Bestellung einer neuen Geschäftsführung für den Salzburger Flughafen. Über das geeignete Kontrollinstrument gibt es jedoch ",
-   "category": "Politik Inland",
-   "topic": "Region/Salzburg",
-   "plus": false,
-   "date": "2026-11-23T11:45:00+00:00",
-   "first_seen": "2026-11-23T11:45:00+00:00"
-  },
-  "2592234528": {
-   "sid": 2592234528,
-   "url": "https://salzburg.orf.at/stories/3380691/",
-   "title": "Haftstrafe nach Vergewaltigungen auf 14 Jahre erhöht",
-   "teaser": "Die Haftstrafe für einen 41-jährigen Österreicher ist am späten Montagvormittag von zwölf auf 14 Jahre erhöht worden. Er hatte seine ehemalige Lebensgefährtin vergewaltigt und im Internet für Vergewaltigungen angeboten.",
-   "category": "Chronik",
-   "topic": "Region/Salzburg",
-   "plus": false,
-   "date": "2026-11-23T11:20:00+00:00",
-   "first_seen": "2026-11-23T11:20:00+00:00"
-  },
-  "2720666536": {
-   "sid": 2720666536,
-   "url": "https://salzburg.orf.at/stories/3380673/",
-   "title": "Erste Erentrudisglocke für Salzburg in Adnet geweiht",
-   "teaser": "In der Pfarrkirche Adnet (Tennengau) ist am Sonntag die erste Erentrudisglocke Salzburgs geweiht und in den Turm gezogen worden. Die Weihe nahm Erzbischof Franz Lackner vor. Veronika Kronlachner, Äbtissin des Benediktinerinnenstifts Nonnberg, schlug die Glocke erstmals an.",
-   "category": "Religion",
-   "topic": "Region/Salzburg",
-   "plus": false,
-   "date": "2026-11-23T09:27:00+00:00",
-   "first_seen": "2026-11-23T09:27:00+00:00"
-  },
-  "2447252253": {
-   "sid": 2447252253,
-   "url": "https://salzburg.orf.at/stories/3380661/",
-   "title": "Flachgauer Tafel hat zu wenige Abnehmer",
-   "teaser": "Man habe zu wenige Abnehmer für gespendete Lebensmittel. Diese bemerkenswerte Beobachtung kommt von der Hilfsorganisation für Bedürftige, der „Flachgauer Tafel“. Gleichzeitig sind eineinhalb Millionen Österreicher armutsgefährdet.",
-   "category": "Wirtschaft",
-   "topic": "Region/Salzburg",
-   "plus": false,
-   "date": "2026-11-23T06:00:00+00:00",
-   "first_seen": "2026-11-23T06:00:00+00:00"
-  },
-  "3650495750": {
-   "sid": 3650495750,
-   "url": "https://salzburg.orf.at/stories/3380626/",
-   "title": "Interimslösungen für Festspiele kosten 34 Mio. Euro",
-   "teaser": "Im Stadtsenat sollen am Montag die Kosten für die Interimsspielstätten und Werkstätten der Salzburger Festspiele beschlossen werden. Sie belaufen sich auf knapp 34 Millionen Euro und bleiben damit unter dem beschlossenen Kostendeckel von 34,8 Millionen. Eine Überschreitung würde eine Redimensionieru",
-   "category": "Wirtschaft",
-   "topic": "Region/Salzburg",
-   "plus": false,
-   "date": "2026-11-23T05:15:00+00:00",
-   "first_seen": "2026-11-23T05:15:00+00:00"
-  },
-  "4072371909": {
-   "sid": 4072371909,
-   "url": "https://salzburg.orf.at/stories/3380625/",
-   "title": "Bürgermeister fordert Kommunalsteuer für Homeoffice",
-   "teaser": "Homeoffice sollte auch jenen Gemeinden finanziell zugutekommen, in denen die Beschäftigten arbeiten. Dafür müsste die Kommunalsteuer von den Unternehmen direkt an diese Gemeinden fließen, fordert der Bürgermeister von Ebenau, Johannes Fürstaller (ÖVP). Manche Firmen zahlen freiwillig an seine Gemein",
-   "category": "Politik Inland",
-   "topic": "Region/Salzburg",
-   "plus": false,
-   "date": "2026-11-23T05:00:00+00:00",
-   "first_seen": "2026-11-23T05:00:00+00:00"
   }
  }
 }
