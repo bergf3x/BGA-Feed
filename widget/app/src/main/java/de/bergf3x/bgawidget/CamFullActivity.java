@@ -6,10 +6,8 @@
 package de.bergf3x.bgawidget;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -89,7 +87,7 @@ public class CamFullActivity extends Activity {
         top.setPadding(px(6), px(10), px(6), px(22));
         GradientDrawable scrim = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, new int[]{0xCC000000, 0x00000000});
         top.setBackground(scrim);
-        top.addView(button("✕", "Schließen", this::finish));
+        top.addView(iconButton(R.drawable.ic_back, "Zurück", true, this::finish));
         LinearLayout cols = new LinearLayout(this);
         cols.setOrientation(LinearLayout.VERTICAL);
         title = new TextView(this);
@@ -106,8 +104,8 @@ public class CamFullActivity extends Activity {
         cols.addView(title);
         cols.addView(sub);
         top.addView(cols, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
-        top.addView(button("↻", "Neu laden", () -> load(true)));
-        top.addView(button("↗", "Webseite öffnen", this::openPage));
+        top.addView(iconButton(R.drawable.ic_refresh, "Neu laden", false, () -> load(true)));
+        top.addView(iconButton(R.drawable.ic_share, "Teilen", false, () -> Webcams.share(this, Webcams.CAMS[list[index]])));
         bar = top;
         root.addView(top, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.TOP));
 
@@ -131,17 +129,24 @@ public class CamFullActivity extends Activity {
         return Math.round(dp * d);
     }
 
-    private TextView button(String label, String desc, Runnable click) {
-        TextView t = new TextView(this);
-        t.setText(label);
-        t.setContentDescription(desc);
-        t.setTextColor(Color.WHITE);
-        t.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
-        t.setGravity(Gravity.CENTER);
-        t.setMinWidth(px(46));
-        t.setMinHeight(px(46));
-        t.setOnClickListener(v -> click.run());
-        return t;
+    /** Runder Symbolknopf im Linien-Stil; circle = halbtransparent hinterlegt (Zurueck). */
+    private android.widget.ImageView iconButton(int res, String desc, boolean circle, Runnable click) {
+        android.widget.ImageView iv = new android.widget.ImageView(this);
+        iv.setImageResource(res);
+        iv.setColorFilter(Color.WHITE);
+        iv.setContentDescription(desc);
+        iv.setPadding(px(11), px(11), px(11), px(11));
+        GradientDrawable bg = new GradientDrawable();
+        bg.setShape(GradientDrawable.OVAL);
+        bg.setColor(circle ? 0x40000000 : 0);
+        GradientDrawable mask = new GradientDrawable();
+        mask.setShape(GradientDrawable.OVAL);
+        mask.setColor(0xFFFFFFFF);
+        iv.setBackground(new android.graphics.drawable.RippleDrawable(
+                android.content.res.ColorStateList.valueOf(0x40FFFFFF), bg, mask));
+        iv.setOnClickListener(v -> click.run());
+        iv.setLayoutParams(new LinearLayout.LayoutParams(px(46), px(46)));
+        return iv;
     }
 
     @Override
@@ -224,10 +229,4 @@ public class CamFullActivity extends Activity {
         }).start();
     }
 
-    private void openPage() {
-        try {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Webcams.CAMS[list[index]].page)));
-        } catch (Exception ignored) {
-        }
-    }
 }

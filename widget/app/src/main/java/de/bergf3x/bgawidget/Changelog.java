@@ -10,6 +10,11 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.43",
+                    "~ Webcams ohne Ordner: eine durchgehende Liste nach Regionen, Reiter springen zur Region und laufen beim Scrollen mit; kleine Vorschaubilder mit Aufnahmezeit, Suche und Favoriten (Stern)",
+                    "+ Einzelansicht mit großem Knopf „Vollbild“ sowie „Teilen“ (Link der Kamera) und „Webseite“; „Weitere Webcams“ ist entfallen, Nur-Link-Seiten stehen in ihrer Region",
+                    "~ Vollbild: runder Zurück-Knopf, Neu laden und Teilen im Linien-Stil",
+                    "+ Neue Region Großglockner: Kaiser-Franz-Josefs-Höhe, Fuschertörl, Edelweißspitze, Freiwandeck, Wallackhaus Süd und Nord als Bild, Kaiser-Franz-Josefs-Haus und Glocknerhaus als Link"},
             {"1.42",
                     "~ Webcams neu: Blatt von unten mit Ordnern je Region (Titelbild = aktuelles Live-Bild), Raster mit zwei Spalten, Suche über alle Kameras und Favoriten (Stern)",
                     "+ Einzelansicht mit Wischen zur nächsten Kamera („3 / 19“), Neu laden und Webseite oben, Tipp aufs Bild = Vollbild (Vollbild wischt ebenfalls durch die Auswahl)",

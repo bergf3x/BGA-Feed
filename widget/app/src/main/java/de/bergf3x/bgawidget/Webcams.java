@@ -28,6 +28,10 @@ final class Webcams {
         final boolean small;
         /** Kleines Rasterbild (nur wo die Quelle es anbietet), sonst null: dann dient das grosse Bild. */
         String thumb;
+        /** true, wenn page nur eine gemeinsame Seite fuer mehrere Kameras ist (Link nicht kamera-genau). */
+        boolean generic;
+        /** Nur Webseite, kein Bild in der App. */
+        final boolean link;
 
         Cam(String id, String name, String source, String page, boolean small, String... urls) {
             this.id = id;
@@ -36,16 +40,19 @@ final class Webcams {
             this.page = page;
             this.small = small;
             this.urls = urls;
+            this.link = urls.length == 0;
         }
     }
 
-    /** Ordner (Regionen) in der Auswahl; ids verweisen auf Cam.id. */
+    /** Region in der Liste; ids verweisen auf Cam.id. chip = Kurzname fuer den Reiter (null = kein Reiter). */
     static final class Folder {
         final String name;
+        final String chip;
         final String[] ids;
 
-        Folder(String name, String... ids) {
+        Folder(String name, String chip, String... ids) {
             this.name = name;
+            this.chip = chip;
             this.ids = ids;
         }
     }
@@ -65,8 +72,19 @@ final class Webcams {
     }
 
     private static Cam feratel(int n, String name) {
-        return new Cam("fe_" + n, name + " (Vorschaubild)", "Feratel", "https://www.berchtesgaden.de/webcams", true,
+        Cam c = new Cam("fe_" + n, name + " (Vorschaubild)", "Feratel", "https://www.berchtesgaden.de/webcams", true,
                 "https://wtvthmb.feratel.com/thumbnails/" + n + ".jpeg?t=38&design=v5");
+        c.generic = true;
+        return c;
+    }
+
+    private static Cam panomax(int id, String sub, String name) {
+        return new Cam("px_" + id, name, "Panomax", "https://" + sub + ".panomax.com/", false,
+                "https://panodata.panomax.com/cams/" + id + "/preview_og.jpg");
+    }
+
+    private static Cam link(String id, String name, String source, String page) {
+        return new Cam("lk_" + id, name, source, page, false);
     }
 
     static final Cam[] CAMS = {
@@ -91,14 +109,32 @@ final class Webcams {
             feratel(3006, "Hochschwarzeck Ramsau"),
             feratel(3007, "Lockstein"),
             feratel(3345, "Götschen Talstation"),
+            panomax(7, "grossglockner", "Kaiser-Franz-Josefs-Höhe"),
+            panomax(16, "fuschertoerl", "Fuschertörl"),
+            panomax(17, "edelweissspitze", "Edelweißspitze"),
+            foto("freiwandeck", "Freiwandeck – Blick zum Großglockner"),
+            foto("wallackhaus", "Wallackhaus Süd"),
+            foto("wallackhaus-nord", "Wallackhaus Nord"),
+            // nur Webseite (kein Standbild abrufbar)
+            link("avisec_kfjh", "Kaiser-Franz-Josefs-Haus", "avisec", "https://avisec.com/feed/kfjh"),
+            link("avisec_glocknerhaus", "Glocknerhaus", "avisec", "https://avisec.com/feed/glocknerhaus"),
+            link("jenner_berg", "Jenner Bergstation", "Nur Webseite · bergfex", "https://www.bergfex.com/jenner-schoenau-am-koenigssee/webcams/c23475/"),
+            link("obersalzberg", "Obersalzberg – Watzmann im Blick", "Nur Webseite · blickfix", "https://www.blickfix.com/webcams/webcam-obersalzberg-watzmann-im-blick?type=17023"),
+            link("hochlenzer", "Hochlenzer – Schönau und Watzmann", "Nur Webseite · bergfex", "https://www.bergfex.com/berchtesgaden-gutshof-obersalzberg/webcams/c2341/"),
+            link("kehlstein", "Kehlstein", "Nur Webseite · bergfex", "https://www.bergfex.com/jenner-schoenau-am-koenigssee/webcams/c18989/"),
+            link("nationalpark", "Nationalpark: Jenner, Funtensee, Ramsau", "Nur Webseite · Nationalpark", "https://nationalpark-berchtesgaden.bayern.de/english/service/media/webcam/index.htm"),
+            link("dir_schoenau", "Alle Webcams Schönau", "Nur Webseite · bergfex", "https://www.bergfex.com/bayern/langlaufen/schoenau-am-koenigssee/webcams/"),
+            link("dir_bgd", "Alle Webcams Berchtesgaden", "Nur Webseite · berchtesgaden.de", "https://www.berchtesgaden.de/webcams"),
     };
 
     /** Zuordnung der Kameras zu Ordnern (Vorschlag, ohne Pruefung der Lage jeder Kamera). Reihenfolge = Anzeige. */
     static final Folder[] FOLDERS = {
-            new Folder("Jenner und Königssee", "fw_jenner-sued", "fw_jenner-ost", "ls_koenigssee", "fe_3004", "fe_3009", "fe_3345"),
-            new Folder("Berchtesgaden und Obersalzberg", "th_hoegl", "fe_3005", "px_rossfeld", "fw_windbeutelbaron", "fe_3007"),
-            new Folder("Ramsau und Hintersee", "th_hintersee", "fe_3006", "th_stoisser-alm"),
-            new Folder("Nationalpark und Hütten", "fw_funtenseetauern", "fw_funtensee", "fw_stoehrhaus", "fw_stahlhaus", "th_neue-traunsteiner-huette"),
+            new Folder("Jenner und Königssee", "Jenner", "fw_jenner-sued", "fw_jenner-ost", "ls_koenigssee", "fe_3004", "fe_3009", "fe_3345", "lk_jenner_berg"),
+            new Folder("Berchtesgaden und Obersalzberg", "Berchtesgaden", "th_hoegl", "fe_3005", "px_rossfeld", "fw_windbeutelbaron", "fe_3007", "lk_obersalzberg", "lk_hochlenzer", "lk_kehlstein"),
+            new Folder("Ramsau und Hintersee", "Ramsau", "th_hintersee", "fe_3006", "th_stoisser-alm"),
+            new Folder("Nationalpark und Hütten", "Nationalpark", "fw_funtenseetauern", "fw_funtensee", "fw_stoehrhaus", "fw_stahlhaus", "th_neue-traunsteiner-huette", "lk_nationalpark"),
+            new Folder("Großglockner", "Großglockner", "px_7", "px_16", "px_17", "fw_freiwandeck", "fw_wallackhaus", "fw_wallackhaus-nord", "lk_avisec_kfjh", "lk_avisec_glocknerhaus"),
+            new Folder("Webcam-Verzeichnisse", null, "lk_dir_schoenau", "lk_dir_bgd"),
     };
 
     static int indexOf(String id) {
@@ -400,6 +436,39 @@ final class Webcams {
         if (days <= 0) return "heute " + clock;
         if (days == 1) return "gestern " + clock;
         return new SimpleDateFormat("dd.MM.", Locale.GERMANY).format(new Date(t)) + " " + clock;
+    }
+
+    /** "vor 4 Min." / "vor 2 Std." / "vor 3 Tagen". */
+    static String agoText(long t) {
+        long diff = System.currentTimeMillis() - t;
+        if (diff < 60000L) return "gerade eben";
+        if (diff < 3600000L) return "vor " + diff / 60000L + " Min.";
+        if (diff < 86400000L) return "vor " + diff / 3600000L + " Std.";
+        long d = diff / 86400000L;
+        return "vor " + d + (d == 1 ? " Tag" : " Tagen");
+    }
+
+    /** "Aufnahme vor 4 Min." bzw. "Abgerufen vor 4 Min." aus den gespeicherten Zeiten; leer, wenn es noch kein Bild gibt. */
+    static String agoLabel(Context c, Cam cam, boolean thumb) {
+        if (cam.link) return "";
+        File f = file(c, cam, thumb);
+        if (!f.exists()) return "";
+        String k = key(cam, thumb);
+        long taken = Prefs.sp(c).getLong("cam_t_" + k, 0);
+        if (taken > 0) return "Aufnahme " + agoText(taken);
+        return "Abgerufen " + agoText(Prefs.sp(c).getLong("cam_f_" + k, f.lastModified()));
+    }
+
+    /** Link dieser Kamera ueber das Teilen-Menue weitergeben. */
+    static void share(android.app.Activity a, Cam cam) {
+        try {
+            android.content.Intent s = new android.content.Intent(android.content.Intent.ACTION_SEND);
+            s.setType("text/plain");
+            s.putExtra(android.content.Intent.EXTRA_SUBJECT, cam.name);
+            s.putExtra(android.content.Intent.EXTRA_TEXT, cam.name + " (" + cam.source + ")\n" + cam.page);
+            a.startActivity(android.content.Intent.createChooser(s, "Webcam teilen"));
+        } catch (Exception ignored) {
+        }
     }
 
     /** Statuszeile unter dem Bild. */

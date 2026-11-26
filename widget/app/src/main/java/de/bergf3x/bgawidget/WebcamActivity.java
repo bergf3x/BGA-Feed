@@ -37,9 +37,11 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -50,21 +52,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * Webcams als Blatt von unten: Ordner je Region (mit Live-Titelbild), Raster, Suche, Favoriten und Einzelansicht
- * mit Wischen zur naechsten Kamera. Tipp aufs Bild der Einzelansicht = Vollbild.
+ * Webcams als Blatt von unten: eine Liste, nach Regionen gegliedert, mit Reitern zum Springen, Suche und Favoriten.
+ * Einzelansicht mit Wischen zur naechsten Kamera, Vollbild, Teilen und Webseite.
  */
 public class WebcamActivity extends Activity {
-    /** Seiten ohne festes Standbild (oder ohne erlaubten Abruf): nur Link. */
-    private static final String[][] LINKS = {
-            {"Obersalzberg – Watzmann im Blick", "https://www.blickfix.com/webcams/webcam-obersalzberg-watzmann-im-blick?type=17023"},
-            {"Hochlenzer – Schönau und Watzmann", "https://www.bergfex.com/berchtesgaden-gutshof-obersalzberg/webcams/c2341/"},
-            {"Jenner Bergstation", "https://www.bergfex.com/jenner-schoenau-am-koenigssee/webcams/c23475/"},
-            {"Kehlstein", "https://www.bergfex.com/jenner-schoenau-am-koenigssee/webcams/c18989/"},
-            {"Alle Webcams Schönau (bergfex)", "https://www.bergfex.com/bayern/langlaufen/schoenau-am-koenigssee/webcams/"},
-            {"Alle Webcams Berchtesgaden", "https://www.berchtesgaden.de/webcams"},
-            {"Nationalpark: Jenner, Funtensee, Ramsau", "https://nationalpark-berchtesgaden.bayern.de/english/service/media/webcam/index.htm"},
-    };
-    private static final int THUMB_W = 500;
+    private static final int THUMB_W = 400;
     private static final int PREVIEW_W = 1000;
     private static final long[] INTERVALS = {30000L, 60000L, 300000L, 0L};
     private static final String[] INTERVAL_LABELS = {"30 Sek.", "1 Min.", "5 Min.", "Manuell"};
@@ -77,10 +69,18 @@ public class WebcamActivity extends Activity {
     private int gen;
     private Runnable up;
 
-    // Kacheln des aktuell offenen Ordners/Rasters, deren Bilder nachgeladen werden
+    // Liste
     private final List<Slot> slots = new ArrayList<>();
     private boolean ticked;
-    private LinearLayout resultsBody;
+    private String query = "";
+    private int listY;
+    private ScrollView listScroll;
+    private LinearLayout listBody;
+    private LinearLayout chipBox;
+    private HorizontalScrollView chipScroll;
+    private final List<View> secViews = new ArrayList<>();
+    private final List<TextView> secChips = new ArrayList<>();
+    private int activeSec = -1;
 
     // Einzelansicht
     private int[] camList = new int[0];
@@ -89,7 +89,7 @@ public class WebcamActivity extends Activity {
     private FrameLayout camHolder;
     private ImageView camImg;
     private ProgressBar camSpin;
-    private TextView camTitle, camSub, camCount, camStatus, camSource;
+    private TextView camTitle, camSub, camCount, camStatus, camSource, camLink, camNote;
     private ImageView camStar;
     private boolean camHasImage;
     private long camShownTaken = -1;
@@ -110,13 +110,15 @@ public class WebcamActivity extends Activity {
         final Webcams.Cam cam;
         final ImageView iv;
         final View root;
+        final TextView sub;
         boolean busy;
         long shownTaken = -1;
 
-        Slot(Webcams.Cam cam, ImageView iv, View root) {
+        Slot(Webcams.Cam cam, ImageView iv, View root, TextView sub) {
             this.cam = cam;
             this.iv = iv;
             this.root = root;
+            this.sub = sub;
         }
     }
 
@@ -128,7 +130,7 @@ public class WebcamActivity extends Activity {
         b.sheet();
         final Context app = getApplicationContext();
         pool.execute(() -> Webcams.cleanup(app));
-        showFolders();
+        showMain();
     }
 
     @Override
@@ -165,8 +167,11 @@ public class WebcamActivity extends Activity {
         gen++;
         ticked = false;
         slots.clear();
+        secViews.clear();
+        secChips.clear();
+        activeSec = -1;
         camOpen = false;
-        resultsBody = null;
+        listBody = null;
         hideKeyboard();
         Bubble.soft(b.box);
         b.box.removeAllViews();
@@ -178,11 +183,6 @@ public class WebcamActivity extends Activity {
             if (f != null) ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(f.getWindowToken(), 0);
         } catch (Exception ignored) {
         }
-    }
-
-    private int bodyW() {
-        int screenW = getResources().getDisplayMetrics().widthPixels;
-        return Math.min(screenW - b.px(16), b.px(520)) - b.px(16);
     }
 
     private void roundClip(View v, final float dp) {
@@ -213,7 +213,7 @@ public class WebcamActivity extends Activity {
         return iv;
     }
 
-    /** Kopfzeile: optional Zurueck-Pfeil, Titel mit Unterzeile, rechts Symbolknoepfe. */
+    /** Kopfzeile: optional Zurueck-Pfeil, Titel mit Unterzeile, rechts Symbolknoepfe. Tag = {Titel, Unterzeile}. */
     private LinearLayout head(String title, String sub, Runnable back, View... right) {
         LinearLayout row = new LinearLayout(this);
         row.setOrientation(LinearLayout.HORIZONTAL);
@@ -245,96 +245,37 @@ public class WebcamActivity extends Activity {
         return row;
     }
 
-    /** Kachel mit Bild (zugeschnitten), Verlauf unten und Name; liefert Wurzel, Bild ueber slot. */
-    private FrameLayout tile(Webcams.Cam cam, String name, int w, int h) {
-        FrameLayout f = new FrameLayout(this);
-        GradientDrawable bg = new GradientDrawable();
-        bg.setColor(b.light ? 0x22000000 : 0x33FFFFFF);
-        f.setBackground(bg);
-        roundClip(f, 16);
-        ImageView iv = new ImageView(this);
-        iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        f.addView(iv, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        View scrim = new View(this);
-        scrim.setBackground(new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, new int[]{0x00000000, 0xB8000000}));
-        f.addView(scrim, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(h * 0.6f), Gravity.BOTTOM));
-        TextView t = new TextView(this);
-        t.setText(name);
-        t.setTextColor(0xFFFFFFFF);
-        t.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-        t.setTypeface(null, android.graphics.Typeface.BOLD);
-        t.setMaxLines(2);
-        t.setEllipsize(android.text.TextUtils.TruncateAt.END);
-        t.setPadding(b.px(10), 0, b.px(10), b.px(8));
-        f.addView(t, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM));
-        f.setLayoutParams(new LinearLayout.LayoutParams(w, h));
-        if (cam != null) slots.add(new Slot(cam, iv, f));
-        return f;
-    }
-
-    private void addCountPill(FrameLayout tile, String text) {
-        TextView c = new TextView(this);
-        c.setText(text);
-        c.setTextColor(0xFFFFFFFF);
-        c.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-        c.setPadding(b.px(9), b.px(3), b.px(9), b.px(3));
-        GradientDrawable p = new GradientDrawable();
-        p.setColor(0x66000000);
-        p.setCornerRadius(b.px(12));
-        c.setBackground(p);
-        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.TOP | Gravity.END);
-        lp.setMargins(0, b.px(8), b.px(8), 0);
-        tile.addView(c, lp);
-    }
-
-    private void addStar(FrameLayout tile, final Webcams.Cam cam) {
-        final ImageView st = new ImageView(this);
-        st.setColorFilter(0xFFFFFFFF);
-        st.setPadding(b.px(7), b.px(7), b.px(7), b.px(7));
-        GradientDrawable p = new GradientDrawable();
-        p.setShape(GradientDrawable.OVAL);
-        p.setColor(0x66000000);
-        st.setBackground(p);
-        st.setContentDescription("Favorit");
-        st.setImageResource(Webcams.isFav(this, cam) ? R.drawable.ic_star_fill : R.drawable.ic_star);
-        st.setOnClickListener(v -> {
-            boolean on = Webcams.toggleFav(this, cam);
-            Haptic.play(v, on ? Haptic.TOGGLE_ON : Haptic.TOGGLE_OFF);
-            st.setImageResource(on ? R.drawable.ic_star_fill : R.drawable.ic_star);
-        });
-        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(b.px(32), b.px(32), Gravity.TOP | Gravity.END);
-        lp.setMargins(0, b.px(6), b.px(6), 0);
-        tile.addView(st, lp);
-    }
-
-    /** Kacheln in Zweierreihen in den Container legen. */
-    private void gridRows(LinearLayout body, List<FrameLayout> tiles, int tw) {
-        for (int i = 0; i < tiles.size(); i += 2) {
-            LinearLayout r = new LinearLayout(this);
-            r.setOrientation(LinearLayout.HORIZONTAL);
-            for (int k = 0; k < 2; k++) {
-                if (i + k < tiles.size()) {
-                    View t = tiles.get(i + k);
-                    LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) t.getLayoutParams();
-                    lp.leftMargin = k == 0 ? 0 : b.px(8);
-                    r.addView(t, lp);
-                }
-            }
-            LinearLayout.LayoutParams rp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            rp.topMargin = b.px(8);
-            body.addView(r, rp);
+    private void open(String url) {
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+        } catch (Exception ignored) {
         }
     }
 
-    // ---------------------------------------------------------------- Ordner
+    private static String norm(String s) {
+        return s.toLowerCase(Locale.GERMAN).replace("ä", "a").replace("ö", "o").replace("ü", "u").replace("ß", "ss");
+    }
 
-    private void showFolders() {
+    private int imageCamCount() {
+        int n = 0;
+        for (Webcams.Cam c : Webcams.CAMS) if (!c.link) n++;
+        return n;
+    }
+
+    private int regionCount() {
+        int n = 0;
+        for (Webcams.Folder f : Webcams.FOLDERS) if (f.chip != null) n++;
+        return n;
+    }
+
+    // ---------------------------------------------------------------- Liste
+
+    private void showMain() {
         reset();
         up = null;
-        head("Webcams", Webcams.CAMS.length + " Kameras in " + Webcams.FOLDERS.length + " Ordnern", null,
+        head("Webcams", imageCamCount() + " Kameras · " + regionCount() + " Regionen", null,
                 iconBtn(R.drawable.ic_tune, "Webcam-Einstellungen", this::showSettings));
 
-        // Suchleiste
         LinearLayout bar = new LinearLayout(this);
         bar.setOrientation(LinearLayout.HORIZONTAL);
         bar.setGravity(Gravity.CENTER_VERTICAL);
@@ -356,14 +297,32 @@ public class WebcamActivity extends Activity {
         et.setBackground(null);
         et.setImeOptions(android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH);
         et.setPadding(b.px(10), b.px(11), b.px(4), b.px(11));
+        et.setText(query);
         bar.addView(et, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
         LinearLayout.LayoutParams blp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, b.px(44));
-        blp.bottomMargin = b.px(4);
+        blp.bottomMargin = b.px(6);
         b.box.addView(bar, blp);
 
-        resultsBody = b.scrollBox(0.72f);
-        fillFolders(resultsBody, "");
-        ScrollHook.attach(resultsBody, this::kick);
+        // Reiter (Regionen)
+        chipScroll = new HorizontalScrollView(this);
+        chipScroll.setHorizontalScrollBarEnabled(false);
+        chipScroll.setHorizontalFadingEdgeEnabled(true);
+        chipScroll.setFadingEdgeLength(b.px(28));
+        chipScroll.setOverScrollMode(View.OVER_SCROLL_NEVER);
+        chipBox = new LinearLayout(this);
+        chipBox.setOrientation(LinearLayout.HORIZONTAL);
+        chipScroll.addView(chipBox, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        b.box.addView(chipScroll, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+        listBody = b.scrollBox(0.72f);
+        listScroll = (ScrollView) listBody.getParent();
+        fillList();
+        final int restore = listY;
+        listScroll.post(() -> listScroll.scrollTo(0, restore));
+        listScroll.getViewTreeObserver().addOnScrollChangedListener(() -> {
+            kick();
+            spy();
+        });
         et.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int a, int c, int d) {
@@ -375,11 +334,10 @@ public class WebcamActivity extends Activity {
 
             @Override
             public void afterTextChanged(Editable e) {
-                if (resultsBody == null) return;
-                gen++;
-                slots.clear();
-                resultsBody.removeAllViews();
-                fillFolders(resultsBody, e.toString().trim());
+                if (listBody == null) return;
+                query = e.toString().trim();
+                listScroll.scrollTo(0, 0);
+                fillList();
                 kickSoon();
             }
         });
@@ -388,71 +346,227 @@ public class WebcamActivity extends Activity {
         kickSoon();
     }
 
-    private void fillFolders(LinearLayout body, String q) {
-        if (!q.isEmpty()) {
-            fillSearch(body, q);
-            return;
+    /** Liste und Reiter neu aufbauen (Start, Suche, Favoriten geaendert). */
+    private void fillList() {
+        gen++;
+        slots.clear();
+        secViews.clear();
+        secChips.clear();
+        activeSec = -1;
+        listBody.removeAllViews();
+        chipBox.removeAllViews();
+        String nq = norm(query);
+        boolean searching = !nq.isEmpty();
+        int shown = 0;
+
+        if (!searching) {
+            int[] fav = favList();
+            if (fav.length > 0) {
+                section("Favoriten", "★ Favoriten", fav.length);
+                for (int k = 0; k < fav.length; k++) row(Webcams.CAMS[fav[k]], fav, k, "");
+                shown += fav.length;
+            }
         }
-        int tw = (bodyW() - b.px(8)) / 2;
-        int th = Math.round(tw * 0.66f);
-        // Favoriten (schmal, nur wenn ein Stern gesetzt ist)
-        final int[] fav = favList();
-        if (fav.length > 0) {
-            LinearLayout r = new LinearLayout(this);
-            r.setOrientation(LinearLayout.HORIZONTAL);
-            r.setGravity(Gravity.CENTER_VERTICAL);
-            r.setPadding(b.px(14), b.px(12), b.px(14), b.px(12));
-            GradientDrawable g = new GradientDrawable();
-            g.setColor(b.light ? 0x1A000000 : 0x26FFFFFF);
-            g.setCornerRadius(b.px(16));
-            r.setBackground(new RippleDrawable(ColorStateList.valueOf(b.ripple), g, null));
-            ImageView st = new ImageView(this);
-            st.setImageResource(R.drawable.ic_star_fill);
-            st.setColorFilter(b.tx);
-            LinearLayout.LayoutParams slp = new LinearLayout.LayoutParams(b.px(20), b.px(20));
-            slp.rightMargin = b.px(12);
-            r.addView(st, slp);
+        for (Webcams.Folder f : Webcams.FOLDERS) {
+            List<Integer> all = new ArrayList<>();
+            List<Integer> imgs = new ArrayList<>();
+            for (String id : f.ids) {
+                int i = Webcams.indexOf(id);
+                if (i < 0) continue;
+                Webcams.Cam c = Webcams.CAMS[i];
+                if (searching && !norm(c.name + " " + f.name + " " + c.source).contains(nq)) continue;
+                all.add(i);
+                if (!c.link) imgs.add(i);
+            }
+            if (all.isEmpty()) continue;
+            int[] nav = new int[imgs.size()];
+            for (int k = 0; k < nav.length; k++) nav[k] = imgs.get(k);
+            section(f.name, f.chip, all.size());
+            for (int i : all) {
+                Webcams.Cam c = Webcams.CAMS[i];
+                int pos = -1;
+                for (int k = 0; k < nav.length; k++) if (nav[k] == i) pos = k;
+                row(c, nav, pos, searching ? nq : "");
+            }
+            shown += all.size();
+        }
+        if (shown == 0) {
             TextView t = new TextView(this);
-            t.setText("Favoriten");
-            t.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-            t.setTextColor(b.tx);
-            t.setTypeface(null, android.graphics.Typeface.BOLD);
-            r.addView(t, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
-            TextView n = new TextView(this);
-            n.setText(fav.length + "  ›");
-            n.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-            n.setTextColor(b.soft);
-            r.addView(n);
-            r.setOnClickListener(v -> {
-                Haptic.play(v, Haptic.TICK);
-                showGrid("Favoriten", favList());
-            });
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            lp.topMargin = b.px(4);
-            body.addView(r, lp);
+            t.setText("Keine Treffer für „" + query + "“");
+            t.setTextColor(b.soft);
+            t.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+            t.setPadding(b.px(8), b.px(16), b.px(8), b.px(16));
+            listBody.addView(t);
         }
-        List<FrameLayout> tiles = new ArrayList<>();
-        for (final Webcams.Folder f : Webcams.FOLDERS) {
-            int[] ids = Webcams.folderCams(f);
-            Webcams.Cam cover = null;
-            for (int i : ids) {
-                if (i >= 0) {
-                    cover = Webcams.CAMS[i];
+        chipScroll.setVisibility(secChips.isEmpty() ? View.GONE : View.VISIBLE);
+        paintChips(0);
+    }
+
+    /** Abschnittskopf in der Liste; chip != null legt zusaetzlich einen Reiter an. */
+    private void section(String name, String chip, int count) {
+        LinearLayout h = new LinearLayout(this);
+        h.setOrientation(LinearLayout.HORIZONTAL);
+        h.setGravity(Gravity.BOTTOM);
+        h.setPadding(b.px(4), b.px(secViews.isEmpty() ? 4 : 16), b.px(4), b.px(4));
+        TextView t = new TextView(this);
+        t.setText(name);
+        t.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13);
+        t.setTextColor(b.tx);
+        t.setTypeface(null, android.graphics.Typeface.BOLD);
+        h.addView(t);
+        TextView n = new TextView(this);
+        n.setText("  " + count);
+        n.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+        n.setTextColor(b.soft);
+        h.addView(n);
+        listBody.addView(h);
+        secViews.add(h);
+        if (chip != null) {
+            final int idx = secViews.size() - 1;
+            TextView c = new TextView(this);
+            c.setText(chip);
+            c.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13.5f);
+            c.setGravity(Gravity.CENTER);
+            c.setPadding(b.px(14), 0, b.px(14), 0);
+            c.setSingleLine(true);
+            c.setOnClickListener(v -> {
+                Haptic.play(v, Haptic.TICK);
+                listScroll.smoothScrollTo(0, Math.max(0, secViews.get(idx).getTop() - b.px(2)));
+            });
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, b.px(36));
+            lp.rightMargin = b.px(6);
+            chipBox.addView(c, lp);
+            secChips.add(c);
+            c.setTag(idx);
+        } else {
+            // ohne Reiter: Platzhalter, damit die Zaehlung der Abschnitte stimmt
+            secChips.add(null);
+        }
+    }
+
+    /** Aktiven Reiter hervorheben (weiche Kapsel wie bei den News-Themen). */
+    private void paintChips(int activeSecIdx) {
+        for (int i = 0; i < secChips.size(); i++) {
+            TextView c = secChips.get(i);
+            if (c == null) continue;
+            boolean on = i == activeSecIdx;
+            c.setTextColor(on ? b.tx : b.soft);
+            c.setTypeface(null, on ? android.graphics.Typeface.BOLD : android.graphics.Typeface.NORMAL);
+            GradientDrawable g = new GradientDrawable();
+            g.setCornerRadius(b.px(11));
+            g.setColor(on ? (b.light ? 0x22000000 : 0x26FFFFFF) : 0);
+            c.setBackground(g);
+        }
+    }
+
+    /** Beim Scrollen den Reiter der gerade sichtbaren Region markieren. */
+    private void spy() {
+        if (listScroll == null || secViews.isEmpty()) return;
+        int y = listScroll.getScrollY() + b.px(24);
+        int cur = 0;
+        for (int i = 0; i < secViews.size(); i++) if (secViews.get(i).getTop() <= y) cur = i;
+        // am Listenende gewinnt der letzte Abschnitt mit Reiter
+        View content = listScroll.getChildAt(0);
+        if (content != null && listScroll.getScrollY() + listScroll.getHeight() >= content.getHeight() - b.px(4)) {
+            for (int i = secViews.size() - 1; i >= 0; i--) {
+                if (secChips.get(i) != null) {
+                    cur = i;
                     break;
                 }
             }
-            FrameLayout t = tile(cover, f.name, tw, th);
-            addCountPill(t, String.valueOf(ids.length));
-            t.setOnClickListener(v -> {
-                Haptic.play(v, Haptic.TICK);
-                showGrid(f.name, Webcams.folderCams(f));
-            });
-            tiles.add(t);
         }
-        gridRows(body, tiles, tw);
-        b.row(body, "Weitere Webcams", false, this::showLinks, false);
-        decorate(body, 0, "↗");
-        ((LinearLayout.LayoutParams) body.getChildAt(body.getChildCount() - 1).getLayoutParams()).topMargin = b.px(12);
+        while (cur > 0 && secChips.get(cur) == null) cur--;
+        if (cur == activeSec) return;
+        activeSec = cur;
+        paintChips(cur);
+        TextView c = secChips.get(cur);
+        if (c != null) {
+            int x = c.getLeft() - (chipScroll.getWidth() - c.getWidth()) / 2;
+            chipScroll.smoothScrollTo(Math.max(0, x), 0);
+        }
+    }
+
+    /** Eine Zeile: Vorschaubild, Name, Aufnahmezeit und Quelle, Stern; bei Nur-Link-Seiten Pfeil-Symbol. */
+    private void row(final Webcams.Cam c, final int[] nav, final int pos, String hl) {
+        LinearLayout r = new LinearLayout(this);
+        r.setOrientation(LinearLayout.HORIZONTAL);
+        r.setGravity(Gravity.CENTER_VERTICAL);
+        r.setPadding(b.px(4), b.px(6), b.px(4), b.px(6));
+        GradientDrawable mask = new GradientDrawable();
+        mask.setCornerRadius(b.px(14));
+        mask.setColor(0xFFFFFFFF);
+        r.setBackground(new RippleDrawable(ColorStateList.valueOf(b.ripple), null, mask));
+
+        FrameLayout th = new FrameLayout(this);
+        GradientDrawable thbg = new GradientDrawable();
+        thbg.setColor(b.light ? 0x1A000000 : 0x26FFFFFF);
+        th.setBackground(thbg);
+        roundClip(th, 12);
+        ImageView iv = new ImageView(this);
+        if (c.link) {
+            iv.setImageResource(R.drawable.ic_external);
+            iv.setColorFilter(b.soft);
+            th.addView(iv, new FrameLayout.LayoutParams(b.px(22), b.px(22), Gravity.CENTER));
+        } else {
+            iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            th.addView(iv, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        }
+        r.addView(th, new LinearLayout.LayoutParams(b.px(76), b.px(54)));
+
+        LinearLayout col = new LinearLayout(this);
+        col.setOrientation(LinearLayout.VERTICAL);
+        col.setPadding(b.px(12), 0, b.px(4), 0);
+        TextView name = new TextView(this);
+        name.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14.5f);
+        name.setTextColor(b.tx);
+        name.setTypeface(null, android.graphics.Typeface.BOLD);
+        name.setSingleLine(true);
+        name.setEllipsize(android.text.TextUtils.TruncateAt.END);
+        SpannableString ss = new SpannableString(c.name);
+        int at = hl.isEmpty() ? -1 : norm(c.name).indexOf(hl);
+        if (at >= 0 && at + hl.length() <= c.name.length()) {
+            ss.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), at, at + hl.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ss.setSpan(new ForegroundColorSpan(b.light ? 0xFF1A5FB4 : 0xFFFFC857), at, at + hl.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        name.setText(ss);
+        col.addView(name);
+        TextView sub = new TextView(this);
+        sub.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+        sub.setTextColor(b.soft);
+        sub.setSingleLine(true);
+        sub.setEllipsize(android.text.TextUtils.TruncateAt.END);
+        String ago = Webcams.agoLabel(this, c, true);
+        sub.setText(c.link ? c.source : (ago.isEmpty() ? c.source : ago + " · " + c.source));
+        col.addView(sub);
+        r.addView(col, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+
+        if (!c.link) {
+            final ImageView st = new ImageView(this);
+            st.setPadding(b.px(10), b.px(10), b.px(10), b.px(10));
+            st.setContentDescription("Favorit");
+            st.setImageResource(Webcams.isFav(this, c) ? R.drawable.ic_star_fill : R.drawable.ic_star);
+            st.setColorFilter(Webcams.isFav(this, c) ? (b.light ? 0xFF1A5FB4 : 0xFFFFC857) : b.soft);
+            st.setOnClickListener(v -> {
+                boolean on = Webcams.toggleFav(this, c);
+                Haptic.play(v, on ? Haptic.TOGGLE_ON : Haptic.TOGGLE_OFF);
+                // Favoriten-Abschnitt aendert sich: Liste an gleicher Stelle neu aufbauen
+                int y = listScroll.getScrollY();
+                fillList();
+                listScroll.post(() -> listScroll.scrollTo(0, y));
+                kickSoon();
+            });
+            r.addView(st, new LinearLayout.LayoutParams(b.px(40), b.px(40)));
+            slots.add(new Slot(c, iv, r, sub));
+        }
+        r.setOnClickListener(v -> {
+            Haptic.play(v, Haptic.TICK);
+            if (c.link) open(c.page);
+            else {
+                listY = listScroll.getScrollY();
+                showCam(nav, pos, this::showMain);
+            }
+        });
+        listBody.addView(r, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
     }
 
     private int[] favList() {
@@ -460,138 +574,24 @@ public class WebcamActivity extends Activity {
         List<Integer> r = new ArrayList<>();
         for (String id : f) {
             int i = Webcams.indexOf(id);
-            if (i >= 0) r.add(i);
+            if (i >= 0 && !Webcams.CAMS[i].link) r.add(i);
         }
         int[] a = new int[r.size()];
         for (int i = 0; i < a.length; i++) a[i] = r.get(i);
         return a;
     }
 
-    private static String norm(String s) {
-        return s.toLowerCase(Locale.GERMAN).replace("ä", "a").replace("ö", "o").replace("ü", "u").replace("ß", "ss");
-    }
+    // ---------------------------------------------------------------- Bilder der Zeilen
 
-    private void fillSearch(LinearLayout body, String q) {
-        String nq = norm(q);
-        final List<Integer> hit = new ArrayList<>();
-        for (int i = 0; i < Webcams.CAMS.length; i++) {
-            Webcams.Cam c = Webcams.CAMS[i];
-            Webcams.Folder f = Webcams.folderOf(c);
-            String hay = norm(c.name + " " + (f == null ? "" : f.name) + " " + c.source);
-            if (hay.contains(nq)) hit.add(i);
-        }
-        if (hit.isEmpty()) {
-            TextView t = new TextView(this);
-            t.setText("Keine Treffer für „" + q + "“");
-            t.setTextColor(b.soft);
-            t.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-            t.setPadding(b.px(8), b.px(16), b.px(8), b.px(16));
-            body.addView(t);
-            return;
-        }
-        final int[] list = new int[hit.size()];
-        for (int i = 0; i < list.length; i++) list[i] = hit.get(i);
-        for (int k = 0; k < list.length; k++) {
-            final int pos = k;
-            Webcams.Cam c = Webcams.CAMS[list[k]];
-            Webcams.Folder f = Webcams.folderOf(c);
-            LinearLayout r = new LinearLayout(this);
-            r.setOrientation(LinearLayout.VERTICAL);
-            r.setPadding(b.px(12), b.px(10), b.px(12), b.px(10));
-            r.setBackground(new RippleDrawable(ColorStateList.valueOf(b.ripple), null, new android.graphics.drawable.ColorDrawable(0xFFFFFFFF)));
-            TextView t = new TextView(this);
-            t.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14.5f);
-            t.setTextColor(b.tx);
-            SpannableString ss = new SpannableString(c.name);
-            int at = norm(c.name).indexOf(nq);
-            if (at >= 0 && at + nq.length() <= c.name.length()) {
-                ss.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), at, at + nq.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                ss.setSpan(new ForegroundColorSpan(b.light ? 0xFF1A5FB4 : 0xFFFFC857), at, at + nq.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            }
-            t.setText(ss);
-            r.addView(t);
-            TextView s = new TextView(this);
-            s.setText((f == null ? "" : f.name + " · ") + c.source);
-            s.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-            s.setTextColor(b.soft);
-            r.addView(s);
-            r.setOnClickListener(v -> {
-                Haptic.play(v, Haptic.TICK);
-                showCam(list, pos, this::showFolders);
-            });
-            body.addView(r, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        }
-    }
-
-    /** Zeile der Liste um ein Symbol vorne und eine Marke hinten ergaenzen. */
-    private void decorate(LinearLayout body, int iconRes, String trailing) {
-        LinearLayout r = (LinearLayout) body.getChildAt(body.getChildCount() - 1);
-        if (iconRes != 0) {
-            ImageView iv = new ImageView(this);
-            iv.setImageResource(iconRes);
-            iv.setColorFilter(b.soft);
-            LinearLayout.LayoutParams ip = new LinearLayout.LayoutParams(b.px(18), b.px(18));
-            ip.rightMargin = b.px(12);
-            r.addView(iv, 0, ip);
-        }
-        TextView tr = new TextView(this);
-        tr.setText(trailing);
-        tr.setTextSize(TypedValue.COMPLEX_UNIT_SP, 17);
-        tr.setTextColor(b.soft);
-        r.addView(tr);
-    }
-
-    // ---------------------------------------------------------------- Raster
-
-    private void showGrid(final String title, final int[] list) {
-        reset();
-        up = this::showFolders;
-        head(title, list.length + (list.length == 1 ? " Kamera" : " Kameras"), this::showFolders);
-        LinearLayout body = b.scrollBox(0.72f);
-        int tw = (bodyW() - b.px(8)) / 2;
-        int th = Math.round(tw * 0.66f);
-        List<FrameLayout> tiles = new ArrayList<>();
-        for (int k = 0; k < list.length; k++) {
-            final int pos = k;
-            if (list[k] < 0) continue;
-            Webcams.Cam c = Webcams.CAMS[list[k]];
-            FrameLayout t = tile(c, c.name, tw, th);
-            addStar(t, c);
-            t.setOnClickListener(v -> {
-                Haptic.play(v, Haptic.TICK);
-                showCam(list, pos, () -> showGrid(title, list));
-            });
-            tiles.add(t);
-        }
-        gridRows(body, tiles, tw);
-        ScrollHook.attach(body, this::kick);
-        b.space(4);
-        b.pillKeep("Schließen", false, () -> b.close());
-        kickSoon();
-    }
-
-    /** Laesst eine Aktion laufen, wenn der umgebende ScrollView scrollt. */
-    private static final class ScrollHook {
-        static void attach(final View inside, final Runnable r) {
-            inside.post(() -> {
-                android.view.ViewParent p = inside.getParent();
-                if (p instanceof android.widget.ScrollView) {
-                    ((android.widget.ScrollView) p).getViewTreeObserver().addOnScrollChangedListener(r::run);
-                }
-            });
-        }
-    }
-
-    // ---------------------------------------------------------------- Bilder der Kacheln
-
-    /** Nach dem Aufbau und nach dem Hochfahren des Blattes pruefen, welche Kacheln sichtbar sind. */
+    /** Nach dem Aufbau und nach dem Hochfahren des Blattes pruefen, welche Zeilen sichtbar sind. */
     private void kickSoon() {
         ui.postDelayed(this::kick, 80);
         ui.postDelayed(this::kick, 450);
     }
 
-    /** Sichtbare Kacheln mit dem letzten gespeicherten Bild fuellen und bei Bedarf neu laden. */
+    /** Sichtbare Zeilen mit dem letzten gespeicherten Bild fuellen und bei Bedarf neu laden. */
     private void kick() {
+        if (camOpen) return;
         final int g = gen;
         final long maxAge = ticked ? Math.max(Webcams.intervalMs(this), 30000L) : Webcams.FRESH_MS;
         final boolean allowRefresh = !ticked || Webcams.intervalMs(this) > 0;
@@ -602,13 +602,10 @@ public class WebcamActivity extends Activity {
             s.busy = true;
             pool.execute(() -> {
                 try {
-                    Webcams.Shot c = s.iv.getDrawable() == null ? Webcams.cached(app, s.cam, THUMB_W, true) : null;
-                    if (c != null && c.bmp != null) {
-                        final Webcams.Shot cc = c;
-                        ui.post(() -> {
-                            if (g == gen) {
-                                setImage(s, cc);
-                            }
+                    if (s.iv.getDrawable() == null) {
+                        final Webcams.Shot cc = Webcams.cached(app, s.cam, THUMB_W, true);
+                        if (cc.bmp != null) ui.post(() -> {
+                            if (g == gen) setImage(s, cc);
                         });
                     }
                     if (allowRefresh && Webcams.age(app, s.cam, true) > maxAge) {
@@ -629,6 +626,8 @@ public class WebcamActivity extends Activity {
     /** Neues Bild weich ueber das alte blenden (nur wenn sich etwas geaendert hat). */
     private void setImage(Slot s, Webcams.Shot shot) {
         if (shot.bmp == null) return;
+        String ago = Webcams.agoLabel(this, s.cam, true);
+        if (s.sub != null && !ago.isEmpty()) s.sub.setText(ago + " · " + s.cam.source);
         if (s.shownTaken >= 0 && shot.taken > 0 && shot.taken == s.shownTaken) return;
         s.shownTaken = shot.taken;
         crossfade(s.iv, shot.bmp);
@@ -654,7 +653,49 @@ public class WebcamActivity extends Activity {
 
     // ---------------------------------------------------------------- Einzelansicht
 
+    private Button2 bigButton(int icon, String label, boolean primary, Runnable click) {
+        return new Button2(icon, label, primary, click);
+    }
+
+    /** Knopf mit Symbol und Text; primaer = hell hervorgehoben. */
+    private final class Button2 {
+        final LinearLayout view;
+
+        Button2(int icon, String label, boolean primary, final Runnable click) {
+            view = new LinearLayout(WebcamActivity.this);
+            view.setOrientation(LinearLayout.HORIZONTAL);
+            view.setGravity(Gravity.CENTER);
+            view.setPadding(b.px(12), 0, b.px(12), 0);
+            GradientDrawable fill = new GradientDrawable();
+            fill.setCornerRadius(b.px(14));
+            fill.setColor(primary ? b.hi : b.neutral());
+            GradientDrawable mask = new GradientDrawable();
+            mask.setCornerRadius(b.px(14));
+            mask.setColor(0xFFFFFFFF);
+            view.setBackground(new RippleDrawable(ColorStateList.valueOf(primary ? 0x33000000 : b.ripple), fill, mask));
+            ImageView iv = new ImageView(WebcamActivity.this);
+            iv.setImageResource(icon);
+            iv.setColorFilter(primary ? b.hiTx : b.tx);
+            LinearLayout.LayoutParams ip = new LinearLayout.LayoutParams(b.px(20), b.px(20));
+            ip.rightMargin = b.px(8);
+            view.addView(iv, ip);
+            TextView t = new TextView(WebcamActivity.this);
+            t.setText(label);
+            t.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+            t.setTextColor(primary ? b.hiTx : b.tx);
+            if (primary) t.setTypeface(null, android.graphics.Typeface.BOLD);
+            t.setSingleLine(true);
+            view.addView(t);
+            view.setContentDescription(label);
+            view.setOnClickListener(v -> {
+                Haptic.play(v, Haptic.TICK);
+                click.run();
+            });
+        }
+    }
+
     private void showCam(final int[] list, int pos, final Runnable back) {
+        if (list.length == 0) return;
         reset();
         camOpen = true;
         camList = list;
@@ -665,13 +706,10 @@ public class WebcamActivity extends Activity {
 
         camStar = iconBtn(R.drawable.ic_star, "Favorit", () -> {
             Webcams.Cam cam = Webcams.CAMS[camList[camPos]];
-            boolean on = Webcams.toggleFav(this, cam);
-            camStar.setImageResource(on ? R.drawable.ic_star_fill : R.drawable.ic_star);
+            Webcams.toggleFav(this, cam);
+            paintStar(cam);
         });
-        LinearLayout h = head("", "", back,
-                iconBtn(R.drawable.ic_refresh, "Neu laden", () -> loadCam(true)),
-                iconBtn(R.drawable.ic_external, "Webseite öffnen", this::openPage),
-                camStar);
+        LinearLayout h = head("", "", back, iconBtn(R.drawable.ic_refresh, "Neu laden", () -> loadCam(true)), camStar);
         TextView[] tt = (TextView[]) h.getTag();
         camTitle = tt[0];
         camSub = tt[1];
@@ -683,10 +721,21 @@ public class WebcamActivity extends Activity {
         camImg = new ImageView(this);
         camImg.setAdjustViewBounds(true);
         camImg.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        camImg.setMaxHeight(b.px(300));
+        camImg.setMaxHeight(b.px(280));
         camHolder.addView(camImg, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER));
         camSpin = new ProgressBar(this);
         camHolder.addView(camSpin, new FrameLayout.LayoutParams(b.px(32), b.px(32), Gravity.CENTER));
+        camCount = new TextView(this);
+        camCount.setTextColor(0xFFFFFFFF);
+        camCount.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+        camCount.setPadding(b.px(10), b.px(3), b.px(10), b.px(3));
+        GradientDrawable cp = new GradientDrawable();
+        cp.setColor(0x66000000);
+        cp.setCornerRadius(b.px(12));
+        camCount.setBackground(cp);
+        FrameLayout.LayoutParams clp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.TOP | Gravity.END);
+        clp.setMargins(0, b.px(10), b.px(10), 0);
+        camHolder.addView(camCount, clp);
         final GestureDetector gd = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onDown(MotionEvent e) {
@@ -714,16 +763,41 @@ public class WebcamActivity extends Activity {
         b.flex(camHolder, 90);
         b.box.addView(camHolder, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
-        camCount = b.text("", 12.5f, b.tx, false);
-        camCount.setPadding(b.px(4), b.px(8), b.px(4), 0);
-        camStatus = b.text("", 12.5f, b.soft, false);
-        camStatus.setPadding(b.px(4), b.px(2), b.px(4), 0);
-        camSource = b.text("", 11, b.soft, false);
-        camSource.setPadding(b.px(4), b.px(2), b.px(4), b.px(6));
-        b.text("Tippen = Vollbild  ·  Wischen = nächste Kamera", 11, b.soft, false).setPadding(b.px(4), 0, b.px(4), b.px(6));
-        b.pillKeep("Zurück", false, back);
+        camStatus = b.text("", 12.5f, b.tx, false);
+        camStatus.setPadding(b.px(4), b.px(8), b.px(4), 0);
+        camSource = b.text("", 11.5f, b.soft, false);
+        camSource.setPadding(b.px(4), b.px(2), b.px(4), b.px(8));
+
+        // Knoepfe: Vollbild gross, darunter Teilen und Webseite
+        LinearLayout box = b.box;
+        LinearLayout.LayoutParams full = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, b.px(46));
+        box.addView(bigButton(R.drawable.ic_fullscreen, "Vollbild", true, this::openFull).view, full);
+        LinearLayout two = new LinearLayout(this);
+        two.setOrientation(LinearLayout.HORIZONTAL);
+        LinearLayout.LayoutParams l1 = new LinearLayout.LayoutParams(0, b.px(46), 1f);
+        l1.rightMargin = b.px(3);
+        two.addView(bigButton(R.drawable.ic_share, "Teilen", false, () -> Webcams.share(this, Webcams.CAMS[camList[camPos]])).view, l1);
+        LinearLayout.LayoutParams l2 = new LinearLayout.LayoutParams(0, b.px(46), 1f);
+        l2.leftMargin = b.px(3);
+        two.addView(bigButton(R.drawable.ic_external, "Webseite", false, () -> open(Webcams.CAMS[camList[camPos]].page)).view, l2);
+        LinearLayout.LayoutParams tp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        tp.topMargin = b.px(6);
+        box.addView(two, tp);
+
+        camLink = b.text("", 11.5f, b.soft, false);
+        camLink.setPadding(b.px(4), b.px(10), b.px(4), 0);
+        camLink.setSingleLine(true);
+        camLink.setEllipsize(android.text.TextUtils.TruncateAt.MIDDLE);
+        camNote = b.text("", 11, b.soft, false);
+        camNote.setPadding(b.px(4), b.px(2), b.px(4), b.px(4));
         bindCam();
         loadCam(false);
+    }
+
+    private void paintStar(Webcams.Cam cam) {
+        boolean on = Webcams.isFav(this, cam);
+        camStar.setImageResource(on ? R.drawable.ic_star_fill : R.drawable.ic_star);
+        camStar.setColorFilter(on ? (b.light ? 0xFF1A5FB4 : 0xFFFFC857) : b.tx);
     }
 
     private void step(final int dir) {
@@ -751,9 +825,13 @@ public class WebcamActivity extends Activity {
         Webcams.viewed(this, cam);
         camTitle.setText(cam.name);
         camSub.setText(f == null ? cam.source : f.name);
-        camStar.setImageResource(Webcams.isFav(this, cam) ? R.drawable.ic_star_fill : R.drawable.ic_star);
+        paintStar(cam);
         camCount.setText((camPos + 1) + " / " + camList.length);
         camSource.setText("Quelle: " + cam.source + (cam.small ? "  ·  nur kleines Vorschaubild" : ""));
+        camLink.setText(cam.page.replace("https://", "").replace("www.", ""));
+        camNote.setText(cam.generic
+                ? "Hinweis: Dieser Link führt auf die gemeinsame Webcam-Seite von Berchtesgaden, nicht auf genau diese Kamera."
+                : "Tippen aufs Bild = Vollbild  ·  Wischen = nächste Kamera");
         camShownTaken = -1;
         camImg.setImageDrawable(null);
         Webcams.Shot c = Webcams.cached(this, cam, PREVIEW_W);
@@ -802,33 +880,6 @@ public class WebcamActivity extends Activity {
                 .putExtra(CamFullActivity.EXTRA_INDEX, camPos));
     }
 
-    private void openPage() {
-        if (camList.length == 0) return;
-        open(Webcams.CAMS[camList[camPos]].page);
-    }
-
-    private void open(String url) {
-        try {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-        } catch (Exception ignored) {
-        }
-    }
-
-    // ---------------------------------------------------------------- Weitere Webcams (nur Link)
-
-    private void showLinks() {
-        reset();
-        up = this::showFolders;
-        head("Weitere Webcams", "öffnet den Browser, kein Bild hier", this::showFolders);
-        LinearLayout body = b.scrollBox(0.7f);
-        for (final String[] c : LINKS) {
-            b.row(body, c[0], false, () -> open(c[1]), false);
-            decorate(body, 0, "↗");
-        }
-        b.space(4);
-        b.pillKeep("Zurück", false, this::showFolders);
-    }
-
     // ---------------------------------------------------------------- Einstellungen
 
     private int sInt, sKeep;
@@ -836,8 +887,8 @@ public class WebcamActivity extends Activity {
 
     private void showSettings() {
         reset();
-        up = this::showFolders;
-        head("Webcam-Einstellungen", "gilt für alle Webcams", this::showFolders);
+        up = this::showMain;
+        head("Webcam-Einstellungen", "gilt für alle Webcams", this::showMain);
         long iv = Webcams.intervalMs(this);
         final int i0 = indexOf(INTERVALS, iv, 1);
         final int k0 = indexOf(KEEP, Webcams.keepDays(this), 2);
@@ -866,12 +917,12 @@ public class WebcamActivity extends Activity {
             clear.setText("Speicher leeren (" + sizeText(Webcams.cacheSize(this)) + ")");
         });
         b.space(4);
-        TextView ok = b.footer(false, this::showFolders, () -> {
+        TextView ok = b.footer(false, this::showMain, () -> {
             Webcams.setIntervalMs(this, INTERVALS[sInt]);
             Webcams.setKeepDays(this, KEEP[sKeep]);
             Webcams.setWifiOnly(this, sWifi);
             Webcams.cleanup(getApplicationContext());
-            showFolders();
+            showMain();
         });
         b.watch(ok, () -> sInt != i0 || sKeep != k0 || sWifi != w0);
     }
