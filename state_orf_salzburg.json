@@ -1,5 +1,38 @@
 {
  "items": {
+  "2087592586": {
+   "sid": 2087592586,
+   "url": "https://salzburg.orf.at/stories/3381156/",
+   "title": "Veranstaltungen bringen Millionen an Wertschöpfung",
+   "teaser": "Die teils umstrittenen Großveranstaltungen in der Stadt Salzburg sorgen laut einer neuen Studie für erhebliche wirtschaftliche Effekte. Bürgermeister Bernhard Auinger (SPÖ) sieht sich damit in seiner Veranstaltungsstrategie bestätigt.",
+   "category": "Chronik",
+   "topic": "Region/Salzburg",
+   "plus": false,
+   "date": "2026-11-26T07:07:36+00:00",
+   "first_seen": "2026-11-26T07:07:36+00:00"
+  },
+  "1267911283": {
+   "sid": 1267911283,
+   "url": "https://salzburg.orf.at/stories/3381089/",
+   "title": "Renaturierung: Kleine Projekte bringen mehr Artenvielfalt",
+   "teaser": "Es braucht mehr natürliche Räume, damit Tier- und Pflanzenarten überleben. Zum Beispiel im Flachgau greifen einige kleinere Initativen ein, um beispielsweise Moorgebiete zu erhalten oder durch Hecken die Artenvielfalt zu erhöhen.",
+   "category": "Chronik",
+   "topic": "Region/Salzburg",
+   "plus": false,
+   "date": "2026-11-26T05:30:00+00:00",
+   "first_seen": "2026-11-26T05:30:00+00:00"
+  },
+  "479173436": {
+   "sid": 479173436,
+   "url": "https://salzburg.orf.at/stories/3381132/",
+   "title": "FPÖ „im Aufwind“, ÖVP „muss ernsthaft kämpfen“",
+   "teaser": "Trotz der Turbulenzen um Zahlen einer Wahlumfrage im Auftrag der SPÖ sieht der Politikwissenschafter Armin Mühlböck von der Universität Salzburg einen klaren Trend auch in der Salzburger Landespolitik: Die FPÖ sei „im Aufwind“, die Landeshauptfrau-Partei ÖVP „muss ernsthaft kämpfen“.",
+   "category": "Politik Inland",
+   "topic": "Region/Salzburg",
+   "plus": false,
+   "date": "2026-11-26T05:00:00+00:00",
+   "first_seen": "2026-11-26T05:00:00+00:00"
+  },
   "3856967640": {
    "sid": 3856967640,
    "url": "https://salzburg.orf.at/stories/3381118/",
@@ -406,39 +439,6 @@
    "plus": false,
    "date": "2026-11-23T05:00:00+00:00",
    "first_seen": "2026-11-23T05:00:00+00:00"
-  },
-  "2383341751": {
-   "sid": 2383341751,
-   "url": "https://salzburg.orf.at/stories/3380630/",
-   "title": "Adventmärkte: Millionenumsätze und großer Andrang",
-   "teaser": "Das erste Adventmarkt-Wochenende ist für viele schon geöffnete Salzburger Märkte erfolgreich verlaufen. Beim Hellbrunner „Adventzauber“ waren die Parkplätze am Sonntagnachmittag bereits voll belegt. Auch am Wolfgangsee rechnen die Veranstalterinnen und Veranstalter heuer mit großem Andrang.",
-   "category": "Wirtschaft",
-   "topic": "Region/Salzburg",
-   "plus": false,
-   "date": "2026-11-22T17:00:00+00:00",
-   "first_seen": "2026-11-22T17:00:00+00:00"
-  },
-  "2455424883": {
-   "sid": 2455424883,
-   "url": "https://salzburg.orf.at/stories/3380641/",
-   "title": "Drogennetzwerk im Pongau aufgedeckt",
-   "teaser": "Die Polizei hat ein Drogennetzwerk im Pongau zerschlagen: Hauptverdächtiger ist ein dort lebender Spanier. Er soll jahrelang Suchtmittel und psychotrope Stoffe verkauft haben, organisiert über das Internet. Laut Polizei hatte er zumindest 43 Abnehmer. Vier weitere Personen wurden ausgeforscht, einer",
-   "category": "Chronik",
-   "topic": "Region/Salzburg",
-   "plus": false,
-   "date": "2026-11-22T16:30:47+00:00",
-   "first_seen": "2026-11-22T16:30:47+00:00"
-  },
-  "3953149828": {
-   "sid": 3953149828,
-   "url": "https://salzburg.orf.at/stories/3380624/",
-   "title": "Spenden sollen Reichenhaller Haus retten",
-   "teaser": "Wegen einer notwendigen Sanierung droht die Schließung des Reichenhaller Hauses auf dem Hochstaufen im benachbarten Bayern. Weil die Förderungen nicht ausreichen würden, wie es heißt, hat der Alpenverein in Bad Reichenhall eine Spendenaktion gestartet.",
-   "category": "Wirtschaft",
-   "topic": "Region/Salzburg",
-   "plus": false,
-   "date": "2026-11-22T14:45:00+00:00",
-   "first_seen": "2026-11-22T14:45:00+00:00"
   }
  }
 }

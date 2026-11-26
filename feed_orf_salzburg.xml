@@ -5,7 +5,34 @@
     <link>https://salzburg.orf.at/</link>
     <description>Neueste Meldungen, automatisch erzeugt. Nur Titel und Anrisstext.</description>
     <language>de-de</language>
-    <lastBuildDate>Wed, 25 Nov 2026 23:48:28 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 26 Nov 2026 08:23:41 +0000</lastBuildDate>
+    <item>
+      <title>Veranstaltungen bringen Millionen an Wertschöpfung</title>
+      <link>https://salzburg.orf.at/stories/3381156/</link>
+      <guid isPermaLink="false">orf_salzburg-2087592586</guid>
+      <pubDate>Thu, 26 Nov 2026 07:07:36 +0000</pubDate>
+      <category>Chronik</category>
+      <topic>Region/Salzburg</topic>
+      <description>Die teils umstrittenen Großveranstaltungen in der Stadt Salzburg sorgen laut einer neuen Studie für erhebliche wirtschaftliche Effekte. Bürgermeister Bernhard Auinger (SPÖ) sieht sich damit in seiner Veranstaltungsstrategie bestätigt.</description>
+    </item>
+    <item>
+      <title>Renaturierung: Kleine Projekte bringen mehr Artenvielfalt</title>
+      <link>https://salzburg.orf.at/stories/3381089/</link>
+      <guid isPermaLink="false">orf_salzburg-1267911283</guid>
+      <pubDate>Thu, 26 Nov 2026 05:30:00 +0000</pubDate>
+      <category>Chronik</category>
+      <topic>Region/Salzburg</topic>
+      <description>Es braucht mehr natürliche Räume, damit Tier- und Pflanzenarten überleben. Zum Beispiel im Flachgau greifen einige kleinere Initativen ein, um beispielsweise Moorgebiete zu erhalten oder durch Hecken die Artenvielfalt zu erhöhen.</description>
+    </item>
+    <item>
+      <title>FPÖ „im Aufwind“, ÖVP „muss ernsthaft kämpfen“</title>
+      <link>https://salzburg.orf.at/stories/3381132/</link>
+      <guid isPermaLink="false">orf_salzburg-479173436</guid>
+      <pubDate>Thu, 26 Nov 2026 05:00:00 +0000</pubDate>
+      <category>Politik Inland</category>
+      <topic>Region/Salzburg</topic>
+      <description>Trotz der Turbulenzen um Zahlen einer Wahlumfrage im Auftrag der SPÖ sieht der Politikwissenschafter Armin Mühlböck von der Universität Salzburg einen klaren Trend auch in der Salzburger Landespolitik: Die FPÖ sei „im Aufwind“, die Landeshauptfrau-Partei ÖVP „muss ernsthaft kämpfen“.</description>
+    </item>
     <item>
       <title>Kehlsteinhaus-Sanierung: Zweistellige Millionensumme</title>
       <link>https://salzburg.orf.at/stories/3381118/</link>
@@ -338,33 +365,6 @@
       <category>Politik Inland</category>
       <topic>Region/Salzburg</topic>
       <description>Homeoffice sollte auch jenen Gemeinden finanziell zugutekommen, in denen die Beschäftigten arbeiten. Dafür müsste die Kommunalsteuer von den Unternehmen direkt an diese Gemeinden fließen, fordert der Bürgermeister von Ebenau, Johannes Fürstaller (ÖVP). Manche Firmen zahlen freiwillig an seine Gemein</description>
-    </item>
-    <item>
-      <title>Adventmärkte: Millionenumsätze und großer Andrang</title>
-      <link>https://salzburg.orf.at/stories/3380630/</link>
-      <guid isPermaLink="false">orf_salzburg-2383341751</guid>
-      <pubDate>Sun, 22 Nov 2026 17:00:00 +0000</pubDate>
-      <category>Wirtschaft</category>
-      <topic>Region/Salzburg</topic>
-      <description>Das erste Adventmarkt-Wochenende ist für viele schon geöffnete Salzburger Märkte erfolgreich verlaufen. Beim Hellbrunner „Adventzauber“ waren die Parkplätze am Sonntagnachmittag bereits voll belegt. Auch am Wolfgangsee rechnen die Veranstalterinnen und Veranstalter heuer mit großem Andrang.</description>
-    </item>
-    <item>
-      <title>Drogennetzwerk im Pongau aufgedeckt</title>
-      <link>https://salzburg.orf.at/stories/3380641/</link>
-      <guid isPermaLink="false">orf_salzburg-2455424883</guid>
-      <pubDate>Sun, 22 Nov 2026 16:30:47 +0000</pubDate>
-      <category>Chronik</category>
-      <topic>Region/Salzburg</topic>
-      <description>Die Polizei hat ein Drogennetzwerk im Pongau zerschlagen: Hauptverdächtiger ist ein dort lebender Spanier. Er soll jahrelang Suchtmittel und psychotrope Stoffe verkauft haben, organisiert über das Internet. Laut Polizei hatte er zumindest 43 Abnehmer. Vier weitere Personen wurden ausgeforscht, einer</description>
-    </item>
-    <item>
-      <title>Spenden sollen Reichenhaller Haus retten</title>
-      <link>https://salzburg.orf.at/stories/3380624/</link>
-      <guid isPermaLink="false">orf_salzburg-3953149828</guid>
-      <pubDate>Sun, 22 Nov 2026 14:45:00 +0000</pubDate>
-      <category>Wirtschaft</category>
-      <topic>Region/Salzburg</topic>
-      <description>Wegen einer notwendigen Sanierung droht die Schließung des Reichenhaller Hauses auf dem Hochstaufen im benachbarten Bayern. Weil die Förderungen nicht ausreichen würden, wie es heißt, hat der Alpenverein in Bad Reichenhall eine Spendenaktion gestartet.</description>
     </item>
   </channel>
 </rss>
