@@ -10,6 +10,8 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.51",
+                    "+ Berg-Modus: neue Berge Wilder Kaiser, Dachstein, Hochkönig und Ortler"},
             {"1.50",
                     "+ Webcams: Umschalter „Regionen | Berge“. Im Berg-Modus stehen die Kameras nach Bergen (Zugspitze, Watzmann, Großglockner, Matterhorn, Säntis, Wendelstein, Hochkalter, Untersberg); eine Kamera kann in mehreren Bergen stehen. Wo der Berg nicht belegt ist, steht „Berg ungeprüft“",
                     "+ Die Suche findet auch die Berge (z. B. „Watzmann“ auch bei Kameras, die den Berg nur im Blick haben)",

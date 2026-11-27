@@ -234,6 +234,10 @@ final class Webcams {
             new Peak("Wendelstein", "Deutschland", "fw_wendelstein-west fw_wendelstein-ost", ""),
             new Peak("Hochkalter", "Deutschland", "fw_vorderloiplsau th_hintersee th_stoisser-alm", "th_hintersee th_stoisser-alm"),
             new Peak("Untersberg", "Deutschland / Österreich", "fw_stoehrhaus", ""),
+            new Peak("Wilder Kaiser", "Österreich", "fw_wilder-kaiser fw_st-johann-in-tirol-west fw_pendling-ost", ""),
+            new Peak("Dachstein", "Österreich", "fw_gjaidstein fw_simonyhuette fw_hotel-lindenhof", ""),
+            new Peak("Hochkönig", "Österreich", "fw_hochkoenig", ""),
+            new Peak("Ortler", "Italien", "fw_trafoi fw_chavalatsch", ""),
     };
 
     /** true, wenn die Kamera in Bergen steht und in allen davon ihr Berg nicht belegt ist. */
