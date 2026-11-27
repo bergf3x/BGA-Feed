@@ -10,6 +10,8 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.48",
+                    "~ Webcam-Suche: Auch die eingebauten Kameras (z. B. Windbeutelbaron, Funtenseetauern, Freiwandeck) haben jetzt Titel und Schlagwörter, „Watzmann“, „Glockner“ oder „Zugspitze“ finden mehr Treffer; sie zeigen außerdem die Höhe. Die Kameraliste wird dafür einmal neu geladen"},
             {"1.47",
                     "~ Zermatt-Kameras stehen jetzt in der Region Schweiz, die Kameras von Cervinia in „Südtirol und Italien“ (der Reiter „Matterhorn“ entfällt)",
                     "~ 360°-Panoramen zeigen in Liste und Einzelansicht einen normalen Ausschnitt (meist mit dem Matterhorn); das ganze Panorama gibt es im Vollbild. Sunnegga und Riffelberg sind normale Bilder"},

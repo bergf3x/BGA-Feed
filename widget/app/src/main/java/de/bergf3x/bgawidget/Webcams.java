@@ -235,6 +235,7 @@ final class Webcams {
     // ------------------------------------------------------------ Kameraliste von foto-webcam.eu
 
     private static final String INDEX_URL = "https://www.foto-webcam.eu/";
+    private static final int INDEX_FMT = 2;
     private static final long INDEX_MAX_AGE = 3 * 86400000L;
 
     private static java.io.File indexFile(Context c) {
@@ -244,12 +245,16 @@ final class Webcams {
     private static java.util.Set<String> wantedSlugs() {
         java.util.Set<String> w = new java.util.HashSet<>();
         for (String[] r : REGIONS) java.util.Collections.addAll(w, words(r[3]));
+        // auch die eingebauten foto-webcam-Kameras: Titel, Schlagwoerter und Hoehe fuer die Suche
+        for (Cam bc : BASE) if (bc.id.startsWith("fw_")) w.add(bc.id.substring(3));
         return w;
     }
 
     /** true, wenn es noch keine gespeicherte Liste gibt oder sie aelter als 3 Tage ist. */
     static boolean indexStale(Context c) {
         java.io.File f = indexFile(c);
+        // Liste ohne die eingebauten Kameras (aelter als Format 2): einmal neu laden
+        if (Prefs.sp(c).getInt("cam_idx_fmt", 1) < INDEX_FMT) return true;
         return !f.exists() || System.currentTimeMillis() - f.lastModified() > INDEX_MAX_AGE;
     }
 
@@ -284,6 +289,7 @@ final class Webcams {
             f.delete();
             if (!tmp.renameTo(f)) throw new IOException("Speichern fehlgeschlagen");
         }
+        Prefs.sp(c).edit().putInt("cam_idx_fmt", INDEX_FMT).apply();
         dirty = true;
     }
 
@@ -309,11 +315,23 @@ final class Webcams {
                 }
                 org.json.JSONArray arr = new org.json.JSONArray(new String(b, "UTF-8"));
                 java.util.Set<String> baseIds = new java.util.HashSet<>();
-                for (Cam bc : BASE) baseIds.add(bc.id);
+                java.util.Map<String, Cam> baseById = new java.util.HashMap<>();
+                for (Cam bc : BASE) {
+                    baseIds.add(bc.id);
+                    baseById.put(bc.id, bc);
+                }
                 for (int k = 0; k < arr.length(); k++) {
                     org.json.JSONObject j = arr.getJSONObject(k);
                     String slug = j.optString("id");
-                    if (slug.isEmpty() || j.optBoolean("offline") || j.optBoolean("hidden") || baseIds.contains("fw_" + slug)) continue;
+                    if (slug.isEmpty()) continue;
+                    Cam own = baseById.get("fw_" + slug);
+                    if (own != null) {
+                        // eingebaute Kamera: nur Suchtext und Hoehe aus der Liste uebernehmen
+                        own.elev = j.optInt("elevation", 0);
+                        own.desc = j.optString("title") + " " + j.optString("keywords");
+                        continue;
+                    }
+                    if (j.optBoolean("offline") || j.optBoolean("hidden")) continue;
                     String name = j.optString("name", slug);
                     String img = j.optString("imgurl");
                     String link = j.optString("link");
