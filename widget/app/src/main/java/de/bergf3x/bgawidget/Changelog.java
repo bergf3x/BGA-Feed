@@ -10,6 +10,9 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.49",
+                    "~ Der Reiter „Österreich“ mit nur einer Kamera entfällt: Pass Lueg steht jetzt im Salzburger Land (die Pfälzerhütte ist bei der Quelle ausgeblendet)",
+                    "~ Gsteig (Blick zur Zugspitze) steht jetzt bei Garmisch und Zugspitze statt bei Tegernsee"},
             {"1.48",
                     "~ Webcam-Suche: Auch die eingebauten Kameras (z. B. Windbeutelbaron, Funtenseetauern, Freiwandeck) haben jetzt Titel und Schlagwörter, „Watzmann“, „Glockner“ oder „Zugspitze“ finden mehr Treffer; sie zeigen außerdem die Höhe. Die Kameraliste wird dafür einmal neu geladen"},
             {"1.47",
