@@ -1,5 +1,15 @@
 {
  "items": {
+  "1028775": {
+   "sid": 1028775,
+   "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein_artikel,-taxi-geraet-auf-gegenfahrbahn-vier-verletzte-bei-schwerem-unfall-auf-der-b306-_arid,1028775.html",
+   "title": "Taxi gerät auf Gegenfahrbahn: Vier Verletzte bei schwerem Unfall auf der B306",
+   "teaser": "Bei einem schweren Verkehrsunfall auf der B306 zwischen Traunstein und Siegsdorf sind am Donnerstagabend vier Menschen verletzt worden, zwei davon schwer. Ein Taxi war auf der ...",
+   "category": "Landkreis Traunstein",
+   "plus": false,
+   "topic": "Region/Landkreis Traunstein",
+   "first_seen": "2026-11-27T01:57:19+00:00"
+  },
   "1028690": {
    "sid": 1028690,
    "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein_artikel,-wintereinbruch-sorgt-fuer-zahlreiche-unfaelle-auto-ueberschlaegt-sich-lastwagen-bleiben-stecken-behind-_arid,1028690.html",
@@ -215,7 +225,7 @@
    "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein/inzell_artikel,-ein-jahr-nach-abschluss-der-renaturierungsarbeiten-inzeller-filzen-nehmen-deutlich-mehr-wasser-auf-_arid,1028367.html",
    "title": "Ein Jahr nach Abschluss der Renaturierungsarbeiten: Inzeller Filzen nehmen deutlich mehr Wasser auf",
    "teaser": "Inzell – Ein Jahr nach Abschluss der Renaturierungsarbeiten in den Inzeller Filzen zeigen sich die ersten spürbaren Erfolge: Die renaturierten Moorflächen sind das gesamte Jahr über ...",
-   "category": "Inzell",
+   "category": "\"Ein Jahr nach Abschluss der Renaturierungsarbeiten: Inzeller Filzen nehmen deutlich mehr Wasser auf\"",
    "plus": false,
    "topic": "Region/Landkreis Traunstein",
    "first_seen": "2026-11-25T05:04:17+00:00"
@@ -589,16 +599,6 @@
    "plus": true,
    "topic": "Region/Landkreis Traunstein",
    "first_seen": "2026-11-24T01:56:26+00:00"
-  },
-  "1027966": {
-   "sid": 1027966,
-   "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein/traunstein_artikel,-ein-abend-voller-erinnerungen-in-traunstein-bienenzuchtverein-feierte-125jaehriges-bestehen-_arid,1027966.html",
-   "title": "Ein Abend voller Erinnerungen in Traunstein: Bienenzuchtverein feierte 125-jähriges Bestehen",
-   "teaser": "",
-   "category": "",
-   "plus": true,
-   "topic": "Region/Landkreis Traunstein",
-   "first_seen": "2026-11-23T14:43:22+00:00"
   },
   "1027962": {
    "sid": 1027962,

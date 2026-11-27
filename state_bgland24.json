@@ -1,5 +1,71 @@
 {
  "items": {
+  "1199241156": {
+   "sid": 1199241156,
+   "url": "https://www.bgland24.de/bayern/landkreis-rosenheim/fotos-unfall-bei-rohrdorf-am-26-november-2026-94610443.html",
+   "title": "Unfall bei Rohrdorf am 26. November 2026",
+   "teaser": "",
+   "category": "",
+   "topic": "Bayern/Rosenheim",
+   "plus": false,
+   "date": "",
+   "first_seen": "2026-11-27T01:57:19+00:00"
+  },
+  "246557435": {
+   "sid": 246557435,
+   "url": "https://www.bgland24.de/bayern/fotos-unfall-im-landkreis-landshut-am-26-november-2026-94610454.html",
+   "title": "Unfall im Landkreis Landshut am 26. November 2026",
+   "teaser": "",
+   "category": "",
+   "topic": "Bayern",
+   "plus": false,
+   "date": "",
+   "first_seen": "2026-11-27T01:57:19+00:00"
+  },
+  "2384341680": {
+   "sid": 2384341680,
+   "url": "https://www.bgland24.de/bayern/landkreis-muehldorf/fotos-unfall-bei-neumarkt-sankt-veit-am-26-november-2026-94610449.html",
+   "title": "Unfall bei Neumarkt-Sankt Veit am 26. November 2026",
+   "teaser": "",
+   "category": "",
+   "topic": "Bayern/Mühldorf",
+   "plus": false,
+   "date": "",
+   "first_seen": "2026-11-27T01:57:19+00:00"
+  },
+  "727605173": {
+   "sid": 727605173,
+   "url": "https://www.bgland24.de/netzwelt/gta-digitalminister-wildberger-kritisiert-gewaltdarstellungen-zr-94610441.html",
+   "title": "GTA-6-Hype: Minister warnt vor Gewalt in virtuellen Spielwelten",
+   "teaser": "",
+   "category": "",
+   "topic": "Netzwelt",
+   "plus": false,
+   "date": "",
+   "first_seen": "2026-11-27T01:57:19+00:00"
+  },
+  "998739434": {
+   "sid": 998739434,
+   "url": "https://www.bgland24.de/bayern/landkreis-rosenheim/fotos-unfall-bei-prutting-am-26-november-2026-94610440.html",
+   "title": "Unfall bei Prutting am 26. November 2026",
+   "teaser": "",
+   "category": "",
+   "topic": "Bayern/Rosenheim",
+   "plus": false,
+   "date": "",
+   "first_seen": "2026-11-27T01:57:19+00:00"
+  },
+  "2309377979": {
+   "sid": 2309377979,
+   "url": "https://www.bgland24.de/bgland/region-traunstein/siegsdorf-ort45020/fotos-schwerer-unfall-auf-der-b306-zwischen-traunstein-und-siegsdorf-am-26-november-2026-94610407.html",
+   "title": "Schwerer Unfall auf der B306 zwischen Traunstein und Siegsdorf am 26. November 2026",
+   "teaser": "",
+   "category": "",
+   "topic": "Region/Traunstein",
+   "plus": false,
+   "date": "",
+   "first_seen": "2026-11-27T01:57:19+00:00"
+  },
   "1115073660": {
    "sid": 1115073660,
    "url": "https://www.bgland24.de/bayern/landkreis-muehldorf/fotos-unfall-bei-buchbach-am-donnerstag-26-november-94610214.html",
@@ -167,6 +233,18 @@
    "sec": "/",
    "first_seen": "2026-11-26T17:59:00+00:00"
   },
+  "1849034633": {
+   "sid": 1849034633,
+   "url": "https://www.bgland24.de/bayern/hunderte-beamte-kontrollieren-geschaefte-in-muenchen-zr-94610346.html",
+   "title": "Hunderte Beamte kontrollieren Geschäfte in München",
+   "teaser": "Großeinsatz in der Nähe des Münchner Hauptbahnhofs: Hunderte Beamte rücken am Abend an, um Geschäfte zu kontrollieren. Nicht das erste Mal in diesem Jahr",
+   "category": "",
+   "topic": "Bayern",
+   "plus": false,
+   "date": "2026-11-26T17:34:22+00:00",
+   "sec": "/",
+   "first_seen": "2026-11-26T17:34:22+00:00"
+  },
   "808434157": {
    "sid": 808434157,
    "url": "https://www.bgland24.de/wintersport/biathlon/biathlon-im-liveticker-einzel-der-damen-am-freitag-zr-94610323.html",
@@ -184,6 +262,18 @@
    "url": "https://www.bgland24.de/welt/news/leichenteile-an-kanal-in-hamburg-entdeckt-zr-94610299.html",
    "title": "Leichenteile an Kanal in Hamburg entdeckt",
    "teaser": "In Hamburg entdeckt ein Passant einen Teil einer Leiche, wenig später gibt es einen weiteren Fund. Viele Fragen sind noch offen.",
+   "category": "",
+   "topic": "Nachrichten/Welt",
+   "plus": false,
+   "date": "2026-11-26T17:05:17+00:00",
+   "sec": "/",
+   "first_seen": "2026-11-26T17:05:17+00:00"
+  },
+  "242446440": {
+   "sid": 242446440,
+   "url": "https://www.bgland24.de/welt/news/in-hamburg-gefundene-leichenteile-gehoerten-zu-puppe-zr-94610299.html",
+   "title": "In Hamburg gefundene Leichenteile gehörten zu Puppe",
+   "teaser": "Die Polizei rückt in Hamburg zu einem größeren Einsatz aus wegen mutmaßlich gefundener Leichenteile. Der Hintergrund entpuppte sich als ein ganz anderer.",
    "category": "",
    "topic": "Nachrichten/Welt",
    "plus": false,
@@ -472,7 +562,7 @@
   "829693821": {
    "sid": 829693821,
    "url": "https://www.bgland24.de/bayern/schnee-in-oberbayern-a93-sperrung-aufgehoben-langer-lkw-stau-94609062.html",
-   "title": "Schnee-Chaos in Oberbayern: Frontalzusammenstoß bei Prutting – Reisebus-Unfall bei Salzburg",
+   "title": "Schneechaos in Oberbayern: Zwei Schwerverletzte bei Unfall auf der B306 – Frontalzusammenstoß bei Prutting",
    "teaser": "Landkreise der Region – Am Donnerstag (26. November) hat der erste Schnee den Freistaat sprichwörtlich eiskalt erwischt. Aufgrund der winterlichen Straßenverhältnisse kommt es nicht nur in der Region zu zahlreichen Unfällen und Verkehrsbehinderungen.",
    "category": "",
    "topic": "Bayern",
@@ -673,7 +763,7 @@
    "sid": 3614502568,
    "url": "https://www.bgland24.de/sport/fussball/fc-bayern/champions-league-pressestimmen-zur-pleite-des-fc-bayern-in-lille-zr-94608653.html",
    "title": "„Schwarze Nacht“: Internationale Pressestimmen zur Bayern-Pleite in Lille",
-   "teaser": "Der FC Bayern muss in der Königsklasse zittern. Die Pressestimmen zur Champions-League-Niederlage in Frankreich im Überblick.",
+   "teaser": "",
    "category": "",
    "topic": "Sport",
    "plus": false,
@@ -2770,18 +2860,6 @@
    "pc": 2,
    "first_seen": "2026-11-23T14:45:00+00:00"
   },
-  "3944857905": {
-   "sid": 3944857905,
-   "url": "https://www.bgland24.de/welt/wissen/darmkrebs-bei-jungen-menschen-mikroplastik-als-neuer-verdacht-zr-94603562.html",
-   "title": "Mikroplastik im Darm: Warum Forscher einen Zusammenhang mit einer tödlichen Krebsart vermuten",
-   "teaser": "",
-   "category": "",
-   "topic": "Nachrichten/Welt",
-   "plus": false,
-   "date": "2026-11-23T14:45:00+00:00",
-   "pc": 2,
-   "first_seen": "2026-11-23T14:45:00+00:00"
-  },
   "854403892": {
    "sid": 854403892,
    "url": "https://www.bgland24.de/bayern/freie-waehler-stellen-nachfolge-fuer-hubert-aiwanger-in-bayern-vor-zr-94603486.html",
@@ -3823,18 +3901,6 @@
    "pc": 2,
    "first_seen": "2026-11-22T06:16:55+00:00"
   },
-  "4133155685": {
-   "sid": 4133155685,
-   "url": "https://www.bgland24.de/bayern/landkreis-rosenheim/fotos-raubling-unfall-in-reischenhart-auto-bleibt-nach-alkoholfahrt-stecken-94601817.html",
-   "title": "Unfall in Reischenhart – Auto bleibt nach Alkoholfahrt stecken",
-   "teaser": "",
-   "category": "",
-   "topic": "Bayern/Rosenheim",
-   "plus": true,
-   "date": "2026-11-22T06:04:48+00:00",
-   "pc": 2,
-   "first_seen": "2026-11-22T06:04:48+00:00"
-  },
   "2292922009": {
    "sid": 2292922009,
    "url": "https://www.bgland24.de/wohnen/weihnachtsstern-10-diy-deko-ideen-machen-die-pflanze-zum-hingucker-upcycling-zr-94599612.html",
@@ -3846,18 +3912,6 @@
    "date": "2026-11-22T06:00:00+00:00",
    "pc": 2,
    "first_seen": "2026-11-22T06:00:00+00:00"
-  },
-  "1949838496": {
-   "sid": 1949838496,
-   "url": "https://www.bgland24.de/bayern/landkreis-rosenheim/fotos-einsatz-am-krankenhaus-rosenheim-am-samstag-21-november-94601774.html",
-   "title": "Einsatz am Krankenhaus Rosenheim am Samstag (21. November)",
-   "teaser": "",
-   "category": "",
-   "topic": "Bayern/Rosenheim",
-   "plus": true,
-   "date": "2026-11-21T22:10:29+00:00",
-   "pc": 2,
-   "first_seen": "2026-11-21T22:10:29+00:00"
   },
   "3021662957": {
    "sid": 3021662957,
@@ -3920,18 +3974,6 @@
    "pc": 2,
    "first_seen": "2026-11-21T16:10:00+00:00"
   },
-  "1745225083": {
-   "sid": 1745225083,
-   "url": "https://www.bgland24.de/bayern/aiwanger-trauerfeier-im-video-lebensgefaehrtin-dankt-fuer-solidaritaet-zr-94601646.html",
-   "title": "Trauerfeier im Video: Aiwangers Lebensgefährtin dankt für Solidarität",
-   "teaser": "",
-   "category": "",
-   "topic": "Bayern",
-   "plus": false,
-   "date": "2026-11-21T16:02:31+00:00",
-   "pc": 2,
-   "first_seen": "2026-11-21T16:02:31+00:00"
-  },
   "535710462": {
    "sid": 535710462,
    "url": "https://www.bgland24.de/wintersport/skispringen/skispringen-heute-im-liveticker-einzel-der-herren-am-samstag-zr-94601099.html",
@@ -3955,18 +3997,6 @@
    "date": "2026-11-21T14:25:42+00:00",
    "pc": 2,
    "first_seen": "2026-11-21T14:25:42+00:00"
-  },
-  "767459890": {
-   "sid": 767459890,
-   "url": "https://www.bgland24.de/bayern/doris-rauscher-ist-neue-vorsitzende-des-vdk-bayern-zr-94601575.html",
-   "title": "Doris Rauscher ist neue Vorsitzende des VdK Bayern",
-   "teaser": "",
-   "category": "",
-   "topic": "Bayern",
-   "plus": false,
-   "date": "2026-11-21T14:07:22+00:00",
-   "pc": 2,
-   "first_seen": "2026-11-21T14:07:22+00:00"
   },
   "2983733668": {
    "sid": 2983733668,
@@ -4841,42 +4871,6 @@
    "plus": false,
    "date": "2026-11-17T13:33:59+00:00",
    "first_seen": "2026-11-17T13:33:59+00:00",
-   "pc": 2
-  },
-  "2016024277": {
-   "sid": 2016024277,
-   "url": "https://www.bgland24.de/bgland/region-bad-reichenhall/schneizlreuth-ort73802/schneizlreuth-kindergartengebuehren-bleiben-trotz-baykibig-reform-unveraendert-94591765.html",
-   "title": "Schneizlreuth verzichtet auf höhere Kita-Gebühren: Woher kommt das Geld?",
-   "teaser": "Obwohl eine Gesetzesreform finanzielle Einschnitte mit sich bringt, bleiben die Betreuungskosten in Schneizlreuth vorerst stabil. Der Gemeinderat hat über die Gebührenstruktur entschieden – und das Defizit muss nun anders gestemmt werden.",
-   "category": "",
-   "topic": "Region/Bad Reichenhall",
-   "plus": true,
-   "date": "2026-11-17T10:10:00+00:00",
-   "pc": 2,
-   "first_seen": "2026-11-17T10:10:00+00:00"
-  },
-  "1166678868": {
-   "sid": 1166678868,
-   "url": "https://www.bgland24.de/bgland/rupertiwinkel/teisendorf-ort45305/teisendorf-zweckverband-surgruppe-beschliesst-hoehere-wassergebuehren-ab-2027-94591874.html",
-   "title": "Ab 1. Januar: Surgruppe beschließt höhere Wassergebühren in Teisendorf",
-   "teaser": "Auf die Bürger im Gebiet der Surgruppe rund um Teisendorf kommen ab 2027 höhere Kosten für das Trinkwasser zu. Die Verbandsversammlung hat neue Gebühren beschlossen – maßgeblich geprägt von Millioneninvestitionen und einer neuen Abgabe.",
-   "category": "",
-   "topic": "Region/Rupertiwinkel",
-   "plus": true,
-   "date": "2026-11-17T10:10:00+00:00",
-   "first_seen": "2026-11-17T10:10:00+00:00",
-   "pc": 2
-  },
-  "3767123467": {
-   "sid": 3767123467,
-   "url": "https://www.bgland24.de/bgland/region-traunstein/bergen-im-chiemgau-ort478539/bergen-diskussion-ueber-wasserrechte-von-adelholzener-94594035.html",
-   "title": "Gemeinde Bergen fordert Klarheit bei Förderantrag von Adelholzener",
-   "teaser": "Im Ringen um die Grundwasserförderung der Adelholzener Alpenquellen verlangt die Gemeinde Bergen verlässliche Fakten. Bevor das Landratsamt über die künftigen Rechte entscheidet, drängt der Rat auf die Klärung offener Fragen zur Wasserbilanz.",
-   "category": "",
-   "topic": "Region/Traunstein",
-   "plus": true,
-   "date": "2026-11-17T09:27:14+00:00",
-   "first_seen": "2026-11-17T09:27:14+00:00",
    "pc": 2
   }
  }
