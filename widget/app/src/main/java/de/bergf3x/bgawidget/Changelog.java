@@ -10,6 +10,10 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.50",
+                    "+ Webcams: Umschalter „Regionen | Berge“. Im Berg-Modus stehen die Kameras nach Bergen (Zugspitze, Watzmann, Großglockner, Matterhorn, Säntis, Wendelstein, Hochkalter, Untersberg); eine Kamera kann in mehreren Bergen stehen. Wo der Berg nicht belegt ist, steht „Berg ungeprüft“",
+                    "+ Die Suche findet auch die Berge (z. B. „Watzmann“ auch bei Kameras, die den Berg nur im Blick haben)",
+                    "~ Zwei bei der Quelle ausgeblendete Kameras (Großglockner Zoom, Lindauer Hütte) stehen nicht mehr in der Liste"},
             {"1.49",
                     "~ Der Reiter „Österreich“ mit nur einer Kamera entfällt: Pass Lueg steht jetzt im Salzburger Land (die Pfälzerhütte ist bei der Quelle ausgeblendet)",
                     "~ Gsteig (Blick zur Zugspitze) steht jetzt bei Garmisch und Zugspitze statt bei Tegernsee"},

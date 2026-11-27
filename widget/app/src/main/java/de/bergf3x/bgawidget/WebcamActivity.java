@@ -75,6 +75,9 @@ public class WebcamActivity extends Activity {
     private final List<Slot> slots = new ArrayList<>();
     private boolean ticked;
     private String query = "";
+    /** true = Berg-Modus (Gruppierung nach Bergen), false = Regionen. Wird gemerkt. */
+    private boolean peakMode;
+    private TextView segR, segB;
     private int listY;
     private ScrollView listScroll;
     private LinearLayout listBody;
@@ -313,7 +316,9 @@ public class WebcamActivity extends Activity {
         if (c.elev > 0) sb.append(String.format(Locale.GERMANY, "%,d m", c.elev)).append(" · ");
         String ago = Webcams.agoLabel(this, c, true);
         if (!ago.isEmpty()) sb.append(ago).append(" · ");
-        return sb.append(c.source).toString();
+        sb.append(c.source);
+        if (peakMode && Webcams.peakUnsure(c.id)) sb.append(" · Berg ungeprüft");
+        return sb.toString();
     }
 
     // ---------------------------------------------------------------- Liste
@@ -353,7 +358,25 @@ public class WebcamActivity extends Activity {
         blp.bottomMargin = b.px(6);
         b.box.addView(bar, blp);
 
-        // Reiter (Regionen)
+        // Umschalter Regionen | Berge
+        peakMode = Prefs.sp(this).getBoolean("cam_peaks", false);
+        LinearLayout seg = new LinearLayout(this);
+        seg.setOrientation(LinearLayout.HORIZONTAL);
+        seg.setPadding(b.px(3), b.px(3), b.px(3), b.px(3));
+        GradientDrawable sbg = new GradientDrawable();
+        sbg.setColor(b.neutral());
+        sbg.setCornerRadius(b.px(14));
+        seg.setBackground(sbg);
+        segR = segButton("Regionen", false);
+        segB = segButton("Berge", true);
+        seg.addView(segR, new LinearLayout.LayoutParams(0, b.px(34), 1f));
+        seg.addView(segB, new LinearLayout.LayoutParams(0, b.px(34), 1f));
+        LinearLayout.LayoutParams slp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        slp.bottomMargin = b.px(6);
+        b.box.addView(seg, slp);
+        paintSeg();
+
+        // Reiter (Regionen bzw. Berge)
         chipScroll = new HorizontalScrollView(this);
         chipScroll.setHorizontalScrollBarEnabled(false);
         chipScroll.setHorizontalFadingEdgeEnabled(true);
@@ -396,6 +419,38 @@ public class WebcamActivity extends Activity {
         kickSoon();
     }
 
+    private TextView segButton(String label, final boolean peaks) {
+        TextView t = new TextView(this);
+        t.setText(label);
+        t.setGravity(Gravity.CENTER);
+        t.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13.5f);
+        t.setOnClickListener(v -> {
+            if (peakMode == peaks) return;
+            Haptic.play(v, Haptic.TICK);
+            peakMode = peaks;
+            Prefs.sp(this).edit().putBoolean("cam_peaks", peaks).apply();
+            paintSeg();
+            if (listBody == null) return;
+            listScroll.scrollTo(0, 0);
+            fillList();
+            kickSoon();
+        });
+        return t;
+    }
+
+    private void paintSeg() {
+        TextView[] ts = {segR, segB};
+        for (int i = 0; i < 2; i++) {
+            boolean on = (i == 1) == peakMode;
+            ts[i].setTextColor(on ? b.tx : b.soft);
+            ts[i].setTypeface(null, on ? android.graphics.Typeface.BOLD : android.graphics.Typeface.NORMAL);
+            GradientDrawable g = new GradientDrawable();
+            g.setCornerRadius(b.px(11));
+            g.setColor(on ? (b.light ? 0x22000000 : 0x26FFFFFF) : 0);
+            ts[i].setBackground(g);
+        }
+    }
+
     /** Liste und Reiter neu aufbauen (Start, Suche, Favoriten geaendert). */
     private void fillList() {
         gen++;
@@ -417,21 +472,37 @@ public class WebcamActivity extends Activity {
                 shown += fav.length;
             }
         }
-        for (Webcams.Folder f : Webcams.FOLDERS) {
+        int groups = peakMode ? Webcams.PEAKS.length : Webcams.FOLDERS.length;
+        for (int g = 0; g < groups; g++) {
+            String gName, gChip, gHead;
+            String[] gIds;
+            if (peakMode) {
+                Webcams.Peak pk = Webcams.PEAKS[g];
+                gName = pk.name;
+                gChip = pk.name;
+                gHead = pk.name + " · " + pk.land;
+                gIds = pk.ids;
+            } else {
+                Webcams.Folder f = Webcams.FOLDERS[g];
+                gName = f.name;
+                gChip = f.chip;
+                gHead = f.name;
+                gIds = f.ids;
+            }
             List<Integer> all = new ArrayList<>();
             List<Integer> imgs = new ArrayList<>();
-            for (String id : f.ids) {
+            for (String id : gIds) {
                 int i = Webcams.indexOf(id);
                 if (i < 0) continue;
                 Webcams.Cam c = Webcams.CAMS[i];
-                if (searching && !norm(c.name + " " + f.name + " " + c.source + " " + c.desc).contains(nq)) continue;
+                if (searching && !norm(c.name + " " + gName + " " + c.source + " " + c.desc + Webcams.peakNames(c.id)).contains(nq)) continue;
                 all.add(i);
                 if (!c.link) imgs.add(i);
             }
             if (all.isEmpty()) continue;
             int[] nav = new int[imgs.size()];
             for (int k = 0; k < nav.length; k++) nav[k] = imgs.get(k);
-            section(f.name, f.chip, all.size());
+            section(gHead, gChip, all.size());
             for (int i : all) {
                 Webcams.Cam c = Webcams.CAMS[i];
                 int pos = -1;

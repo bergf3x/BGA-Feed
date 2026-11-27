@@ -190,8 +190,8 @@ final class Webcams {
             {"Salzkammergut", "Salzkammergut", "", "gjaidstein simonyhuette hochleckenhaus attersee attersee2"},
             {"Zillertal", "Zillertal", "", "tuxertal tristner gamshuette schlegeis"},
             {"Nordtirol", "Nordtirol", "", "hintereisferner2 hintereisferner1 tisenjoch jamtalferner bockkogel braunschweigerhuette russkopf sulzkogel wannenkogel bremerhuette st-anton innsbruck toelzer-huette trins wilder-kaiser st-johann-in-tirol-west st-johann-in-tirol"},
-            {"Osttirol", "Osttirol", "", "kreuzspitze lucknerhaus grossglockner-zoom glocknerwinkel lienz dolomitenhuette kalsertal virgen-nord"},
-            {"Vorarlberg", "Vorarlberg", "", "ruefikopf gargellen-sued gargellen-west diedamskopf koerbersee lindauerhuette furkajoch dornbirn"},
+            {"Osttirol", "Osttirol", "", "kreuzspitze lucknerhaus glocknerwinkel lienz dolomitenhuette kalsertal virgen-nord"},
+            {"Vorarlberg", "Vorarlberg", "", "ruefikopf gargellen-sued gargellen-west diedamskopf koerbersee furkajoch dornbirn"},
             {"Kärnten", "Kärnten", "px_7 fw_freiwandeck fw_wallackhaus fw_wallackhaus-nord lk_avisec_kfjh lk_avisec_glocknerhaus",
                     "adlersruhe oberwalderhuette gletscher-sued ankogel-sued gletscher-nord feldkopf feldkopf-west ankogel-nord hagener-huette polinik liesgelespitz dobratsch falkert-nord ederplan falkert zechneralm turrach-ost turrach-west heidi-chalets lorenzalm schulterkogel poertschach-a-w"},
             {"Steiermark", "Steiermark", "", "hochkar sarstein krakau hotel-lindenhof grimming"},
@@ -199,6 +199,71 @@ final class Webcams {
             {"Schweiz", "Schweiz", "rs_rothorn rs_matterhornglacierparadise rs_trockener-steg rs_hohtaelli rs_hirli rs_sunnegga rs_riffelberg rs_schwarzsee rs_gornergrat rs_monterosa rs_blauherd", "konkordiahuette glecksteinhuette pizol wildhaus hoherkasten hochhamm brunnen"},
             {"Webcam-Verzeichnisse", "", "lk_dir_schoenau lk_dir_bgd", ""},
     };
+
+    /** Berg im Berg-Modus: Anzeigename, Land, Kameras in Anzeigereihenfolge; unsure = Kameras, deren Berg nicht belegt ist. */
+    static final class Peak {
+        final String name;
+        final String land;
+        final String[] ids;
+        final java.util.Set<String> unsure;
+
+        Peak(String name, String land, String ids, String unsure) {
+            this.name = name;
+            this.land = land;
+            this.ids = words(ids);
+            this.unsure = new java.util.HashSet<>(java.util.Arrays.asList(words(unsure)));
+        }
+    }
+
+    /**
+     * Berge nach Beliebtheit (Einschaetzung, keine Messdaten). Eine Kamera darf in mehreren Bergen stehen.
+     * Belegt: Titel/Schlagwoerter bei foto-webcam bzw. angesehene Bilder; sonst in unsure.
+     */
+    static final Peak[] PEAKS = {
+            new Peak("Zugspitze", "Deutschland / Österreich",
+                    "fw_zugspitze-sued fw_bzb-gipfel fw_zugspitze fw_zugspitze-ost fw_zugspitze-nord fw_sonnalpin fw_meilerhuette fw_meilerhuette-haus fw_wank fw_kandahar-express fw_kreuzeck fw_eibsee-nord fw_hausberg fw_bzb-tal fw_eibsee-hotel fw_gsteig", ""),
+            new Peak("Watzmann", "Deutschland",
+                    "fw_windbeutelbaron fw_funtenseetauern lk_obersalzberg lk_hochlenzer fw_jenner-sued fw_jenner-ost ls_koenigssee th_hintersee",
+                    "fw_jenner-sued fw_jenner-ost ls_koenigssee th_hintersee"),
+            new Peak("Großglockner", "Österreich",
+                    "px_7 px_16 px_17 fw_freiwandeck fw_wallackhaus fw_wallackhaus-nord fw_lucknerhaus fw_glocknerwinkel fw_adlersruhe fw_oberwalderhuette fw_kalsertal lk_avisec_kfjh lk_avisec_glocknerhaus",
+                    "px_7 px_16 px_17"),
+            new Peak("Matterhorn", "Schweiz / Italien",
+                    "rs_matterhornglacierparadise rs_gornergrat rs_rothorn rs_hohtaelli rs_trockener-steg rs_hirli rs_schwarzsee rs_monterosa rs_blauherd px_867", "px_867"),
+            new Peak("Säntis", "Schweiz", "fw_hochhamm fw_wildhaus", ""),
+            new Peak("Wendelstein", "Deutschland", "fw_wendelstein-west fw_wendelstein-ost", ""),
+            new Peak("Hochkalter", "Deutschland", "fw_vorderloiplsau th_hintersee th_stoisser-alm", "th_hintersee th_stoisser-alm"),
+            new Peak("Untersberg", "Deutschland / Österreich", "fw_stoehrhaus", ""),
+    };
+
+    /** true, wenn die Kamera in Bergen steht und in allen davon ihr Berg nicht belegt ist. */
+    static boolean peakUnsure(String camId) {
+        boolean any = false;
+        for (Peak p : PEAKS) {
+            for (String id : p.ids) {
+                if (id.equals(camId)) {
+                    if (!p.unsure.contains(camId)) return false;
+                    any = true;
+                    break;
+                }
+            }
+        }
+        return any;
+    }
+
+    /** Namen der Berge, in denen die Kamera steht (fuer die Suche). */
+    static String peakNames(String camId) {
+        StringBuilder sb = new StringBuilder();
+        for (Peak p : PEAKS) {
+            for (String id : p.ids) {
+                if (id.equals(camId)) {
+                    sb.append(' ').append(p.name);
+                    break;
+                }
+            }
+        }
+        return sb.toString();
+    }
 
     static {
         rebuild();
