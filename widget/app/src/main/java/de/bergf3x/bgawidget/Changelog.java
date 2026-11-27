@@ -10,6 +10,12 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.53",
+                    "~ Webcams: neue Gliederung. Oben Favoriten (fest vorn), Deutschland, Österreich, Schweiz und Italien; darunter die Bergregionen des Landes mit Anzahl, größte zuerst, dann die Webcams der Region. Der Umschalter „Regionen | Berge“ entfällt",
+                    "~ Berchtesgadener Land ist jetzt eine Region (Jenner, Königssee, Berchtesgaden, Obersalzberg, Ramsau, Nationalpark, Bad Reichenhall). Schweiz in Zermatt, Berner Oberland und Ostschweiz, Italien in Südtirol und Cervinia geteilt",
+                    "~ Bei jedem Start der Webcams stehen Land und Region wieder vorn (Favoriten, wenn es welche gibt, sonst Deutschland); beim Wechsel des Landes beginnt die Regionenleiste wieder vorn",
+                    "~ Favoriten: neueste zuerst, mit „Land · Region“ in der Unterzeile; die Suche läuft über alle Länder und zeigt ebenfalls „Land · Region“",
+                    "- Zwei Kameras im Flachland (Pörtschach am Wörthersee, Brunnen am Vierwaldstättersee) stehen nicht mehr in der Liste"},
             {"1.52",
                     "+ Obersalzberg – Watzmann im Blick (blickfix) zeigt jetzt das aktuelle Bild in der Liste; der Link zur Webseite bleibt"},
             {"1.51",

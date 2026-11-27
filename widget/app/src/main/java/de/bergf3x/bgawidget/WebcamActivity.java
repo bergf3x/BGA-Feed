@@ -75,17 +75,17 @@ public class WebcamActivity extends Activity {
     private final List<Slot> slots = new ArrayList<>();
     private boolean ticked;
     private String query = "";
-    /** true = Berg-Modus (Gruppierung nach Bergen), false = Regionen. Wird gemerkt. */
-    private boolean peakMode;
-    private TextView segR, segB;
     private int listY;
     private ScrollView listScroll;
     private LinearLayout listBody;
     private LinearLayout chipBox;
     private HorizontalScrollView chipScroll;
-    private final List<View> secViews = new ArrayList<>();
-    private final List<TextView> secChips = new ArrayList<>();
-    private int activeSec = -1;
+    private HorizontalScrollView tabScroll;
+    private final List<TextView> tabViews = new ArrayList<>();
+    /** Gewaehlter Reiter: 0 = Favoriten, 1.. = Land (Webcams.LANDS). -1 = noch nicht gewaehlt (App-Start). */
+    private int tab = -1;
+    /** Gewaehlte Region im Land. Leer = erste. Der Zustand gilt nur, solange die Ansicht offen ist: jeder Start beginnt vorn. */
+    private String regName = "";
 
     // Einzelansicht
     private int[] camList = new int[0];
@@ -116,14 +116,16 @@ public class WebcamActivity extends Activity {
         final ImageView iv;
         final View root;
         final TextView sub;
+        final String lead;
         boolean busy;
         long shownTaken = -1;
 
-        Slot(Webcams.Cam cam, ImageView iv, View root, TextView sub) {
+        Slot(Webcams.Cam cam, ImageView iv, View root, TextView sub, String lead) {
             this.cam = cam;
             this.iv = iv;
             this.root = root;
             this.sub = sub;
+            this.lead = lead;
         }
     }
 
@@ -194,9 +196,6 @@ public class WebcamActivity extends Activity {
         gen++;
         ticked = false;
         slots.clear();
-        secViews.clear();
-        secChips.clear();
-        activeSec = -1;
         camOpen = false;
         listBody = null;
         hideKeyboard();
@@ -291,15 +290,14 @@ public class WebcamActivity extends Activity {
 
     private int regionCount() {
         int n = 0;
-        for (Webcams.Folder f : Webcams.FOLDERS) {
-            if (f.chip == null) continue;
-            for (String id : f.ids) {
-                if (Webcams.indexOf(id) >= 0) {
-                    n++;
-                    break;
-                }
-            }
-        }
+        for (Webcams.Region r : Webcams.REGS) if (regionSize(r) > 0) n++;
+        return n;
+    }
+
+    /** Anzahl der Kameras einer Region, die gerade bekannt sind. */
+    private int regionSize(Webcams.Region r) {
+        int n = 0;
+        for (String id : r.ids) if (Webcams.indexOf(id) >= 0) n++;
         return n;
     }
 
@@ -309,15 +307,25 @@ public class WebcamActivity extends Activity {
         if (mainSub != null) mainSub.setText(imageCamCount() + " Kameras · " + regionCount() + " Regionen");
     }
 
-    /** Zeile unter dem Namen: Hoehe, Aufnahmezeit, Quelle. */
-    private String subText(Webcams.Cam c) {
-        if (c.link) return c.source;
-        StringBuilder sb = new StringBuilder();
-        if (c.elev > 0) sb.append(String.format(Locale.GERMANY, "%,d m", c.elev)).append(" · ");
-        String ago = Webcams.agoLabel(this, c, true);
-        if (!ago.isEmpty()) sb.append(ago).append(" · ");
-        sb.append(c.source);
-        if (peakMode && Webcams.peakUnsure(c.id)) sb.append(" · Berg ungeprüft");
+    /**
+     * Zeile unter dem Namen. In Liste einer Region: Hoehe, Aufnahmezeit, Quelle. Bei Favoriten und Suche steht
+     * vorn "Land · Region" (lead), danach die Aufnahmezeit.
+     */
+    private String subText(Webcams.Cam c, String lead) {
+        StringBuilder sb = new StringBuilder(lead);
+        if (c.link) {
+            if (sb.length() > 0) sb.append(" · ");
+            return sb.append(c.source).toString();
+        }
+        if (lead.isEmpty()) {
+            if (c.elev > 0) sb.append(String.format(Locale.GERMANY, "%,d m", c.elev)).append(" · ");
+            String ago = Webcams.agoLabel(this, c, true);
+            if (!ago.isEmpty()) sb.append(ago).append(" · ");
+            sb.append(c.source);
+        } else {
+            String ago = Webcams.agoLabel(this, c, true);
+            if (!ago.isEmpty()) sb.append(" · ").append(ago);
+        }
         return sb.toString();
     }
 
@@ -355,28 +363,48 @@ public class WebcamActivity extends Activity {
         et.setText(query);
         bar.addView(et, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
         LinearLayout.LayoutParams blp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, b.px(44));
-        blp.bottomMargin = b.px(6);
+        blp.bottomMargin = b.px(8);
         b.box.addView(bar, blp);
 
-        // Umschalter Regionen | Berge
-        peakMode = Prefs.sp(this).getBoolean("cam_peaks", false);
-        LinearLayout seg = new LinearLayout(this);
-        seg.setOrientation(LinearLayout.HORIZONTAL);
-        seg.setPadding(b.px(3), b.px(3), b.px(3), b.px(3));
-        GradientDrawable sbg = new GradientDrawable();
-        sbg.setColor(b.neutral());
-        sbg.setCornerRadius(b.px(14));
-        seg.setBackground(sbg);
-        segR = segButton("Regionen", false);
-        segB = segButton("Berge", true);
-        seg.addView(segR, new LinearLayout.LayoutParams(0, b.px(34), 1f));
-        seg.addView(segB, new LinearLayout.LayoutParams(0, b.px(34), 1f));
-        LinearLayout.LayoutParams slp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        slp.bottomMargin = b.px(6);
-        b.box.addView(seg, slp);
-        paintSeg();
+        // Reiter: Favoriten (fest vorn), dann die Laender
+        if (tab < 0) tab = favList().length > 0 ? 0 : 1;
+        tabScroll = new HorizontalScrollView(this);
+        tabScroll.setHorizontalScrollBarEnabled(false);
+        tabScroll.setOverScrollMode(View.OVER_SCROLL_NEVER);
+        LinearLayout tabBox = new LinearLayout(this);
+        tabBox.setOrientation(LinearLayout.HORIZONTAL);
+        tabScroll.addView(tabBox, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        tabViews.clear();
+        for (int i = 0; i <= Webcams.LANDS.length; i++) {
+            final int idx = i;
+            TextView t = new TextView(this);
+            t.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+            t.setGravity(Gravity.CENTER);
+            t.setPadding(b.px(16), 0, b.px(16), 0);
+            t.setSingleLine(true);
+            t.setOnClickListener(v -> {
+                if (tab == idx) return;
+                Haptic.play(v, Haptic.TICK);
+                tab = idx;
+                regName = "";
+                listY = 0;
+                if (listBody == null) return;
+                // beim Wechsel steht alles wieder vorn: Regionen-Leiste und Liste
+                chipScroll.scrollTo(0, 0);
+                listScroll.scrollTo(0, 0);
+                fillList();
+                kickSoon();
+            });
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, b.px(38));
+            lp.rightMargin = b.px(6);
+            tabBox.addView(t, lp);
+            tabViews.add(t);
+        }
+        LinearLayout.LayoutParams tlp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        tlp.bottomMargin = b.px(6);
+        b.box.addView(tabScroll, tlp);
 
-        // Reiter (Regionen bzw. Berge)
+        // Regionen des gewaehlten Landes
         chipScroll = new HorizontalScrollView(this);
         chipScroll.setHorizontalScrollBarEnabled(false);
         chipScroll.setHorizontalFadingEdgeEnabled(true);
@@ -392,10 +420,7 @@ public class WebcamActivity extends Activity {
         fillList();
         final int restore = listY;
         listScroll.post(() -> listScroll.scrollTo(0, restore));
-        listScroll.getViewTreeObserver().addOnScrollChangedListener(() -> {
-            kick();
-            spy();
-        });
+        listScroll.getViewTreeObserver().addOnScrollChangedListener(this::kick);
         et.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int a, int c, int d) {
@@ -409,6 +434,7 @@ public class WebcamActivity extends Activity {
             public void afterTextChanged(Editable e) {
                 if (listBody == null) return;
                 query = e.toString().trim();
+                listY = 0;
                 listScroll.scrollTo(0, 0);
                 fillList();
                 kickSoon();
@@ -419,196 +445,147 @@ public class WebcamActivity extends Activity {
         kickSoon();
     }
 
-    private TextView segButton(String label, final boolean peaks) {
-        TextView t = new TextView(this);
-        t.setText(label);
-        t.setGravity(Gravity.CENTER);
-        t.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13.5f);
-        t.setOnClickListener(v -> {
-            if (peakMode == peaks) return;
-            Haptic.play(v, Haptic.TICK);
-            peakMode = peaks;
-            Prefs.sp(this).edit().putBoolean("cam_peaks", peaks).apply();
-            paintSeg();
-            if (listBody == null) return;
-            listScroll.scrollTo(0, 0);
-            fillList();
-            kickSoon();
-        });
-        return t;
-    }
-
-    private void paintSeg() {
-        TextView[] ts = {segR, segB};
-        for (int i = 0; i < 2; i++) {
-            boolean on = (i == 1) == peakMode;
-            ts[i].setTextColor(on ? b.tx : b.soft);
-            ts[i].setTypeface(null, on ? android.graphics.Typeface.BOLD : android.graphics.Typeface.NORMAL);
+    private void paintTabs() {
+        int favN = favList().length;
+        for (int i = 0; i < tabViews.size(); i++) {
+            TextView t = tabViews.get(i);
+            boolean on = i == tab;
+            t.setText(i == 0 ? "★ Favoriten" + (favN > 0 ? "  " + favN : "") : Webcams.LANDS[i - 1]);
+            t.setTextColor(on ? b.hiTx : b.tx);
+            t.setTypeface(null, on ? android.graphics.Typeface.BOLD : android.graphics.Typeface.NORMAL);
             GradientDrawable g = new GradientDrawable();
-            g.setCornerRadius(b.px(11));
-            g.setColor(on ? (b.light ? 0x22000000 : 0x26FFFFFF) : 0);
-            ts[i].setBackground(g);
+            g.setCornerRadius(b.px(19));
+            g.setColor(on ? b.hi : b.neutral());
+            t.setBackground(g);
         }
     }
 
-    /** Liste und Reiter neu aufbauen (Start, Suche, Favoriten geaendert). */
+    /** Liste und Reiter neu aufbauen (Start, Suche, Favoriten geaendert, Reiter gewechselt). */
     private void fillList() {
         gen++;
         slots.clear();
-        secViews.clear();
-        secChips.clear();
-        activeSec = -1;
         listBody.removeAllViews();
         chipBox.removeAllViews();
         String nq = norm(query);
         boolean searching = !nq.isEmpty();
+        paintTabs();
+        tabScroll.setVisibility(searching ? View.GONE : View.VISIBLE);
+        chipScroll.setVisibility(View.GONE);
         int shown = 0;
 
-        if (!searching) {
-            int[] fav = favList();
-            if (fav.length > 0) {
-                section("Favoriten", "★ Favoriten", fav.length);
-                for (int k = 0; k < fav.length; k++) row(Webcams.CAMS[fav[k]], fav, k, "");
-                shown += fav.length;
-            }
-        }
-        int groups = peakMode ? Webcams.PEAKS.length : Webcams.FOLDERS.length;
-        for (int g = 0; g < groups; g++) {
-            String gName, gChip, gHead;
-            String[] gIds;
-            if (peakMode) {
-                Webcams.Peak pk = Webcams.PEAKS[g];
-                gName = pk.name;
-                gChip = pk.name;
-                gHead = pk.name + " · " + pk.land;
-                gIds = pk.ids;
-            } else {
-                Webcams.Folder f = Webcams.FOLDERS[g];
-                gName = f.name;
-                gChip = f.chip;
-                gHead = f.name;
-                gIds = f.ids;
-            }
-            List<Integer> all = new ArrayList<>();
-            List<Integer> imgs = new ArrayList<>();
-            for (String id : gIds) {
-                int i = Webcams.indexOf(id);
-                if (i < 0) continue;
-                Webcams.Cam c = Webcams.CAMS[i];
-                if (searching && !norm(c.name + " " + gName + " " + c.source + " " + c.desc + Webcams.peakNames(c.id)).contains(nq)) continue;
-                all.add(i);
-                if (!c.link) imgs.add(i);
-            }
-            if (all.isEmpty()) continue;
-            int[] nav = new int[imgs.size()];
-            for (int k = 0; k < nav.length; k++) nav[k] = imgs.get(k);
-            section(gHead, gChip, all.size());
-            for (int i : all) {
-                Webcams.Cam c = Webcams.CAMS[i];
-                int pos = -1;
-                for (int k = 0; k < nav.length; k++) if (nav[k] == i) pos = k;
-                row(c, nav, pos, searching ? nq : "");
-            }
-            shown += all.size();
-        }
-        if (shown == 0) {
-            TextView t = new TextView(this);
-            t.setText("Keine Treffer für „" + query + "“");
-            t.setTextColor(b.soft);
-            t.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-            t.setPadding(b.px(8), b.px(16), b.px(8), b.px(16));
-            listBody.addView(t);
-        }
-        chipScroll.setVisibility(secChips.isEmpty() ? View.GONE : View.VISIBLE);
-        paintChips(0);
-    }
-
-    /** Abschnittskopf in der Liste; chip != null legt zusaetzlich einen Reiter an. */
-    private void section(String name, String chip, int count) {
-        LinearLayout h = new LinearLayout(this);
-        h.setOrientation(LinearLayout.HORIZONTAL);
-        h.setGravity(Gravity.BOTTOM);
-        h.setPadding(b.px(4), b.px(secViews.isEmpty() ? 4 : 16), b.px(4), b.px(4));
-        TextView t = new TextView(this);
-        t.setText(name);
-        t.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13);
-        t.setTextColor(b.tx);
-        t.setTypeface(null, android.graphics.Typeface.BOLD);
-        h.addView(t);
-        TextView n = new TextView(this);
-        n.setText("  " + count);
-        n.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-        n.setTextColor(b.soft);
-        h.addView(n);
-        listBody.addView(h);
-        secViews.add(h);
-        if (chip != null) {
-            final int idx = secViews.size() - 1;
-            TextView c = new TextView(this);
-            c.setText(chip);
-            c.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13.5f);
-            c.setGravity(Gravity.CENTER);
-            c.setPadding(b.px(14), 0, b.px(14), 0);
-            c.setSingleLine(true);
-            c.setOnClickListener(v -> {
-                Haptic.play(v, Haptic.TICK);
-                listScroll.smoothScrollTo(0, Math.max(0, secViews.get(idx).getTop() - b.px(2)));
-            });
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, b.px(36));
-            lp.rightMargin = b.px(6);
-            chipBox.addView(c, lp);
-            secChips.add(c);
-            c.setTag(idx);
-        } else {
-            // ohne Reiter: Platzhalter, damit die Zaehlung der Abschnitte stimmt
-            secChips.add(null);
-        }
-    }
-
-    /** Aktiven Reiter hervorheben (weiche Kapsel wie bei den News-Themen). */
-    private void paintChips(int activeSecIdx) {
-        for (int i = 0; i < secChips.size(); i++) {
-            TextView c = secChips.get(i);
-            if (c == null) continue;
-            boolean on = i == activeSecIdx;
-            c.setTextColor(on ? b.tx : b.soft);
-            c.setTypeface(null, on ? android.graphics.Typeface.BOLD : android.graphics.Typeface.NORMAL);
-            GradientDrawable g = new GradientDrawable();
-            g.setCornerRadius(b.px(11));
-            g.setColor(on ? (b.light ? 0x22000000 : 0x26FFFFFF) : 0);
-            c.setBackground(g);
-        }
-    }
-
-    /** Beim Scrollen den Reiter der gerade sichtbaren Region markieren. */
-    private void spy() {
-        if (listScroll == null || secViews.isEmpty()) return;
-        int y = listScroll.getScrollY() + b.px(24);
-        int cur = 0;
-        for (int i = 0; i < secViews.size(); i++) if (secViews.get(i).getTop() <= y) cur = i;
-        // am Listenende gewinnt der letzte Abschnitt mit Reiter
-        View content = listScroll.getChildAt(0);
-        if (content != null && listScroll.getScrollY() + listScroll.getHeight() >= content.getHeight() - b.px(4)) {
-            for (int i = secViews.size() - 1; i >= 0; i--) {
-                if (secChips.get(i) != null) {
-                    cur = i;
-                    break;
+        if (searching) {
+            // Suche ueber alle Laender: Treffer mit "Land · Region"
+            List<Integer> hit = new ArrayList<>();
+            List<String> lead = new ArrayList<>();
+            java.util.Set<String> seen = new java.util.HashSet<>();
+            for (Webcams.Region r : Webcams.REGS) {
+                for (String id : r.ids) {
+                    int i = Webcams.indexOf(id);
+                    if (i < 0 || !seen.add(id)) continue;
+                    Webcams.Cam c = Webcams.CAMS[i];
+                    if (!norm(c.name + " " + r.name + " " + r.land + " " + c.source + " " + c.desc + Webcams.peakNames(c.id)).contains(nq)) continue;
+                    hit.add(i);
+                    lead.add(r.land + " · " + r.name);
                 }
             }
+            int[] nav = navOf(hit);
+            for (int k = 0; k < hit.size(); k++) row(Webcams.CAMS[hit.get(k)], nav, navPos(nav, hit.get(k)), nq, lead.get(k));
+            shown = hit.size();
+        } else if (tab == 0) {
+            int[] fav = favList();
+            for (int k = 0; k < fav.length; k++) {
+                Webcams.Cam c = Webcams.CAMS[fav[k]];
+                Webcams.Region r = Webcams.regionOf(c);
+                row(c, fav, k, "", r == null ? "" : r.land + " · " + r.name);
+            }
+            shown = fav.length;
+            if (shown == 0) {
+                note("Noch keine Favoriten. Tippe bei einer Webcam auf den Stern.");
+                return;
+            }
+        } else {
+            String land = Webcams.LANDS[tab - 1];
+            List<Webcams.Region> regs = new ArrayList<>();
+            for (Webcams.Region r : Webcams.REGS) if (r.land.equals(land) && regionSize(r) > 0) regs.add(r);
+            // groesste Region zuerst; bei gleicher Zahl bleibt die feste Reihenfolge
+            java.util.Collections.sort(regs, (x, y) -> Integer.compare(regionSize(y), regionSize(x)));
+            Webcams.Region sel = null;
+            for (Webcams.Region r : regs) if (r.name.equals(regName)) sel = r;
+            if (sel == null && !regs.isEmpty()) {
+                sel = regs.get(0);
+                regName = sel.name;
+            }
+            if (sel == null) {
+                note("Für dieses Land gibt es noch keine Webcams.");
+                return;
+            }
+            for (final Webcams.Region r : regs) chip(r, r == sel);
+            chipScroll.setVisibility(View.VISIBLE);
+            List<Integer> all = new ArrayList<>();
+            for (String id : sel.ids) {
+                int i = Webcams.indexOf(id);
+                if (i >= 0) all.add(i);
+            }
+            int[] nav = navOf(all);
+            for (int i : all) row(Webcams.CAMS[i], nav, navPos(nav, i), "", "");
+            shown = all.size();
         }
-        while (cur > 0 && secChips.get(cur) == null) cur--;
-        if (cur == activeSec) return;
-        activeSec = cur;
-        paintChips(cur);
-        TextView c = secChips.get(cur);
-        if (c != null) {
-            int x = c.getLeft() - (chipScroll.getWidth() - c.getWidth()) / 2;
-            chipScroll.smoothScrollTo(Math.max(0, x), 0);
-        }
+        if (shown == 0) note("Keine Treffer für „" + query + "“");
+    }
+
+    private void note(String text) {
+        TextView t = new TextView(this);
+        t.setText(text);
+        t.setTextColor(b.soft);
+        t.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+        t.setPadding(b.px(8), b.px(16), b.px(8), b.px(16));
+        listBody.addView(t);
+    }
+
+    /** Kameras mit Bild aus einer Trefferliste (fuer das Wischen in der Einzelansicht). */
+    private int[] navOf(List<Integer> idx) {
+        List<Integer> r = new ArrayList<>();
+        for (int i : idx) if (!Webcams.CAMS[i].link) r.add(i);
+        int[] a = new int[r.size()];
+        for (int k = 0; k < a.length; k++) a[k] = r.get(k);
+        return a;
+    }
+
+    private int navPos(int[] nav, int camIndex) {
+        for (int k = 0; k < nav.length; k++) if (nav[k] == camIndex) return k;
+        return -1;
+    }
+
+    /** Reiter einer Region: Name und Anzahl; der gewaehlte ist hervorgehoben (weiche Kapsel). */
+    private void chip(final Webcams.Region r, boolean on) {
+        TextView c = new TextView(this);
+        c.setText(r.name + "  " + regionSize(r));
+        c.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13.5f);
+        c.setGravity(Gravity.CENTER);
+        c.setPadding(b.px(14), 0, b.px(14), 0);
+        c.setSingleLine(true);
+        c.setTextColor(on ? b.tx : b.soft);
+        c.setTypeface(null, on ? android.graphics.Typeface.BOLD : android.graphics.Typeface.NORMAL);
+        GradientDrawable g = new GradientDrawable();
+        g.setCornerRadius(b.px(11));
+        g.setColor(on ? (b.light ? 0x22000000 : 0x26FFFFFF) : 0);
+        c.setBackground(g);
+        c.setOnClickListener(v -> {
+            if (r.name.equals(regName)) return;
+            Haptic.play(v, Haptic.TICK);
+            regName = r.name;
+            listY = 0;
+            listScroll.scrollTo(0, 0);
+            fillList();
+            kickSoon();
+        });
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, b.px(36));
+        lp.rightMargin = b.px(6);
+        chipBox.addView(c, lp);
     }
 
     /** Eine Zeile: Vorschaubild, Name, Aufnahmezeit und Quelle, Stern; bei Nur-Link-Seiten Pfeil-Symbol. */
-    private void row(final Webcams.Cam c, final int[] nav, final int pos, String hl) {
+    private void row(final Webcams.Cam c, final int[] nav, final int pos, String hl, final String lead) {
         LinearLayout r = new LinearLayout(this);
         r.setOrientation(LinearLayout.HORIZONTAL);
         r.setGravity(Gravity.CENTER_VERTICAL);
@@ -663,7 +640,7 @@ public class WebcamActivity extends Activity {
         sub.setTextColor(b.soft);
         sub.setSingleLine(true);
         sub.setEllipsize(android.text.TextUtils.TruncateAt.END);
-        sub.setText(subText(c));
+        sub.setText(subText(c, lead));
         col.addView(sub);
         r.addView(col, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
 
@@ -683,7 +660,7 @@ public class WebcamActivity extends Activity {
                 kickSoon();
             });
             r.addView(st, new LinearLayout.LayoutParams(b.px(40), b.px(40)));
-            slots.add(new Slot(c, iv, r, sub));
+            slots.add(new Slot(c, iv, r, sub, lead));
         }
         r.setOnClickListener(v -> {
             Haptic.play(v, Haptic.TICK);
@@ -703,8 +680,9 @@ public class WebcamActivity extends Activity {
             int i = Webcams.indexOf(id);
             if (i >= 0 && !Webcams.CAMS[i].link) r.add(i);
         }
+        // zuletzt hinzugefuegt zuerst
         int[] a = new int[r.size()];
-        for (int i = 0; i < a.length; i++) a[i] = r.get(i);
+        for (int i = 0; i < a.length; i++) a[i] = r.get(r.size() - 1 - i);
         return a;
     }
 
@@ -753,7 +731,7 @@ public class WebcamActivity extends Activity {
     /** Neues Bild weich ueber das alte blenden (nur wenn sich etwas geaendert hat). */
     private void setImage(Slot s, Webcams.Shot shot) {
         if (shot.bmp == null) return;
-        if (s.sub != null) s.sub.setText(subText(s.cam));
+        if (s.sub != null) s.sub.setText(subText(s.cam, s.lead));
         if (s.shownTaken >= 0 && shot.taken > 0 && shot.taken == s.shownTaken) return;
         s.shownTaken = shot.taken;
         crossfade(s.iv, shot.bmp);

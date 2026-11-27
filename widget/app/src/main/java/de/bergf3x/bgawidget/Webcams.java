@@ -166,6 +166,36 @@ final class Webcams {
             link("dir_bgd", "Alle Webcams Berchtesgaden", "Nur Webseite · berchtesgaden.de", "https://www.berchtesgaden.de/webcams"),
     };
 
+    /** Laender in Reiter-Reihenfolge. */
+    static final String[] LANDS = {"Deutschland", "Österreich", "Schweiz", "Italien"};
+
+    /**
+     * Bergregionen je Land: {Land, Region, ...}. Eintrag "Name:Teil|Teil" fasst mehrere der Bereiche aus REGIONS
+     * zu einer Region zusammen, sonst gilt der Name aus REGIONS.
+     */
+    private static final String[][] LAND_REGIONS = {
+            {"Deutschland", "Berchtesgadener Land:Jenner und Königssee|Berchtesgaden und Obersalzberg|Ramsau und Hintersee|Nationalpark und Hütten|Bad Reichenhall|Webcam-Verzeichnisse",
+                    "Chiemgau", "Tegernsee und Voralpen", "Garmisch und Zugspitze", "Allgäu"},
+            {"Österreich", "Salzburger Land", "Salzkammergut", "Zillertal", "Nordtirol", "Osttirol", "Vorarlberg", "Kärnten", "Steiermark"},
+            {"Schweiz", "Zermatt und Matterhorn", "Berner Oberland", "Ostschweiz"},
+            {"Italien", "Südtirol", "Cervinia"},
+    };
+
+    /** Region eines Landes mit allen ihren Kameras (Kennungen in Anzeigereihenfolge). */
+    static final class Region {
+        final String land;
+        final String name;
+        final String[] ids;
+
+        Region(String land, String name, String[] ids) {
+            this.land = land;
+            this.name = name;
+            this.ids = ids;
+        }
+    }
+
+    static volatile Region[] REGS = new Region[0];
+
     /** Alle Kameras (eingebaute + aus der Kameraliste geladene) und die Regionen daraus. */
     static volatile Cam[] CAMS = BASE;
     static volatile Folder[] FOLDERS = new Folder[0];
@@ -194,10 +224,13 @@ final class Webcams {
             {"Osttirol", "Osttirol", "", "kreuzspitze lucknerhaus glocknerwinkel lienz dolomitenhuette kalsertal virgen-nord"},
             {"Vorarlberg", "Vorarlberg", "", "ruefikopf gargellen-sued gargellen-west diedamskopf koerbersee furkajoch dornbirn"},
             {"Kärnten", "Kärnten", "px_7 fw_freiwandeck fw_wallackhaus fw_wallackhaus-nord lk_avisec_kfjh lk_avisec_glocknerhaus",
-                    "adlersruhe oberwalderhuette gletscher-sued ankogel-sued gletscher-nord feldkopf feldkopf-west ankogel-nord hagener-huette polinik liesgelespitz dobratsch falkert-nord ederplan falkert zechneralm turrach-ost turrach-west heidi-chalets lorenzalm schulterkogel poertschach-a-w"},
+                    "adlersruhe oberwalderhuette gletscher-sued ankogel-sued gletscher-nord feldkopf feldkopf-west ankogel-nord hagener-huette polinik liesgelespitz dobratsch falkert-nord ederplan falkert zechneralm turrach-ost turrach-west heidi-chalets lorenzalm schulterkogel"},
             {"Steiermark", "Steiermark", "", "hochkar sarstein krakau hotel-lindenhof grimming"},
-            {"Südtirol und Italien", "Italien", "", "langenferner becherhaus ridnaun weissbrunnferner rieserferner chavalatsch kronplatz rittnerhorn trafoi zallinger dreizinnenblick hochmuth gummer", "px_931 px_1256 px_867"},
-            {"Schweiz", "Schweiz", "rs_rothorn rs_matterhornglacierparadise rs_trockener-steg rs_hohtaelli rs_hirli rs_sunnegga rs_riffelberg rs_schwarzsee rs_gornergrat rs_monterosa rs_blauherd", "konkordiahuette glecksteinhuette pizol wildhaus hoherkasten hochhamm brunnen"},
+            {"Südtirol", "Südtirol", "", "langenferner becherhaus ridnaun weissbrunnferner rieserferner chavalatsch kronplatz rittnerhorn trafoi zallinger dreizinnenblick hochmuth gummer"},
+            {"Cervinia", "Cervinia", "px_931 px_1256 px_867", ""},
+            {"Zermatt und Matterhorn", "Zermatt", "rs_rothorn rs_matterhornglacierparadise rs_trockener-steg rs_hohtaelli rs_hirli rs_sunnegga rs_riffelberg rs_schwarzsee rs_gornergrat rs_monterosa rs_blauherd", ""},
+            {"Berner Oberland", "Berner Oberland", "", "konkordiahuette glecksteinhuette"},
+            {"Ostschweiz", "Ostschweiz", "", "pizol wildhaus hoherkasten hochhamm"},
             {"Webcam-Verzeichnisse", "", "lk_dir_schoenau lk_dir_bgd", ""},
     };
 
@@ -241,21 +274,6 @@ final class Webcams {
             new Peak("Ortler", "Italien", "fw_trafoi fw_chavalatsch", ""),
     };
 
-    /** true, wenn die Kamera in Bergen steht und in allen davon ihr Berg nicht belegt ist. */
-    static boolean peakUnsure(String camId) {
-        boolean any = false;
-        for (Peak p : PEAKS) {
-            for (String id : p.ids) {
-                if (id.equals(camId)) {
-                    if (!p.unsure.contains(camId)) return false;
-                    any = true;
-                    break;
-                }
-            }
-        }
-        return any;
-    }
-
     /** Namen der Berge, in denen die Kamera steht (fuer die Suche). */
     static String peakNames(String camId) {
         StringBuilder sb = new StringBuilder();
@@ -298,6 +316,24 @@ final class Webcams {
             fs.add(new Folder(r[0], r[1].isEmpty() ? null : r[1], ids.toArray(new String[0])));
         }
         FOLDERS = fs.toArray(new Folder[0]);
+        java.util.List<Region> rg = new java.util.ArrayList<>();
+        for (String[] l : LAND_REGIONS) {
+            for (int k = 1; k < l.length; k++) {
+                String name = l[k];
+                String[] parts = {l[k]};
+                int colon = l[k].indexOf(':');
+                if (colon > 0) {
+                    name = l[k].substring(0, colon);
+                    parts = l[k].substring(colon + 1).split("\\|");
+                }
+                java.util.List<String> ids = new java.util.ArrayList<>();
+                for (String part : parts) {
+                    for (Folder f : FOLDERS) if (f.name.equals(part)) java.util.Collections.addAll(ids, f.ids);
+                }
+                rg.add(new Region(l[0], name, ids.toArray(new String[0])));
+            }
+        }
+        REGS = rg.toArray(new Region[0]);
         dirty = false;
     }
 
@@ -443,6 +479,12 @@ final class Webcams {
 
     static Folder folderOf(Cam c) {
         for (Folder f : FOLDERS) for (String id : f.ids) if (id.equals(c.id)) return f;
+        return null;
+    }
+
+    /** Erste Region, in der die Kamera steht (fuer "Land · Region" bei Favoriten und Suche), sonst null. */
+    static Region regionOf(Cam c) {
+        for (Region r : REGS) for (String id : r.ids) if (id.equals(c.id)) return r;
         return null;
     }
 
