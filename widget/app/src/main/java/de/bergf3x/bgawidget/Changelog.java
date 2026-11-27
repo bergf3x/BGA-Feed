@@ -10,6 +10,8 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.54",
+                    "~ Webcams: Das Fenster hat in jeder Region, bei Favoriten und in der Suche dieselbe Höhe; es springt nicht mehr zwischen groß und klein"},
             {"1.53",
                     "~ Webcams: neue Gliederung. Oben Favoriten (fest vorn), Deutschland, Österreich, Schweiz und Italien; darunter die Bergregionen des Landes mit Anzahl, größte zuerst, dann die Webcams der Region. Der Umschalter „Regionen | Berge“ entfällt",
                     "~ Berchtesgadener Land ist jetzt eine Region (Jenner, Königssee, Berchtesgaden, Obersalzberg, Ramsau, Nationalpark, Bad Reichenhall). Schweiz in Zermatt, Berner Oberland und Ostschweiz, Italien in Südtirol und Cervinia geteilt",

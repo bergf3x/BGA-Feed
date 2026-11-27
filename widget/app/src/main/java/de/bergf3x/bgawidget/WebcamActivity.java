@@ -417,6 +417,8 @@ public class WebcamActivity extends Activity {
 
         listBody = b.scrollBox(0.72f);
         listScroll = (ScrollView) listBody.getParent();
+        // feste Hoehe: egal ob 14 oder 4 Kameras, das Fenster springt nicht (darunter bleibt es leer)
+        if (listScroll instanceof Bubble.Flex) listBody.setMinimumHeight(((Bubble.Flex) listScroll).max);
         fillList();
         final int restore = listY;
         listScroll.post(() -> listScroll.scrollTo(0, restore));
