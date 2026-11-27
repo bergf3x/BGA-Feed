@@ -10,6 +10,8 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.52",
+                    "+ Obersalzberg – Watzmann im Blick (blickfix) zeigt jetzt das aktuelle Bild in der Liste; der Link zur Webseite bleibt"},
             {"1.51",
                     "+ Berg-Modus: neue Berge Wilder Kaiser, Dachstein, Hochkönig und Ortler"},
             {"1.50",
