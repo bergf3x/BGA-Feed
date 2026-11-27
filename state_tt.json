@@ -1,5 +1,25 @@
 {
  "items": {
+  "1028915": {
+   "sid": 1028915,
+   "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein/obing_artikel,-verkehrsunfall-bei-winterlichen-strassenverhaeltnissen-19jaehrige-ueberschlaegt-sich-mit-opel-_arid,1028915.html",
+   "title": "Verkehrsunfall bei winterlichen Straßenverhältnissen: 19-Jährige überschlägt sich mit Opel",
+   "teaser": "Obing – Bei winterlichen Straßenverhältnissen ereignete sich am Freitagmorgen auf der Staatsstraße 2094 im Bereich Obing ein Verkehrsunfall, bei dem eine 19-jährige Autofahrerin leicht ...",
+   "category": "Obing",
+   "plus": false,
+   "topic": "Region/Landkreis Traunstein",
+   "first_seen": "2026-11-27T19:58:56+00:00"
+  },
+  "1028896": {
+   "sid": 1028896,
+   "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein/nussdorf_artikel,-maskierter-ueberfall-taeter-erbeuten-muenzen-und-schmuck-_arid,1028896.html",
+   "title": "Maskierter Überfall: Täter erbeuten Münzen und Schmuck",
+   "teaser": "Nußdorf – Zwei Unbekannte greifen 59-Jährigen in seiner Wohnung an und verletzen ihn leicht. Polizei fahndet mit Großaufgebot und bittet um Hinweise.",
+   "category": "Nußdorf",
+   "plus": false,
+   "topic": "Region/Landkreis Traunstein",
+   "first_seen": "2026-11-27T19:58:56+00:00"
+  },
   "1028775": {
    "sid": 1028775,
    "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein_artikel,-taxi-geraet-auf-gegenfahrbahn-vier-verletzte-bei-schwerem-unfall-auf-der-b306-_arid,1028775.html",
@@ -80,6 +100,26 @@
    "topic": "Sport/Sport aus der Region",
    "first_seen": "2026-11-27T10:54:22+00:00"
   },
+  "1028744": {
+   "sid": 1028744,
+   "url": "https://www.traunsteiner-tagblatt.de/region/berchtesgadener-land/teisendorf_artikel,-teisendorfer-tafel-sucht-ab-naechstem-jahr-neue-leitung-_arid,1028744.html",
+   "title": "Teisendorfer Tafel sucht ab nächstem Jahr neue Leitung",
+   "teaser": "",
+   "category": "Teisendorf",
+   "plus": true,
+   "topic": "Region/Berchtesgadener Land",
+   "first_seen": "2026-11-27T19:58:56+00:00"
+  },
+  "1028742": {
+   "sid": 1028742,
+   "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein_artikel,-schwerer-raub-nach-liebesaus-46jaehriger-bedrohte-freundin-mit-messer-jetzt-wurde-er-verurteilt-_arid,1028742.html",
+   "title": "Schwerer Raub nach Liebes-Aus: 46-Jähriger bedrohte Freundin mit Messer – Jetzt wurde er verurteilt",
+   "teaser": "",
+   "category": "Landkreis Traunstein",
+   "plus": true,
+   "topic": "Region/Landkreis Traunstein",
+   "first_seen": "2026-11-27T19:58:56+00:00"
+  },
   "1028741": {
    "sid": 1028741,
    "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein/traunreut_artikel,-zur-christkindlmarkteroeffnung-zog-auch-der-winter-ein-_arid,1028741.html",
@@ -89,6 +129,46 @@
    "plus": false,
    "topic": "Region/Landkreis Traunstein",
    "first_seen": "2026-11-27T10:54:22+00:00"
+  },
+  "1028740": {
+   "sid": 1028740,
+   "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein/marquartstein_artikel,-mehr-mobilitaet-im-alltag-24-sponsoren-finanzieren-neues-fahrzeug-fuer-achentaler-wohngruppen-_arid,1028740.html",
+   "title": "Mehr Mobilität im Alltag: 24 Sponsoren finanzieren neues Fahrzeug für Achentaler Wohngruppen",
+   "teaser": "Marquartstein – Ein neues Fahrzeug gibt es beim Pädagogischen Zentrum Achental: Mit der Hilfe von Caritativa und Sponsoren aus dem Achental wurde ein Toyota Proace City L1 zur ...",
+   "category": "Marquartstein",
+   "plus": false,
+   "topic": "Region/Landkreis Traunstein",
+   "first_seen": "2026-11-27T19:58:56+00:00"
+  },
+  "1028731": {
+   "sid": 1028731,
+   "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein/uebersee_artikel,-uebersee-kalkuliert-gebuehren-fuer-friedhof-und-leichenhaus-neu-_arid,1028731.html",
+   "title": "Übersee kalkuliert Gebühren für Friedhof und Leichenhaus neu",
+   "teaser": "",
+   "category": "Übersee",
+   "plus": true,
+   "topic": "Region/Landkreis Traunstein",
+   "first_seen": "2026-11-27T19:58:56+00:00"
+  },
+  "1028725": {
+   "sid": 1028725,
+   "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein_artikel,-574-millionen-euro-fliessen-2027-in-den-landkreis-traunstein-baur-und-brunnhuber-geld-staerkt-kommuna-_arid,1028725.html",
+   "title": "57,4 Millionen Euro fließen 2027 in den Landkreis Traunstein – Baur und Brunnhuber: Geld stärkt kommunale Selbstverwaltung",
+   "teaser": "",
+   "category": "Landkreis Traunstein",
+   "plus": true,
+   "topic": "Region/Landkreis Traunstein",
+   "first_seen": "2026-11-27T19:58:56+00:00"
+  },
+  "1028723": {
+   "sid": 1028723,
+   "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein_artikel,-aktion-startet-wieder-kinder-malen-kripperlbilder-_arid,1028723.html",
+   "title": "Aktion startet wieder: Kinder malen Kripperl-Bilder",
+   "teaser": "Es ist wieder soweit: Mit Beginn des Advents startet unsere jährliche Aktion »Kinder malen Kripperl-Bilder«.",
+   "category": "Landkreis Traunstein",
+   "plus": false,
+   "topic": "Region/Landkreis Traunstein",
+   "first_seen": "2026-11-27T19:58:56+00:00"
   },
   "1028721": {
    "sid": 1028721,
@@ -109,6 +189,16 @@
    "plus": true,
    "topic": "Region/Landkreis Traunstein",
    "first_seen": "2026-11-27T10:54:22+00:00"
+  },
+  "1028717": {
+   "sid": 1028717,
+   "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein/grassau_artikel,-bescheidene-wuensche-erfuellen-geschenke-bis-10-dezember-abgeben-_arid,1028717.html",
+   "title": "Bescheidene Wünsche erfüllen – Geschenke bis 10. Dezember abgeben",
+   "teaser": "Grassau – In der Eingangshalle des Rathauses steht wieder der mit goldenen Wunschzetteln geschmückte Christbaum und weist auf die Aktion Wunschbaum hin, organisiert von der ...",
+   "category": "Grassau",
+   "plus": false,
+   "topic": "Region/Landkreis Traunstein",
+   "first_seen": "2026-11-27T19:58:56+00:00"
   },
   "1028715": {
    "sid": 1028715,
@@ -185,7 +275,7 @@
    "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein/traunreut_artikel,-82-brautpaare-feiern-rauschenden-ball-im-k1-_arid,1028545.html",
    "title": "82 Brautpaare feiern rauschenden Ball im k1",
    "teaser": "",
-   "category": "Traunreut",
+   "category": "",
    "plus": true,
    "topic": "Region/Landkreis Traunstein",
    "first_seen": "2026-11-26T08:23:41+00:00"
@@ -374,8 +464,8 @@
    "sid": 1028359,
    "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein/traunstein_artikel,-ausstellung-gegen-tyrannei-im-traunsteiner-stadtmuseum-zeigt-eindrucksvolle-projekte-junger-leute-_arid,1028359.html",
    "title": "Ausstellung »Gegen Tyrannei« im Traunsteiner Stadtmuseum zeigt eindrucksvolle Projekte junger Leute",
-   "teaser": "Traunstein – Passend zum Demokratiefest wurde im Stadtmuseum Heimathaus auch die Demokratieausstellung »Gegen Tyrannei – Zwanzig Lektionen« eröffnet. Die Ausstellung wurde von ...",
-   "category": "Traunstein",
+   "teaser": "",
+   "category": "",
    "plus": false,
    "topic": "Region/Landkreis Traunstein",
    "first_seen": "2026-11-25T15:38:48+00:00"
@@ -570,46 +660,6 @@
    "topic": "Region/Landkreis Traunstein",
    "first_seen": "2026-11-24T22:46:50+00:00"
   },
-  "1028137": {
-   "sid": 1028137,
-   "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein/ruhpolding_artikel,-die-boesen-geister-wurden-vertrieben-hunderte-besucher-beim-krampuslauf-in-ruhpolding-_arid,1028137.html",
-   "title": "Die bösen Geister wurden vertrieben: Hunderte Besucher beim Krampuslauf in Ruhpolding",
-   "teaser": "",
-   "category": "",
-   "plus": false,
-   "topic": "Region/Landkreis Traunstein",
-   "first_seen": "2026-11-24T12:32:05+00:00"
-  },
-  "1028134": {
-   "sid": 1028134,
-   "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein_artikel,-25jaehriger-vor-dem-landgericht-traunstein-er-soll-seine-ehefrau-vergewaltigt-haben-_arid,1028134.html",
-   "title": "25-Jähriger vor dem Landgericht Traunstein: Er soll seine Ehefrau vergewaltigt haben",
-   "teaser": "",
-   "category": "Landkreis Traunstein",
-   "plus": true,
-   "topic": "Region/Landkreis Traunstein",
-   "first_seen": "2026-11-24T12:32:05+00:00"
-  },
-  "1028114": {
-   "sid": 1028114,
-   "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein_artikel,-auffahrunfall-in-chieming-und-sachbeschaedigung-in-traunstein-_arid,1028114.html",
-   "title": "Auffahrunfall in Chieming und Sachbeschädigung in Traunstein",
-   "teaser": "Bei einem Auffahrunfall in Chieming ist am Montagmorgen eine 28-jährige Autofahrerin leicht verletzt worden. In Traunstein haben Unbekannte am Wochenende zwei Durchfahrtsschranken ...",
-   "category": "Landkreis Traunstein",
-   "plus": false,
-   "topic": "Region/Landkreis Traunstein",
-   "first_seen": "2026-11-23T14:43:22+00:00"
-  },
-  "1028051": {
-   "sid": 1028051,
-   "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein/tittmoning_artikel,-ein-baum-voller-wuensche-im-tittmoninger-rathaus-_arid,1028051.html",
-   "title": "Ein Baum voller Wünsche im Tittmoninger Rathaus",
-   "teaser": "Tittmoning – Weihnachtswünsche erfüllen und anderen eine Freude machen: Das ist auch heuer wieder das Ziel der Wunschbaum-Aktion im Tittmoninger Rathaus. Seit dem Montag steht der ...",
-   "category": "Tittmoning",
-   "plus": false,
-   "topic": "Region/Landkreis Traunstein",
-   "first_seen": "2026-11-23T14:43:22+00:00"
-  },
   "1028044": {
    "sid": 1028044,
    "url": "https://www.traunsteiner-tagblatt.de/sport/sport-aus-der-region_artikel,-panthers-knacken-im-spitzenspiel-die-120punktemarke-_arid,1028044.html",
@@ -619,46 +669,6 @@
    "plus": false,
    "topic": "Sport/Sport aus der Region",
    "first_seen": "2026-11-23T14:43:22+00:00"
-  },
-  "1027978": {
-   "sid": 1027978,
-   "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein/traunstein_artikel,-podiumsdiskussion-anlaesslich-des-demokratiefests-wie-gefaehrdet-ist-unsere-demokratie-_arid,1027978.html",
-   "title": "Podiumsdiskussion anlässlich des Demokratiefests: »Wie gefährdet ist unsere Demokratie?«",
-   "teaser": "",
-   "category": "",
-   "plus": true,
-   "topic": "Region/Landkreis Traunstein",
-   "first_seen": "2026-11-23T04:02:03+00:00"
-  },
-  "1027977": {
-   "sid": 1027977,
-   "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein_artikel,-diskussion-ueber-bedarfsampel-in-axdorf-staatliches-bauamt-prueft-situation-nochmals-_arid,1027977.html",
-   "title": "Diskussion über Bedarfsampel in Axdorf: Staatliches Bauamt prüft Situation nochmals",
-   "teaser": "",
-   "category": "Landkreis Traunstein",
-   "plus": true,
-   "topic": "Region/Landkreis Traunstein",
-   "first_seen": "2026-11-23T14:43:22+00:00"
-  },
-  "1027976": {
-   "sid": 1027976,
-   "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein/taching-am-see_artikel,-hoehere-eintrittspreise-bei-den-strandbaedern-in-taching-und-tengling-grund-sind-gestiegene-kosten-_arid,1027976.html",
-   "title": "Höhere Eintrittspreise bei den Strandbädern in Taching und Tengling – Grund sind gestiegene Kosten",
-   "teaser": "",
-   "category": "Taching am See",
-   "plus": true,
-   "topic": "Region/Landkreis Traunstein",
-   "first_seen": "2026-11-24T01:56:26+00:00"
-  },
-  "1027975": {
-   "sid": 1027975,
-   "url": "https://www.traunsteiner-tagblatt.de/region/landkreis-traunstein/waging-am-see_artikel,-lions-club-hilft-seit-30-jahren-in-sri-lanka-grosse-resonanz-beim-adventsbasar-_arid,1027975.html",
-   "title": "Lions Club hilft seit 30 Jahren in Sri Lanka: Große Resonanz beim Adventsbasar",
-   "teaser": "Waging am See – Der jährliche Sri-Lanka-Adventsbasar des Lions Hilfswerks Waginger See hat auch in diesem Jahr zahlreiche Besucher in die Aula der Mittelschule gelockt. Viele Gäste ...",
-   "category": "Waging am See",
-   "plus": false,
-   "topic": "Region/Landkreis Traunstein",
-   "first_seen": "2026-11-24T01:56:26+00:00"
   },
   "1027962": {
    "sid": 1027962,

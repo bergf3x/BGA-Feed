@@ -1,5 +1,82 @@
 {
  "items": {
+  "1281997629": {
+   "sid": 1281997629,
+   "url": "https://salzburg.orf.at/stories/3381338/",
+   "title": "Handschriftliche Mozart-Komposition zusammengefügt",
+   "teaser": "Die Stiftung Mozarteum freut sich über einen besonderen Neuzugang. Eine Mäzenin aus Bayern schenkte der Stiftung ein Autograph, also eine eigenhändig verfasste Komposition Wolfgang Amadeus Mozarts: das Kinderlied „Morgen kommt der Weihnachtsmann“.",
+   "category": "Kultur",
+   "topic": "Region/Salzburg",
+   "plus": false,
+   "date": "2026-11-27T17:15:56+00:00",
+   "first_seen": "2026-11-27T17:15:56+00:00"
+  },
+  "1708300286": {
+   "sid": 1708300286,
+   "url": "https://salzburg.orf.at/stories/3381425/",
+   "title": "Salzburg plant Gesundheitswesen bis 2040 neu",
+   "teaser": "Salzburg will sein Gesundheitswesen bis 2040 neu aufstellen. Bei einer Enquete im Messezentrum in der Stadt Salzburg diskutierten rund 300 Teilnehmerinnen und Teilnehmer aus den betroffenen Bereichen über die künftige Ausrichtung. Im Zentrum standen die Spitäler, die Zusammenarbeit mit niedergelasse",
+   "category": "Wirtschaft",
+   "topic": "Region/Salzburg",
+   "plus": false,
+   "date": "2026-11-27T16:29:43+00:00",
+   "first_seen": "2026-11-27T16:29:43+00:00"
+  },
+  "4274941356": {
+   "sid": 4274941356,
+   "url": "https://salzburg.orf.at/stories/3381375/",
+   "title": "S-Bikes in Stadt Salzburg bleiben im Winter im Einsatz",
+   "teaser": "Trotz des Schnees wird die S-Bike-Leihradflotte in der Stadt Salzburg im Winter nicht verkleinert. Das betont der Verkehrsverbund. Die mehr als 600 Elektroräder an 63 Stationen bleiben weiterhin regulär im Einsatz.",
+   "category": "Wirtschaft",
+   "topic": "Region/Salzburg",
+   "plus": false,
+   "date": "2026-11-27T15:30:00+00:00",
+   "first_seen": "2026-11-27T15:30:00+00:00"
+  },
+  "832295814": {
+   "sid": 832295814,
+   "url": "https://salzburg.orf.at/stories/3381290/",
+   "title": "Europark bekommt zweiten großen Sporthändler",
+   "teaser": "Mit dem Pinzgauer Sporthändler Bründl bekommt der bisher einzige große Sporthändler Hervis im Europark nun direkte Konkurrenz. Ab kommenden Oktober soll im Einkaufszentrum in Salzburg-Taxham die größte Bründl-Filiale im Bundesland entstehen. Die unmittelbare Konkurrenz zweier großer Sporthändler kön",
+   "category": "Wirtschaft",
+   "topic": "Region/Salzburg",
+   "plus": false,
+   "date": "2026-11-27T14:00:00+00:00",
+   "first_seen": "2026-11-27T14:00:00+00:00"
+  },
+  "2296766164": {
+   "sid": 2296766164,
+   "url": "https://salzburg.orf.at/stories/3381380/",
+   "title": "Cyberangriff auf Axess: 18.000 Messekunden betroffen",
+   "teaser": "Der Cyberangriff auf den Anifer Anbieter Axess für Zutritts- und Besuchermanagement dürfte weitere Kreise ziehen. Beim Salzburger Messezentrum wurden am Montag Daten von rund 18.000 Kundinnen und Kunden gestohlen. Bei weiteren Axess-Kunden, darunter touristische Angebote der Salzburg AG, ist der Onl",
+   "category": "Chronik",
+   "topic": "Region/Salzburg",
+   "plus": false,
+   "date": "2026-11-27T12:35:00+00:00",
+   "first_seen": "2026-11-27T12:35:00+00:00"
+  },
+  "2841026589": {
+   "sid": 2841026589,
+   "url": "https://salzburg.orf.at/stories/3381363/",
+   "title": "Gewaltschutzgipfel: Gezieltere Angebote, mehr Prävention",
+   "teaser": "Gewaltschutz muss gezielter werden, dessen sind sich Vertreterinnen und Vertreter von Opferschutzeinrichtungen, Polizei, Täterberatungsstellen und Politik beim Gewaltschutzgipfel am Donnerstag einig. Auch die lange geplante Gewaltambulanz stehe vor der Umsetzung, so Frauenlandesrätin Daniela Gutschi",
+   "category": "Politik Inland",
+   "topic": "Region/Salzburg",
+   "plus": false,
+   "date": "2026-11-27T12:02:20+00:00",
+   "first_seen": "2026-11-27T12:02:20+00:00"
+  },
+  "2957873500": {
+   "sid": 2957873500,
+   "url": "https://salzburg.orf.at/stories/3381362/",
+   "title": "Karkogel startet mit Einschränkungen in die Wintersaison",
+   "teaser": "Nach der Insolvenz und der Übernahme durch den Raiffeisenverband Salzburg (RVS) bereiten sich die Abtenauer Bergbahnen auf die Wintersaison vor. Geplant sind Investitionen von rund 4,5 Millionen Euro, vor allem in die technische Beschneiung. Vorerst fehlt dafür noch eine wichtige Leitung.",
+   "category": "Wirtschaft",
+   "topic": "Region/Salzburg",
+   "plus": false,
+   "date": "2026-11-27T11:36:05+00:00",
+   "first_seen": "2026-11-27T11:36:05+00:00"
+  },
   "3032542702": {
    "sid": 3032542702,
    "url": "https://salzburg.orf.at/stories/3381302/",
@@ -362,83 +439,6 @@
    "plus": false,
    "date": "2026-11-24T12:35:19+00:00",
    "first_seen": "2026-11-24T12:35:19+00:00"
-  },
-  "887019491": {
-   "sid": 887019491,
-   "url": "https://salzburg.orf.at/stories/3380886/",
-   "title": "Biber: Land will 30 Abschüsse pro Jahr ermöglichen",
-   "teaser": "Das Land Salzburg will den Abschuss von Bibern spürbar erleichtern. Sowohl die Abschuss-Gebiete als auch die Kontingente werden in den kommenden beiden Jahren ausgedehnt. Statt bisher 15 Biber sollen mit der neuen Regelung von den rund 450 Bibern im Land pro Jahr künftig 30 Tiere getötet werden.",
-   "category": "Chronik",
-   "topic": "Region/Salzburg",
-   "plus": false,
-   "date": "2026-11-24T11:14:25+00:00",
-   "first_seen": "2026-11-24T11:14:25+00:00"
-  },
-  "3147716735": {
-   "sid": 3147716735,
-   "url": "https://salzburg.orf.at/stories/3380859/",
-   "title": "Marlen Mairhofer für Erstlingswerk ausgezeichnet",
-   "teaser": "Die in Salzburg lebende Autorin Marlen Mairhofer wurde für ihren Roman „Alice“ mit dem Debütpreis zum Österreichischen Buchpreis ausgezeichnet. Die 35-Jährige erhielt die Anerkennung Montagabend in Wien. Der Preis ist mit 10.000 Euro dotiert.",
-   "category": "Kultur",
-   "topic": "Region/Salzburg",
-   "plus": false,
-   "date": "2026-11-24T10:02:02+00:00",
-   "first_seen": "2026-11-24T10:02:02+00:00"
-  },
-  "1824376757": {
-   "sid": 1824376757,
-   "url": "https://salzburg.orf.at/stories/3380786/",
-   "title": "97-Jährige zweimal überfallen: Täterpaar verurteilt",
-   "teaser": "Gleich zweimal wollte ein rumänisches Paar im Juni eine 97-Jährige in ihrer Wohnung in der Stadt Salzburg ausrauben. Beide Male konnte sich die Seniorin wehren. Am Dienstag wurde das einschlägig vorbestrafte Paar wegen versuchten schweren Raubes am Salzburger Landesgericht zu mehrjährigen Haftstrafe",
-   "category": "Chronik",
-   "topic": "Region/Salzburg",
-   "plus": false,
-   "date": "2026-11-24T10:00:00+00:00",
-   "first_seen": "2026-11-24T10:00:00+00:00"
-  },
-  "1784472374": {
-   "sid": 1784472374,
-   "url": "https://salzburg.orf.at/stories/3380850/",
-   "title": "Festspiele: Crepaz bewirbt sich erneut",
-   "teaser": "Lukas Crepaz bewirbt sich erneut für den Posten des kaufmännischen Direktors der Salzburger Festspiele. Wochenlang wurde gerätselt, ob er sich wieder bewerben wird. Der 45-Jährige gab am Dienstag weiter keinen Einblick, warum er mit seiner Entscheidung bis zum letzten Tag der Bewerbungsfrist zuwarte",
-   "category": "Kultur",
-   "topic": "Region/Salzburg",
-   "plus": false,
-   "date": "2026-11-24T09:04:00+00:00",
-   "first_seen": "2026-11-24T09:04:00+00:00"
-  },
-  "308543990": {
-   "sid": 308543990,
-   "url": "https://salzburg.orf.at/stories/3380825/",
-   "title": "Katastrophenfonds schüttet 3,3 Mio. an Betroffene aus",
-   "teaser": "Das Land Salzburg unterstützt Betroffene nach Katastrophen mit rund drei Millionen Euro. Das Geld kommt aus dem Katastrophenfonds. Hochwasser und Murenabgänge in den vergangenen Jahren verursachten dabei die größten Schäden.",
-   "category": "Chronik",
-   "topic": "Region/Salzburg",
-   "plus": false,
-   "date": "2026-11-24T06:58:35+00:00",
-   "first_seen": "2026-11-24T06:58:35+00:00"
-  },
-  "152266886": {
-   "sid": 152266886,
-   "url": "https://salzburg.orf.at/stories/3380792/",
-   "title": "Schwarzarbeit immer öfter über Scheinfirmen",
-   "teaser": "Bei ihren Kontrollen ist die Finanzpolizei immer öfter mit organisierter Schwarzarbeit über Scheinfirmen konfrontiert. 446 Fälle haben die Behörden im ersten Halbjahr 2026 österreichweit beschäftigt. Die betrügerischen Unternehmen würden damit auch Konkurrenten vom Markt verdrängen.",
-   "category": "Wirtschaft",
-   "topic": "Region/Salzburg",
-   "plus": false,
-   "date": "2026-11-24T06:00:00+00:00",
-   "first_seen": "2026-11-24T06:00:00+00:00"
-  },
-  "1182275625": {
-   "sid": 1182275625,
-   "url": "https://salzburg.orf.at/stories/3380813/",
-   "title": "61-Jährige soll Ehemann durch Stiche getötet haben",
-   "teaser": "In Ainring im benachbarten Bayern steht eine 61-Jährige unter Mordverdacht. Die Frau soll laut bayerischer Polizei ihrem Ehemann am Sonntagvormittag tödliche Stichverletzungen zugefügt haben. Auch die Frau wies Verletzungen auf. Die Hintergründe zur Tat sind noch unklar.",
-   "category": "Chronik",
-   "topic": "Region/Salzburg",
-   "plus": false,
-   "date": "2026-11-24T05:15:12+00:00",
-   "first_seen": "2026-11-24T05:15:12+00:00"
   }
  }
 }
