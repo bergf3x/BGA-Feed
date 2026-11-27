@@ -33,11 +33,6 @@ final class Pal {
         rv.setInt(viewId, method, Prefs.isLight(c, id) ? light : dark);
     }
 
-    /** Text mit zwei festen Farben (hell/dunkel). */
-    static void textPair(Context c, int id, RemoteViews rv, int viewId, int light, int dark) {
-        pair(c, id, rv, viewId, "setTextColor", light, dark);
-    }
-
     /** Hintergrund-Drawable der Chips. */
     static int cardBg(Context c, int id) {
         return Prefs.isLight(c, id) ? R.drawable.card_bg_light : R.drawable.card_bg;

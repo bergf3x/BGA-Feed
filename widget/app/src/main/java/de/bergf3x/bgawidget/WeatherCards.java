@@ -154,11 +154,6 @@ final class WeatherCards {
         return r == null ? DAV : r[4] + "/" + slug;
     }
 
-    /** Direktlink auf einen Gipfel oder Ort (oder eine ganze Region) des DAV-Bergwetters. */
-    static boolean isStationLink(String link) {
-        return link.startsWith(DAV + "/alpen/");
-    }
-
     /** Gehoert der Link zu einer Wetter-Karte? Dann nicht als gelesen abdunkeln. */
     static boolean isCardLink(Context c, String link) {
         for (FeedItem it : items(c)) if (it.link.equals(link)) return true;

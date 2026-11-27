@@ -71,6 +71,10 @@ final class IosSwitch extends View {
                 | (Math.round(ag + (bg - ag) * t) << 8) | Math.round(ab + (bb - ab) * t);
     }
 
+    private android.graphics.Shader trackShader;
+    private int shaderColor;
+    private float shaderH;
+
     @Override
     protected void onMeasure(int w, int h) {
         float d = getResources().getDisplayMetrics().density;
@@ -84,9 +88,14 @@ final class IosSwitch extends View {
         int tc = blend(offColor, onColor, clamp);
         track.setColor(tc);
         r.set(0, 0, w, h);
-        track.setShader(new android.graphics.LinearGradient(0, 0, 0, h,
-                Depth.shade(tc | 0xFF000000, 0.72f) & 0x00FFFFFF | (tc & 0xFF000000), tc,
-                android.graphics.Shader.TileMode.CLAMP));
+        if (trackShader == null || shaderColor != tc || shaderH != h) {
+            trackShader = new android.graphics.LinearGradient(0, 0, 0, h,
+                    Depth.shade(tc | 0xFF000000, 0.72f) & 0x00FFFFFF | (tc & 0xFF000000), tc,
+                    android.graphics.Shader.TileMode.CLAMP);
+            shaderColor = tc;
+            shaderH = h;
+        }
+        track.setShader(trackShader);
         c.drawRoundRect(r, h / 2, h / 2, track);
         track.setShader(null);
         float pad = 2 * d, rad = h / 2 - pad;

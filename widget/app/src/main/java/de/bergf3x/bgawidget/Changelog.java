@@ -10,6 +10,10 @@ final class Changelog {
     private Changelog() { }
 
     static final String[][] LOG = {
+            {"1.55",
+                    "~ Schneller: die App wird jetzt als Auslieferungsversion gebaut (nicht mehr als Debug-Version); Webcam-Zeitstempel liegen in einer eigenen Datei, das Öffnen der App rechnet weniger",
+                    "~ Webcam-Liste: ruhigeres Scrollen (Prüfung gedrosselt), Vorschaubilder warten nicht mehr hinter langsamen Downloads, bereits geladene Vorschaubilder bleiben im Speicher",
+                    "- Aufgeräumt: ungenutzter Code und Text entfernt"},
             {"1.54",
                     "~ Webcams: Das Fenster hat in jeder Region, bei Favoriten und in der Suche dieselbe Höhe; es springt nicht mehr zwischen groß und klein"},
             {"1.53",

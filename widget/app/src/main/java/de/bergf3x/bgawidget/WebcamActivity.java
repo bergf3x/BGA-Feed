@@ -66,7 +66,9 @@ public class WebcamActivity extends Activity {
     private static final String[] KEEP_LABELS = {"3 Tage", "7 Tage", "14 Tage", "30 Tage"};
 
     private final Handler ui = new Handler(Looper.getMainLooper());
+    /** Dekodieren und Einlesen (schnell) getrennt vom Netz (kann bis 25 Sek. dauern), damit Vorschaubilder nicht hinter Downloads warten. */
     private final ExecutorService pool = Executors.newFixedThreadPool(3);
+    private final ExecutorService netPool = Executors.newFixedThreadPool(3);
     private Bubble b;
     private int gen;
     private Runnable up;
@@ -161,6 +163,7 @@ public class WebcamActivity extends Activity {
     @Override
     protected void onDestroy() {
         pool.shutdownNow();
+        netPool.shutdownNow();
         super.onDestroy();
     }
 
@@ -422,7 +425,7 @@ public class WebcamActivity extends Activity {
         fillList();
         final int restore = listY;
         listScroll.post(() -> listScroll.scrollTo(0, restore));
-        listScroll.getViewTreeObserver().addOnScrollChangedListener(this::kick);
+        listScroll.getViewTreeObserver().addOnScrollChangedListener(this::kickThrottled);
         et.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int a, int c, int d) {
@@ -468,6 +471,7 @@ public class WebcamActivity extends Activity {
         slots.clear();
         listBody.removeAllViews();
         chipBox.removeAllViews();
+        favSet = Webcams.favs(this);
         String nq = norm(query);
         boolean searching = !nq.isEmpty();
         paintTabs();
@@ -510,7 +514,9 @@ public class WebcamActivity extends Activity {
             List<Webcams.Region> regs = new ArrayList<>();
             for (Webcams.Region r : Webcams.REGS) if (r.land.equals(land) && regionSize(r) > 0) regs.add(r);
             // groesste Region zuerst; bei gleicher Zahl bleibt die feste Reihenfolge
-            java.util.Collections.sort(regs, (x, y) -> Integer.compare(regionSize(y), regionSize(x)));
+            final java.util.Map<Webcams.Region, Integer> size = new java.util.HashMap<>();
+            for (Webcams.Region r : regs) size.put(r, regionSize(r));
+            java.util.Collections.sort(regs, (x, y) -> Integer.compare(size.get(y), size.get(x)));
             Webcams.Region sel = null;
             for (Webcams.Region r : regs) if (r.name.equals(regName)) sel = r;
             if (sel == null && !regs.isEmpty()) {
@@ -521,7 +527,7 @@ public class WebcamActivity extends Activity {
                 note("Für dieses Land gibt es noch keine Webcams.");
                 return;
             }
-            for (final Webcams.Region r : regs) chip(r, r == sel);
+            for (final Webcams.Region r : regs) chip(r, r == sel, size.get(r));
             chipScroll.setVisibility(View.VISIBLE);
             List<Integer> all = new ArrayList<>();
             for (String id : sel.ids) {
@@ -559,9 +565,9 @@ public class WebcamActivity extends Activity {
     }
 
     /** Reiter einer Region: Name und Anzahl; der gewaehlte ist hervorgehoben (weiche Kapsel). */
-    private void chip(final Webcams.Region r, boolean on) {
+    private void chip(final Webcams.Region r, boolean on, int count) {
         TextView c = new TextView(this);
-        c.setText(r.name + "  " + regionSize(r));
+        c.setText(r.name + "  " + count);
         c.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13.5f);
         c.setGravity(Gravity.CENTER);
         c.setPadding(b.px(14), 0, b.px(14), 0);
@@ -650,8 +656,9 @@ public class WebcamActivity extends Activity {
             final ImageView st = new ImageView(this);
             st.setPadding(b.px(10), b.px(10), b.px(10), b.px(10));
             st.setContentDescription("Favorit");
-            st.setImageResource(Webcams.isFav(this, c) ? R.drawable.ic_star_fill : R.drawable.ic_star);
-            st.setColorFilter(Webcams.isFav(this, c) ? (b.light ? 0xFF1A5FB4 : 0xFFFFC857) : b.soft);
+            final boolean isFav = favSet.contains(c.id);
+            st.setImageResource(isFav ? R.drawable.ic_star_fill : R.drawable.ic_star);
+            st.setColorFilter(isFav ? (b.light ? 0xFF1A5FB4 : 0xFFFFC857) : b.soft);
             st.setOnClickListener(v -> {
                 boolean on = Webcams.toggleFav(this, c);
                 Haptic.play(v, on ? Haptic.TOGGLE_ON : Haptic.TOGGLE_OFF);
@@ -675,6 +682,9 @@ public class WebcamActivity extends Activity {
         listBody.addView(r, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
     }
 
+    /** Favoriten, einmal je Listenaufbau gelesen (statt je Zeile). */
+    private Set<String> favSet = new java.util.HashSet<>();
+
     private int[] favList() {
         Set<String> f = Webcams.favs(this);
         List<Integer> r = new ArrayList<>();
@@ -689,6 +699,18 @@ public class WebcamActivity extends Activity {
     }
 
     // ---------------------------------------------------------------- Bilder der Zeilen
+
+    private boolean kickPending;
+
+    /** Beim Scrollen hoechstens alle 120 ms pruefen, welche Zeilen sichtbar sind (nicht bei jedem Pixel). */
+    private void kickThrottled() {
+        if (kickPending) return;
+        kickPending = true;
+        ui.postDelayed(() -> {
+            kickPending = false;
+            kick();
+        }, 120);
+    }
 
     /** Nach dem Aufbau und nach dem Hochfahren des Blattes pruefen, welche Zeilen sichtbar sind. */
     private void kickSoon() {
@@ -707,23 +729,41 @@ public class WebcamActivity extends Activity {
             if (s.busy) continue;
             if (!s.root.getLocalVisibleRect(new android.graphics.Rect())) continue;
             s.busy = true;
+            final boolean needImage = s.iv.getDrawable() == null;
             pool.execute(() -> {
+                boolean fetch = false;
                 try {
-                    if (s.iv.getDrawable() == null) {
+                    if (needImage) {
                         final Webcams.Shot cc = Webcams.cached(app, s.cam, s.cam.pano ? PANO_THUMB_W : THUMB_W, true);
                         if (cc.bmp != null) ui.post(() -> {
                             if (g == gen) setImage(s, cc);
                         });
                     }
-                    if (allowRefresh && Webcams.age(app, s.cam, true) > maxAge) {
-                        final Webcams.Shot n = Webcams.refresh(app, s.cam, s.cam.pano ? PANO_THUMB_W : THUMB_W, true);
-                        if (n.bmp != null && !n.offline) {
-                            ui.post(() -> {
-                                if (g == gen) setImage(s, n);
-                            });
-                        }
-                    }
+                    fetch = allowRefresh && Webcams.age(app, s.cam, true) > maxAge;
                 } finally {
+                    if (!fetch) ui.post(() -> s.busy = false);
+                }
+                if (!fetch) return;
+                // Netzabruf in eigenem Pool: ein langsamer Download haelt keine Vorschaubilder auf
+                try {
+                    netPool.execute(() -> {
+                        try {
+                            final Webcams.Shot n = Webcams.refresh(app, s.cam, s.cam.pano ? PANO_THUMB_W : THUMB_W, true, false);
+                            if (n.offline) return;
+                            if (n.bmp != null) {
+                                ui.post(() -> {
+                                    if (g == gen) setImage(s, n);
+                                });
+                            } else if (n.unchanged) {
+                                ui.post(() -> {
+                                    if (g == gen && s.sub != null) s.sub.setText(subText(s.cam, s.lead));
+                                });
+                            }
+                        } finally {
+                            ui.post(() -> s.busy = false);
+                        }
+                    });
+                } catch (java.util.concurrent.RejectedExecutionException e) {
                     ui.post(() -> s.busy = false);
                 }
             });

@@ -32,13 +32,13 @@ jobs:
           echo "BUILD_DATE=$(TZ=Europe/Berlin date '+%d.%m.%Y, %H:%M Uhr')" >> "$GITHUB_ENV"
       - name: APK bauen
         working-directory: widget
-        run: gradle --no-daemon assembleDebug
+        run: gradle --no-daemon assembleRelease
       - name: APK als Release bereitstellen
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           APK="BGL-Wetter-News-v${VERSION_NAME}.apk"
-          cp widget/app/build/outputs/apk/debug/app-debug.apk "$APK"
+          cp widget/app/build/outputs/apk/release/app-release.apk "$APK"
           gh release delete widget-latest --yes --cleanup-tag || true
           gh release create widget-latest "$APK" \
             --title "BGL Wetter & News ${VERSION_NAME}" \

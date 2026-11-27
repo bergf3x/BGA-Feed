@@ -31,6 +31,14 @@ android {
         debug {
             signingConfig signingConfigs.debug
         }
+        // Auslieferung: nicht debuggable (ART optimiert voll), gleiche Signatur wie bisher, damit Updates ohne Deinstallation gehen.
+        // Keine Code-Verkleinerung (R8): die App nutzt Reflection und ist so einfacher zu pruefen.
+        release {
+            signingConfig signingConfigs.debug
+            minifyEnabled false
+            shrinkResources false
+            debuggable false
+        }
     }
 
     compileOptions {

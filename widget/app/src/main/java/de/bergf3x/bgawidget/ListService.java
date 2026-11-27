@@ -23,27 +23,6 @@ public class ListService extends RemoteViewsService {
         return new Factory(getApplicationContext(), id);
     }
 
-    /** Ungelesene Artikel der letzten 12 Stunden (fuer die Zahl neben "Alle"). */
-    static int freshUnread(Context ctx, int widgetId) {
-        List<Catalog.Feed> all = Catalog.load(ctx);
-        Set<String> selected = Catalog.effective(all, Prefs.feeds(ctx, widgetId));
-        Set<String> read = Prefs.readSet(ctx);
-        Set<String> muted = Prefs.muted(ctx, widgetId);
-        int n = 0;
-        for (Catalog.Feed f : all) {
-            if (!selected.contains(f.id)) continue;
-            boolean plusFeed = Prefs.showPlusFeed(ctx, widgetId, f.id);
-            for (FeedItem it : FeedCache.items(ctx, f.id, f.name)) {
-                if (!it.isFresh() || Prefs.isRead(read, it.link)) continue;
-                if (it.plus && !plusFeed) continue;
-                boolean hide = false;
-                for (String m : muted) if (it.inTopic(m)) hide = true;
-                if (!hide) n++;
-            }
-        }
-        return n;
-    }
-
     /** Alle Zeitungen der gewaehlten Quellen (auch ohne aktuelle Meldungen), Namen wie im Pfad "Zeitungen/<Name>". */
     static List<String> paperNames(Context ctx, int id) {
         List<String> out = new ArrayList<>();
@@ -273,9 +252,6 @@ public class ListService extends RemoteViewsService {
         }
         Prefs.setSrcWarn(ctx, stale.toString());
         final List<FeedItem> result = dedupe(merged);
-        int plusN = 0;
-        for (FeedItem it : result) if (it.plus) plusN++;
-        PLUS_N.put(id, plusN);
         if (online) {
             try {
                 checkSaved(ctx, merged);
@@ -346,14 +322,6 @@ public class ListService extends RemoteViewsService {
             }
         }
         Prefs.markSavedGone(ctx, gone, checked, imgs);
-    }
-
-    /** Anzahl Abo-Artikel in der zuletzt geladenen Liste je Widget/App. */
-    private static final java.util.Map<Integer, Integer> PLUS_N = new java.util.concurrent.ConcurrentHashMap<>();
-
-    static int plusCount(int id) {
-        Integer n = PLUS_N.get(id);
-        return n == null ? 0 : n;
     }
 
     static List<FeedItem> savedItems(Context ctx) {

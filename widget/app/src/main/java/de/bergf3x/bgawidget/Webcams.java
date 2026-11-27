@@ -6,6 +6,7 @@
 package de.bergf3x.bgawidget;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -198,6 +199,8 @@ final class Webcams {
 
     /** Alle Kameras (eingebaute + aus der Kameraliste geladene) und die Regionen daraus. */
     static volatile Cam[] CAMS = BASE;
+    /** Kennung -> Platz in CAMS, passend zu CAMS. */
+    private static volatile java.util.Map<String, Integer> INDEX = new java.util.HashMap<>();
     static volatile Folder[] FOLDERS = new Folder[0];
     /** true, wenn eine neue Kameraliste geladen wurde, aber noch nicht in die Anzeige uebernommen ist. */
     static volatile boolean dirty;
@@ -234,44 +237,31 @@ final class Webcams {
             {"Webcam-Verzeichnisse", "", "lk_dir_schoenau lk_dir_bgd", ""},
     };
 
-    /** Berg im Berg-Modus: Anzeigename, Land, Kameras in Anzeigereihenfolge; unsure = Kameras, deren Berg nicht belegt ist. */
+    /** Berg und seine Kameras; nur fuer die Suche (z. B. "Watzmann" findet auch Kameras mit Blick auf den Berg). */
     static final class Peak {
         final String name;
-        final String land;
         final String[] ids;
-        final java.util.Set<String> unsure;
 
-        Peak(String name, String land, String ids, String unsure) {
+        Peak(String name, String ids) {
             this.name = name;
-            this.land = land;
             this.ids = words(ids);
-            this.unsure = new java.util.HashSet<>(java.util.Arrays.asList(words(unsure)));
         }
     }
 
-    /**
-     * Berge nach Beliebtheit (Einschaetzung, keine Messdaten). Eine Kamera darf in mehreren Bergen stehen.
-     * Belegt: Titel/Schlagwoerter bei foto-webcam bzw. angesehene Bilder; sonst in unsure.
-     */
+    /** Berge und ihre Kameras (Titel und Schlagwoerter bei foto-webcam bzw. angesehene Bilder). Eine Kamera darf in mehreren stehen. */
     static final Peak[] PEAKS = {
-            new Peak("Zugspitze", "Deutschland / Österreich",
-                    "fw_zugspitze-sued fw_bzb-gipfel fw_zugspitze fw_zugspitze-ost fw_zugspitze-nord fw_sonnalpin fw_meilerhuette fw_meilerhuette-haus fw_wank fw_kandahar-express fw_kreuzeck fw_eibsee-nord fw_hausberg fw_bzb-tal fw_eibsee-hotel fw_gsteig", ""),
-            new Peak("Watzmann", "Deutschland",
-                    "fw_windbeutelbaron fw_funtenseetauern lk_obersalzberg lk_hochlenzer fw_jenner-sued fw_jenner-ost ls_koenigssee th_hintersee",
-                    "fw_jenner-sued fw_jenner-ost ls_koenigssee th_hintersee"),
-            new Peak("Großglockner", "Österreich",
-                    "px_7 px_16 px_17 fw_freiwandeck fw_wallackhaus fw_wallackhaus-nord fw_lucknerhaus fw_glocknerwinkel fw_adlersruhe fw_oberwalderhuette fw_kalsertal lk_avisec_kfjh lk_avisec_glocknerhaus",
-                    "px_7 px_16 px_17"),
-            new Peak("Matterhorn", "Schweiz / Italien",
-                    "rs_matterhornglacierparadise rs_gornergrat rs_rothorn rs_hohtaelli rs_trockener-steg rs_hirli rs_schwarzsee rs_monterosa rs_blauherd px_867", "px_867"),
-            new Peak("Säntis", "Schweiz", "fw_hochhamm fw_wildhaus", ""),
-            new Peak("Wendelstein", "Deutschland", "fw_wendelstein-west fw_wendelstein-ost", ""),
-            new Peak("Hochkalter", "Deutschland", "fw_vorderloiplsau th_hintersee th_stoisser-alm", "th_hintersee th_stoisser-alm"),
-            new Peak("Untersberg", "Deutschland / Österreich", "fw_stoehrhaus", ""),
-            new Peak("Wilder Kaiser", "Österreich", "fw_wilder-kaiser fw_st-johann-in-tirol-west fw_pendling-ost", ""),
-            new Peak("Dachstein", "Österreich", "fw_gjaidstein fw_simonyhuette fw_hotel-lindenhof", ""),
-            new Peak("Hochkönig", "Österreich", "fw_hochkoenig", ""),
-            new Peak("Ortler", "Italien", "fw_trafoi fw_chavalatsch", ""),
+            new Peak("Zugspitze", "fw_zugspitze-sued fw_bzb-gipfel fw_zugspitze fw_zugspitze-ost fw_zugspitze-nord fw_sonnalpin fw_meilerhuette fw_meilerhuette-haus fw_wank fw_kandahar-express fw_kreuzeck fw_eibsee-nord fw_hausberg fw_bzb-tal fw_eibsee-hotel fw_gsteig"),
+            new Peak("Watzmann", "fw_windbeutelbaron fw_funtenseetauern lk_obersalzberg lk_hochlenzer fw_jenner-sued fw_jenner-ost ls_koenigssee th_hintersee"),
+            new Peak("Großglockner", "px_7 px_16 px_17 fw_freiwandeck fw_wallackhaus fw_wallackhaus-nord fw_lucknerhaus fw_glocknerwinkel fw_adlersruhe fw_oberwalderhuette fw_kalsertal lk_avisec_kfjh lk_avisec_glocknerhaus"),
+            new Peak("Matterhorn", "rs_matterhornglacierparadise rs_gornergrat rs_rothorn rs_hohtaelli rs_trockener-steg rs_hirli rs_schwarzsee rs_monterosa rs_blauherd px_867"),
+            new Peak("Säntis", "fw_hochhamm fw_wildhaus"),
+            new Peak("Wendelstein", "fw_wendelstein-west fw_wendelstein-ost"),
+            new Peak("Hochkalter", "fw_vorderloiplsau th_hintersee th_stoisser-alm"),
+            new Peak("Untersberg", "fw_stoehrhaus"),
+            new Peak("Wilder Kaiser", "fw_wilder-kaiser fw_st-johann-in-tirol-west fw_pendling-ost"),
+            new Peak("Dachstein", "fw_gjaidstein fw_simonyhuette fw_hotel-lindenhof"),
+            new Peak("Hochkönig", "fw_hochkoenig"),
+            new Peak("Ortler", "fw_trafoi fw_chavalatsch"),
     };
 
     /** Namen der Berge, in denen die Kamera steht (fuer die Suche). */
@@ -301,7 +291,11 @@ final class Webcams {
         java.util.Map<String, Cam> ex = EXTRA;
         java.util.List<Cam> all = new java.util.ArrayList<>(java.util.Arrays.asList(BASE));
         all.addAll(ex.values());
-        CAMS = all.toArray(new Cam[0]);
+        Cam[] arr = all.toArray(new Cam[0]);
+        java.util.Map<String, Integer> idx = new java.util.HashMap<>();
+        for (int i = 0; i < arr.length; i++) idx.put(arr[i].id, i);
+        INDEX = idx;
+        CAMS = arr;
         java.util.List<Folder> fs = new java.util.ArrayList<>();
         for (String[] r : REGIONS) {
             java.util.List<String> ids = new java.util.ArrayList<>(java.util.Arrays.asList(words(r[2])));
@@ -461,20 +455,13 @@ final class Webcams {
     }
 
     static Cam byId(String id) {
-        for (Cam c : CAMS) if (c.id.equals(id)) return c;
-        return null;
+        int i = indexOf(id);
+        return i < 0 ? null : CAMS[i];
     }
 
     static int indexOf(String id) {
-        for (int i = 0; i < CAMS.length; i++) if (CAMS[i].id.equals(id)) return i;
-        return -1;
-    }
-
-    /** Kamera-Indizes eines Ordners (in Anzeigereihenfolge). */
-    static int[] folderCams(Folder f) {
-        int[] r = new int[f.ids.length];
-        for (int i = 0; i < r.length; i++) r[i] = indexOf(f.ids[i]);
-        return r;
+        Integer i = INDEX.get(id);
+        return i == null ? -1 : i;
     }
 
     static Folder folderOf(Cam c) {
@@ -553,7 +540,7 @@ final class Webcams {
 
     /** Kamera wurde angesehen (fuers Aufraeumen). */
     static void viewed(Context c, Cam cam) {
-        Prefs.sp(c).edit().putLong("cam_v_" + cam.id, System.currentTimeMillis()).apply();
+        cp(c).edit().putLong("cam_v_" + cam.id, System.currentTimeMillis()).apply();
     }
 
     // ------------------------------------------------------------ Speicher
@@ -586,6 +573,7 @@ final class Webcams {
      * geloescht, danach (aelteste zuerst) bis das Limit eingehalten ist. Tempdateien werden immer entfernt.
      */
     static void cleanup(Context c) {
+        dropOldStamps(c);
         File[] fs = dir(c).listFiles();
         if (fs == null) return;
         java.util.Set<String> keep = favs(c);
@@ -601,7 +589,7 @@ final class Webcams {
             }
             String id = idOfFile(f.getName());
             if (!keep.contains(id)) {
-                long seen = Math.max(Prefs.sp(c).getLong("cam_v_" + id, 0), 0);
+                long seen = Math.max(cp(c).getLong("cam_v_" + id, 0), 0);
                 if (seen == 0) seen = f.lastModified();
                 if (now - seen > maxAge) {
                     f.delete();
@@ -627,10 +615,36 @@ final class Webcams {
         long taken;
         long fetched;
         boolean offline;
+        /** Bild beim Abruf unveraendert; bmp bleibt dann leer, wenn der Aufrufer es nicht brauchte. */
+        boolean unchanged;
         String err = "";
     }
 
     private static final Object LOCK = new Object();
+
+    /** Zeitstempel je Kamera (Aufnahme, Abruf, angesehen) in eigener Datei: die Haupt-Einstellungen bleiben klein und schnell. */
+    private static SharedPreferences cp(Context c) {
+        return c.getSharedPreferences("bga_cams", Context.MODE_PRIVATE);
+    }
+
+    /** Alte Zeitstempel aus den Haupt-Einstellungen entfernen (einmalig, im Hintergrund). */
+    private static void dropOldStamps(Context c) {
+        SharedPreferences sp = Prefs.sp(c);
+        if (sp.getBoolean("cam_stamps_moved", false)) return;
+        SharedPreferences.Editor e = sp.edit();
+        for (String k : new java.util.ArrayList<>(sp.getAll().keySet())) {
+            if (k.startsWith("cam_f_") || k.startsWith("cam_t_") || k.startsWith("cam_v_")) e.remove(k);
+        }
+        e.putBoolean("cam_stamps_moved", true).apply();
+    }
+
+    /** Kleiner Speicher fuer fertig dekodierte Vorschaubilder: beim Zurueckscrollen entfaellt das erneute Dekodieren. */
+    private static final android.util.LruCache<String, Bitmap> MEM = new android.util.LruCache<String, Bitmap>(8 * 1024 * 1024) {
+        @Override
+        protected int sizeOf(String k, Bitmap b) {
+            return b.getByteCount();
+        }
+    };
 
     private Webcams() {}
 
@@ -647,7 +661,7 @@ final class Webcams {
     static long age(Context c, Cam cam, boolean thumb) {
         File f = file(c, cam, thumb);
         if (!f.exists()) return Long.MAX_VALUE;
-        long t = Prefs.sp(c).getLong("cam_f_" + key(cam, thumb), f.lastModified());
+        long t = cp(c).getLong("cam_f_" + key(cam, thumb), f.lastModified());
         return Math.max(0, System.currentTimeMillis() - t);
     }
 
@@ -660,12 +674,18 @@ final class Webcams {
         Shot s = new Shot();
         File f = file(c, cam, thumb);
         String k = key(cam, thumb);
-        synchronized (LOCK) {
-            if (f.exists()) s.bmp = decode(f, maxW);
+        long mod = f.lastModified();
+        String mk = mod > 0 && maxW <= 1000 ? k + "@" + maxW + "@" + mod : null;
+        if (mk != null) s.bmp = MEM.get(mk);
+        if (s.bmp == null) {
+            synchronized (LOCK) {
+                if (f.exists()) s.bmp = decode(f, maxW);
+            }
+            if (mk != null && s.bmp != null) MEM.put(mk, s.bmp);
         }
         if (f.exists()) {
-            s.taken = Prefs.sp(c).getLong("cam_t_" + k, 0);
-            s.fetched = Prefs.sp(c).getLong("cam_f_" + k, f.lastModified());
+            s.taken = cp(c).getLong("cam_t_" + k, 0);
+            s.fetched = cp(c).getLong("cam_f_" + k, f.lastModified());
         }
         return s;
     }
@@ -676,14 +696,27 @@ final class Webcams {
     }
 
     static Shot refresh(Context c, Cam cam, int maxW, boolean thumb) {
-        Shot cur = cached(c, cam, maxW, thumb);
+        return refresh(c, cam, maxW, thumb, true);
+    }
+
+    /**
+     * wantOld = false: ist das Bild unveraendert, kommt kein dekodiertes Bild zurueck (unchanged = true);
+     * so bleibt das regelmaessige Auffrischen der Liste ohne Dekodieren.
+     */
+    static Shot refresh(Context c, Cam cam, int maxW, boolean thumb, boolean wantOld) {
+        File f = file(c, cam, thumb);
+        String k = key(cam, thumb);
+        Shot cur = new Shot();
+        if (f.exists()) {
+            cur.taken = cp(c).getLong("cam_t_" + k, 0);
+            cur.fetched = cp(c).getLong("cam_f_" + k, f.lastModified());
+        }
         if (!mayFetch(c)) {
+            if (f.exists()) cur.bmp = cached(c, cam, maxW, thumb).bmp;
             cur.offline = true;
             cur.err = "nur im WLAN";
             return cur;
         }
-        File f = file(c, cam, thumb);
-        String k = key(cam, thumb);
         String err = "";
         String[] urls = thumb && cam.thumb != null ? new String[]{cam.thumb} : cam.urls;
         for (String url : urls) {
@@ -691,8 +724,10 @@ final class Webcams {
                 Net.Img im = Net.image(url, f.exists() ? cur.taken : 0);
                 long now = System.currentTimeMillis();
                 if (im.notModified && f.exists()) {
-                    Prefs.sp(c).edit().putLong("cam_f_" + k, now).apply();
+                    cp(c).edit().putLong("cam_f_" + k, now).apply();
                     cur.fetched = now;
+                    cur.unchanged = true;
+                    if (wantOld) cur.bmp = cached(c, cam, maxW, thumb).bmp;
                     return cur;
                 }
                 if (!looksLikeImage(im.data)) {
@@ -710,7 +745,7 @@ final class Webcams {
                     }
                 }
                 long taken = im.modified > 0 && im.modified <= now + 60000 ? im.modified : 0;
-                Prefs.sp(c).edit().putLong("cam_t_" + k, taken).putLong("cam_f_" + k, now).apply();
+                cp(c).edit().putLong("cam_t_" + k, taken).putLong("cam_f_" + k, now).apply();
                 Shot s = new Shot();
                 synchronized (LOCK) {
                     s.bmp = decode(f, maxW);
@@ -727,6 +762,7 @@ final class Webcams {
                 err = e.getMessage() == null ? e.toString() : e.getMessage();
             }
         }
+        if (f.exists()) cur.bmp = cached(c, cam, maxW, thumb).bmp;
         cur.offline = true;
         cur.err = err;
         return cur;
@@ -788,9 +824,9 @@ final class Webcams {
         File f = file(c, cam, thumb);
         if (!f.exists()) return "";
         String k = key(cam, thumb);
-        long taken = Prefs.sp(c).getLong("cam_t_" + k, 0);
+        long taken = cp(c).getLong("cam_t_" + k, 0);
         if (taken > 0) return "Aufnahme " + agoText(taken);
-        return "Abgerufen " + agoText(Prefs.sp(c).getLong("cam_f_" + k, f.lastModified()));
+        return "Abgerufen " + agoText(cp(c).getLong("cam_f_" + k, f.lastModified()));
     }
 
     /** Link dieser Kamera ueber das Teilen-Menue weitergeben. */

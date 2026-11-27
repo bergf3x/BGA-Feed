@@ -600,18 +600,6 @@ final class Bubble {
         text(title, 18, this.title, true).setPadding(px(4), 0, 0, px(8));
     }
 
-    /** Auswahlzeile mit Symbol vor dem Text. */
-    void rowIcon(int iconRes, String label, boolean selected, Runnable onClick) {
-        row(label, selected, onClick);
-        LinearLayout r = (LinearLayout) box.getChildAt(box.getChildCount() - 1);
-        android.widget.ImageView iv = new android.widget.ImageView(act);
-        iv.setImageResource(iconRes);
-        iv.setColorFilter(selected ? hiTx : tx);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(px(20), px(20));
-        lp.rightMargin = px(12);
-        r.addView(iv, 0, lp);
-    }
-
     /** Duenne Trennlinie zwischen Gruppen. */
     void divider() {
         View v = new View(act);

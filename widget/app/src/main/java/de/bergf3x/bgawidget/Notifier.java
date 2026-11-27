@@ -34,15 +34,13 @@ final class Notifier {
         try {
             NotificationManager nm = (NotificationManager) c.getSystemService(Context.NOTIFICATION_SERVICE);
             if (nm == null) return;
-            if (Build.VERSION.SDK_INT >= 26) {
-                nm.createNotificationChannel(new NotificationChannel(CHANNEL, "Unwetterwarnungen",
+            nm.createNotificationChannel(new NotificationChannel(CHANNEL, "Unwetterwarnungen",
                         NotificationManager.IMPORTANCE_HIGH));
-            }
             Intent open = new Intent(Intent.ACTION_VIEW,
                     Uri.parse("https://www.dwd.de/DE/wetter/warnungen/warnWetter_node.html"));
-            int imm = Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0;
+            int imm = PendingIntent.FLAG_IMMUTABLE;
             PendingIntent pi = PendingIntent.getActivity(c, 77, open, PendingIntent.FLAG_UPDATE_CURRENT | imm);
-            Notification.Builder b = Build.VERSION.SDK_INT >= 26 ? new Notification.Builder(c, CHANNEL) : new Notification.Builder(c);
+            Notification.Builder b = new Notification.Builder(c, CHANNEL);
             b.setSmallIcon(R.drawable.ic_warn)
                     .setContentTitle("Warnung " + region)
                     .setContentText(text)
@@ -64,15 +62,13 @@ final class Notifier {
         try {
             NotificationManager nm = (NotificationManager) c.getSystemService(Context.NOTIFICATION_SERVICE);
             if (nm == null) return;
-            if (Build.VERSION.SDK_INT >= 26) {
-                nm.createNotificationChannel(new NotificationChannel("kw", "Stichwort-Treffer",
+            nm.createNotificationChannel(new NotificationChannel("kw", "Stichwort-Treffer",
                         NotificationManager.IMPORTANCE_DEFAULT));
-            }
             Intent open = new Intent(Intent.ACTION_VIEW, Uri.parse(it.link));
-            int imm = Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0;
+            int imm = PendingIntent.FLAG_IMMUTABLE;
             PendingIntent pi = PendingIntent.getActivity(c, 78 + (it.link.hashCode() & 0xFFFF), open,
                     PendingIntent.FLAG_UPDATE_CURRENT | imm);
-            Notification.Builder b = Build.VERSION.SDK_INT >= 26 ? new Notification.Builder(c, "kw") : new Notification.Builder(c);
+            Notification.Builder b = new Notification.Builder(c, "kw");
             b.setSmallIcon(R.drawable.ic_warn)
                     .setContentTitle(it.title)
                     .setContentText(it.meta())

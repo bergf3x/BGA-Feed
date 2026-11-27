@@ -91,35 +91,6 @@ final class FeedItem {
         return feedName;
     }
 
-    private static final java.util.regex.Pattern BGL_PLACES = java.util.regex.Pattern.compile(
-            "Berchtesgaden|Reichenhall|Freilassing|Laufen|Bischofswiesen|Ramsau|Schönau|Königssee|Marktschellenberg|"
-            + "Piding|Ainring|Teisendorf|Bayerisch Gmain|Schneizlreuth|Saaldorf|Surheim|Anger\\b|Watzmann|Untersberg|"
-            + "Kehlstein|Obersalzberg|Jenner|Hochkalter|Hintersee|Predigtstuhl|Hochstaufen|Rupertiwinkel|BGL\\b");
-
-    /** Gehoert die Meldung ins Umland (Traunstein/Chiemgau, Salzburg, Bayern) statt ins Berchtesgadener Land? */
-    boolean isUmland() {
-        String t = topic.isEmpty() ? "Region" : topic;
-        boolean umland = t.startsWith("Bayern") || t.equals("Region/Traunstein") || t.equals("Region/Landkreis Traunstein")
-                || t.equals("Region/Salzburg") || t.equals("Region/Chiemsee") || t.equals("Region/Trostberg")
-                || t.equals("Region/Achental") || t.equals("Region/BGL & Chiemgau")
-                || ((feedName.toLowerCase(Locale.GERMANY).contains("chiemgau") || feedName.toLowerCase(Locale.GERMANY).contains("orf"))
-                && !t.equals("Region/Rupertiwinkel"));
-        return umland && !BGL_PLACES.matcher(title).find();
-    }
-
-    static int mediumColor(String name) {
-        String low = name.toLowerCase(Locale.GERMANY);
-        if (low.contains("bgland")) return 0xFFF7DD45;
-        if (low.contains("anzeiger")) return 0xFF459BDB;
-        if (low.contains("chiemgau")) return 0xFF5BBF8A;
-        if (low.contains("orf")) return 0xFFE5484D;
-        if (low.contains("traunsteiner")) return 0xFF1BA3D9;
-        if (low.contains("landratsamt")) return 0xFF3A6BB5;
-        if (low.contains("nationalpark")) return 0xFF2E8B6E;
-        if (low.contains("br24")) return 0xFF8C7AE6;
-        return 0xFFF0997B;
-    }
-
     int accentColor() {
         String leaf = topic.substring(topic.lastIndexOf('/') + 1);
         if (weather()) return 0xFF5AA9FF;

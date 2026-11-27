@@ -1934,13 +1934,6 @@ public class MainActivity extends Activity {
         return lr;
     }
 
-    private android.graphics.drawable.Drawable tinted(int res, int dp) {
-        android.graphics.drawable.Drawable d = getResources().getDrawable(res, getTheme()).mutate();
-        d.setTint(tx);
-        d.setBounds(0, 0, px(dp), px(dp));
-        return d;
-    }
-
     private void setTopic(String t) {
         if (t.startsWith(Taxonomy.WETTER)) wxTopic = t;
         Prefs.setTopic(this, ID, t);
