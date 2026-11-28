@@ -1,5 +1,85 @@
 {
  "items": {
+  "1028994": {
+   "sid": 1028994,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-mein-schiff-3-startet-zur-ersten-kreuzfahrt-nach-kollision-_arid,1028994.html",
+   "title": "»Mein Schiff 3« startet zur ersten Kreuzfahrt nach Kollision",
+   "teaser": "",
+   "category": "",
+   "plus": false,
+   "topic": "Nachrichten/Boulevard",
+   "first_seen": "2026-11-28T02:43:51+00:00"
+  },
+  "1028993": {
+   "sid": 1028993,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-nach-sturmchaos-new-yorker-parade-in-startloechern-_arid,1028993.html",
+   "title": "Nach Sturmchaos: New Yorker Parade in Startlöchern",
+   "teaser": "",
+   "category": "",
+   "plus": false,
+   "topic": "Nachrichten/Boulevard",
+   "first_seen": "2026-11-28T02:43:51+00:00"
+  },
+  "1028992": {
+   "sid": 1028992,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-havarierter-tanker-soll-nach-cartagena-geschleppt-werden-_arid,1028992.html",
+   "title": "Havarierter Tanker soll nach Cartagena geschleppt werden",
+   "teaser": "",
+   "category": "",
+   "plus": false,
+   "topic": "Nachrichten/Boulevard",
+   "first_seen": "2026-11-28T02:43:51+00:00"
+  },
+  "1028990": {
+   "sid": 1028990,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-nach-rodgersrauswurf-steelers-trotzen-wirbel-mit-heimsieg-_arid,1028990.html",
+   "title": "Nach Rodgers-Rauswurf: Steelers trotzen Wirbel mit Heimsieg",
+   "teaser": "",
+   "category": "",
+   "plus": false,
+   "topic": "Nachrichten/Boulevard",
+   "first_seen": "2026-11-28T02:43:51+00:00"
+  },
+  "1028988": {
+   "sid": 1028988,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-bericht-uefa-fordert-untersuchung-wegen-infantinowahlkampf-_arid,1028988.html",
+   "title": "Bericht: UEFA fordert Untersuchung wegen Infantino-Wahlkampf",
+   "teaser": "Amsterdam (dpa) - Die UEFA will Gianni Infantino als FIFA-Chef stürzen. Jetzt tauchen neue Vorwürfe gegen den Weltverband auf.",
+   "category": "Fußball",
+   "plus": false,
+   "topic": "Sport/Fußball",
+   "first_seen": "2026-11-28T02:43:51+00:00"
+  },
+  "1028987": {
+   "sid": 1028987,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-gladbach-verspielt-sieg-fuellkrug-rettet-bremen-_arid,1028987.html",
+   "title": "Gladbach verspielt Sieg - Füllkrug rettet Bremen",
+   "teaser": "Bremen (dpa) - Gladbach sieht in der Bundesliga in Bremen oft gut aus. Das ist auch dieses Mal mitten in der Krise so. Doch am Ende reicht es nicht zum Sieg - weil wieder ein ...",
+   "category": "1. Fußball Bundesliga",
+   "plus": false,
+   "topic": "Sport/Fußball",
+   "first_seen": "2026-11-28T02:43:51+00:00"
+  },
+  "1028985": {
+   "sid": 1028985,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-schweitzer-trennung-von-amt-und-mandat-bringt-spd-nichts-_arid,1028985.html",
+   "title": "Schweitzer: Trennung von Amt und Mandat bringt SPD nichts",
+   "teaser": "",
+   "category": "",
+   "plus": false,
+   "topic": "Nachrichten/Boulevard",
+   "first_seen": "2026-11-28T02:43:51+00:00"
+  },
+  "1028984": {
+   "sid": 1028984,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-nationalspieler-julian-koester-verletzt-mehrere-wochen-pause-_arid,1028984.html",
+   "title": "Nationalspieler Julian Köster verletzt: Mehrere Wochen Pause",
+   "teaser": "Kiel (dpa) - Diese Nachricht missfällt nicht nur dem THW Kiel, sondern beunruhigt auch Bundestrainer Alfred Gislason. Rückraumspieler Julian Köster muss wochenlang aussetzen.",
+   "category": "Sport",
+   "plus": false,
+   "topic": "Sport",
+   "first_seen": "2026-11-28T02:43:51+00:00"
+  },
   "1028982": {
    "sid": 1028982,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-basketballer-loesen-wmticket-nach-sieg-in-lettland-_arid,1028982.html",
@@ -74,20 +154,20 @@
    "sid": 1028970,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-jusochef-tuermer-spd-wirkt-wie-eingeschlaefert-_arid,1028970.html",
    "title": "Juso-Chef Türmer: SPD wirkt wie eingeschläfert",
-   "teaser": "",
-   "category": "",
+   "teaser": "Bochum (dpa) - Wenige Wochen vor der Wahl neuer SPD-Chefs trifft sich der Parteinachwuchs in Bochum. Deren Vorsitzender ist unzufrieden.",
+   "category": "Brennpunkt",
    "plus": false,
-   "topic": "Nachrichten/Boulevard",
+   "topic": "Nachrichten/Deutschland & Welt",
    "first_seen": "2026-11-27T19:58:56+00:00"
   },
   "1028955": {
    "sid": 1028955,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-eisenkot-koalitionsgespraeche-mit-likud-kommen-nicht-voran-_arid,1028955.html",
    "title": "Eisenkot: Koalitionsgespräche mit Likud kommen nicht voran",
-   "teaser": "",
-   "category": "",
+   "teaser": "Tel Aviv (dpa) - Ex-Militärchef Eisenkot hat den Auftrag, eine Regierung in Israel zu bilden. Gespräche führt er auch mit Netanjahus Partei – bislang ohne Erfolg. Er wirft ihr vor, ...",
+   "category": "Brennpunkt",
    "plus": false,
-   "topic": "Nachrichten/Boulevard",
+   "topic": "Nachrichten/Deutschland & Welt",
    "first_seen": "2026-11-27T19:58:56+00:00"
   },
   "1028934": {
@@ -104,10 +184,10 @@
    "sid": 1028926,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-staatsanwaltschaft-fordert-hoechststrafe-gegen-white-tiger-_arid,1028926.html",
    "title": "Staatsanwaltschaft fordert Höchststrafe gegen »White Tiger«",
-   "teaser": "",
-   "category": "",
+   "teaser": "Hamburg (dpa) - Vor nahezu einem Jahr begann der Prozess gegen den mutmaßlichen Pädokriminellen. Der 22-Jährige soll über das Internet Kinder und Jugendliche missbraucht haben.",
+   "category": "Brennpunkt",
    "plus": false,
-   "topic": "Nachrichten/Boulevard",
+   "topic": "Nachrichten/Deutschland & Welt",
    "first_seen": "2026-11-27T19:58:56+00:00"
   },
   "1028922": {
@@ -124,10 +204,10 @@
    "sid": 1028911,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-frust-statt-fortschritt-was-der-gipfelflop-der-eu-bedeutet-_arid,1028911.html",
    "title": "Frust statt Fortschritt: Was der Gipfel-Flop der EU bedeutet",
-   "teaser": "",
-   "category": "",
+   "teaser": "Brüssel (dpa) - Es war ein Scheitern mit Ansage: Schon vorher war klar, dass der Brüsseler Gipfel über die EU-Billionen nicht zum Erfolg führen würde. Aber warum dann das Ganze?",
+   "category": "Brennpunkt",
    "plus": false,
-   "topic": "Nachrichten/Boulevard",
+   "topic": "Nachrichten/Deutschland & Welt",
    "first_seen": "2026-11-27T19:58:56+00:00"
   },
   "1028910": {
@@ -199,6 +279,16 @@
    "plus": false,
    "topic": "Nachrichten/Wissenschaft",
    "first_seen": "2026-11-27T19:58:56+00:00"
+  },
+  "1028886": {
+   "sid": 1028886,
+   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-bulgarische-fussballfans-bei-krawallen-in-marseille-verletzt-_arid,1028886.html",
+   "title": "Bulgarische Fußballfans bei Krawallen in Marseille verletzt",
+   "teaser": "Marseille (dpa) - Nach der Gewalt beim Aufeinandertreffen von Olympique Marseille und Lewski Sofia laufen die Ermittlungen zu den Umständen. Frankreichs Staatschef und die UEFA äußern ...",
+   "category": "Fußball",
+   "plus": false,
+   "topic": "Sport/Fußball",
+   "first_seen": "2026-11-28T02:43:51+00:00"
   },
   "1028883": {
    "sid": 1028883,
@@ -843,9 +933,9 @@
   "1028738": {
    "sid": 1028738,
    "url": "https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land/bischofswiesen_artikel,-wichteln-unterm-engel-weihnachtspackerltauschaktion-ab-1-dezember-_arid,1028738.html",
-   "title": "»Wichteln unterm Engel« – Weihnachtspackerl-Tauschaktion ab 1. Dezember",
-   "teaser": "",
-   "category": "",
+   "title": "»Wichteln unterm Engel« – Weihnachtspackerl-Tauschaktion ab 1. Dezember",
+   "teaser": "Bischofswiesen – Die Adventszeit ist die Zeit des Schenkens, der Begegnung und des Miteinanders. Genau diesen Gedanken möchte die Touristinformation Bischofswiesen in diesem Jahr mit ...",
+   "category": "Bischofswiesen",
    "plus": false,
    "topic": "Region/Berchtesgadener Land",
    "first_seen": "2026-11-27T10:54:22+00:00"
@@ -895,7 +985,7 @@
    "url": "https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land/bischofswiesen_artikel,-neue-schiessanlage-sollte-leiser-werden-jetzt-erleben-anwohner-genau-das-gegenteil-_arid,1028729.html",
    "title": "Neue Schießanlage sollte leiser werden – Jetzt erleben Anwohner genau das Gegenteil",
    "teaser": "",
-   "category": "",
+   "category": "Bischofswiesen",
    "plus": true,
    "topic": "Region/Berchtesgadener Land",
    "first_seen": "2026-11-27T10:54:22+00:00"
@@ -1460,36 +1550,6 @@
    "topic": "Nachrichten/Deutschland & Welt",
    "first_seen": "2026-11-26T08:23:41+00:00"
   },
-  "1028586": {
-   "sid": 1028586,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-kim-jong-un-fordert-breiteren-einsatz-taktischer-atomwaffen-_arid,1028586.html",
-   "title": "Kim Jong Un fordert breiteren Einsatz taktischer Atomwaffen",
-   "teaser": "Pjöngjang (dpa) - Nordkoreas Machthaber Kim Jong Un hält an seinem Kurs fest. Er will sein Land als Atommacht etabliert sehen - und das mit Zugriff auf Atomwaffen für unterschiedliche ...",
-   "category": "Brennpunkt",
-   "plus": false,
-   "topic": "Nachrichten/Deutschland & Welt",
-   "first_seen": "2026-11-26T08:23:41+00:00"
-  },
-  "1028585": {
-   "sid": 1028585,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-13-tote-aus-ueberfluteter-goldmine-in-indonesien-geborgen-_arid,1028585.html",
-   "title": "13 Tote aus überfluteter Goldmine in Indonesien geborgen",
-   "teaser": "Jakarta (dpa) - Heftige Regenfälle fluten zwei Stollen einer illegalen Goldmine auf Java. Mehr als ein Dutzend Menschen sterben, viele werden noch vermisst – tief unter der Erde. Wer ...",
-   "category": "Brennpunkt",
-   "plus": false,
-   "topic": "Nachrichten/Deutschland & Welt",
-   "first_seen": "2026-11-26T08:23:41+00:00"
-  },
-  "1028584": {
-   "sid": 1028584,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-union-wirbt-fuer-neuen-vorstoss-im-rentenstreit-_arid,1028584.html",
-   "title": "Koalitionsstreit über Frührente: Welche Lösung ist denkbar?",
-   "teaser": "Berlin (dpa) - Über Nacht bringt die Union den Kern des schwarz-roten Rentenstreits ans Licht. Die SPD lehnt ihren als Kompromiss betitelten Vorschlag prompt ab. Was steckt dahinter?",
-   "category": "Brennpunkt",
-   "plus": false,
-   "topic": "Nachrichten/Deutschland & Welt",
-   "first_seen": "2026-11-26T08:23:41+00:00"
-  },
   "1028583": {
    "sid": 1028583,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-erstes-urteil-zu-augenscreening-bei-dm-erwartet-_arid,1028583.html",
@@ -1508,16 +1568,6 @@
    "category": "Wissenschaft",
    "plus": false,
    "topic": "Nachrichten/Wissenschaft",
-   "first_seen": "2026-11-26T08:23:41+00:00"
-  },
-  "1028579": {
-   "sid": 1028579,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-digitaler-fuehrerschein-startet-bis-mitte-dezember-_arid,1028579.html",
-   "title": "Digitaler Führerschein startet bis Mitte Dezember",
-   "teaser": "Berlin (dpa) - In der i-Kfz-App wird bisher der digitale Fahrzeugschein abgebildet. Bald folgt der Führerschein - etwas später als geplant.",
-   "category": "Brennpunkt",
-   "plus": false,
-   "topic": "Nachrichten/Deutschland & Welt",
    "first_seen": "2026-11-26T08:23:41+00:00"
   },
   "1028573": {
@@ -1763,9 +1813,9 @@
   "1028528": {
    "sid": 1028528,
    "url": "https://www.berchtesgadener-anzeiger.de/region-und-lokal/lokales-berchtesgadener-land/schoenau-am-koenigssee_artikel,-gastgeber-sind-fuer-den-kehlsteinhausaufbau-bergerlebnis-berchtesgaden-informiert-bei-treffen-an-der-_arid,1028528.html",
-   "title": "Gastgeber sind für den Kehlsteinhaus-Aufbau: Bergerlebnis Berchtesgaden informiert bei Treffen an der Kunsteisbahn Königssee",
+   "title": "Gastgeber sind für den Kehlsteinhaus-Aufbau: Bergerlebnis Berchtesgaden informiert bei Treffen an der Kunsteisbahn Königssee",
    "teaser": "",
-   "category": "",
+   "category": "Schönau am Königssee",
    "plus": true,
    "topic": "Region/Berchtesgadener Land",
    "first_seen": "2026-11-26T18:39:46+00:00"
@@ -2660,16 +2710,6 @@
    "topic": "Sport/Fußball",
    "first_seen": "2026-11-24T22:46:50+00:00"
   },
-  "1028306": {
-   "sid": 1028306,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-drei-unfaelle-am-dienstag-wegweiser-uebersehen-rueckwaertsgang-eingelegt-und-pedale-verwechselt-_arid,1028306.html",
-   "title": "Drei Unfälle am Dienstag: Wegweiser übersehen, Rückwärtsgang eingelegt und Pedale verwechselt",
-   "teaser": "",
-   "category": "",
-   "plus": false,
-   "topic": "Nachrichten/Boulevard",
-   "first_seen": "2026-11-24T22:46:50+00:00"
-  },
   "1028300": {
    "sid": 1028300,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-neuer-anlauf-fuer-den-verkauf-des-adlon-_arid,1028300.html",
@@ -2719,16 +2759,6 @@
    "plus": false,
    "topic": "Sport",
    "first_seen": "2026-11-24T22:46:50+00:00"
-  },
-  "1028279": {
-   "sid": 1028279,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-undav-und-der-vfb-mit-torfrust-in-den-fussballtempel-_arid,1028279.html",
-   "title": "Undav und der VfB: Mit Tor-Frust in den Fußball-Tempel",
-   "teaser": "Mailand (dpa) - Stuttgarts Offensive sorgt vor dem Königsklassen-Kracher bei Inter Mailand für Diskussionen. Die Stimmung wirkt nach der Nullnummer auf Schalke gereizt. Gibt's im ...",
-   "category": "Fußball",
-   "plus": false,
-   "topic": "Sport/Fußball",
-   "first_seen": "2026-11-24T12:32:05+00:00"
   },
   "1028278": {
    "sid": 1028278,
@@ -2900,16 +2930,6 @@
    "topic": "Sport",
    "first_seen": "2026-11-24T12:32:05+00:00"
   },
-  "1028208": {
-   "sid": 1028208,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-rosbergs-extreme-angst-bruch-mit-jugendfreund-hamilton-_arid,1028208.html",
-   "title": "Rosbergs »extreme Angst« - Bruch mit Jugendfreund Hamilton",
-   "teaser": "Abu Dhabi (dpa) - Vor zehn Jahren erreicht Nico Rosberg als Weltmeister den Formel-1-Gipfel. Was musste der heutige Startup-Investor damals alles opfern? Und was verbindet ihn noch mit ...",
-   "category": "Formel 1",
-   "plus": false,
-   "topic": "Sport",
-   "first_seen": "2026-11-25T15:38:48+00:00"
-  },
   "1028194": {
    "sid": 1028194,
    "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-adam-seiner-rasse-gene-von-stier-comet-weit-verbreitet-_arid,1028194.html",
@@ -2938,16 +2958,6 @@
    "category": "Digitales",
    "plus": false,
    "topic": "Nachrichten/Digital",
-   "first_seen": "2026-11-24T01:56:26+00:00"
-  },
-  "1028180": {
-   "sid": 1028180,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-bvb-mit-guirassy-gegen-arsenal-kovac-gibt-ein-update-_arid,1028180.html",
-   "title": "BVB mit Guirassy gegen Arsenal? Kovac gibt ein Update",
-   "teaser": "London (dpa) - Borussia Dortmund kann in der Königsklasse gegen den FC Arsenal auf zwei Rückkehrer hoffen. Beim Gegner aus London fehlen wichtige Spieler.",
-   "category": "Fußball",
-   "plus": false,
-   "topic": "Sport/Fußball",
    "first_seen": "2026-11-24T01:56:26+00:00"
   },
   "1028175": {
@@ -3069,16 +3079,6 @@
    "plus": false,
    "topic": "Sport/Sport aus der Region",
    "first_seen": "2026-11-24T12:32:05+00:00"
-  },
-  "1028156": {
-   "sid": 1028156,
-   "url": "https://www.berchtesgadener-anzeiger.de/startseite_artikel,-koerper-setzt-stoppzeichen-exbvbprofi-mor-muss-pausieren-_arid,1028156.html",
-   "title": "Körper setzt Stopp-Zeichen: Ex-BVB-Profi Mor muss pausieren",
-   "teaser": "Kopenhagen (dpa) - Einst gilt Emre Mor als eins der ganz großen Nachwuchstalente des europäischen Fußballs. Jetzt stoppt er seine Karriere. Der Grund: gesundheitliche Probleme.",
-   "category": "Fußball",
-   "plus": false,
-   "topic": "Sport/Fußball",
-   "first_seen": "2026-11-24T01:56:26+00:00"
   },
   "1028153": {
    "sid": 1028153,
